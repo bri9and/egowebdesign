@@ -8,7 +8,6 @@ import {
   Search,
   Globe,
   Check,
-  X,
   ArrowRight,
   Shield,
   Zap,
@@ -23,13 +22,14 @@ import { fadeUp, stagger } from "@/lib/animations";
 interface DomainResult {
   domain: string;
   available: boolean;
-  price: number | null;
+  price: number;
   premium: boolean;
 }
 
 function DomainsContent() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<DomainResult[]>([]);
+  const [suggestions, setSuggestions] = useState<DomainResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState("");
@@ -67,6 +67,7 @@ function DomainsContent() {
     setLoading(true);
     setError("");
     setResults([]);
+    setSuggestions([]);
     setSearched(true);
 
     try {
@@ -82,7 +83,8 @@ function DomainsContent() {
         return;
       }
 
-      setResults(data.results);
+      setResults(data.results || []);
+      setSuggestions(data.suggestions || []);
     } catch {
       setError("Failed to search. Please try again.");
     } finally {
@@ -90,7 +92,7 @@ function DomainsContent() {
     }
   };
 
-  const availableCount = results.filter((r) => r.available).length;
+  const availableCount = results.length;
 
   return (
     <>
@@ -188,7 +190,7 @@ function DomainsContent() {
           )}
 
           {/* Results */}
-          {!loading && results.length > 0 && (
+          {!loading && searched && (results.length > 0 || suggestions.length > 0) && (
             <motion.div
               initial="hidden"
               animate="visible"
@@ -202,97 +204,142 @@ function DomainsContent() {
                       <span className="text-qyellow font-medium">{availableCount}</span> domain{availableCount !== 1 ? "s" : ""} available
                     </>
                   ) : (
-                    "No domains available"
+                    "Not available — check out these alternatives"
                   )}
                 </p>
                 <button
-                  onClick={() => { setResults([]); setSearched(false); setQuery(""); inputRef.current?.focus(); }}
+                  onClick={() => { setResults([]); setSuggestions([]); setSearched(false); setQuery(""); inputRef.current?.focus(); }}
                   className="text-sm text-qwhite/40 hover:text-qwhite/70 transition-colors"
                 >
                   New search
                 </button>
               </motion.div>
 
-              {/* Domain cards */}
-              <div className="space-y-3">
-                <AnimatePresence>
-                  {results.map((result, i) => (
-                    <motion.div
-                      key={result.domain}
-                      variants={fadeUp}
-                      initial="hidden"
-                      animate="visible"
-                      transition={{ delay: i * 0.05 }}
-                      className={cn(
-                        "rounded-xl border p-4 transition-all",
-                        result.available
-                          ? "border-qyellow/30 bg-qblack-light hover:border-qyellow/50"
-                          : "border-qwhite/5 bg-qblack-light/30 opacity-60"
-                      )}
-                    >
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className={cn(
-                            "w-8 h-8 rounded-lg flex items-center justify-center shrink-0",
-                            result.available
-                              ? "bg-qyellow/10"
-                              : "bg-qwhite/5"
-                          )}>
-                            {result.available ? (
+              {/* Available domain cards */}
+              {results.length > 0 && (
+                <div className="space-y-3">
+                  <AnimatePresence>
+                    {results.map((result, i) => (
+                      <motion.div
+                        key={result.domain}
+                        variants={fadeUp}
+                        initial="hidden"
+                        animate="visible"
+                        transition={{ delay: i * 0.05 }}
+                        className="rounded-xl border border-qyellow/30 bg-qblack-light hover:border-qyellow/50 p-4 transition-all"
+                      >
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 bg-qyellow/10">
                               <Check className="h-4 w-4 text-qyellow" />
-                            ) : (
-                              <X className="h-4 w-4 text-qwhite/30" />
-                            )}
+                            </div>
+                            <div className="min-w-0">
+                              <p className="font-medium truncate text-qwhite">
+                                {result.domain}
+                              </p>
+                              {result.premium && (
+                                <span className="text-xs text-qyellow/70">Premium domain</span>
+                              )}
+                            </div>
                           </div>
-                          <div className="min-w-0">
-                            <p className={cn(
-                              "font-medium truncate",
-                              result.available ? "text-qwhite" : "text-qwhite/40"
-                            )}>
-                              {result.domain}
-                            </p>
-                            {result.premium && (
-                              <span className="text-xs text-qyellow/70">Premium domain</span>
-                            )}
+
+                          <div className="flex items-center gap-4 shrink-0">
+                            <div className="text-right">
+                              <p className="text-lg font-bold text-qwhite">
+                                ${(result.price * 1.30).toFixed(2)}
+                              </p>
+                              <p className="text-xs text-qwhite/30">/year</p>
+                            </div>
+                            <button
+                              onClick={() => handleCheckout(result.domain, result.price)}
+                              disabled={checkingOut === result.domain}
+                              className={cn(
+                                buttonVariants({ size: "sm" }),
+                                "bg-qyellow hover:bg-qyellow-light text-qblack-dark font-semibold disabled:opacity-50"
+                              )}
+                            >
+                              {checkingOut === result.domain ? (
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                              ) : (
+                                <>
+                                  <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
+                                  Register
+                                </>
+                              )}
+                            </button>
                           </div>
                         </div>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
+                </div>
+              )}
 
-                        <div className="flex items-center gap-4 shrink-0">
-                          {result.available && result.price !== null ? (
-                            <>
-                              <div className="text-right">
-                                <p className="text-lg font-bold text-qwhite">
-                                  ${(result.price * 1.30).toFixed(2)}
-                                </p>
-                                <p className="text-xs text-qwhite/30">/year</p>
+              {/* Suggestions */}
+              {suggestions.length > 0 && (
+                <div className={results.length > 0 ? "mt-8" : ""}>
+                  <motion.div variants={fadeUp} className="flex items-center gap-2 mb-4">
+                    <Zap className="h-4 w-4 text-qyellow/60" />
+                    <p className="text-sm text-qwhite/50 font-medium">Similar names you might like</p>
+                  </motion.div>
+                  <div className="space-y-2">
+                    <AnimatePresence>
+                      {suggestions.map((sug, i) => (
+                        <motion.div
+                          key={sug.domain}
+                          variants={fadeUp}
+                          initial="hidden"
+                          animate="visible"
+                          transition={{ delay: (results.length + i) * 0.03 }}
+                          className="rounded-lg border border-qwhite/10 bg-qblack-light/60 hover:border-qyellow/30 p-3 transition-all"
+                        >
+                          <div className="flex items-center justify-between gap-4">
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div className="w-7 h-7 rounded-md flex items-center justify-center shrink-0 bg-qwhite/5">
+                                <Globe className="h-3.5 w-3.5 text-qwhite/40" />
                               </div>
+                              <p className="font-medium truncate text-qwhite/80 text-sm">
+                                {sug.domain}
+                              </p>
+                            </div>
+
+                            <div className="flex items-center gap-3 shrink-0">
+                              <p className="text-sm font-semibold text-qwhite/70">
+                                ${(sug.price * 1.30).toFixed(2)}<span className="text-xs text-qwhite/30 font-normal">/yr</span>
+                              </p>
                               <button
-                                onClick={() => handleCheckout(result.domain, result.price!)}
-                                disabled={checkingOut === result.domain}
+                                onClick={() => handleCheckout(sug.domain, sug.price)}
+                                disabled={checkingOut === sug.domain}
                                 className={cn(
                                   buttonVariants({ size: "sm" }),
-                                  "bg-qyellow hover:bg-qyellow-light text-qblack-dark font-semibold disabled:opacity-50"
+                                  "bg-qwhite/10 hover:bg-qyellow hover:text-qblack-dark text-qwhite/70 text-xs font-medium disabled:opacity-50 transition-all"
                                 )}
                               >
-                                {checkingOut === result.domain ? (
-                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                {checkingOut === sug.domain ? (
+                                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
                                 ) : (
-                                  <>
-                                    <ShoppingCart className="h-3.5 w-3.5 mr-1.5" />
-                                    Register
-                                  </>
+                                  "Register"
                                 )}
                               </button>
-                            </>
-                          ) : (
-                            <span className="text-sm text-qwhite/30">Taken</span>
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          )}
+
+          {/* No results at all */}
+          {!loading && searched && results.length === 0 && suggestions.length === 0 && !error && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center py-12"
+            >
+              <p className="text-qwhite/40 text-sm">No available domains found. Try a different name.</p>
             </motion.div>
           )}
 
