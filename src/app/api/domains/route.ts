@@ -60,29 +60,25 @@ async function checkDomains(domains: string[]): Promise<{ available: AvailableDo
   };
 }
 
-function generateSuggestions(name: string, tld: string, alreadyChecked: Set<string>): string[] {
+function generateSuggestions(baseName: string, alreadyChecked: Set<string>): string[] {
   const prefixes = ["get", "my", "the", "go", "try", "use", "hey"];
   const suffixes = ["hq", "app", "site", "now", "online", "pro", "hub"];
-  const altTlds = [".com", ".net", ".org", ".io", ".co", ".dev", ".us", ".pro"];
 
   const suggestions: string[] = [];
+  const seen = new Set(alreadyChecked);
 
-  // Name variations with same TLD
-  for (const pre of prefixes) {
-    suggestions.push(`${pre}${name}${tld}`);
-  }
-  for (const suf of suffixes) {
-    suggestions.push(`${name}${suf}${tld}`);
-  }
-
-  // Same name, alternative TLDs
-  for (const alt of altTlds) {
-    if (alt !== tld) {
-      suggestions.push(`${name}${alt}`);
+  const add = (d: string) => {
+    if (!seen.has(d)) {
+      seen.add(d);
+      suggestions.push(d);
     }
-  }
+  };
 
-  return suggestions.filter((d) => !alreadyChecked.has(d));
+  // Prefix/suffix variations — only .com (the most popular TLD)
+  for (const pre of prefixes) add(`${pre}${baseName}.com`);
+  for (const suf of suffixes) add(`${baseName}${suf}.com`);
+
+  return suggestions;
 }
 
 export async function POST(req: NextRequest) {
@@ -118,37 +114,21 @@ export async function POST(req: NextRequest) {
     // If any domains were taken, generate and check suggestions
     let suggestions: AvailableDomain[] = [];
     if (unavailable.length > 0) {
+      // Extract base name from the query (not per-TLD — avoids redundant variations)
+      const baseName = hasDot ? clean.slice(0, clean.indexOf(".")) : clean;
       const checkedSet = new Set(domains);
-      const allSuggestions: string[] = [];
+      const toCheck = generateSuggestions(baseName, checkedSet);
 
-      for (const taken of unavailable) {
-        const dotIdx = taken.indexOf(".");
-        if (dotIdx === -1) continue;
-        const name = taken.slice(0, dotIdx);
-        const tld = taken.slice(dotIdx);
-        const sugs = generateSuggestions(name, tld, checkedSet);
-        for (const s of sugs) {
-          if (!checkedSet.has(s)) {
-            checkedSet.add(s);
-            allSuggestions.push(s);
-          }
+      if (toCheck.length > 0) {
+        try {
+          const sugResult = await checkDomains(toCheck);
+          suggestions = sugResult.available;
+          suggestions.sort((a, b) => a.price - b.price);
+          suggestions = suggestions.slice(0, 12);
+        } catch {
+          // Suggestion check failed — still return the main results
         }
       }
-
-      // Check suggestions in batches of 20 (NameSilo limit)
-      const batches: string[][] = [];
-      for (let i = 0; i < allSuggestions.length; i += 20) {
-        batches.push(allSuggestions.slice(i, i + 20));
-      }
-
-      const batchResults = await Promise.all(batches.map((batch) => checkDomains(batch)));
-      for (const result of batchResults) {
-        suggestions.push(...result.available);
-      }
-
-      suggestions.sort((a, b) => a.price - b.price);
-      // Cap suggestions to keep response reasonable
-      suggestions = suggestions.slice(0, 15);
     }
 
     return NextResponse.json({ results: available, suggestions });
