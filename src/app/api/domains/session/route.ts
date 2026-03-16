@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 
 export async function GET(req: NextRequest) {
   const id = req.nextUrl.searchParams.get("id");
@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const session = await stripe.checkout.sessions.retrieve(id);
+    const session = await getStripe().checkout.sessions.retrieve(id);
 
     return NextResponse.json({
       domain: session.metadata?.domain ?? null,

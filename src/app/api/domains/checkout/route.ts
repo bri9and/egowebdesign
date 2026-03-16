@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { stripe } from "@/lib/stripe";
+import { getStripe } from "@/lib/stripe";
 
 const NAMESILO_KEY = process.env.NAMESILO_API_KEY;
 const MARKUP_MULTIPLIER = 1.30; // 30% markup on wholesale price
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
   const origin = req.nextUrl.origin;
 
   try {
-    const session = await stripe.checkout.sessions.create({
+    const session = await getStripe().checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
       line_items: [
