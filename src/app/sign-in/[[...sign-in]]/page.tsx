@@ -1,79 +1,70 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Logo } from "@/components/logo";
 import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
 
 export default function SignInPage() {
-  const { signIn, setActive, isLoaded } = useSignIn();
+  const { signIn, errors, fetchStatus } = useSignIn();
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const loading = fetchStatus === "fetching";
 
-  // 2FA state
-  const [needs2FA, setNeeds2FA] = useState(false);
-  const [totpCode, setTotpCode] = useState("");
+  // 2FA state — check if sign-in needs second factor
+  const needs2FA = signIn.status === "needs_second_factor";
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!isLoaded) return;
-    setError("");
-    setLoading(true);
+  async function handleSubmit(formData: FormData) {
+    const emailAddress = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
-    try {
-      const result = await signIn.create({
-        identifier: email,
-        password,
+    const { error } = await signIn.password({ emailAddress, password });
+    if (error) return;
+
+    if (signIn.status === "complete") {
+      await signIn.finalize({
+        navigate: ({ session, decorateUrl }) => {
+          if (session?.currentTask) return;
+          const url = decorateUrl("/dashboard");
+          if (url.startsWith("http")) {
+            window.location.href = url;
+          } else {
+            router.push(url);
+          }
+        },
       });
+    }
+    // If needs_second_factor, the component will re-render showing TOTP form
+  }
 
-      if (result.status === "complete") {
-        await setActive({ session: result.createdSessionId });
-        router.push("/dashboard");
-      } else if (result.status === "needs_second_factor") {
-        setNeeds2FA(true);
-      } else {
-        setError("Something went wrong. Please try again.");
-      }
-    } catch (err: unknown) {
-      const clerkError = err as { errors?: { message: string }[] };
-      setError(clerkError.errors?.[0]?.message || "Invalid email or password.");
-    } finally {
-      setLoading(false);
+  async function handle2FA(formData: FormData) {
+    const code = formData.get("code") as string;
+
+    await signIn.mfa.verifyTOTP({ code });
+
+    if (signIn.status === "complete") {
+      await signIn.finalize({
+        navigate: ({ session, decorateUrl }) => {
+          if (session?.currentTask) return;
+          const url = decorateUrl("/dashboard");
+          if (url.startsWith("http")) {
+            window.location.href = url;
+          } else {
+            router.push(url);
+          }
+        },
+      });
     }
   }
 
-  async function handle2FA(e: React.FormEvent) {
-    e.preventDefault();
-    if (!isLoaded) return;
-    setError("");
-    setLoading(true);
+  const fieldError = (field: string) => {
+    const err = errors?.fields?.[field as keyof typeof errors.fields];
+    return err?.message ?? null;
+  };
 
-    try {
-      const result = await signIn.attemptSecondFactor({
-        strategy: "totp",
-        code: totpCode,
-      });
-
-      if (result.status === "complete") {
-        await setActive({ session: result.createdSessionId });
-        router.push("/dashboard");
-      } else {
-        setError("Verification failed. Please try again.");
-      }
-    } catch (err: unknown) {
-      const clerkError = err as { errors?: { message: string }[] };
-      setError(clerkError.errors?.[0]?.message || "Invalid code.");
-    } finally {
-      setLoading(false);
-    }
-  }
+  const globalError =
+    errors?.global?.message ?? null;
 
   return (
     <div className="min-h-screen bg-qblack flex items-center justify-center px-4">
@@ -92,28 +83,30 @@ export default function SignInPage() {
           </p>
         </div>
 
-        {error && (
+        {globalError && (
           <div className="mb-6 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
-            {error}
+            {globalError}
           </div>
         )}
 
         {!needs2FA ? (
           <>
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form action={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-qwhite/70 mb-1.5">
                 Email
               </label>
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
                 required
                 autoFocus
                 placeholder="you@company.com"
                 className="w-full px-4 py-3 rounded-lg bg-qblack-light border border-white/10 text-qwhite placeholder:text-qwhite/25 focus:outline-none focus:border-qyellow focus:ring-1 focus:ring-qyellow/30 transition-colors"
               />
+              {fieldError("identifier") && (
+                <p className="mt-1 text-xs text-red-400">{fieldError("identifier")}</p>
+              )}
             </div>
 
             <div>
@@ -128,27 +121,16 @@ export default function SignInPage() {
                   Forgot password?
                 </Link>
               </div>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder="Enter your password"
-                  className="w-full px-4 py-3 rounded-lg bg-qblack-light border border-white/10 text-qwhite placeholder:text-qwhite/25 focus:outline-none focus:border-qyellow focus:ring-1 focus:ring-qyellow/30 transition-colors pr-12"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-qwhite/30 hover:text-qwhite/60 transition-colors"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5" />
-                  ) : (
-                    <Eye className="h-5 w-5" />
-                  )}
-                </button>
-              </div>
+              <input
+                type="password"
+                name="password"
+                required
+                placeholder="Enter your password"
+                className="w-full px-4 py-3 rounded-lg bg-qblack-light border border-white/10 text-qwhite placeholder:text-qwhite/25 focus:outline-none focus:border-qyellow focus:ring-1 focus:ring-qyellow/30 transition-colors"
+              />
+              {fieldError("password") && (
+                <p className="mt-1 text-xs text-red-400">{fieldError("password")}</p>
+              )}
             </div>
 
             <button
@@ -216,26 +198,28 @@ export default function SignInPage() {
           </div>
           </>
         ) : (
-          <form onSubmit={handle2FA} className="space-y-5">
+          <form action={handle2FA} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-qwhite/70 mb-1.5">
                 Authenticator Code
               </label>
               <input
                 type="text"
-                value={totpCode}
-                onChange={(e) => setTotpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                name="code"
                 required
                 autoFocus
                 placeholder="000000"
                 maxLength={6}
                 className="w-full px-4 py-3 rounded-lg bg-qblack-light border border-white/10 text-qwhite text-center text-2xl font-mono tracking-[0.5em] placeholder:text-qwhite/25 placeholder:tracking-[0.5em] focus:outline-none focus:border-qyellow focus:ring-1 focus:ring-qyellow/30 transition-colors"
               />
+              {fieldError("code") && (
+                <p className="mt-1 text-xs text-red-400">{fieldError("code")}</p>
+              )}
             </div>
 
             <button
               type="submit"
-              disabled={loading || totpCode.length !== 6}
+              disabled={loading}
               className="w-full py-3 rounded-lg bg-qyellow hover:bg-qyellow-light text-qblack-dark font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
@@ -249,11 +233,7 @@ export default function SignInPage() {
 
             <button
               type="button"
-              onClick={() => {
-                setNeeds2FA(false);
-                setTotpCode("");
-                setError("");
-              }}
+              onClick={() => signIn.reset()}
               className="w-full text-sm text-qwhite/40 hover:text-qwhite/60 transition-colors"
             >
               Back to sign in

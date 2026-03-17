@@ -27,7 +27,12 @@ export function UserMenu({ size = "sm" }: UserMenuProps) {
 
   if (!user) return null;
 
-  const initials = `${user.firstName?.charAt(0) ?? ""}${user.lastName?.charAt(0) ?? ""}`.toUpperCase();
+  const email = user.primaryEmailAddress?.emailAddress ?? "";
+  const displayName = user.fullName || email.split("@")[0] || "User";
+  const initials =
+    (user.firstName?.charAt(0) ?? "") + (user.lastName?.charAt(0) ?? "") ||
+    email.charAt(0).toUpperCase() ||
+    "U";
   const sizeClasses = size === "md" ? "w-9 h-9" : "w-8 h-8";
 
   return (
@@ -54,10 +59,10 @@ export function UserMenu({ size = "sm" }: UserMenuProps) {
         <div className="absolute right-0 mt-2 w-64 rounded-lg bg-qblack-light border border-white/10 shadow-xl z-50 py-2">
           <div className="px-4 py-3">
             <p className="text-white font-bold text-sm truncate">
-              {user.fullName}
+              {displayName}
             </p>
             <p className="text-white/50 text-xs truncate">
-              {user.primaryEmailAddress?.emailAddress}
+              {email}
             </p>
           </div>
 

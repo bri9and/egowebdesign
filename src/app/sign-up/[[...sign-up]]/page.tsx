@@ -1,78 +1,71 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { useSignUp } from "@clerk/nextjs";
+import { useSignUp, useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Logo } from "@/components/logo";
-import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 
 export default function SignUpPage() {
-  const { signUp, setActive, isLoaded } = useSignUp();
+  const { signUp, errors, fetchStatus } = useSignUp();
+  const { isSignedIn } = useAuth();
   const router = useRouter();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const loading = fetchStatus === "fetching";
 
-  // Email verification state
-  const [pendingVerification, setPendingVerification] = useState(false);
-  const [verificationCode, setVerificationCode] = useState("");
+  // After sign-up, check if email verification is needed
+  const pendingVerification =
+    signUp.status === "missing_requirements" &&
+    signUp.unverifiedFields?.includes("email_address") &&
+    (signUp.missingFields?.length ?? 0) === 0;
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!isLoaded) return;
-    setError("");
-    setLoading(true);
+  async function handleSubmit(formData: FormData) {
+    const firstName = formData.get("firstName") as string;
+    const lastName = formData.get("lastName") as string;
+    const emailAddress = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
-    try {
-      await signUp.create({
-        firstName,
-        lastName,
-        emailAddress: email,
-        password,
+    const { error } = await signUp.password({
+      emailAddress,
+      password,
+      firstName,
+      lastName,
+    });
+    if (error) return;
+
+    // Send email verification code
+    if (!error) await signUp.verifications.sendEmailCode();
+  }
+
+  async function handleVerification(formData: FormData) {
+    const code = formData.get("code") as string;
+
+    await signUp.verifications.verifyEmailCode({ code });
+
+    if (signUp.status === "complete") {
+      await signUp.finalize({
+        navigate: ({ session, decorateUrl }) => {
+          if (session?.currentTask) return;
+          const url = decorateUrl("/dashboard");
+          if (url.startsWith("http")) {
+            window.location.href = url;
+          } else {
+            router.push(url);
+          }
+        },
       });
-
-      await signUp.prepareEmailAddressVerification({
-        strategy: "email_code",
-      });
-
-      setPendingVerification(true);
-    } catch (err: unknown) {
-      const clerkError = err as { errors?: { message: string }[] };
-      setError(clerkError.errors?.[0]?.message || "Something went wrong.");
-    } finally {
-      setLoading(false);
     }
   }
 
-  async function handleVerification(e: React.FormEvent) {
-    e.preventDefault();
-    if (!isLoaded) return;
-    setError("");
-    setLoading(true);
+  const fieldError = (field: string) => {
+    const err = errors?.fields?.[field as keyof typeof errors.fields];
+    return err?.message ?? null;
+  };
 
-    try {
-      const result = await signUp.attemptEmailAddressVerification({
-        code: verificationCode,
-      });
+  const globalError = errors?.global?.message ?? null;
 
-      if (result.status === "complete") {
-        await setActive({ session: result.createdSessionId });
-        router.push("/dashboard");
-      } else {
-        setError("Verification incomplete. Please try again.");
-      }
-    } catch (err: unknown) {
-      const clerkError = err as { errors?: { message: string }[] };
-      setError(clerkError.errors?.[0]?.message || "Invalid verification code.");
-    } finally {
-      setLoading(false);
-    }
+  if (signUp.status === "complete" || isSignedIn) {
+    return null;
   }
 
   return (
@@ -87,20 +80,20 @@ export default function SignUpPage() {
           </h1>
           <p className="text-qwhite/50 mt-2 text-sm">
             {pendingVerification
-              ? `We sent a verification code to ${email}`
+              ? "We sent a verification code to your email"
               : "Get started with Ego Web Design"}
           </p>
         </div>
 
-        {error && (
+        {globalError && (
           <div className="mb-6 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
-            {error}
+            {globalError}
           </div>
         )}
 
         {!pendingVerification ? (
           <>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form action={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-sm font-medium text-qwhite/70 mb-1.5">
@@ -108,13 +101,15 @@ export default function SignUpPage() {
                 </label>
                 <input
                   type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  name="firstName"
                   required
                   autoFocus
                   placeholder="Brian"
                   className="w-full px-4 py-3 rounded-lg bg-qblack-light border border-white/10 text-qwhite placeholder:text-qwhite/25 focus:outline-none focus:border-qyellow focus:ring-1 focus:ring-qyellow/30 transition-colors"
                 />
+                {fieldError("firstName") && (
+                  <p className="mt-1 text-xs text-red-400">{fieldError("firstName")}</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-qwhite/70 mb-1.5">
@@ -122,12 +117,14 @@ export default function SignUpPage() {
                 </label>
                 <input
                   type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  name="lastName"
                   required
                   placeholder="Smith"
                   className="w-full px-4 py-3 rounded-lg bg-qblack-light border border-white/10 text-qwhite placeholder:text-qwhite/25 focus:outline-none focus:border-qyellow focus:ring-1 focus:ring-qyellow/30 transition-colors"
                 />
+                {fieldError("lastName") && (
+                  <p className="mt-1 text-xs text-red-400">{fieldError("lastName")}</p>
+                )}
               </div>
             </div>
 
@@ -137,40 +134,31 @@ export default function SignUpPage() {
               </label>
               <input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
                 required
                 placeholder="you@company.com"
                 className="w-full px-4 py-3 rounded-lg bg-qblack-light border border-white/10 text-qwhite placeholder:text-qwhite/25 focus:outline-none focus:border-qyellow focus:ring-1 focus:ring-qyellow/30 transition-colors"
               />
+              {fieldError("emailAddress") && (
+                <p className="mt-1 text-xs text-red-400">{fieldError("emailAddress")}</p>
+              )}
             </div>
 
             <div>
               <label className="block text-sm font-medium text-qwhite/70 mb-1.5">
                 Password
               </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  minLength={8}
-                  placeholder="At least 8 characters"
-                  className="w-full px-4 py-3 rounded-lg bg-qblack-light border border-white/10 text-qwhite placeholder:text-qwhite/25 focus:outline-none focus:border-qyellow focus:ring-1 focus:ring-qyellow/30 transition-colors pr-12"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-qwhite/30 hover:text-qwhite/60 transition-colors"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5" />
-                  ) : (
-                    <Eye className="h-5 w-5" />
-                  )}
-                </button>
-              </div>
+              <input
+                type="password"
+                name="password"
+                required
+                minLength={8}
+                placeholder="At least 8 characters"
+                className="w-full px-4 py-3 rounded-lg bg-qblack-light border border-white/10 text-qwhite placeholder:text-qwhite/25 focus:outline-none focus:border-qyellow focus:ring-1 focus:ring-qyellow/30 transition-colors"
+              />
+              {fieldError("password") && (
+                <p className="mt-1 text-xs text-red-400">{fieldError("password")}</p>
+              )}
             </div>
 
             <button
@@ -242,26 +230,28 @@ export default function SignUpPage() {
           </div>
           </>
         ) : (
-          <form onSubmit={handleVerification} className="space-y-5">
+          <form action={handleVerification} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-qwhite/70 mb-1.5">
                 Verification Code
               </label>
               <input
                 type="text"
-                value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                name="code"
                 required
                 autoFocus
                 placeholder="000000"
                 maxLength={6}
                 className="w-full px-4 py-3 rounded-lg bg-qblack-light border border-white/10 text-qwhite text-center text-2xl font-mono tracking-[0.5em] placeholder:text-qwhite/25 placeholder:tracking-[0.5em] focus:outline-none focus:border-qyellow focus:ring-1 focus:ring-qyellow/30 transition-colors"
               />
+              {fieldError("code") && (
+                <p className="mt-1 text-xs text-red-400">{fieldError("code")}</p>
+              )}
             </div>
 
             <button
               type="submit"
-              disabled={loading || verificationCode.length !== 6}
+              disabled={loading}
               className="w-full py-3 rounded-lg bg-qyellow hover:bg-qyellow-light text-qblack-dark font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
@@ -273,17 +263,22 @@ export default function SignUpPage() {
               )}
             </button>
 
-            <button
-              type="button"
-              onClick={() => {
-                setPendingVerification(false);
-                setVerificationCode("");
-                setError("");
-              }}
-              className="w-full text-sm text-qwhite/40 hover:text-qwhite/60 transition-colors"
-            >
-              Back to sign up
-            </button>
+            <div className="flex flex-col items-center gap-2">
+              <button
+                type="button"
+                onClick={() => signUp.verifications.sendEmailCode()}
+                className="text-sm text-qyellow hover:text-qyellow-light transition-colors"
+              >
+                Resend code
+              </button>
+              <button
+                type="button"
+                onClick={() => signUp.reset()}
+                className="text-sm text-qwhite/40 hover:text-qwhite/60 transition-colors"
+              >
+                Back to sign up
+              </button>
+            </div>
           </form>
         )}
 
