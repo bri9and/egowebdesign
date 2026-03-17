@@ -259,7 +259,7 @@ const portfolio = [
     href: "/sites/mri-software",
     category: "Enterprise SaaS",
     desc: "Real estate software for innovators. 45,000+ clients across 170+ countries. Property management, accounting, and investment platforms.",
-    image: "/sites/mri-software/logo.png",
+    logo: "/sites/mri-software/logo-icon.png",
   },
   {
     name: "Harbor Counseling",
