@@ -127,7 +127,7 @@ export async function createVercelProject(
   repoName: string,
   domain: string
 ): Promise<VercelProjectResult> {
-  const token = requireEnv("VERCEL_TOKEN");
+  const token = requireEnv("EWD_VERCEL_TOKEN");
   const teamId = requireEnv("VERCEL_TEAM_ID");
   const githubOrg = "bri9and";
 
@@ -285,7 +285,7 @@ async function deleteGitHubRepo(repoFullName: string): Promise<void> {
 
 async function deleteVercelProject(projectId: string): Promise<void> {
   try {
-    const token = requireEnv("VERCEL_TOKEN");
+    const token = requireEnv("EWD_VERCEL_TOKEN");
     const teamId = requireEnv("VERCEL_TEAM_ID");
     const res = await fetch(
       `https://api.vercel.com/v9/projects/${projectId}?teamId=${teamId}`,
