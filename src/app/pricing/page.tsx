@@ -10,9 +10,7 @@ import {
   Clock,
   Code2,
   Star,
-  Zap,
   ChevronDown,
-  Phone,
 } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -67,20 +65,47 @@ const packages = [
 ];
 
 const monthlyPlans = [
-  { name: "Basic Hosting", price: "$32", tagline: "Hosting, SSL, backups, monitoring" },
-  { name: "Care Plan", price: "$97", tagline: "Hosting + security + 1hr edits/mo", popular: true },
-  { name: "Growth Plan", price: "$195", tagline: "Care + CDN + 3hr edits + analytics" },
-];
-
-const addons = [
-  { name: "Logo & Brand Design", price: "$500–$2,000" },
-  { name: "Copywriting", price: "$300/page" },
-  { name: "SEO Audit & Setup", price: "$750" },
-  { name: "AI Voice Agent", price: "$297/mo" },
-  { name: "Ecommerce Integration", price: "$1,650–$5,500" },
-  { name: "IT Consulting", price: "$100/hr" },
-  { name: "Speed Optimization", price: "$500" },
-  { name: "Drone Photography & Video", price: "$200/hr" },
+  {
+    name: "Essential Hosting",
+    price: "$49",
+    tagline: "Managed hosting with enterprise-grade security",
+    features: [
+      "SSL/HTTPS (automatic)",
+      "DDoS protection",
+      "Web application firewall",
+      "Global edge network",
+      "Automated deployments",
+      "Daily backups via Git",
+      "Uptime monitoring",
+    ],
+  },
+  {
+    name: "Care Plan",
+    price: "$99",
+    tagline: "Hosting + edits + monthly reporting",
+    popular: true,
+    features: [
+      "Everything in Essential",
+      "30 min content edits per month",
+      "Web analytics dashboard",
+      "Monthly performance report",
+      "Security updates & patches",
+      "Priority email support",
+    ],
+  },
+  {
+    name: "Growth Plan",
+    price: "$199",
+    tagline: "Full support + dev time + speed insights",
+    features: [
+      "Everything in Care",
+      "1 hr dev/design time per month",
+      "Speed Insights monitoring",
+      "Performance observability",
+      "Quarterly strategy call",
+      "48-hour priority response",
+    ],
+  },
 ];
 
 /* ── Expandable Section ── */
@@ -201,53 +226,46 @@ export default function PricingPage() {
               viewport={{ once: true }}
               variants={fadeUp}
               className={cn(
-                "flex items-center justify-between rounded-xl border p-4",
+                "rounded-xl border p-5 transition-all",
                 (plan as { popular?: boolean }).popular
-                  ? "border-qyellow/30 bg-qblack-light"
+                  ? "border-qyellow/40 bg-qblack-light ring-1 ring-qyellow/20"
                   : "border-qwhite/10 bg-qblack-light/50"
               )}
             >
-              <div className="min-w-0">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-medium text-qwhite">{plan.name}</h3>
-                  {(plan as { popular?: boolean }).popular && (
-                    <span className="text-xs text-qyellow">Recommended</span>
-                  )}
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-qwhite text-lg">{plan.name}</h3>
+                    {(plan as { popular?: boolean }).popular && (
+                      <span className="inline-flex items-center gap-1 text-xs font-medium text-qyellow bg-qyellow/10 px-2 py-0.5 rounded-full">
+                        <Star className="h-3 w-3" /> Popular
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-qwhite/50 mt-1">{plan.tagline}</p>
                 </div>
-                <p className="text-xs text-qwhite/40 mt-0.5">{plan.tagline}</p>
+                <span className="text-2xl font-bold text-qwhite shrink-0">
+                  {plan.price}<span className="text-sm font-normal text-qwhite/40">/mo</span>
+                </span>
               </div>
-              <span className="text-xl font-bold text-qwhite shrink-0">
-                {plan.price}<span className="text-sm font-normal text-qwhite/40">/mo</span>
-              </span>
+
+              <div className="mt-3">
+                <Expandable label="See what's included">
+                  <ul className="space-y-2">
+                    {(plan as { features?: string[] }).features?.map((f: string) => (
+                      <li key={f} className="flex items-start gap-2 text-sm text-qwhite/70">
+                        <Check className="h-4 w-4 text-qyellow mt-0.5 shrink-0" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Expandable>
+              </div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* Add-Ons — compact list */}
-      <section className="py-12 bg-qblack border-t border-qwhite/10">
-        <div className="max-w-2xl mx-auto px-6">
-          <div className="mb-6">
-            <h2 className="font-serif text-2xl font-bold text-qwhite">Add-Ons</h2>
-          </div>
-
-          <div className="space-y-2">
-            {addons.map((addon) => (
-              <div
-                key={addon.name}
-                className="flex items-center justify-between py-3 border-b border-qwhite/5 last:border-0"
-              >
-                <span className="text-sm text-qwhite/80">{addon.name}</span>
-                <span className="text-sm font-medium text-qwhite shrink-0 ml-4">{addon.price}</span>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-xs text-qwhite/30 mt-4">
-            Ad-hoc support outside of a plan: $80/hour
-          </p>
-        </div>
-      </section>
 
       {/* CTA */}
       <section className="py-16 bg-qblack-dark border-t border-qwhite/10">

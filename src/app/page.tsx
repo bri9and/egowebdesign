@@ -7,12 +7,10 @@ import { AnimatePresence } from "framer-motion";
 import {
   Globe,
   Paintbrush,
-  RefreshCw,
   ArrowRight,
   Monitor,
   Smartphone,
   Code2,
-  Lightbulb,
   CheckCircle2,
   Users,
   Award,
@@ -20,8 +18,6 @@ import {
   Zap,
   ChevronDown,
   Star,
-  ShoppingCart,
-  Server,
   ExternalLink,
   Rocket,
   Shield,
@@ -363,39 +359,6 @@ const portfolio = [
     category: "Office Space",
     desc: "Executive office suites, virtual offices, and meeting rooms across Tempe, Gilbert, and Phoenix since 2002.",
     image: "/sites/az-offices/office-4.jpg",
-  },
-];
-
-const services = [
-  {
-    icon: Paintbrush,
-    title: "Web Design",
-    desc: "Custom-built sites that look stunning and load instantly. No templates, no page builders — clean, hand-written code that sets you apart.",
-    color: "text-qyellow",
-  },
-  {
-    icon: RefreshCw,
-    title: "Website Redesign",
-    desc: "Stuck with an outdated site? We rebuild it from the ground up with modern tech, better UX, and a design that actually converts visitors.",
-    color: "text-qyellow",
-  },
-  {
-    icon: Server,
-    title: "Managed Hosting",
-    desc: "SSL, daily backups, DDoS protection, and uptime monitoring. We handle the infrastructure so you don't have to think about it.",
-    color: "text-qyellow",
-  },
-  {
-    icon: ShoppingCart,
-    title: "Ecommerce",
-    desc: "Online stores that convert. Product catalogs, payment processing, and inventory management — built to sell.",
-    color: "text-qyellow",
-  },
-  {
-    icon: Lightbulb,
-    title: "IT Consulting",
-    desc: "Network, systems, cloud, and AI consulting. We help you plan, build, and optimize your technology infrastructure.",
-    color: "text-qyellow",
   },
 ];
 
@@ -802,115 +765,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Services ── */}
-      <section id="services" className="py-24 bg-qblack relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern-light" />
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-qwhite/[0.02] to-transparent" />
-        <div className="max-w-6xl mx-auto px-6 relative z-10">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={stagger}
-            className="mb-16"
-          >
-            <motion.div variants={fadeUp} className="flex items-center gap-4 mb-4">
-              <div className="h-px w-12 bg-qyellow" />
-              <p className="text-qyellow text-sm uppercase tracking-[0.25em] font-medium">
-                What We Do
-              </p>
-            </motion.div>
-            <motion.h2
-              variants={fadeUp}
-              className="font-serif text-4xl md:text-5xl font-bold text-qwhite max-w-xl"
-            >
-              Everything your business needs online.
-            </motion.h2>
-            <motion.p
-              variants={fadeUp}
-              className="text-qwhite/50 mt-4 max-w-2xl"
-            >
-              From initial design to ongoing support, we handle every aspect of
-              your digital presence so you can focus on running your business.
-            </motion.p>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={stagger}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
-          >
-            {services.map((service, i) => (
-              <motion.div
-                key={service.title}
-                variants={fadeUp}
-                className={cn(
-                  i === 0 && "md:col-span-2 lg:col-span-2"
-                )}
-              >
-                <div className={cn(
-                  "group relative h-full rounded-xl border transition-all duration-500 overflow-hidden",
-                  i === 0
-                    ? "bg-qblack-dark text-qwhite border-qblack-dark hover:border-qblack-light"
-                    : "bg-qblack-light border-qwhite/10 hover:border-qwhite/20 hover:shadow-lg hover:shadow-qwhite/5"
-                )}>
-                  {/* Large background number */}
-                  <span className={cn(
-                    "absolute -right-4 -top-6 font-serif text-[8rem] font-bold leading-none select-none pointer-events-none transition-opacity duration-500",
-                    i === 0 ? "text-qwhite/[0.03]" : "text-qwhite/[0.03] group-hover:text-qwhite/[0.06]"
-                  )}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  {/* Accent bar */}
-                  <div className="absolute top-0 left-0 w-1 h-0 group-hover:h-full bg-qyellow transition-all duration-500 rounded-full" />
-                  <div className={cn("relative p-8", i === 0 && "md:p-10")}>
-                    <div className={cn(
-                      "w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors duration-300",
-                      i === 0
-                        ? "bg-qyellow/15 group-hover:bg-qyellow/20"
-                        : "bg-qwhite/5 group-hover:bg-qwhite/10"
-                    )}>
-                      <service.icon className={cn("h-6 w-6", i === 0 ? "text-qyellow" : "text-qwhite")} />
-                    </div>
-                    <h3 className={cn(
-                      "font-serif text-xl font-semibold mb-3",
-                      i === 0 ? "text-qwhite md:text-2xl" : "text-qwhite"
-                    )}>
-                      {service.title}
-                    </h3>
-                    <p className={cn(
-                      "text-sm leading-relaxed",
-                      i === 0 ? "text-qwhite/60 md:max-w-md" : "text-qwhite/50"
-                    )}>
-                      {service.desc}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeUp}
-            className="text-center mt-12"
-          >
-            <Link
-              href="/pricing"
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "border-qwhite/20 text-qwhite hover:bg-qwhite/5"
-              )}
-            >
-              View Pricing <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
 
       {/* ── Industries Marquee ── */}
       <section className="py-8 bg-qblack-light border-y border-qwhite/10 overflow-hidden">
