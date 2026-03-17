@@ -3,7 +3,6 @@
 import { useUser, useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
 
 interface UserMenuProps {
   size?: "sm" | "md";
@@ -39,12 +38,10 @@ export function UserMenu({ size = "sm" }: UserMenuProps) {
         aria-label="User menu"
       >
         {user.imageUrl ? (
-          <Image
+          <img
             src={user.imageUrl}
             alt={user.fullName ?? "User avatar"}
-            width={size === "md" ? 36 : 32}
-            height={size === "md" ? 36 : 32}
-            className="rounded-full object-cover"
+            className={`${sizeClasses} rounded-full object-cover`}
           />
         ) : (
           <span className={`${sizeClasses} rounded-full bg-qyellow text-qblack-dark font-semibold flex items-center justify-center text-sm`}>
