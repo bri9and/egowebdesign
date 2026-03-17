@@ -387,12 +387,6 @@ const processSteps = [
     desc: "We hand you the complete source code and repository. It's yours — no lock-in, no proprietary platforms. You own everything.",
     icon: Code2,
   },
-  {
-    step: "05",
-    title: "Ongoing Support",
-    desc: "We don't disappear after delivery. Hosting, updates, and support plans keep your site fast, secure, and always up to date.",
-    icon: Zap,
-  },
 ];
 
 const stats = [
