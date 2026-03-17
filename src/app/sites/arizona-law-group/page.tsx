@@ -332,7 +332,11 @@ export default function ArizonaLawGroupPage() {
       >
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Scale className="w-8 h-8" style={{ color: colors.copper }} />
+            <img
+              src={`${IMG}/logo-white.svg`}
+              alt="Arizona Law Group"
+              className="h-10 md:h-12 w-auto"
+            />
             <div>
               <h1
                 className="text-lg md:text-xl font-bold leading-tight"
@@ -768,7 +772,7 @@ export default function ArizonaLawGroupPage() {
             <img
               src={attorneys[0].img}
               alt={attorneys[0].name}
-              className="w-full h-72 md:h-64 object-cover object-top rounded-xl"
+              className="w-full h-72 md:h-64 object-cover object-[50%_15%] rounded-xl"
             />
             <div>
               <span
@@ -808,7 +812,7 @@ export default function ArizonaLawGroupPage() {
                 <img
                   src={a.img}
                   alt={a.name}
-                  className="w-full h-56 object-cover object-top"
+                  className="w-full h-64 object-cover object-[50%_15%]"
                 />
                 <div className="p-5">
                   <span
@@ -847,7 +851,7 @@ export default function ArizonaLawGroupPage() {
                 <img
                   src={a.img}
                   alt={a.name}
-                  className="w-full h-56 object-cover object-top"
+                  className="w-full h-64 object-cover object-[50%_15%]"
                 />
                 <div className="p-5">
                   <span
@@ -1091,7 +1095,11 @@ export default function ArizonaLawGroupPage() {
             {/* Firm Info */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <Scale className="w-7 h-7" style={{ color: colors.copper }} />
+                <img
+                  src={`${IMG}/logo-white.svg`}
+                  alt="Arizona Law Group"
+                  className="h-9 w-auto"
+                />
                 <h4
                   className="text-lg font-bold"
                   style={{ ...serif, color: colors.white }}

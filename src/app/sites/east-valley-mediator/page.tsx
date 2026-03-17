@@ -172,9 +172,14 @@ export default function EastValleyMediator() {
             </div>
           </div>
           <div className="flex items-center gap-4">
+            <nav className="hidden md:flex items-center gap-5 text-xs tracking-widest uppercase text-[#8B7355]" style={{ letterSpacing: "0.1em" }}>
+              {[["Services","services"],["Process","process"],["About","about"],["Testimonials","testimonials"]].map(([label, id]) => (
+                <a key={id} href={`#${id}`} className="hover:text-[#5C6B54] transition-colors">{label}</a>
+              ))}
+            </nav>
             <a
               href="tel:+14807884187"
-              className="hidden sm:flex items-center gap-2 text-[#5C6B54] hover:text-[#8B7355] transition-colors text-sm font-medium"
+              className="hidden sm:flex md:hidden items-center gap-2 text-[#5C6B54] hover:text-[#8B7355] transition-colors text-sm font-medium"
             >
               <Phone className="w-3.5 h-3.5" />
               (480) 788-4187
@@ -304,7 +309,7 @@ export default function EastValleyMediator() {
       <div className="evm-divider" />
 
       {/* The Process */}
-      <section className="py-24 evm-section-alt">
+      <section id="process" className="py-24 evm-section-alt">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div>
@@ -358,7 +363,7 @@ export default function EastValleyMediator() {
       <div className="evm-divider" />
 
       {/* About / Credentials */}
-      <section className="py-24">
+      <section id="about" className="py-24">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             {/* Image side */}
@@ -441,7 +446,7 @@ export default function EastValleyMediator() {
       <div className="evm-divider" />
 
       {/* Testimonials */}
-      <section className="py-24 evm-section-alt">
+      <section id="testimonials" className="py-24 evm-section-alt">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <p

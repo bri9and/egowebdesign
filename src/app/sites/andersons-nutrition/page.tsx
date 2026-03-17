@@ -158,6 +158,11 @@ export default function AndersonsNutrition() {
               </p>
             </div>
           </div>
+          <div className="hidden md:flex items-center gap-5 text-xs font-semibold tracking-widest uppercase" style={{ color: "#2D8C3C", letterSpacing: "0.08em" }}>
+            {[["Services","services"],["About","about"],["Reviews","testimonials"],["Locations","locations"]].map(([label, id]) => (
+              <a key={id} href={`#${id}`} className="hover:text-[#E8872D] transition-colors">{label}</a>
+            ))}
+          </div>
           <a
             href="tel:6027707611"
             className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold tracking-wide uppercase transition-all"
@@ -350,7 +355,7 @@ export default function AndersonsNutrition() {
       </section>
 
       {/* === SERVICES === */}
-      <section className="py-20 sm:py-28 px-4" style={{ backgroundColor: "#FFFFFF" }}>
+      <section id="services" className="py-20 sm:py-28 px-4" style={{ backgroundColor: "#FFFFFF" }}>
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <p
@@ -415,6 +420,7 @@ export default function AndersonsNutrition() {
 
       {/* === ABOUT === */}
       <section
+        id="about"
         className="py-20 sm:py-28 px-4"
         style={{ backgroundColor: "#F7FAF5" }}
       >
@@ -548,7 +554,7 @@ export default function AndersonsNutrition() {
       </section>
 
       {/* === TESTIMONIALS === */}
-      <section className="py-20 sm:py-28 px-4" style={{ backgroundColor: "#FFFFFF" }}>
+      <section id="testimonials" className="py-20 sm:py-28 px-4" style={{ backgroundColor: "#FFFFFF" }}>
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <p
@@ -605,6 +611,7 @@ export default function AndersonsNutrition() {
 
       {/* === LOCATIONS === */}
       <section
+        id="locations"
         className="py-16 sm:py-20 px-4"
         style={{ backgroundColor: "#F7FAF5" }}
       >

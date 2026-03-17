@@ -165,7 +165,14 @@ export default function ServproPhoenix() {
               <div className="text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/60">of Phoenix</div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="hidden md:flex items-center gap-2 text-xs text-white/60">
+              <nav className="hidden lg:flex items-center gap-5 text-xs uppercase tracking-wider font-semibold text-white/70">
+                {[["Services","services"],["Why Us","why-us"],["Process","process"],["Areas","areas"],["Reviews","reviews"],["Contact","contact"]].map(([label, id]) => (
+                  <a key={id} href={`#${id}`} className="hover:text-[#F59E0B] transition-colors">
+                    {label}
+                  </a>
+                ))}
+              </nav>
+              <div className="hidden md:flex lg:hidden items-center gap-2 text-xs text-white/60">
                 <MapPin className="w-3.5 h-3.5" style={{ color: "#F59E0B" }} />
                 7600 N 15th St #150B, Phoenix, AZ
               </div>
@@ -317,7 +324,7 @@ export default function ServproPhoenix() {
       </section>
 
       {/* ═══ WHY CHOOSE US ═══ */}
-      <section className="py-20" style={{ background: "#0D2818" }}>
+      <section id="why-us" className="py-20" style={{ background: "#0D2818" }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-center text-2xl sm:text-3xl font-black uppercase text-white mb-2" style={{ letterSpacing: "0.15em" }}>
             Why Choose SERVPRO of Phoenix
@@ -366,7 +373,7 @@ export default function ServproPhoenix() {
       </section>
 
       {/* ═══ RESTORATION PROCESS ═══ */}
-      <section className="py-20" style={{ background: "#F8FAF5" }}>
+      <section id="process" className="py-20" style={{ background: "#F8FAF5" }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <h2 className="text-center text-2xl sm:text-3xl font-black uppercase text-[#0D2818] mb-2" style={{ letterSpacing: "0.15em" }}>
             Our Restoration Process
@@ -401,7 +408,7 @@ export default function ServproPhoenix() {
       </section>
 
       {/* ═══ SERVICE AREA ═══ */}
-      <section className="py-16" style={{ background: "white" }}>
+      <section id="areas" className="py-16" style={{ background: "white" }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-2xl sm:text-3xl font-black uppercase text-[#0D2818] mb-2" style={{ letterSpacing: "0.15em" }}>
             Service Area
@@ -427,7 +434,7 @@ export default function ServproPhoenix() {
       </section>
 
       {/* ═══ TESTIMONIALS ═══ */}
-      <section className="py-20" style={{ background: "#F8FAF5" }}>
+      <section id="reviews" className="py-20" style={{ background: "#F8FAF5" }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-center text-2xl sm:text-3xl font-black uppercase text-[#0D2818] mb-2" style={{ letterSpacing: "0.15em" }}>
             Customer Reviews
@@ -461,7 +468,7 @@ export default function ServproPhoenix() {
       </section>
 
       {/* ═══ EMERGENCY CTA ═══ */}
-      <section className="py-16 text-center text-white" style={{ background: "linear-gradient(135deg, #EA580C 0%, #C2410C 100%)" }}>
+      <section id="contact" className="py-16 text-center text-white" style={{ background: "linear-gradient(135deg, #EA580C 0%, #C2410C 100%)" }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-xs font-bold uppercase tracking-[0.2em]" style={{ background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.25)" }}>
             <AlertTriangle className="w-3.5 h-3.5" />
