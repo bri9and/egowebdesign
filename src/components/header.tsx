@@ -12,7 +12,6 @@ import { Logo } from "@/components/logo";
 import { VERSION } from "@/lib/version";
 
 const links = [
-  { href: "/#services", label: "Services" },
   { href: "/#work", label: "Work" },
   { href: "/#process", label: "Process" },
   { href: "/pricing", label: "Pricing" },
@@ -71,15 +70,23 @@ export function Header() {
             </Link>
           ))}
           {!isSignedIn ? (
-            <Link
-              href="/contact"
-              className={cn(
-                buttonVariants({ size: "sm" }),
-                "ml-3 bg-qyellow hover:bg-qyellow-light text-qblack-dark shadow-md hover:shadow-lg transition-all duration-200"
-              )}
-            >
-              Get a Quote
-            </Link>
+            <>
+              <Link
+                href="/sign-in"
+                className="ml-3 text-sm px-3 py-2 rounded-md transition-all duration-200 text-qwhite/90 hover:text-qwhite hover:bg-qwhite/10"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/sign-up"
+                className={cn(
+                  buttonVariants({ size: "sm" }),
+                  "ml-2 bg-qyellow hover:bg-qyellow-light text-qblack-dark shadow-md hover:shadow-lg transition-all duration-200"
+                )}
+              >
+                Get Started
+              </Link>
+            </>
           ) : (
             <>
               <Link
@@ -138,16 +145,25 @@ export function Header() {
                 </Link>
               ))}
               {!isSignedIn ? (
-                <Link
-                  href="/contact"
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    buttonVariants(),
-                    "bg-qyellow hover:bg-qyellow-light text-qblack-dark mt-4"
-                  )}
-                >
-                  Get a Quote
-                </Link>
+                <>
+                  <Link
+                    href="/sign-in"
+                    onClick={() => setOpen(false)}
+                    className="text-lg py-2 px-3 rounded-lg transition-all duration-200 text-qwhite/90 hover:text-qwhite hover:bg-qwhite/5"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/sign-up"
+                    onClick={() => setOpen(false)}
+                    className={cn(
+                      buttonVariants(),
+                      "bg-qyellow hover:bg-qyellow-light text-qblack-dark mt-4"
+                    )}
+                  >
+                    Get Started
+                  </Link>
+                </>
               ) : (
                 <>
                   <Link
