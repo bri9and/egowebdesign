@@ -179,7 +179,7 @@ const industries = [
 export default function GreatBellInc() {
   return (
     <div className="min-h-screen" style={{ fontFamily: "'Inter', system-ui, -apple-system, sans-serif", backgroundColor: "#0C0C0C", color: "#FFFFFF" }}>
-      <style dangerouslySetInnerHTML={{ __html: `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');` }} />
+      <style dangerouslySetInnerHTML={{ __html: `@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'); html { scroll-behavior: smooth; } [id] { scroll-margin-top: 80px; }` }} />
 
       {/* Header */}
       <header style={{ backgroundColor: "rgba(12,12,12,0.95)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(207,126,52,0.15)" }} className="sticky top-0 z-50">
@@ -194,10 +194,10 @@ export default function GreatBellInc() {
             </div>
           </div>
           <nav className="hidden md:flex items-center gap-8 text-[13px] font-medium" style={{ color: "rgba(255,255,255,0.5)" }}>
-            <span className="hover:text-[#CF7E34] transition-colors cursor-default">Services</span>
-            <span className="hover:text-[#CF7E34] transition-colors cursor-default">Delivery</span>
-            <span className="hover:text-[#CF7E34] transition-colors cursor-default">Leadership</span>
-            <span className="hover:text-[#CF7E34] transition-colors cursor-default">About</span>
+            <a href="#services" className="hover:text-[#CF7E34] transition-colors">Services</a>
+            <a href="#delivery" className="hover:text-[#CF7E34] transition-colors">Delivery</a>
+            <a href="#leadership" className="hover:text-[#CF7E34] transition-colors">Leadership</a>
+            <a href="#about" className="hover:text-[#CF7E34] transition-colors">About</a>
           </nav>
           <a
             href="tel:2489100604"
@@ -281,7 +281,7 @@ export default function GreatBellInc() {
       <div className="h-px" style={{ background: "linear-gradient(90deg, transparent, #CF7E34, transparent)" }} />
 
       {/* Services */}
-      <section className="py-24" style={{ backgroundColor: "#111111" }}>
+      <section id="services" className="py-24" style={{ backgroundColor: "#111111" }}>
         <div className="max-w-6xl mx-auto px-6">
           <div className="mb-16">
             <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-4" style={{ color: "#CF7E34" }}>
@@ -351,7 +351,7 @@ export default function GreatBellInc() {
       </section>
 
       {/* Delivery Models */}
-      <section className="py-24" style={{ backgroundColor: "#111111" }}>
+      <section id="delivery" className="py-24" style={{ backgroundColor: "#111111" }}>
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-4" style={{ color: "#CF7E34" }}>
@@ -414,7 +414,7 @@ export default function GreatBellInc() {
       </section>
 
       {/* Leadership */}
-      <section className="py-24" style={{ backgroundColor: "#111111" }}>
+      <section id="leadership" className="py-24" style={{ backgroundColor: "#111111" }}>
         <div className="max-w-6xl mx-auto px-6">
           <div className="mb-16">
             <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-4" style={{ color: "#CF7E34" }}>
@@ -457,7 +457,7 @@ export default function GreatBellInc() {
       </section>
 
       {/* About / History */}
-      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: "#0C0C0C" }}>
+      <section id="about" className="py-24 relative overflow-hidden" style={{ backgroundColor: "#0C0C0C" }}>
         <div className="absolute top-0 right-0 w-[500px] h-[500px] opacity-[0.03]" style={{
           background: "radial-gradient(circle, #CF7E34 0%, transparent 60%)",
         }} />
