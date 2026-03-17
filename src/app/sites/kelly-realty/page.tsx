@@ -5,6 +5,7 @@ export const metadata = {
   description: "Pittsburgh property management since 1960. Multi-generational family business in Shadyside. 50+ active listings, BBB A+ rated, certified appraiser on staff. Call (412) 621-8580.",
 };
 
+const IMG = "/sites/kelly-realty";
 const sans = { fontFamily: "system-ui, sans-serif" } as const;
 const serif = { fontFamily: "'Georgia', 'Times New Roman', serif" } as const;
 
@@ -72,9 +73,7 @@ export default function KellyRealty() {
       <header className="bg-[#162A3E] border-b border-white/5">
         <div className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="text-white text-2xl font-bold tracking-tight" style={sans}>
-              KELLY<span className="text-[#D4892A]"> REALTY</span>
-            </div>
+            <img src={`${IMG}/logo.png`} alt="John C.R. Kelly Realty" className="h-10 w-auto" />
             <div className="hidden sm:block w-px h-8 bg-white/15" />
             <span className="hidden sm:block text-white/40 text-[11px] tracking-[0.2em] uppercase" style={sans}>Property Management</span>
           </div>
@@ -93,7 +92,7 @@ export default function KellyRealty() {
       {/* Hero — Full-width background image */}
       <section className="relative text-white min-h-[520px] lg:min-h-[600px] flex items-center">
         <img
-          src="/sites/kelly-realty/hero.jpg"
+          src={`${IMG}/hero.jpg`}
           alt="Pittsburgh skyline"
           className="absolute inset-0 w-full h-full object-cover"
         />
@@ -153,9 +152,9 @@ export default function KellyRealty() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { img: "/sites/kelly-realty/property1.jpg", title: "Shadyside 2BR Apartment", beds: 2, baths: 1, price: "$1,450/mo", address: "Walnut St, Shadyside" },
-              { img: "/sites/kelly-realty/property2.jpg", title: "East Liberty Renovated Unit", beds: 1, baths: 1, price: "$1,100/mo", address: "Penn Ave, East Liberty" },
-              { img: "/sites/kelly-realty/property3.jpg", title: "Squirrel Hill Duplex", beds: 3, baths: 1, price: "$1,750/mo", address: "Murray Ave, Squirrel Hill" },
+              { img: `${IMG}/property1.jpg`, title: "Shadyside 2BR Apartment", beds: 2, baths: 1, price: "$1,450/mo", address: "Walnut St, Shadyside" },
+              { img: `${IMG}/property2.jpg`, title: "East Liberty Renovated Unit", beds: 1, baths: 1, price: "$1,100/mo", address: "Penn Ave, East Liberty" },
+              { img: `${IMG}/property3.jpg`, title: "Squirrel Hill Duplex", beds: 3, baths: 1, price: "$1,750/mo", address: "Murray Ave, Squirrel Hill" },
             ].map((p) => (
               <div key={p.title} className="bg-white border border-[#162A3E]/8 overflow-hidden group hover:shadow-lg transition-all">
                 <div className="relative h-56 overflow-hidden">
@@ -302,7 +301,7 @@ export default function KellyRealty() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div>
-              <div className="text-xl font-bold tracking-tight mb-4" style={sans}>KELLY<span className="text-[#D4892A]"> REALTY</span></div>
+              <img src={`${IMG}/logo.png`} alt="John C.R. Kelly Realty" className="h-9 w-auto mb-4" />
               <p className="text-white/40 text-sm leading-relaxed mb-4">
                 John C.R. Kelly Realty. Multi-generational family business providing professional property management in Pittsburgh since 1960. BBB A+ rated. Certified appraiser on staff.
               </p>
