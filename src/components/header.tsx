@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
-import { useAuth, UserButton } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
+import { UserMenu } from "@/components/user-menu";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
@@ -101,18 +102,7 @@ export function Header() {
                 Dashboard
               </Link>
               <div className="ml-3">
-                <UserButton
-                  appearance={{
-                    elements: {
-                      avatarBox: "w-8 h-8",
-                      userButtonPopoverCard: "bg-qblack-light border border-white/10",
-                      userButtonPopoverActionButton: "text-qwhite hover:bg-qwhite/10",
-                      userButtonPopoverActionButtonText: "text-qwhite",
-                      userButtonPopoverActionButtonIcon: "text-qwhite/60",
-                      userButtonPopoverFooter: "hidden",
-                    },
-                  }}
-                />
+                <UserMenu size="sm" />
               </div>
             </>
           )}
@@ -179,18 +169,7 @@ export function Header() {
                     Dashboard
                   </Link>
                   <div className="mt-4 px-3">
-                    <UserButton
-                      appearance={{
-                        elements: {
-                          avatarBox: "w-9 h-9",
-                          userButtonPopoverCard: "bg-qblack-light border border-white/10",
-                          userButtonPopoverActionButton: "text-qwhite hover:bg-qwhite/10",
-                          userButtonPopoverActionButtonText: "text-qwhite",
-                          userButtonPopoverActionButtonIcon: "text-qwhite/60",
-                          userButtonPopoverFooter: "hidden",
-                        },
-                      }}
-                    />
+                    <UserMenu size="md" />
                   </div>
                 </>
               )}

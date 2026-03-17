@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UserButton } from "@clerk/nextjs";
+import { UserMenu } from "@/components/user-menu";
 import { useUser } from "@clerk/nextjs";
 import {
   LayoutDashboard,
@@ -53,20 +53,7 @@ export default function DashboardLayout({
         {/* User info */}
         <div className="px-5 pb-6 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <UserButton
-              appearance={{
-                elements: {
-                  avatarBox: "w-9 h-9",
-                  userButtonPopoverCard:
-                    "bg-qblack-light border border-white/10",
-                  userButtonPopoverActionButton:
-                    "text-white hover:bg-white/10",
-                  userButtonPopoverActionButtonText: "text-white",
-                  userButtonPopoverActionButtonIcon: "text-white/60",
-                  userButtonPopoverFooter: "hidden",
-                },
-              }}
-            />
+            <UserMenu size="md" />
             <div className="min-w-0">
               <p className="text-sm font-medium text-white truncate">
                 {user?.firstName
