@@ -79,7 +79,7 @@ export function sanitizeRepoName(domain: string): string {
  */
 export async function createGitHubRepo(domain: string): Promise<GitHubRepoResult> {
   const token = requireEnv("GITHUB_TOKEN");
-  const templateOwner = "egowebdesign";
+  const templateOwner = "bri9and";
   const templateRepo = "site-template";
   const repoName = sanitizeRepoName(domain);
 
@@ -93,7 +93,7 @@ export async function createGitHubRepo(domain: string): Promise<GitHubRepoResult
         "X-GitHub-Api-Version": "2022-11-28",
       },
       body: JSON.stringify({
-        owner: templateOwner,
+        owner: "bri9and",
         name: repoName,
         description: `Site for ${domain} — provisioned by EGO`,
         private: false,
@@ -129,7 +129,7 @@ export async function createVercelProject(
 ): Promise<VercelProjectResult> {
   const token = requireEnv("VERCEL_TOKEN");
   const teamId = requireEnv("VERCEL_TEAM_ID");
-  const githubOrg = "egowebdesign";
+  const githubOrg = "bri9and";
 
   // Step 1 — Create the project linked to the GitHub repo
   const createRes = await fetch(
