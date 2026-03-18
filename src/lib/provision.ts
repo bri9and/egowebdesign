@@ -207,54 +207,60 @@ export async function createVercelProject(
   };
 }
 
-// ─── DNS (NameSilo) ─────────────────────────────────────────────────────────
+// ─── DNS (Porkbun) ──────────────────────────────────────────────────────────
 
 /**
- * Configures DNS at NameSilo to point the domain to Vercel.
- * Adds a CNAME for the root (if supported) and www subdomain.
+ * Configures DNS at Porkbun to point the domain to Vercel.
+ * Adds an A record for the root and a CNAME for www.
  */
 export async function configureDNS(domain: string): Promise<void> {
-  const apiKey = requireEnv("NAMESILO_API_KEY");
-  const base = "https://www.namesilo.com/api";
+  const apiKey = requireEnv("PORKBUN_API_KEY");
+  const secretKey = requireEnv("PORKBUN_SECRET_API_KEY");
+  const base = "https://api.porkbun.com/api/json/v3";
   const vercelCname = "cname.vercel-dns.com";
 
-  // NameSilo API — add DNS resource record
-  // For root domain: use A record with Vercel's IP (76.76.21.21)
-  // For www: use CNAME pointing to cname.vercel-dns.com
-
-  // Add A record for root domain (NameSilo doesn't support CNAME at root)
-  const aRecordUrl =
-    `${base}/dnsAddRecord?version=1&type=json&key=${apiKey}` +
-    `&domain=${encodeURIComponent(domain)}` +
-    `&rrtype=A&rrhost=&rrvalue=76.76.21.21&rrttl=3600`;
-
-  const aRes = await fetch(aRecordUrl);
+  // Add A record for root domain
+  const aRes = await fetch(`${base}/dns/create/${domain}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      apikey: apiKey,
+      secretapikey: secretKey,
+      type: "A",
+      name: "",
+      content: "76.76.21.21",
+      ttl: "3600",
+    }),
+  });
   const aData = await aRes.json();
-  const aCode = String(aData.reply?.code);
 
-  if (aCode !== "300") {
+  if (aData.status !== "SUCCESS") {
     console.error(
-      `[DNS] A record for ${domain} failed: ${aData.reply?.detail || `code ${aCode}`}`
+      `[DNS] A record for ${domain} failed: ${aData.message || aData.status}`
     );
     // Don't throw — try www anyway
   }
 
   // Add CNAME for www subdomain
-  const cnameUrl =
-    `${base}/dnsAddRecord?version=1&type=json&key=${apiKey}` +
-    `&domain=${encodeURIComponent(domain)}` +
-    `&rrtype=CNAME&rrhost=www&rrvalue=${vercelCname}&rrttl=3600`;
-
-  const cnameRes = await fetch(cnameUrl);
+  const cnameRes = await fetch(`${base}/dns/create/${domain}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      apikey: apiKey,
+      secretapikey: secretKey,
+      type: "CNAME",
+      name: "www",
+      content: vercelCname,
+      ttl: "3600",
+    }),
+  });
   const cnameData = await cnameRes.json();
-  const cnameCode = String(cnameData.reply?.code);
 
-  if (cnameCode !== "300") {
+  if (cnameData.status !== "SUCCESS") {
     throw new Error(
-      `DNS CNAME for www.${domain} failed: ${cnameData.reply?.detail || `code ${cnameCode}`}`
+      `DNS CNAME for www.${domain} failed: ${cnameData.message || cnameData.status}`
     );
   }
-
 }
 
 // ─── Cleanup helpers ────────────────────────────────────────────────────────

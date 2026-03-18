@@ -5,7 +5,7 @@ import { configureDNS } from "@/lib/provision";
 /**
  * POST /api/provision/dns
  *
- * Configures DNS at NameSilo to point the domain to Vercel.
+ * Configures DNS at Porkbun to point the domain to Vercel.
  * Adds an A record for the root and a CNAME for www.
  * Standalone endpoint for granular control or retries.
  */

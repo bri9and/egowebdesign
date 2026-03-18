@@ -1,33 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const API_KEY = process.env.NAMESILO_API_KEY;
-const BASE_URL = "https://www.namesilo.com/api";
+const API_KEY = process.env.PORKBUN_API_KEY;
+const SECRET_KEY = process.env.PORKBUN_SECRET_API_KEY;
+const BASE_URL = "https://api.porkbun.com/api/json/v3";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-// NameSilo response normalizers — handles inconsistent single vs array formats
-const normalizeAvailable = (raw: any): any[] => {
-  if (!raw) return [];
-  if (Array.isArray(raw)) return raw;
-  if (raw.domain && typeof raw.domain === "string" && raw.price !== undefined) return [raw];
-  if (raw.domain) {
-    const d = raw.domain;
-    return Array.isArray(d) ? d.map((x: any) => (typeof x === "string" ? { domain: x } : x)) : [typeof d === "string" ? { domain: d } : d];
-  }
-  return [];
-};
-
-const normalizeUnavailable = (raw: any): string[] => {
-  if (!raw) return [];
-  if (typeof raw === "string") return [raw];
-  if (Array.isArray(raw)) return raw.map((x: any) => (typeof x === "string" ? x : x.domain));
-  if (raw.domain) {
-    const d = raw.domain;
-    if (typeof d === "string") return [d];
-    if (Array.isArray(d)) return d;
-  }
-  return [];
-};
 
 interface AvailableDomain {
   domain: string;
@@ -36,28 +13,109 @@ interface AvailableDomain {
   premium: boolean;
 }
 
-async function checkDomains(domains: string[]): Promise<{ available: AvailableDomain[]; unavailable: string[] }> {
-  const url = `${BASE_URL}/checkRegisterAvailability?version=1&type=json&key=${API_KEY}&domains=${domains.join(",")}`;
-  const res = await fetch(url, { next: { revalidate: 0 } });
+/**
+ * Check a single domain's availability and pricing via Porkbun.
+ */
+async function checkDomain(domain: string): Promise<{ available: boolean; price: number }> {
+  const res = await fetch(`${BASE_URL}/domain/checkAvailability`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      apikey: API_KEY,
+      secretapikey: SECRET_KEY,
+      domain,
+    }),
+  });
   const data = await res.json();
-  const reply = data.reply;
 
-  if (String(reply.code) !== "300") {
-    return { available: [], unavailable: [] };
+  if (data.status === "SUCCESS" && data.avail === true) {
+    // Price is in the pricing endpoint; Porkbun returns registration price
+    const price = parseFloat(data.pricing?.registration || "0");
+    return { available: true, price };
   }
 
-  const avail = normalizeAvailable(reply.available);
-  const unavail = normalizeUnavailable(reply.unavailable);
+  return { available: false, price: 0 };
+}
 
-  return {
-    available: avail.map((d: any) => ({
-      domain: d.domain,
-      available: true as const,
-      price: typeof d.price === "number" ? d.price : parseFloat(d.price),
-      premium: d.premium === 1 || d.premium === "1",
-    })),
-    unavailable: unavail,
-  };
+/**
+ * Get pricing for a TLD from Porkbun's pricing API.
+ */
+async function getTldPricing(): Promise<Record<string, number>> {
+  const res = await fetch(`${BASE_URL}/pricing/get`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ apikey: API_KEY, secretapikey: SECRET_KEY }),
+  });
+  const data = await res.json();
+
+  if (data.status !== "SUCCESS" || !data.pricing) return {};
+
+  const prices: Record<string, number> = {};
+  for (const [tld, info] of Object.entries(data.pricing)) {
+    prices[tld] = parseFloat((info as any).registration || "0");
+  }
+  return prices;
+}
+
+// Cache TLD pricing for 5 minutes
+let pricingCache: Record<string, number> = {};
+let pricingCacheTime = 0;
+const PRICING_CACHE_TTL = 5 * 60 * 1000;
+
+async function getCachedPricing(): Promise<Record<string, number>> {
+  if (Date.now() - pricingCacheTime < PRICING_CACHE_TTL && Object.keys(pricingCache).length > 0) {
+    return pricingCache;
+  }
+  pricingCache = await getTldPricing();
+  pricingCacheTime = Date.now();
+  return pricingCache;
+}
+
+/**
+ * Check multiple domains in parallel via Porkbun.
+ */
+async function checkDomains(domains: string[]): Promise<{ available: AvailableDomain[]; unavailable: string[] }> {
+  const pricing = await getCachedPricing();
+
+  const results = await Promise.allSettled(
+    domains.map(async (domain) => {
+      const res = await fetch(`${BASE_URL}/domain/checkAvailability`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          apikey: API_KEY,
+          secretapikey: SECRET_KEY,
+          domain,
+        }),
+      });
+      const data = await res.json();
+      return { domain, data };
+    })
+  );
+
+  const available: AvailableDomain[] = [];
+  const unavailable: string[] = [];
+
+  for (const result of results) {
+    if (result.status === "rejected") continue;
+    const { domain, data } = result.value;
+
+    if (data.status === "SUCCESS" && data.avail === true) {
+      // Get price from pricing cache by TLD
+      const tld = domain.slice(domain.indexOf(".") + 1);
+      const price = pricing[tld] || parseFloat(data.pricing?.registration || "0");
+      available.push({
+        domain,
+        available: true,
+        price,
+        premium: data.premium === true,
+      });
+    } else {
+      unavailable.push(domain);
+    }
+  }
+
+  return { available, unavailable };
 }
 
 function generateSuggestions(baseName: string, alreadyChecked: Set<string>): string[] {
@@ -82,14 +140,13 @@ function generateSuggestions(baseName: string, alreadyChecked: Set<string>): str
 
   // 2. Suffix variations across top TLDs
   for (const suf of suffixes) {
-    for (const tld of topTlds) add(`${suf !== "app" ? baseName + suf : baseName + suf}${tld}`);
+    for (const tld of topTlds) add(`${baseName}${suf}${tld}`);
   }
 
   // 3. Hyphenated split — try inserting a hyphen at each vowel/consonant boundary
   for (let i = 2; i < baseName.length - 2; i++) {
     const left = baseName.slice(0, i);
     const right = baseName.slice(i);
-    // Only split at natural word boundaries (crude check: both parts 3+ chars)
     if (left.length >= 3 && right.length >= 3) {
       add(`${left}-${right}.com`);
       if (suggestions.length >= 40) break;
@@ -106,7 +163,7 @@ function generateSuggestions(baseName: string, alreadyChecked: Set<string>): str
 }
 
 export async function POST(req: NextRequest) {
-  if (!API_KEY) {
+  if (!API_KEY || !SECRET_KEY) {
     return NextResponse.json({ error: "Domain service not configured" }, { status: 503 });
   }
 
@@ -138,14 +195,13 @@ export async function POST(req: NextRequest) {
     // If any domains were taken, generate and check suggestions
     let suggestions: AvailableDomain[] = [];
     if (unavailable.length > 0) {
-      // Extract base name from the query (not per-TLD — avoids redundant variations)
       const baseName = hasDot ? clean.slice(0, clean.indexOf(".")) : clean;
       const checkedSet = new Set(domains);
       const toCheck = generateSuggestions(baseName, checkedSet);
 
       if (toCheck.length > 0) {
         try {
-          // Check in batches of 20 (NameSilo limit), max 2 batches sequentially
+          // Check in batches of 20, max 2 batches
           const batch1 = toCheck.slice(0, 20);
           const batch2 = toCheck.slice(20, 40);
           const r1 = await checkDomains(batch1);
@@ -164,7 +220,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ results: available, suggestions });
   } catch (err) {
-    console.error("NameSilo API error:", err);
+    console.error("Porkbun API error:", err);
     return NextResponse.json({ error: "Failed to check domain availability" }, { status: 502 });
   }
 }

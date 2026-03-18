@@ -341,7 +341,7 @@ function DomainsContent() {
                           <div className="flex items-center gap-3 shrink-0">
                             <div className="text-right">
                               <p className="text-lg font-bold text-qwhite">
-                                ${(result.price * 1.30).toFixed(2)}
+                                ${(result.price * 1.75).toFixed(2)}
                               </p>
                               <p className="text-xs text-qwhite/30">/year</p>
                             </div>
@@ -526,7 +526,7 @@ function DomainsContent() {
 
                             <div className="flex items-center gap-3 shrink-0">
                               <p className="text-sm font-semibold text-qwhite/70">
-                                ${(sug.price * 1.30).toFixed(2)}<span className="text-xs text-qwhite/30 font-normal">/yr</span>
+                                ${(sug.price * 1.75).toFixed(2)}<span className="text-xs text-qwhite/30 font-normal">/yr</span>
                               </p>
                               {isSignedIn ? (
                                 <div className="flex items-center gap-2">

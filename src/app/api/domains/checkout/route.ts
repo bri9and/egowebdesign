@@ -8,9 +8,10 @@ const limiter = rateLimit({ interval: 60_000, uniqueTokenPerInterval: 500 });
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-const NAMESILO_KEY = process.env.NAMESILO_API_KEY;
-const NAMESILO_BASE = "https://www.namesilo.com/api";
-const MARKUP_MULTIPLIER = 1.30; // 30% markup on wholesale price
+const PORKBUN_API_KEY = process.env.PORKBUN_API_KEY;
+const PORKBUN_SECRET_KEY = process.env.PORKBUN_SECRET_API_KEY;
+const PORKBUN_BASE = "https://api.porkbun.com/api/json/v3";
+const MARKUP_MULTIPLIER = 1.75; // 75% markup on wholesale price
 
 // Site package pricing (in cents)
 const SITE_PACKAGES: Record<string, { name: string; priceCents: number; description: string }> = {
@@ -32,38 +33,50 @@ const SITE_PACKAGES: Record<string, { name: string; priceCents: number; descript
 };
 
 /**
- * Fetch the wholesale price for a domain directly from NameSilo.
+ * Fetch the wholesale price for a domain directly from Porkbun.
  * This ensures the price is authoritative and cannot be tampered with by the client.
  */
 async function getVerifiedWholesalePrice(domain: string): Promise<number | null> {
   try {
-    const url = `${NAMESILO_BASE}/checkRegisterAvailability?version=1&type=json&key=${NAMESILO_KEY}&domains=${encodeURIComponent(domain)}`;
-    const res = await fetch(url, { cache: "no-store" });
-    const data = await res.json();
-    const reply = data.reply;
+    // First check availability
+    const availRes = await fetch(`${PORKBUN_BASE}/domain/checkAvailability`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        apikey: PORKBUN_API_KEY,
+        secretapikey: PORKBUN_SECRET_KEY,
+        domain,
+      }),
+    });
+    const availData = await availRes.json();
 
-    if (String(reply?.code) !== "300") {
-      return null;
+    if (availData.status !== "SUCCESS" || availData.avail !== true) {
+      return null; // Domain not available
     }
 
-    // NameSilo returns available domains in inconsistent formats
-    const avail = reply.available;
-    if (!avail) return null;
+    // Get pricing from the availability response or pricing API
+    if (availData.pricing?.registration) {
+      const price = parseFloat(availData.pricing.registration);
+      if (!isNaN(price) && price > 0) return price;
+    }
 
-    // Normalize: could be a single object or an array
-    const entries = Array.isArray(avail) ? avail : avail.domain ? [avail] : [];
+    // Fallback: get from TLD pricing
+    const tld = domain.slice(domain.indexOf(".") + 1);
+    const pricingRes = await fetch(`${PORKBUN_BASE}/pricing/get`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ apikey: PORKBUN_API_KEY, secretapikey: PORKBUN_SECRET_KEY }),
+    });
+    const pricingData = await pricingRes.json();
 
-    for (const entry of entries) {
-      const entryDomain = typeof entry === "string" ? entry : entry.domain;
-      if (entryDomain === domain) {
-        const price = typeof entry.price === "number" ? entry.price : parseFloat(entry.price);
-        if (!isNaN(price) && price > 0) return price;
-      }
+    if (pricingData.status === "SUCCESS" && pricingData.pricing?.[tld]) {
+      const price = parseFloat(pricingData.pricing[tld].registration);
+      if (!isNaN(price) && price > 0) return price;
     }
 
     return null;
   } catch (err) {
-    console.error("[Checkout] NameSilo price verification failed:", err);
+    console.error("[Checkout] Porkbun price verification failed:", err);
     return null;
   }
 }
@@ -94,7 +107,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "domain is required" }, { status: 400 });
   }
 
-  if (!NAMESILO_KEY) {
+  if (!PORKBUN_API_KEY || !PORKBUN_SECRET_KEY) {
     return NextResponse.json({ error: "Domain service not configured" }, { status: 503 });
   }
 
@@ -109,7 +122,7 @@ export async function POST(req: NextRequest) {
   }
 
   // ── Server-side price verification ──
-  // SECURITY: Never trust client-provided prices. Always verify with NameSilo.
+  // SECURITY: Never trust client-provided prices. Always verify with Porkbun.
   const wholesalePrice = await getVerifiedWholesalePrice(domain);
 
   if (wholesalePrice === null) {
@@ -122,17 +135,15 @@ export async function POST(req: NextRequest) {
   // ── Ensure customer exists in Supabase ──
   const supabase = createServiceClient();
   try {
-    // Upsert customer by clerk_id — creates if new, updates timestamp if exists
     await (supabase.from("customers") as any).upsert(
       {
         clerk_id: userId,
-        email: "", // Will be updated by webhook with Stripe email
+        email: "",
         updated_at: new Date().toISOString(),
       },
       { onConflict: "clerk_id", ignoreDuplicates: true }
     );
   } catch (err) {
-    // Non-fatal: log but proceed — the webhook will also create the customer
     console.error("[Checkout] Failed to upsert customer:", err);
   }
 
