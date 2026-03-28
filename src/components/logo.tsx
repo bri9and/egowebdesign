@@ -38,8 +38,8 @@ export function Logo({ variant = "mark", className, size = "md" }: LogoProps) {
     >
       <defs>
         <linearGradient id="ego-g" x1="20" y1="160" x2="180" y2="20" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#0561EA" />
-          <stop offset="1" stopColor="#0AB6E7" />
+          <stop stopColor="#FF8000" />
+          <stop offset="1" stopColor="#FF9933" />
         </linearGradient>
       </defs>
 
@@ -108,11 +108,11 @@ function LogoIcon({ className }: { className?: string }) {
       className={className}
       aria-label="Ego Web Designs"
     >
-      <rect x="-15" y="-10" width="230" height="200" rx="30" fill="#041B41" />
+      <rect x="-15" y="-10" width="230" height="200" rx="30" fill="#0A0A0A" />
       <defs>
         <linearGradient id="ego-icon-g" x1="20" y1="160" x2="180" y2="20" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#0561EA" />
-          <stop offset="1" stopColor="#0AB6E7" />
+          <stop stopColor="#FF8000" />
+          <stop offset="1" stopColor="#FF9933" />
         </linearGradient>
       </defs>
       <ellipse cx="8" cy="90" rx="4" ry="16" fill="url(#ego-icon-g)" />

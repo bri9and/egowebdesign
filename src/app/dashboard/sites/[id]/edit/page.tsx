@@ -191,14 +191,14 @@ export default function AIBuilderPage() {
       className="min-h-screen"
       style={{
         fontFamily: "'Space Grotesk', system-ui, sans-serif",
-        backgroundColor: "#041B41",
+        backgroundColor: "#0A0A0A",
         color: "#ffffff",
       }}
     >
       {/* Top bar */}
       <header
         className="border-b px-4 sm:px-6 py-4 flex items-center justify-between"
-        style={{ borderColor: "rgba(255,255,255,0.1)", backgroundColor: "#031430" }}
+        style={{ borderColor: "rgba(255,255,255,0.1)", backgroundColor: "#000000" }}
       >
         <div className="flex items-center gap-3">
           <button
@@ -211,7 +211,7 @@ export default function AIBuilderPage() {
           </button>
         </div>
         <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5" style={{ color: "#0562EA" }} />
+          <Sparkles className="w-5 h-5" style={{ color: "#FF8000" }} />
           <span className="font-semibold text-sm tracking-wide">AI Site Builder</span>
         </div>
       </header>
@@ -232,9 +232,9 @@ export default function AIBuilderPage() {
                 <div
                   className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium tracking-wide uppercase mb-6"
                   style={{
-                    border: "1px solid rgba(5,98,234,0.3)",
-                    color: "#0562EA",
-                    backgroundColor: "rgba(5,98,234,0.08)",
+                    border: "1px solid rgba(255,128,0,0.3)",
+                    color: "#FF8000",
+                    backgroundColor: "rgba(255,128,0,0.08)",
                   }}
                 >
                   <Sparkles className="w-3.5 h-3.5" />
@@ -285,7 +285,7 @@ export default function AIBuilderPage() {
                     placeholder="e.g., Acme Plumbing Co."
                     className="w-full px-4 py-3 rounded-lg text-sm outline-none transition-all"
                     style={{
-                      backgroundColor: "#062a5e",
+                      backgroundColor: "#1A1A1A",
                       border: "1px solid rgba(255,255,255,0.1)",
                       color: "#ffffff",
                     }}
@@ -306,7 +306,7 @@ export default function AIBuilderPage() {
                     placeholder="e.g., acmeplumbing.com"
                     className="w-full px-4 py-3 rounded-lg text-sm outline-none transition-all"
                     style={{
-                      backgroundColor: "#062a5e",
+                      backgroundColor: "#1A1A1A",
                       border: "1px solid rgba(255,255,255,0.1)",
                       color: "#ffffff",
                     }}
@@ -327,7 +327,7 @@ export default function AIBuilderPage() {
                     rows={8}
                     className="w-full px-4 py-3 rounded-lg text-sm outline-none transition-all resize-none"
                     style={{
-                      backgroundColor: "#062a5e",
+                      backgroundColor: "#1A1A1A",
                       border: "1px solid rgba(255,255,255,0.1)",
                       color: "#ffffff",
                     }}
@@ -343,9 +343,9 @@ export default function AIBuilderPage() {
                   disabled={!prompt.trim() || !businessName.trim()}
                   className="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-lg font-bold text-base transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                   style={{
-                    backgroundColor: "#0562EA",
+                    backgroundColor: "#FF8000",
                     color: "#ffffff",
-                    boxShadow: "0 0 30px rgba(5,98,234,0.3)",
+                    boxShadow: "0 0 30px rgba(255,128,0,0.3)",
                   }}
                 >
                   <Sparkles className="w-5 h-5" />
@@ -369,13 +369,13 @@ export default function AIBuilderPage() {
                 <div
                   className="w-20 h-20 rounded-2xl flex items-center justify-center"
                   style={{
-                    backgroundColor: "rgba(5,98,234,0.1)",
-                    border: "1px solid rgba(5,98,234,0.3)",
+                    backgroundColor: "rgba(255,128,0,0.1)",
+                    border: "1px solid rgba(255,128,0,0.3)",
                   }}
                 >
                   <Loader2
                     className="w-10 h-10 animate-spin"
-                    style={{ color: "#0562EA" }}
+                    style={{ color: "#FF8000" }}
                   />
                 </div>
                 {/* Pulsing ring */}
@@ -383,7 +383,7 @@ export default function AIBuilderPage() {
                   className="absolute inset-0 rounded-2xl animate-ping"
                   style={{
                     backgroundColor: "transparent",
-                    border: "2px solid rgba(5,98,234,0.2)",
+                    border: "2px solid rgba(255,128,0,0.2)",
                   }}
                 />
               </div>
@@ -403,7 +403,7 @@ export default function AIBuilderPage() {
                 >
                   <motion.div
                     className="h-full rounded-full"
-                    style={{ backgroundColor: "#0562EA" }}
+                    style={{ backgroundColor: "#FF8000" }}
                     initial={{ width: "0%" }}
                     animate={{ width: `${Math.min(streamProgress * 2, 95)}%` }}
                     transition={{ duration: 0.3 }}
@@ -426,7 +426,7 @@ export default function AIBuilderPage() {
                   <div
                     className="rounded-lg p-4 max-h-32 overflow-hidden relative"
                     style={{
-                      backgroundColor: "#031430",
+                      backgroundColor: "#000000",
                       border: "1px solid rgba(255,255,255,0.05)",
                     }}
                   >
@@ -440,7 +440,7 @@ export default function AIBuilderPage() {
                       className="absolute inset-0"
                       style={{
                         background:
-                          "linear-gradient(to bottom, transparent 0%, #031430 100%)",
+                          "linear-gradient(to bottom, transparent 0%, #000000 100%)",
                       }}
                     />
                   </div>
@@ -462,7 +462,7 @@ export default function AIBuilderPage() {
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
                 <div>
                   <h2 className="text-2xl font-bold flex items-center gap-2">
-                    <Eye className="w-6 h-6" style={{ color: "#0562EA" }} />
+                    <Eye className="w-6 h-6" style={{ color: "#FF8000" }} />
                     Your Draft is Ready
                   </h2>
                   <p className="text-sm mt-1" style={{ color: "rgba(255,255,255,0.5)" }}>
@@ -499,9 +499,9 @@ export default function AIBuilderPage() {
                     disabled={state === "committing"}
                     className="flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-bold transition-all disabled:opacity-60"
                     style={{
-                      backgroundColor: "#0562EA",
+                      backgroundColor: "#FF8000",
                       color: "#ffffff",
-                      boxShadow: "0 0 20px rgba(5,98,234,0.3)",
+                      boxShadow: "0 0 20px rgba(255,128,0,0.3)",
                     }}
                   >
                     {state === "committing" ? (
@@ -528,7 +528,7 @@ export default function AIBuilderPage() {
                 <div
                   className="flex items-center gap-2 px-4 py-3"
                   style={{
-                    backgroundColor: "#031430",
+                    backgroundColor: "#000000",
                     borderBottom: "1px solid rgba(255,255,255,0.05)",
                   }}
                 >
@@ -583,7 +583,7 @@ export default function AIBuilderPage() {
                       <div
                         className="mt-3 rounded-lg p-4 max-h-96 overflow-auto"
                         style={{
-                          backgroundColor: "#031430",
+                          backgroundColor: "#000000",
                           border: "1px solid rgba(255,255,255,0.05)",
                         }}
                       >
@@ -634,14 +634,14 @@ export default function AIBuilderPage() {
               <div
                 className="inline-block rounded-lg px-6 py-4 mb-8"
                 style={{
-                  backgroundColor: "#031430",
+                  backgroundColor: "#000000",
                   border: "1px solid rgba(255,255,255,0.1)",
                 }}
               >
                 <p className="text-xs mb-1" style={{ color: "rgba(255,255,255,0.4)" }}>
                   Commit SHA
                 </p>
-                <p className="font-mono text-sm" style={{ color: "#0562EA" }}>
+                <p className="font-mono text-sm" style={{ color: "#FF8000" }}>
                   {commitResult.commitSha.slice(0, 8)}
                 </p>
               </div>
@@ -679,7 +679,7 @@ export default function AIBuilderPage() {
                   onClick={() => router.push("/dashboard/sites")}
                   className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-bold transition-all"
                   style={{
-                    backgroundColor: "#0562EA",
+                    backgroundColor: "#FF8000",
                     color: "#ffffff",
                   }}
                 >

@@ -47,13 +47,13 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --color-qblack: #041B41;
-  --color-qblack-light: #062a5e;
-  --color-qblack-dark: #031430;
-  --color-qyellow: #0562EA;
-  --color-qyellow-light: #09AAE7;
+  --color-qblack: #0A0A0A;
+  --color-qblack-light: #1A1A1A;
+  --color-qblack-dark: #000000;
+  --color-qyellow: #FF8000;
+  --color-qyellow-light: #FF9933;
   --color-qwhite: #ffffff;
-  --color-warm-gray: #0a3570;
+  --color-warm-gray: #2A2A2A;
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -64,38 +64,38 @@
 }
 
 :root {
-  --background: #041B41;
+  --background: #0A0A0A;
   --foreground: #ffffff;
-  --card: #062a5e;
+  --card: #1A1A1A;
   --card-foreground: #ffffff;
-  --popover: #062a5e;
+  --popover: #1A1A1A;
   --popover-foreground: #ffffff;
-  --primary: #0562EA;
+  --primary: #FF8000;
   --primary-foreground: #ffffff;
-  --secondary: #062a5e;
+  --secondary: #1A1A1A;
   --secondary-foreground: #ffffff;
-  --muted: #062a5e;
+  --muted: #1A1A1A;
   --muted-foreground: rgba(255, 255, 255, 0.5);
-  --accent: #09AAE7;
+  --accent: #FF9933;
   --accent-foreground: #ffffff;
   --destructive: oklch(0.704 0.191 22.216);
   --border: rgba(255, 255, 255, 0.1);
   --input: rgba(255, 255, 255, 0.15);
-  --ring: rgba(5, 98, 234, 0.4);
-  --chart-1: #0562EA;
-  --chart-2: #09AAE7;
+  --ring: rgba(255, 128, 0, 0.4);
+  --chart-1: #FF8000;
+  --chart-2: #FF9933;
   --chart-3: rgba(255, 255, 255, 0.5);
-  --chart-4: rgba(5, 98, 234, 0.3);
-  --chart-5: rgba(9, 170, 231, 0.2);
+  --chart-4: rgba(255, 128, 0, 0.3);
+  --chart-5: rgba(255, 153, 51, 0.2);
   --radius: 0.5rem;
-  --sidebar: #031430;
+  --sidebar: #000000;
   --sidebar-foreground: #ffffff;
-  --sidebar-primary: #0562EA;
+  --sidebar-primary: #FF8000;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #062a5e;
+  --sidebar-accent: #1A1A1A;
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: rgba(255, 255, 255, 0.1);
-  --sidebar-ring: rgba(5, 98, 234, 0.4);
+  --sidebar-ring: rgba(255, 128, 0, 0.4);
 }
 
 .dark {
@@ -237,7 +237,7 @@
   transform: translateX(-50%);
   width: 80px;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #0562EA, transparent);
+  background: linear-gradient(90deg, transparent, #FF8000, transparent);
 }
 
 /* ── Stats Counter ── */
@@ -285,7 +285,7 @@
 
 /* ── Custom Selection ── */
 ::selection {
-  background-color: rgba(5, 98, 234, 0.3);
+  background-color: rgba(255, 128, 0, 0.3);
   color: #ffffff;
 }
 
@@ -301,14 +301,14 @@
 
 /* ── Gradient Text ── */
 .text-gradient-black {
-  background: linear-gradient(135deg, #031430, #041B41, #031430);
+  background: linear-gradient(135deg, #000000, #0A0A0A, #000000);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-yellow {
-  background: linear-gradient(135deg, #0562EA, #09AAE7);
+  background: linear-gradient(135deg, #FF8000, #FF9933);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -317,7 +317,7 @@
 /* ── Gradient Border ── */
 .gradient-border {
   position: relative;
-  background: #062a5e;
+  background: #1A1A1A;
   border-radius: 0.75rem;
 }
 
@@ -327,7 +327,7 @@
   inset: -1px;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, #031430, #0562EA, #031430);
+  background: linear-gradient(135deg, #000000, #FF8000, #000000);
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -344,7 +344,7 @@
 /* ── Focus Styles ── */
 input:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid #0562EA;
+  outline: 2px solid #FF8000;
   outline-offset: 2px;
 }
 
@@ -360,7 +360,7 @@ textarea:focus-visible {
   left: 0;
   width: 0;
   height: 2px;
-  background: #0562EA;
+  background: #FF8000;
   transition: width 0.3s ease;
 }
 
@@ -374,7 +374,7 @@ textarea:focus-visible {
 }
 
 ::-webkit-scrollbar-track {
-  background: #041B41;
+  background: #0A0A0A;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -388,7 +388,7 @@ textarea:focus-visible {
 
 /* ── Smooth Focus Ring ── */
 *:focus-visible {
-  outline-color: #0562EA;
+  outline-color: #FF8000;
   transition: outline-offset 0.1s ease;
 }
 
@@ -399,7 +399,7 @@ textarea:focus-visible {
   left: 0;
   width: 3px;
   height: 0;
-  background: linear-gradient(180deg, #0562EA, #09AAE7);
+  background: linear-gradient(180deg, #FF8000, #FF9933);
   border-radius: 2px;
   transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -449,7 +449,7 @@ textarea:focus-visible {
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(180deg, #0562EA, #09AAE7, #0562EA);
+  background: linear-gradient(180deg, #FF8000, #FF9933, #FF8000);
   border-radius: 2px;
 }
 

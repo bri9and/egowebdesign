@@ -619,8 +619,8 @@ export default function Home() {
       {/* ── Hero ── */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
         <div className="absolute inset-0 bg-qblack-dark" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(5,98,234,0.12)_0%,_transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(9,170,231,0.08)_0%,_transparent_40%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,128,0,0.12)_0%,_transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(255,153,51,0.08)_0%,_transparent_40%)]" />
         <div className="absolute inset-0 bg-grid-pattern-light" />
 
         {/* EGO watermark */}
@@ -836,7 +836,7 @@ export default function Home() {
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                       } : {
-                        background: "linear-gradient(135deg, rgba(5,98,234,0.08), rgba(9,170,231,0.12))",
+                        background: "linear-gradient(135deg, rgba(255,128,0,0.08), rgba(255,153,51,0.12))",
                       }}
                     >
                       {(project as { image?: string }).image && (

@@ -353,7 +353,7 @@ function renderErrorPage(message: string): string {
       width: 40px;
       height: 40px;
       border: 3px solid #2A2A3E;
-      border-top-color: #0562EA;
+      border-top-color: #FF8000;
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
       margin: 0 auto 1rem;

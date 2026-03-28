@@ -17,7 +17,7 @@ export default async function Image() {
           justifyContent: "center",
           width: "100%",
           height: "100%",
-          backgroundColor: "#041B41",
+          backgroundColor: "#0A0A0A",
           fontFamily: "system-ui, sans-serif",
           position: "relative",
         }}
@@ -77,7 +77,7 @@ export default async function Image() {
             style={{
               width: 120,
               height: 2,
-              background: "linear-gradient(90deg, #0561EA, #0AB6E7)",
+              background: "linear-gradient(90deg, #FF8000, #FF9933)",
               marginBottom: 28,
             }}
           />
@@ -118,7 +118,7 @@ export default async function Image() {
             left: 0,
             right: 0,
             height: 3,
-            background: "linear-gradient(90deg, #041B41, #0562EA, #09AAE7, #0562EA, #041B41)",
+            background: "linear-gradient(90deg, #0A0A0A, #FF8000, #FF9933, #FF8000, #0A0A0A)",
           }}
         />
       </div>
