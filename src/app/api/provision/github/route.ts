@@ -5,7 +5,7 @@ import { createGitHubRepo, sanitizeRepoName } from "@/lib/provision";
 /**
  * POST /api/provision/github
  *
- * Creates a GitHub repo from the egowebdesign/site-template template.
+ * Creates a GitHub repo from the KPT Designs site-template template.
  * Standalone endpoint for granular control or retries.
  */
 export async function POST(req: NextRequest) {

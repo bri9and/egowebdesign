@@ -472,7 +472,7 @@ export default function CMPHoldings() {
             <p>
               Website by{" "}
               <a href="/" className="transition-colors hover:text-white" style={{ color: "rgba(255,255,255,0.35)" }}>
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

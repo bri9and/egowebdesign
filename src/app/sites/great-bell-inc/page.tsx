@@ -653,7 +653,7 @@ export default function GreatBellInc() {
             <p>
               Website by{" "}
               <a href="/" className="transition-colors hover:text-[#CF7E34]" style={{ color: "rgba(207,126,52,0.5)" }}>
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

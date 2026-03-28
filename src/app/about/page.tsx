@@ -51,14 +51,14 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-qblack-dark text-qwhite relative overflow-hidden grain-overlay">
+      <section className="pt-32 pb-16 bg-qblack-dark text-qwhite relative overflow-hidden grain-overlay carbon-fiber">
         <div className="absolute inset-0 bg-grid-pattern-light" />
-        <div className="absolute top-1/4 right-[10%] w-64 h-64 rounded-full bg-qyellow/10 blur-3xl" />
+        <div className="absolute top-1/4 right-[10%] w-64 h-64 rounded-[2px] bg-qyellow/10 blur-3xl" />
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
           <motion.div initial="hidden" animate="visible" variants={stagger}>
             <motion.p
               variants={fadeUp}
-              className="text-qyellow text-sm uppercase tracking-[0.25em] font-medium mb-3"
+              className="section-label text-qyellow/60 mb-3"
             >
               About Us
             </motion.p>
@@ -76,7 +76,7 @@ export default function AboutPage() {
               variants={fadeUp}
               className="text-qwhite/60 text-lg max-w-2xl mx-auto leading-relaxed"
             >
-              EGO exists because most web agencies overcharge and underdeliver.
+              KPT Designs exists because most web agencies overcharge and underdeliver.
               We build modern, hand-coded websites that actually convert —
               and we do it at a price that makes sense.
             </motion.p>
@@ -85,7 +85,7 @@ export default function AboutPage() {
       </section>
 
       {/* Story */}
-      <section className="py-24 bg-qblack relative">
+      <section className="py-24 bg-qblack relative carbon-weave">
         <div className="absolute inset-0 bg-dot-pattern" />
         <div className="max-w-4xl mx-auto px-6 relative z-10">
           <motion.div
@@ -97,7 +97,7 @@ export default function AboutPage() {
             <div className="max-w-2xl">
               <motion.p
                 variants={fadeUp}
-                className="text-qyellow text-sm uppercase tracking-[0.25em] font-medium mb-3"
+                className="section-label text-qyellow/60 mb-3"
               >
                 The Origin
               </motion.p>
@@ -119,7 +119,7 @@ export default function AboutPage() {
                 variants={fadeUp}
                 className="text-qwhite/60 leading-relaxed mb-4"
               >
-                EGO exists to do it differently. We write real code backed by
+                KPT Designs exists to do it differently. We write real code backed by
                 state-of-the-art AI tools — the same modern frameworks powering
                 billion-dollar tech companies — engineered for speed, SEO, and
                 conversion. No WordPress. No page builders. No bloat.
@@ -138,7 +138,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section className="py-24 bg-qblack-light">
+      <section className="py-24 bg-qblack-light carbon-fiber">
         <div className="max-w-6xl mx-auto px-6">
           <motion.div
             initial="hidden"
@@ -149,9 +149,9 @@ export default function AboutPage() {
           >
             <motion.p
               variants={fadeUp}
-              className="text-qyellow text-sm uppercase tracking-[0.25em] font-medium mb-3"
+              className="section-label text-qyellow/60 mb-3"
             >
-              What We Believe
+              // VALUES
             </motion.p>
             <motion.h2
               variants={fadeUp}
@@ -171,7 +171,7 @@ export default function AboutPage() {
             {values.map((v) => (
               <motion.div key={v.title} variants={fadeUp}>
                 <div className="flex gap-5">
-                  <div className="w-12 h-12 rounded-xl bg-qwhite/10 flex items-center justify-center shrink-0">
+                  <div className="w-12 h-12 rounded-[2px] bg-qwhite/10 flex items-center justify-center shrink-0">
                     <v.icon className="h-6 w-6 text-qwhite" />
                   </div>
                   <div>
@@ -190,7 +190,7 @@ export default function AboutPage() {
       </section>
 
       {/* Tech Stack */}
-      <section className="py-24 bg-qblack relative">
+      <section className="py-24 bg-qblack relative carbon-weave">
         <div className="absolute inset-0 bg-dot-pattern" />
         <div className="max-w-4xl mx-auto px-6 relative z-10">
           <motion.div
@@ -202,9 +202,9 @@ export default function AboutPage() {
           >
             <motion.p
               variants={fadeUp}
-              className="text-qyellow text-sm uppercase tracking-[0.25em] font-medium mb-3"
+              className="section-label text-qyellow/60 mb-3"
             >
-              Technology
+              // TECHNOLOGY
             </motion.p>
             <motion.h2
               variants={fadeUp}
@@ -233,10 +233,10 @@ export default function AboutPage() {
               <motion.div
                 key={tech.name}
                 variants={scaleUp}
-                className="text-center py-6 px-4 rounded-xl bg-qblack-light border border-qwhite/10 hover:border-qwhite/20 hover:shadow-md hover:shadow-black/20 transition-all duration-300"
+                className="text-center py-6 px-4 rounded-[2px] bg-qblack-light border border-qwhite/10 hover:border-qwhite/20 hover:shadow-md hover:shadow-black/20 transition-all duration-300"
               >
                 <p className="font-semibold text-qwhite">{tech.name}</p>
-                <p className="text-xs text-qwhite/50 mt-1">
+                <p className="text-xs text-qwhite/50 mt-1 font-mono">
                   {tech.category}
                 </p>
               </motion.div>
@@ -246,7 +246,7 @@ export default function AboutPage() {
       </section>
 
       {/* Comparison */}
-      <section className="py-24 bg-qblack-light">
+      <section className="py-24 bg-qblack-light carbon-fiber">
         <div className="max-w-4xl mx-auto px-6">
           <motion.div
             initial="hidden"
@@ -257,15 +257,15 @@ export default function AboutPage() {
           >
             <motion.p
               variants={fadeUp}
-              className="text-qyellow text-sm uppercase tracking-[0.25em] font-medium mb-3"
+              className="section-label text-qyellow/60 mb-3"
             >
-              The Difference
+              // COMPARISON
             </motion.p>
             <motion.h2
               variants={fadeUp}
               className="font-serif text-3xl md:text-4xl font-bold text-qwhite"
             >
-              EGO vs. the alternatives.
+              KPT vs. the alternatives.
             </motion.h2>
           </motion.div>
 
@@ -275,12 +275,12 @@ export default function AboutPage() {
             viewport={{ once: true, margin: "-50px" }}
             variants={fadeUp}
           >
-            <div className="overflow-hidden rounded-xl border border-qwhite/10">
+            <div className="overflow-hidden rounded-[2px] border border-qwhite/10">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-qblack-dark text-qwhite">
                     <th className="text-left p-4 font-medium"></th>
-                    <th className="p-4 font-semibold text-qyellow">EGO</th>
+                    <th className="p-4 font-semibold text-qyellow">KPT</th>
                     <th className="p-4 font-medium text-qwhite/60">Big Agency</th>
                     <th className="p-4 font-medium text-qwhite/60">DIY Builder</th>
                   </tr>
@@ -336,9 +336,9 @@ export default function AboutPage() {
       {/* Company Info */}
       <section className="py-16 bg-qblack border-t border-qwhite/5">
         <div className="max-w-4xl mx-auto px-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 text-sm text-qwhite/40">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 text-sm text-qwhite/40 font-mono">
             <div className="flex items-center gap-6">
-              <span className="uppercase tracking-[0.2em] text-qwhite/60">Ego Web Design</span>
+              <span className="uppercase tracking-[0.2em] text-qwhite/60">KPT Designs</span>
               <span className="hidden sm:block w-px h-4 bg-qwhite/10" />
               <span>Nationwide — Remote First</span>
             </div>
@@ -352,9 +352,9 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-qblack-dark text-qwhite relative overflow-hidden grain-overlay">
+      <section className="py-24 bg-qblack-dark text-qwhite relative overflow-hidden grain-overlay carbon-weave">
         <div className="absolute inset-0 bg-grid-pattern-light" />
-        <div className="absolute top-0 right-0 w-72 h-72 bg-qyellow/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-72 h-72 bg-qyellow/10 rounded-[2px] blur-3xl" />
         <div className="max-w-3xl mx-auto px-6 text-center relative z-10">
           <motion.div
             initial="hidden"
@@ -381,14 +381,14 @@ export default function AboutPage() {
                 href="/contact"
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "bg-qyellow hover:bg-qyellow-light text-qblack-dark font-semibold text-base px-8 shadow-lg shadow-qyellow/20"
+                  "bg-qyellow hover:bg-qyellow-light text-qblack-dark font-semibold text-base px-8 shadow-lg shadow-qyellow/20 rounded-[2px] button-shine"
                 )}
               >
                 Start a Conversation <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center h-9 px-8 text-base font-medium rounded-lg border border-qwhite/30 text-qwhite hover:bg-qwhite/10 transition-all duration-300"
+                className="inline-flex items-center justify-center h-9 px-8 text-base font-medium rounded-[2px] border border-qwhite/30 text-qwhite hover:bg-qwhite/10 transition-all duration-300 button-shine"
               >
                 View Pricing
               </Link>

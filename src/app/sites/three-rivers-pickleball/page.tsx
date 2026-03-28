@@ -769,7 +769,7 @@ export default function ThreeRiversPickleball() {
             </p>
             <p className="text-xs text-white/30 mt-2">
               Website by{" "}
-              <a href="/" className="text-white/40 hover:text-white transition-colors">Ego Web Design</a>
+              <a href="/" className="text-white/40 hover:text-white transition-colors">KPT Designs</a>
             </p>
           </div>
         </div>

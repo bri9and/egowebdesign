@@ -18,7 +18,7 @@ const serviceLinks = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-qblack-dark text-qwhite">
+    <footer className="border-t border-border bg-qblack-dark text-qwhite carbon-weave">
       <div className="max-w-6xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand */}
@@ -31,18 +31,16 @@ export function Footer() {
               precision and care, nationwide.
             </p>
             <a
-              href="mailto:hello@egowebdesign.com"
+              href="mailto:hello@kptdesigns.com"
               className="text-sm text-qyellow hover:text-qyellow-light transition-colors mt-3 inline-block"
             >
-              hello@egowebdesign.com
+              hello@kptdesigns.com
             </a>
           </div>
 
           {/* Pages */}
           <div>
-            <h4 className="text-xs uppercase tracking-[0.2em] font-semibold mb-4 text-qwhite/40">
-              Pages
-            </h4>
+            <span className="section-label mb-4 block">// PAGES</span>
             <nav className="flex flex-col gap-2">
               {pageLinks.map((link) => (
                 <Link
@@ -58,9 +56,7 @@ export function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="text-xs uppercase tracking-[0.2em] font-semibold mb-4 text-qwhite/40">
-              Services
-            </h4>
+            <span className="section-label mb-4 block">// SERVICES</span>
             <nav className="flex flex-col gap-2">
               {serviceLinks.map((link) => (
                 <Link
@@ -76,15 +72,13 @@ export function Footer() {
 
           {/* Contact & Location */}
           <div>
-            <h4 className="text-xs uppercase tracking-[0.2em] font-semibold mb-4 text-qwhite/40">
-              Get in Touch
-            </h4>
+            <span className="section-label mb-4 block">// CONTACT</span>
             <div className="flex flex-col gap-3 text-sm text-qwhite/60">
               <a
-                href="mailto:hello@egowebdesign.com"
+                href="mailto:hello@kptdesigns.com"
                 className="hover:text-qwhite transition-colors"
               >
-                hello@egowebdesign.com
+                hello@kptdesigns.com
               </a>
               <span>Nationwide</span>
               <span>Mon-Fri, 9am-6pm EST</span>
@@ -101,11 +95,11 @@ export function Footer() {
         </div>
 
         <div className="border-t border-qwhite/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-qwhite/40">
-            &copy; {new Date().getFullYear()} Ego Web Design. All rights
+          <p className="text-xs text-qwhite/40 font-mono">
+            &copy; {new Date().getFullYear()} KPT Designs. All rights
             reserved.
           </p>
-          <p className="text-xs text-qwhite/40">
+          <p className="text-xs text-qwhite/40 font-mono">
             Modern websites. Built to convert.
           </p>
         </div>

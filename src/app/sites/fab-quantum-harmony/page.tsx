@@ -588,7 +588,7 @@ export default function FabQuantumHarmony() {
             <p>
               Website by{" "}
               <a href="/" className="text-white/30 hover:text-[#C4B5FD] transition-colors">
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

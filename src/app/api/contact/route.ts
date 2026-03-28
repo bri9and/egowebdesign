@@ -65,14 +65,14 @@ export async function POST(request: Request) {
 
       // Notification email to business owner
       await resend.emails.send({
-        from: "Ego Web Design <contact@egowebdesign.com>",
-        to: "hello@egowebdesign.com",
+        from: "KPT Designs <contact@kptdesigns.com>",
+        to: "hello@kptdesigns.com",
         replyTo: email,
         subject: `New inquiry from ${safeName}${safeBusiness !== "Not provided" ? ` (${safeBusiness})` : ""}`,
         html: `
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: #1b1f22; padding: 24px; text-align: center;">
-              <h1 style="color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 2px;">EGO</h1>
+              <h1 style="color: #ffffff; margin: 0; font-size: 24px; letter-spacing: 2px;">KPT Designs</h1>
               <p style="color: rgba(255,255,255,0.5); margin: 8px 0 0; font-size: 14px;">New Contact Form Submission</p>
             </div>
             <div style="padding: 24px; background: #ffffff;">
@@ -111,7 +111,7 @@ export async function POST(request: Request) {
               </p>
             </div>
             <div style="background: #1b1f22; padding: 12px; text-align: center;">
-              <p style="color: rgba(255,255,255,0.4); margin: 0; font-size: 12px;">Ego Web Design</p>
+              <p style="color: rgba(255,255,255,0.4); margin: 0; font-size: 12px;">KPT Designs</p>
             </div>
           </div>
         `,
@@ -119,14 +119,14 @@ export async function POST(request: Request) {
 
       // Auto-reply to the person who submitted
       await resend.emails.send({
-        from: "Ego Web Design <contact@egowebdesign.com>",
+        from: "KPT Designs <contact@kptdesigns.com>",
         to: email,
         subject: `Thanks for reaching out, ${safeName.split(" ")[0]}!`,
         html: `
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background: #1b1f22; padding: 24px; text-align: center;">
-              <h1 style="color: #ffffff; margin: 0; font-size: 28px; letter-spacing: 3px;">EGO</h1>
-              <p style="color: rgba(255,255,255,0.5); margin: 8px 0 0; font-size: 14px;">Ego Web Design</p>
+              <h1 style="color: #ffffff; margin: 0; font-size: 28px; letter-spacing: 3px;">KPT Designs</h1>
+              <p style="color: rgba(255,255,255,0.5); margin: 8px 0 0; font-size: 14px;">KPT Designs</p>
             </div>
             <div style="padding: 24px; background: #ffffff;">
               <p style="color: #000000; font-size: 18px; font-weight: bold; margin: 0 0 16px;">
@@ -137,17 +137,17 @@ export async function POST(request: Request) {
               </p>
               <p style="line-height: 1.6; color: #333; margin: 0 0 16px;">
                 In the meantime, feel free to check out our pricing at
-                <a href="https://egowebdesign.com/pricing" style="color: #ffffff; font-weight: bold;">egowebdesign.com</a>.
+                <a href="https://kptdesigns.vercel.app/pricing" style="color: #ffffff; font-weight: bold;">kptdesigns.vercel.app</a>.
               </p>
               <p style="line-height: 1.6; color: #333; margin: 0;">
                 Talk soon,<br>
-                <strong style="color: #000000;">The EGO Team</strong><br>
-                <span style="font-size: 14px; color: #888;">Ego Web Design</span>
+                <strong style="color: #000000;">The KPT Team</strong><br>
+                <span style="font-size: 14px; color: #888;">KPT Designs</span>
               </p>
             </div>
             <div style="background: #1b1f22; padding: 12px; text-align: center;">
               <p style="color: rgba(255,255,255,0.4); margin: 0; font-size: 12px;">
-                hello@egowebdesign.com
+                hello@kptdesigns.com
               </p>
             </div>
           </div>

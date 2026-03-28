@@ -784,7 +784,7 @@ export default function EdgewoodMonuments() {
                 className="transition-colors hover:text-white"
                 style={{ color: "#9A9389" }}
               >
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

@@ -2,10 +2,10 @@
  * AI site generation prompts and helpers.
  *
  * These instruct Claude to generate complete Next.js page.tsx components that
- * match EWD's existing hand-built site pattern.
+ * match KPT's existing hand-built site pattern.
  */
 
-export const SITE_GENERATION_PROMPT = `You are a senior front-end developer at Ego Web Design (EWD). Your job is to generate a COMPLETE Next.js page.tsx component for a client's website.
+export const SITE_GENERATION_PROMPT = `You are a senior front-end developer at KPT Designs (KPT). Your job is to generate a COMPLETE Next.js page.tsx component for a client's website.
 
 ## Output Requirements
 - Return ONLY the TSX code. No markdown fences, no explanation, no preamble.
@@ -35,7 +35,7 @@ The site uses a dark theme with these conventions:
 4. **About / Why Us** — Business story, stats (years, rating, insurance), credentials
 5. **Testimonials** — 3 customer reviews with star ratings, names, locations
 6. **CTA Band** — "Ready to get started?" with phone number
-7. **Footer** — Phone, address, hours, copyright, "Website by Ego Web Design" link
+7. **Footer** — Phone, address, hours, copyright, "Website by KPT Designs" link
 
 ## Code Style Rules
 - Export metadata as a named const (not default): \`export const metadata = { ... }\`

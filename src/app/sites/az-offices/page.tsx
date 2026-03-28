@@ -896,7 +896,7 @@ export default function AZOffices() {
             <p>
               Website by{" "}
               <a href="/" className="text-white/40 hover:text-white transition-colors">
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

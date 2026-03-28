@@ -471,7 +471,7 @@ export default function LeBaronCarroll() {
           </div>
           <div className="border-t border-white/5 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/20" style={sans}>
             <p>&copy; {new Date().getFullYear()} LeBaron Carroll. All rights reserved.</p>
-            <p>Website by{" "}<a href="/" className="text-white/35 hover:text-white transition-colors">Ego Web Design</a></p>
+            <p>Website by{" "}<a href="/" className="text-white/35 hover:text-white transition-colors">KPT Designs</a></p>
           </div>
         </div>
       </footer>

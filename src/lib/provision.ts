@@ -74,7 +74,7 @@ export function sanitizeRepoName(domain: string): string {
 // ─── GitHub ─────────────────────────────────────────────────────────────────
 
 /**
- * Creates a GitHub repo from the egowebdesign/site-template template.
+ * Creates a GitHub repo from the KPT Designs site-template template.
  * Uses the "generate from template" API endpoint.
  */
 export async function createGitHubRepo(domain: string): Promise<GitHubRepoResult> {
@@ -95,7 +95,7 @@ export async function createGitHubRepo(domain: string): Promise<GitHubRepoResult
       body: JSON.stringify({
         owner: "bri9and",
         name: repoName,
-        description: `Site for ${domain} — provisioned by EGO`,
+        description: `Site for ${domain} — provisioned by KPT Designs`,
         private: false,
         include_all_branches: false,
       }),

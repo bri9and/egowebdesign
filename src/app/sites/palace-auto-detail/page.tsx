@@ -744,7 +744,7 @@ export default function PalaceAutoDetail() {
             <p>
               Website by{" "}
               <a href="/" className="transition-colors hover:text-white" style={{ color: C.gray }}>
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

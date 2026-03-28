@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk } from "next/font/google";
+import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import { LayoutShell } from "@/components/layout-shell";
@@ -9,10 +9,15 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
 });
 
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: {
-    default: "Ego Web Design | Modern Websites That Convert",
-    template: "%s | Ego Web Design",
+    default: "KPT Designs | Modern Websites That Convert",
+    template: "%s | KPT Designs",
   },
   description:
     "We modernize outdated websites into fast, beautiful, high-converting experiences. Custom-coded, no templates, you own everything.",
@@ -28,24 +33,24 @@ export const metadata: Metadata = {
     "IT consulting",
     "small business website",
   ],
-  authors: [{ name: "Ego Web Design" }],
-  creator: "Ego Web Design",
-  publisher: "Ego Web Design",
-  metadataBase: new URL("https://egowebdesign.com"),
+  authors: [{ name: "KPT Designs" }],
+  creator: "KPT Designs",
+  publisher: "KPT Designs",
+  metadataBase: new URL("https://kptdesigns.vercel.app"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "en_US",
-    siteName: "Ego Web Design",
-    title: "Ego Web Design | Modern Websites That Convert",
+    siteName: "KPT Designs",
+    title: "KPT Designs | Modern Websites That Convert",
     description:
       "We modernize outdated websites into fast, beautiful, high-converting experiences. Custom-coded, no templates, you own everything.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ego Web Design | Modern Websites That Convert",
+    title: "KPT Designs | Modern Websites That Convert",
     description:
       "We modernize outdated websites into fast, beautiful, high-converting experiences. Custom-coded, no templates, you own everything.",
   },
@@ -70,11 +75,11 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    name: "Ego Web Design",
+    name: "KPT Designs",
     description:
       "We modernize outdated websites into fast, beautiful, high-converting experiences. Custom-coded, no templates, you own everything.",
-    url: "https://egowebdesign.com",
-    email: "hello@egowebdesign.com",
+    url: "https://kptdesigns.vercel.app",
+    email: "hello@kptdesigns.com",
     areaServed: {
       "@type": "Country",
       name: "United States",
@@ -98,7 +103,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${spaceGrotesk.variable} antialiased`}>
+      <body className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}>
         <ClerkProvider
           appearance={{
             variables: {
@@ -108,10 +113,11 @@ export default function RootLayout({
               colorTextSecondary: "rgba(255, 255, 255, 0.6)",
               colorInputBackground: "#0A0A0A",
               colorInputText: "#ffffff",
+              borderRadius: "2px",
             },
           }}
         >
-          <span style={{ position: 'fixed', top: 8, right: 12, fontSize: 11, color: 'rgba(0, 0, 0, 0.25)', zIndex: 9999, fontFamily: 'monospace', pointerEvents: 'none' }}>v2.0</span>
+          <span style={{ position: 'fixed', top: 8, right: 12, fontSize: 11, color: 'rgba(0, 0, 0, 0.25)', zIndex: 9999, fontFamily: 'monospace', pointerEvents: 'none' }}>v3.0</span>
           <LayoutShell>{children}</LayoutShell>
         </ClerkProvider>
       </body>

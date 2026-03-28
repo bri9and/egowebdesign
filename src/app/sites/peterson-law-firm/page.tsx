@@ -494,7 +494,7 @@ export default function PetersonLawFirm() {
               <span>
                 Website by{" "}
                 <a href="/" className="underline hover:text-white transition-colors" style={{ color: C.gold }}>
-                  Ego Web Design
+                  KPT Designs
                 </a>
               </span>
             </div>

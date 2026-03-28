@@ -857,7 +857,7 @@ export default function BigDoorRealty() {
                 href="/"
                 className="text-white/35 hover:text-white transition-colors"
               >
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

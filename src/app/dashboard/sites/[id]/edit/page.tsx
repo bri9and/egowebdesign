@@ -544,7 +544,7 @@ export default function AIBuilderPage() {
                       color: "rgba(255,255,255,0.4)",
                     }}
                   >
-                    {domain || "your-site.egowebdesign.com"}
+                    {domain || "your-site.kptdesigns.vercel.app"}
                   </div>
                 </div>
                 <iframe

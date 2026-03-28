@@ -301,7 +301,7 @@ export default function ZekeSonRoofing() {
           </div>
           <div className="border-t border-[#2C2C2C]/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-[#2C2C2C]/30">
             <p>&copy; {new Date().getFullYear()} Zeke &amp; Son Roofing. All rights reserved.</p>
-            <p>Website by{" "}<a href="/" className="text-[#8B7355] hover:text-[#2C2C2C] transition-colors">Ego Web Design</a></p>
+            <p>Website by{" "}<a href="/" className="text-[#8B7355] hover:text-[#2C2C2C] transition-colors">KPT Designs</a></p>
           </div>
         </div>
       </footer>

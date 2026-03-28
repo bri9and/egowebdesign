@@ -111,7 +111,7 @@ export async function POST(req: NextRequest) {
   // github_repo format: "owner/repo"
   const repo = site.github_repo;
   const filePath = "src/app/page.tsx";
-  const commitMessage = `Update site: ${site.name}\n\nGenerated via Ego Web Design AI builder\nDraft ID: ${draft.id}`;
+  const commitMessage = `Update site: ${site.name}\n\nGenerated via KPT Designs AI builder\nDraft ID: ${draft.id}`;
 
   try {
     // Step 1: Check if file already exists (to get its SHA for updates)

@@ -519,7 +519,7 @@ export default function VitesseWorldwide() {
             <p>
               Website by{" "}
               <a href="/" className="text-white/35 hover:text-[#4A90D9] transition-colors">
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

@@ -473,7 +473,7 @@ export default function CiriglianoPlumbing() {
 
           <div className="border-t border-white/5 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/25">
             <p>&copy; {new Date().getFullYear()} Cirigliano Plumbing LLC. All rights reserved.</p>
-            <p>Website by <a href="/" className="text-white/40 hover:text-white transition-colors">Ego Web Design</a></p>
+            <p>Website by <a href="/" className="text-white/40 hover:text-white transition-colors">KPT Designs</a></p>
           </div>
         </div>
       </footer>

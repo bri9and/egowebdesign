@@ -506,14 +506,14 @@ function HeroCardStack() {
             }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
-              "absolute top-0 right-0 w-[85%] h-[75%] rounded-2xl border backdrop-blur-md p-8 flex flex-col justify-between",
+              "absolute top-0 right-0 w-[85%] h-[75%] rounded-[2px] border backdrop-blur-md p-8 flex flex-col justify-between carbon-weave",
               isActive
                 ? "bg-gradient-to-br from-qwhite/8 to-qwhite/[0.02] border-qwhite/15"
                 : "bg-qyellow/5 border-qwhite/8"
             )}
           >
             <div>
-              <div className="w-10 h-10 rounded-lg bg-qyellow/20 flex items-center justify-center mb-6">
+              <div className="w-10 h-10 rounded-[2px] bg-qyellow/20 flex items-center justify-center mb-6">
                 <card.icon className="h-5 w-5 text-qyellow" />
               </div>
               <p className="font-serif text-qwhite/90 text-lg font-medium mb-2">{card.title}</p>
@@ -618,15 +618,15 @@ export default function Home() {
     <>
       {/* ── Hero ── */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
-        <div className="absolute inset-0 bg-qblack-dark" />
+        <div className="absolute inset-0 bg-qblack-dark carbon-fiber" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(255,128,0,0.12)_0%,_transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(255,153,51,0.08)_0%,_transparent_40%)]" />
         <div className="absolute inset-0 bg-grid-pattern-light" />
 
-        {/* EGO watermark */}
+        {/* KPT watermark */}
         <div className="absolute -right-16 top-1/2 -translate-y-1/2 select-none pointer-events-none hidden lg:block">
           <span className="font-serif text-[22rem] xl:text-[28rem] font-bold text-qwhite/[0.02] leading-none tracking-tighter">
-            EGO
+            KPT
           </span>
         </div>
 
@@ -672,14 +672,14 @@ export default function Home() {
                   href="/#work"
                   className={cn(
                     buttonVariants({ size: "lg" }),
-                    "bg-qyellow hover:bg-qyellow-light text-qblack-dark font-semibold text-base px-8 shadow-lg shadow-qyellow/20 hover:shadow-xl hover:shadow-qyellow/30 transition-all duration-300"
+                    "button-shine bg-qyellow hover:bg-qyellow-light text-qblack-dark font-semibold text-base px-8 shadow-lg shadow-qyellow/20 hover:shadow-xl hover:shadow-qyellow/30 transition-all duration-300"
                   )}
                 >
                   See Our Work <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
                 <Link
                   href="/pricing"
-                  className="inline-flex items-center justify-center h-9 px-8 text-base font-medium rounded-lg border border-qwhite/30 text-qwhite hover:bg-qwhite/10 transition-all duration-300"
+                  className="inline-flex items-center justify-center h-9 px-8 text-base font-medium rounded-[2px] border border-qwhite/30 text-qwhite hover:bg-qwhite/10 transition-all duration-300"
                 >
                   View Pricing
                 </Link>
@@ -753,10 +753,11 @@ export default function Home() {
                 variants={scaleUp}
                 className="text-center"
               >
-                <div className="font-serif text-4xl md:text-5xl font-bold text-qyellow mb-2">
+                <div className="font-mono text-4xl md:text-5xl font-bold text-qyellow mb-2">
                   <AnimatedCounter value={stat.value} suffix={stat.suffix} prefix={stat.prefix} />
                 </div>
-                <p className="text-qwhite/50 text-sm uppercase tracking-wider">
+                <p className="text-qwhite/50 text-sm uppercase tracking-wider flex items-center justify-center gap-2">
+                  <span className="telemetry-dot" />
                   {stat.label}
                 </p>
               </motion.div>
@@ -792,6 +793,9 @@ export default function Home() {
             variants={stagger}
             className="text-center mb-16"
           >
+            <motion.div variants={fadeUp} className="mb-3">
+              <span className="section-label">// WORK</span>
+            </motion.div>
             <motion.div variants={fadeUp} className="flex items-center gap-4 mb-4 justify-center">
               <div className="h-px w-12 bg-qyellow/50" />
               <p className="text-qyellow text-sm uppercase tracking-[0.25em] font-medium">
@@ -828,9 +832,9 @@ export default function Home() {
                   {...((project as { href?: string }).href ? {} : { target: "_blank", rel: "noopener noreferrer" })}
                   className="block group"
                 >
-                  <Card className="card-shine group h-full border-qwhite/10 hover:border-qyellow/30 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] bg-qblack/50 overflow-hidden">
+                  <Card className="card-shine group h-full border-qwhite/10 hover:border-qyellow/30 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] bg-qblack/50 overflow-hidden carbon-weave rounded-[2px]">
                     <div
-                      className="h-40 rounded-t-lg flex items-center justify-center border-b border-qwhite/10 relative overflow-hidden"
+                      className="h-40 rounded-t-[2px] flex items-center justify-center border-b border-qwhite/10 relative overflow-hidden"
                       style={(project as { image?: string }).image ? {
                         backgroundImage: `url(${(project as { image?: string }).image})`,
                         backgroundSize: "cover",
@@ -858,7 +862,7 @@ export default function Home() {
                     </div>
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between mb-3">
-                        <span className="text-xs uppercase tracking-wider text-qyellow font-medium bg-qyellow/10 px-2 py-1 rounded">
+                        <span className="text-xs uppercase tracking-wider text-qyellow font-medium bg-qyellow/10 px-2 py-1 rounded-[2px]">
                           {project.category}
                         </span>
                         <ExternalLink className="h-3.5 w-3.5 text-qwhite/30 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -889,6 +893,9 @@ export default function Home() {
             variants={stagger}
             className="text-center mb-16"
           >
+            <motion.div variants={fadeUp} className="mb-3">
+              <span className="section-label">// PROCESS</span>
+            </motion.div>
             <motion.div variants={fadeUp} className="flex items-center gap-4 mb-4 justify-center">
               <div className="h-px w-12 bg-qyellow/50" />
               <p className="text-qyellow text-sm uppercase tracking-[0.25em] font-medium">
@@ -919,12 +926,12 @@ export default function Home() {
           >
             {processSteps.map((step, i) => (
               <motion.div key={step.step} variants={fadeUp}>
-                <div className="group relative h-full p-8 rounded-xl bg-qblack-light border border-qwhite/10 hover:border-qyellow/30 hover:shadow-lg hover:shadow-qwhite/5 transition-all duration-500">
+                <div className="group relative h-full p-8 rounded-[2px] bg-qblack-light border border-qwhite/10 hover:border-qyellow/30 hover:shadow-lg hover:shadow-qwhite/5 transition-all duration-500 carbon-weave">
                   <div className="absolute top-0 left-0 w-1 h-0 group-hover:h-full bg-qyellow transition-all duration-500 rounded-full" />
                   <span className="absolute -right-2 -top-4 font-serif text-[6rem] font-bold text-qwhite/[0.03] leading-none select-none pointer-events-none">
                     {step.step}
                   </span>
-                  <div className="w-12 h-12 rounded-xl bg-qyellow/10 flex items-center justify-center mb-5 group-hover:bg-qyellow/20 transition-colors">
+                  <div className="w-12 h-12 rounded-[2px] bg-qyellow/10 flex items-center justify-center mb-5 group-hover:bg-qyellow/20 transition-colors">
                     <step.icon className="h-6 w-6 text-qwhite" />
                   </div>
                   <span className="text-qyellow font-mono text-xs font-bold tracking-wider">
@@ -953,6 +960,9 @@ export default function Home() {
             variants={stagger}
             className="text-center mb-12"
           >
+            <motion.div variants={fadeUp} className="mb-3">
+              <span className="section-label">// FAQ</span>
+            </motion.div>
             <motion.div variants={fadeUp} className="flex items-center gap-4 mb-4 justify-center">
               <div className="h-px w-12 bg-qyellow/50" />
               <p className="text-qyellow text-sm uppercase tracking-[0.25em] font-medium">
@@ -973,7 +983,7 @@ export default function Home() {
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
             variants={stagger}
-            className="bg-qblack-dark/50 rounded-xl border border-qwhite/10 divide-y-0 px-6"
+            className="bg-qblack-dark/50 rounded-[2px] border border-qwhite/10 divide-y-0 px-6"
           >
             {faqs.map((faq) => (
               <FaqItem key={faq.q} q={faq.q} a={faq.a} />
@@ -1012,14 +1022,14 @@ export default function Home() {
                 href="/contact"
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "bg-qyellow hover:bg-qyellow-light text-qblack-dark font-semibold text-base px-8 shadow-lg shadow-qyellow/20"
+                  "button-shine bg-qyellow hover:bg-qyellow-light text-qblack-dark font-semibold text-base px-8 shadow-lg shadow-qyellow/20"
                 )}
               >
                 Start Your Project <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center h-9 px-8 text-base font-medium rounded-lg border border-qwhite/30 text-qwhite hover:bg-qwhite/10 transition-all duration-300"
+                className="inline-flex items-center justify-center h-9 px-8 text-base font-medium rounded-[2px] border border-qwhite/30 text-qwhite hover:bg-qwhite/10 transition-all duration-300"
               >
                 View Pricing
               </Link>

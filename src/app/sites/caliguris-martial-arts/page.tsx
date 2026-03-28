@@ -539,7 +539,7 @@ export default function CaligurisMartialArts() {
           <p>
             Website by{" "}
             <a href="/" className="transition-colors" style={{ color: "rgba(245,240,232,0.5)" }}>
-              Ego Web Design
+              KPT Designs
             </a>
           </p>
         </div>

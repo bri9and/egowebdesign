@@ -133,7 +133,7 @@ export default function SignUpPage() {
             <p className="text-qwhite/40 mt-2 text-[15px]">
               {pendingVerification
                 ? "We sent a 6-digit code to your email"
-                : "Get started with Ego Web Design"}
+                : "Get started with KPT Designs"}
             </p>
           </div>
 

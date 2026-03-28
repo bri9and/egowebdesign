@@ -510,7 +510,7 @@ export default function KoaCounseling() {
           </div>
           <div className="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/25">
             <p>&copy; {new Date().getFullYear()} Koa Counseling and Consulting, PLLC. All rights reserved.</p>
-            <p>Website by{" "}<a href="/" className="text-white/40 hover:text-[#C5B882] transition-colors">Ego Web Design</a></p>
+            <p>Website by{" "}<a href="/" className="text-white/40 hover:text-[#C5B882] transition-colors">KPT Designs</a></p>
           </div>
         </div>
       </footer>

@@ -22,8 +22,8 @@ const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "hello@egowebdesign.com",
-    href: "mailto:hello@egowebdesign.com",
+    value: "hello@kptdesigns.com",
+    href: "mailto:hello@kptdesigns.com",
   },
   {
     icon: MapPin,
@@ -96,16 +96,16 @@ export default function ContactPage() {
   return (
     <>
       {/* Hero */}
-      <section className="pt-32 pb-16 bg-qblack-dark text-qwhite relative overflow-hidden grain-overlay">
+      <section className="pt-32 pb-16 bg-qblack-dark text-qwhite relative overflow-hidden grain-overlay carbon-fiber">
         <div className="absolute inset-0 bg-grid-pattern-light" />
-        <div className="absolute bottom-0 left-[10%] w-64 h-64 rounded-full bg-qyellow/10 blur-3xl" />
+        <div className="absolute bottom-0 left-[10%] w-64 h-64 rounded-[2px] bg-qyellow/10 blur-3xl" />
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
           <motion.div initial="hidden" animate="visible" variants={stagger}>
             <motion.p
               variants={fadeUp}
-              className="text-qyellow text-sm uppercase tracking-[0.25em] font-medium mb-3"
+              className="section-label text-qyellow/60 mb-3"
             >
-              Contact
+              // CONTACT
             </motion.p>
             <motion.h1
               variants={fadeUp}
@@ -143,11 +143,11 @@ export default function ContactPage() {
                 variants={fadeUp}
                 className="flex items-center gap-3 text-qwhite"
               >
-                <div className="w-8 h-8 rounded-lg bg-qwhite/10 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-[2px] bg-qwhite/10 flex items-center justify-center">
                   <info.icon className="h-4 w-4 text-qyellow" />
                 </div>
                 <div>
-                  <p className="text-xs text-qwhite/40">{info.label}</p>
+                  <p className="text-xs text-qwhite/40 font-mono">{info.label}</p>
                   {info.href ? (
                     <a
                       href={info.href}
@@ -166,7 +166,7 @@ export default function ContactPage() {
       </section>
 
       {/* Form Section */}
-      <section className="py-24 bg-qblack relative">
+      <section className="py-24 bg-qblack relative carbon-weave">
         <div className="absolute inset-0 bg-dot-pattern" />
         <div className="max-w-5xl mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
@@ -188,7 +188,7 @@ export default function ContactPage() {
                 <motion.div variants={fadeUp} className="space-y-6">
                   {nextSteps.map((step) => (
                     <div key={step.step} className="flex gap-4">
-                      <div className="w-8 h-8 rounded-full bg-qwhite/10 flex items-center justify-center shrink-0">
+                      <div className="w-8 h-8 rounded-[2px] bg-qwhite/10 flex items-center justify-center shrink-0">
                         <span className="text-sm font-semibold text-qwhite">
                           {step.step}
                         </span>
@@ -207,7 +207,7 @@ export default function ContactPage() {
               </div>
 
               <motion.div variants={fadeUp}>
-                <Card className="border-qwhite/10 bg-qblack-light">
+                <Card className="border-qwhite/10 bg-qblack-light rounded-[2px]">
                   <CardContent className="p-6">
                     <MessageSquare className="h-5 w-5 text-qwhite mb-3" />
                     <p className="text-sm text-qwhite font-medium mb-1">
@@ -216,10 +216,10 @@ export default function ContactPage() {
                     <p className="text-xs text-muted-foreground leading-relaxed">
                       Send us an email at{" "}
                       <a
-                        href="mailto:hello@egowebdesign.com"
+                        href="mailto:hello@kptdesigns.com"
                         className="text-qyellow hover:underline"
                       >
-                        hello@egowebdesign.com
+                        hello@kptdesigns.com
                       </a>{" "}
                       and we&apos;ll set up a call at a time that works for you.
                     </p>
@@ -228,7 +228,7 @@ export default function ContactPage() {
               </motion.div>
 
               <motion.div variants={fadeUp}>
-                <div className="p-5 rounded-xl bg-qblack-light border border-qwhite/10">
+                <div className="p-5 rounded-[2px] bg-qblack-light border border-qwhite/10">
                   <div className="flex items-center gap-2 mb-2">
                     <Clock className="h-4 w-4 text-qwhite" />
                     <span className="text-sm font-medium text-qwhite">
@@ -254,7 +254,7 @@ export default function ContactPage() {
               className="lg:col-span-3"
             >
               {submitted ? (
-                <Card className="border-qwhite/10 bg-qblack-light">
+                <Card className="border-qwhite/10 bg-qblack-light rounded-[2px]">
                   <CardContent className="p-12 text-center">
                     <motion.div
                       initial={{ scale: 0 }}
@@ -264,7 +264,7 @@ export default function ContactPage() {
                         stiffness: 200,
                         damping: 15,
                       }}
-                      className="w-16 h-16 rounded-full bg-qwhite/15 flex items-center justify-center mx-auto mb-6"
+                      className="w-16 h-16 rounded-[2px] bg-qwhite/15 flex items-center justify-center mx-auto mb-6"
                     >
                       <CheckCircle2 className="h-8 w-8 text-qyellow" />
                     </motion.div>
@@ -291,7 +291,7 @@ export default function ContactPage() {
                   </CardContent>
                 </Card>
               ) : (
-                <Card className="border-qwhite/10 bg-qblack-light shadow-sm">
+                <Card className="border-qwhite/10 bg-qblack-light shadow-sm rounded-[2px]">
                   <CardContent className="p-8">
                     <h3 className="font-serif text-xl font-semibold text-qwhite mb-1">
                       Tell us about your project
@@ -371,7 +371,7 @@ export default function ContactPage() {
                           ].map((service) => (
                             <label
                               key={service}
-                              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-qwhite/10 bg-qblack-light/50 hover:border-qwhite/20 cursor-pointer transition-colors text-sm text-qwhite/70 has-[:checked]:bg-qwhite/10 has-[:checked]:border-qwhite/20 has-[:checked]:text-qwhite"
+                              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-[2px] border border-qwhite/10 bg-qblack-light/50 hover:border-qwhite/20 cursor-pointer transition-colors text-sm text-qwhite/70 has-[:checked]:bg-qwhite/10 has-[:checked]:border-qwhite/20 has-[:checked]:text-qwhite"
                             >
                               <input
                                 type="checkbox"
@@ -402,7 +402,7 @@ export default function ContactPage() {
                       <Button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-qyellow hover:bg-qyellow-light text-qblack-dark font-semibold shadow-md hover:shadow-lg transition-all"
+                        className="w-full bg-qyellow hover:bg-qyellow-light text-qblack-dark font-semibold shadow-md hover:shadow-lg transition-all rounded-[2px] button-shine"
                       >
                         {loading ? (
                           <>

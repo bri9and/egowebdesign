@@ -475,7 +475,7 @@ export default function HarborCounseling() {
 
           <div className="border-t mt-10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
             <p className="text-white/20">&copy; {new Date().getFullYear()} The Harbor Counseling. All rights reserved.</p>
-            <p className="text-white/20">Website by{" "}<a href="/" className="text-white/35 hover:text-white/60 transition-colors">Ego Web Design</a></p>
+            <p className="text-white/20">Website by{" "}<a href="/" className="text-white/35 hover:text-white/60 transition-colors">KPT Designs</a></p>
           </div>
         </div>
       </footer>

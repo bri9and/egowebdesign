@@ -817,7 +817,7 @@ export default function AndersonsNutrition() {
                 className="transition-colors"
                 style={{ color: "rgba(255,255,255,0.55)" }}
               >
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

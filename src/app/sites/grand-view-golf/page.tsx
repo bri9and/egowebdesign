@@ -318,7 +318,7 @@ export default function GrandViewGolf() {
           </div>
           <div className="border-t border-white/10 mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/25">
             <p>&copy; {new Date().getFullYear()} Grand View Golf Club. All rights reserved.</p>
-            <p>Website by{" "}<a href="/" className="text-white/40 hover:text-[#C9A84C] transition-colors">Ego Web Design</a></p>
+            <p>Website by{" "}<a href="/" className="text-white/40 hover:text-[#C9A84C] transition-colors">KPT Designs</a></p>
           </div>
         </div>
       </footer>

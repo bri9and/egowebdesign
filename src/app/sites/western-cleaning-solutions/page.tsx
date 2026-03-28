@@ -766,7 +766,7 @@ export default function WesternCleaningSolutions() {
                 href="/"
                 className="text-white/40 hover:text-[#64B5F6] transition-colors"
               >
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

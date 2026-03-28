@@ -533,7 +533,7 @@ export default function DNACustomHomes() {
             <p>
               Website by{" "}
               <a href="/" className="text-[#1C1C1C]/50 hover:text-[#B87333] transition-colors">
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

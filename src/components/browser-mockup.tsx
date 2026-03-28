@@ -9,7 +9,7 @@ interface BrowserMockupProps {
 }
 
 export function BrowserMockup({
-  url = "egowebdesign.com",
+  url = "kptdesigns.vercel.app",
   className,
   children,
 }: BrowserMockupProps) {

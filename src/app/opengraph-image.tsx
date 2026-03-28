@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
-export const alt = "Ego Web Designs - Modern Websites That Convert";
+export const alt = "KPT Designs - Modern Websites That Convert";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -28,7 +28,7 @@ export default async function Image() {
             position: "absolute",
             inset: 0,
             backgroundImage:
-              "radial-gradient(ellipse at center, rgba(5,97,234,0.15) 0%, transparent 60%)",
+              "radial-gradient(ellipse at center, rgba(255,128,0,0.12) 0%, transparent 60%)",
           }}
         />
 
@@ -43,7 +43,7 @@ export default async function Image() {
             zIndex: 10,
           }}
         >
-          {/* Ego Wordmark */}
+          {/* KPT Wordmark */}
           <div
             style={{
               display: "flex",
@@ -56,10 +56,11 @@ export default async function Image() {
               style={{
                 fontSize: 96,
                 fontWeight: 700,
-                color: "#ffffff",
+                color: "#FF8000",
+                letterSpacing: "12px",
               }}
             >
-              Ego
+              KPT
             </div>
             <div
               style={{
@@ -68,7 +69,7 @@ export default async function Image() {
                 color: "rgba(255,255,255,0.6)",
               }}
             >
-              Web Designs
+              Designs
             </div>
           </div>
 
@@ -106,7 +107,7 @@ export default async function Image() {
               textTransform: "uppercase",
             }}
           >
-            egowebdesign.com
+            kptdesigns.com
           </div>
         </div>
 

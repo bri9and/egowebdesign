@@ -471,7 +471,7 @@ export default function MarshallLawFirm() {
 
           <div className="border-t mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs" style={{ ...sans, borderColor: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.25)" }}>
             <p>&copy; {new Date().getFullYear()} The Marshall Law Firm, PLLC. All rights reserved.</p>
-            <p>Website by{" "}<a href="/" className="hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.4)" }}>Ego Web Design</a></p>
+            <p>Website by{" "}<a href="/" className="hover:text-white transition-colors" style={{ color: "rgba(255,255,255,0.4)" }}>KPT Designs</a></p>
           </div>
         </div>
       </footer>

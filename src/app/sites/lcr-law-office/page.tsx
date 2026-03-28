@@ -932,7 +932,7 @@ export default function LCRLawOffice() {
                 className="transition-colors hover:brightness-125"
                 style={{ color: C.creamMuted }}
               >
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

@@ -383,7 +383,7 @@ export default function InspirationalDesigns() {
           <p className="text-xs" style={{ color: "#8B8178" }}>
             Website by{" "}
             <a href="/" className="underline transition-opacity hover:opacity-60">
-              Ego Web Design
+              KPT Designs
             </a>
           </p>
         </div>

@@ -470,7 +470,7 @@ export default function NicholasElectric() {
             <p>
               Website by{" "}
               <a href="/" className="transition-colors hover:text-white" style={{ color: "#8888A0" }}>
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

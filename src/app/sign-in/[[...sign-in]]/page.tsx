@@ -9,7 +9,7 @@ import { useState } from "react";
 
 const testimonials = [
   {
-    quote: "Ego completely transformed our online presence. The site they built drives 3x more leads than our old one.",
+    quote: "KPT Designs completely transformed our online presence. The site they built drives 3x more leads than our old one.",
     name: "James Mitchell",
     title: "Owner, Pittsburgh North GC",
   },
@@ -141,7 +141,7 @@ export default function SignInPage() {
             <p className="text-qwhite/40 mt-2 text-[15px]">
               {needs2FA
                 ? "Enter the code from your authenticator app"
-                : "Sign in to your Ego Web Design account"}
+                : "Sign in to your KPT Designs account"}
             </p>
           </div>
 

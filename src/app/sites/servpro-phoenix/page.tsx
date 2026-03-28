@@ -565,7 +565,7 @@ export default function ServproPhoenix() {
             <p>
               Website by{" "}
               <a href="/" className="text-white/50 hover:text-white transition-colors">
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

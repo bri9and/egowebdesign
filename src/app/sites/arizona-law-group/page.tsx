@@ -1183,7 +1183,7 @@ export default function ArizonaLawGroupPage() {
             <p className="text-xs" style={{ color: colors.sand, opacity: 0.5 }}>
               Website by{" "}
               <a href="/" className="underline hover:opacity-80">
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

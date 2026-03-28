@@ -615,7 +615,7 @@ export default function EastValleyMediator() {
             <p>
               Website by{" "}
               <a href="/" className="text-white/30 hover:text-[#D4C5A9] transition-colors">
-                Ego Web Design
+                KPT Designs
               </a>
             </p>
           </div>

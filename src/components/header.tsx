@@ -41,13 +41,11 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
-          ? "bg-qblack-dark/95 backdrop-blur-md shadow-lg border-b border-qwhite/10"
-          : "bg-qblack-dark/80 backdrop-blur-sm"
+        "fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300",
+        scrolled && "shadow-lg"
       )}
     >
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-6 h-[52px] flex items-center justify-between">
         <Link href="/" className="group flex items-center gap-3 text-qwhite hover:text-qwhite transition-colors duration-200">
           <Logo variant="full" size="md" />
         </Link>
@@ -58,7 +56,7 @@ export function Header() {
               key={link.href}
               href={link.href}
               className={cn(
-                "relative text-sm px-3 py-2 rounded-md transition-all duration-200 hover:text-qwhite hover:bg-qwhite/10",
+                "relative text-sm px-3 py-2 rounded-[2px] transition-all duration-200 hover:text-qwhite hover:bg-qwhite/10",
                 isActive(link.href)
                   ? "text-qwhite bg-qwhite/10"
                   : "text-qwhite/90"
@@ -66,7 +64,7 @@ export function Header() {
             >
               {link.label}
               {isActive(link.href) && (
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-qyellow rounded-full" />
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-qyellow" />
               )}
             </Link>
           ))}
@@ -74,7 +72,7 @@ export function Header() {
             <>
               <Link
                 href="/sign-in"
-                className="ml-3 text-sm px-3 py-2 rounded-md transition-all duration-200 text-qwhite/90 hover:text-qwhite hover:bg-qwhite/10"
+                className="ml-3 text-sm px-3 py-2 rounded-[2px] transition-all duration-200 text-qwhite/90 hover:text-qwhite hover:bg-qwhite/10"
               >
                 Sign In
               </Link>
@@ -82,7 +80,7 @@ export function Header() {
                 href="/sign-up"
                 className={cn(
                   buttonVariants({ size: "sm" }),
-                  "ml-2 bg-qyellow hover:bg-qyellow-light text-qblack-dark shadow-md hover:shadow-lg transition-all duration-200"
+                  "ml-2 bg-qyellow hover:bg-qyellow-light text-qblack-dark shadow-md hover:shadow-lg transition-all duration-200 button-shine rounded-[2px]"
                 )}
               >
                 Get Started
@@ -93,7 +91,7 @@ export function Header() {
               <Link
                 href="/dashboard"
                 className={cn(
-                  "ml-3 text-sm px-3 py-2 rounded-md transition-all duration-200 hover:text-qwhite hover:bg-qwhite/10",
+                  "ml-3 text-sm px-3 py-2 rounded-[2px] transition-all duration-200 hover:text-qwhite hover:bg-qwhite/10",
                   pathname.startsWith("/dashboard")
                     ? "text-qwhite bg-qwhite/10"
                     : "text-qwhite/90"
@@ -112,7 +110,7 @@ export function Header() {
         </nav>
 
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger className="md:hidden p-2 rounded-md hover:bg-qwhite/10 transition-colors">
+          <SheetTrigger className="md:hidden p-2 rounded-[2px] hover:bg-qwhite/10 transition-colors">
             <Menu className="h-5 w-5 text-qwhite" />
           </SheetTrigger>
           <SheetContent side="right" className="w-72 bg-qblack-dark border-qwhite/10">
@@ -123,7 +121,7 @@ export function Header() {
                   href={link.href}
                   onClick={() => setOpen(false)}
                   className={cn(
-                    "text-lg py-2 px-3 rounded-lg transition-all duration-200 hover:text-qwhite hover:bg-qwhite/5",
+                    "text-lg py-2 px-3 rounded-[2px] transition-all duration-200 hover:text-qwhite hover:bg-qwhite/5",
                     isActive(link.href)
                       ? "text-qwhite bg-qwhite/10"
                       : "text-qwhite/90"
@@ -137,7 +135,7 @@ export function Header() {
                   <Link
                     href="/sign-in"
                     onClick={() => setOpen(false)}
-                    className="text-lg py-2 px-3 rounded-lg transition-all duration-200 text-qwhite/90 hover:text-qwhite hover:bg-qwhite/5"
+                    className="text-lg py-2 px-3 rounded-[2px] transition-all duration-200 text-qwhite/90 hover:text-qwhite hover:bg-qwhite/5"
                   >
                     Sign In
                   </Link>
@@ -146,7 +144,7 @@ export function Header() {
                     onClick={() => setOpen(false)}
                     className={cn(
                       buttonVariants(),
-                      "bg-qyellow hover:bg-qyellow-light text-qblack-dark mt-4"
+                      "bg-qyellow hover:bg-qyellow-light text-qblack-dark mt-4 button-shine rounded-[2px]"
                     )}
                   >
                     Get Started
@@ -158,7 +156,7 @@ export function Header() {
                     href="/dashboard"
                     onClick={() => setOpen(false)}
                     className={cn(
-                      "text-lg py-2 px-3 rounded-lg transition-all duration-200 hover:text-qwhite hover:bg-qwhite/5",
+                      "text-lg py-2 px-3 rounded-[2px] transition-all duration-200 hover:text-qwhite hover:bg-qwhite/5",
                       pathname.startsWith("/dashboard")
                         ? "text-qwhite bg-qwhite/10"
                         : "text-qwhite/90"
