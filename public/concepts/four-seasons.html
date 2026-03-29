@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Four Seasons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* =============================================
+     RESET & CUSTOM PROPERTIES
+     ============================================= */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #C5A47E;
+    --gold-light: #D4B896;
+    --gold-dark: #A8895E;
+    --gold-dim: rgba(197, 164, 126, 0.12);
+    --gold-glow: rgba(197, 164, 126, 0.06);
+    --gold-border: rgba(197, 164, 126, 0.15);
+    --black: #1A1A1A;
+    --black-deep: #0F0F0F;
+    --black-soft: #222222;
+    --white: #FFFFFF;
+    --white-off: #FAFAF8;
+    --white-warm: #F5F3EF;
+    --white-soft: rgba(255, 255, 255, 0.7);
+    --white-muted: rgba(255, 255, 255, 0.4);
+    --gray-warm: #9B968E;
+    --gray-warm-light: #B5B0A8;
+    --gray-warm-dark: #6B6660;
+    --cream: #F0EDE8;
+
+    --font-display: 'Cormorant Garamond', 'Georgia', serif;
+    --font-body: 'Cormorant Garamond', 'Georgia', serif;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+    --ease-gentle: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    background: var(--white-off);
+    color: var(--black);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--gold);
+    color: var(--white);
+  }
+
+  img { display: block; max-width: 100%; }
+
+  /* =============================================
+     FOUR SEASONS TREE PATTERN (CSS-only)
+     ============================================= */
+  .tree-pattern {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .tree-pattern::before {
+    content: '';
+    position: absolute;
+    inset: -40%;
+    width: 180%;
+    height: 180%;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cdefs%3E%3Cstyle%3E.t%7Bfill:none;stroke:%23C5A47E;stroke-width:0.3;opacity:0.04%7D%3C/style%3E%3C/defs%3E%3C!-- Trunk --%3E%3Cline x1='60' y1='85' x2='60' y2='55' class='t'/%3E%3C!-- Canopy circle --%3E%3Ccircle cx='60' cy='42' r='20' class='t'/%3E%3C!-- Inner branches --%3E%3Cline x1='60' y1='55' x2='48' y2='38' class='t'/%3E%3Cline x1='60' y1='55' x2='72' y2='38' class='t'/%3E%3Cline x1='60' y1='50' x2='54' y2='30' class='t'/%3E%3Cline x1='60' y1='50' x2='66' y2='30' class='t'/%3E%3C!-- Leaf dots --%3E%3Ccircle cx='48' cy='36' r='2' fill='%23C5A47E' opacity='0.025'/%3E%3Ccircle cx='72' cy='36' r='2' fill='%23C5A47E' opacity='0.025'/%3E%3Ccircle cx='60' cy='24' r='2' fill='%23C5A47E' opacity='0.025'/%3E%3Ccircle cx='54' cy='44' r='1.5' fill='%23C5A47E' opacity='0.02'/%3E%3Ccircle cx='66' cy='44' r='1.5' fill='%23C5A47E' opacity='0.02'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 120px 120px;
+  }
+
+  /* =============================================
+     NAVIGATION
+     ============================================= */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(250, 250, 248, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    border-bottom: 1px solid rgba(197, 164, 126, 0);
+    transition: all 0.8s var(--ease-gentle);
+    padding: 0;
+  }
+
+  nav.scrolled {
+    background: rgba(250, 250, 248, 0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom-color: var(--gold-border);
+  }
+
+  .nav-inner {
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 28px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: padding 0.6s var(--ease-gentle);
+  }
+
+  nav.scrolled .nav-inner {
+    padding: 18px 60px;
+  }
+
+  .nav-back {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gray-warm);
+    text-decoration: none;
+    transition: color 0.4s var(--ease-gentle);
+    min-width: 120px;
+  }
+
+  .nav-back:hover { color: var(--gold-dark); }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 14px;
+    text-transform: uppercase;
+    color: var(--black);
+    text-decoration: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: letter-spacing 0.6s var(--ease-gentle);
+  }
+
+  nav.scrolled .nav-logo {
+    letter-spacing: 10px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+    min-width: 120px;
+    justify-content: flex-end;
+  }
+
+  .nav-links a {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-warm);
+    text-decoration: none;
+    transition: color 0.4s var(--ease-gentle);
+  }
+
+  .nav-links a:hover { color: var(--gold-dark); }
+
+  /* =============================================
+     HERO — QUIET, RESTRAINED, PERFECT
+     ============================================= */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--white-off);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 40%, rgba(197, 164, 126, 0.05), transparent 70%),
+      linear-gradient(180deg, transparent 0%, var(--white-off) 100%);
+    z-index: 1;
+  }
+
+  /* Subtle gold line accent at top */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 120px;
+    background: linear-gradient(180deg, var(--gold), transparent);
+    opacity: 0.3;
+    z-index: 2;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    max-width: 800px;
+    padding: 0 40px;
+  }
+
+  /* CSS-only Four Seasons tree */
+  .hero-tree {
+    width: 80px;
+    height: 100px;
+    margin: 0 auto 48px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: gentleReveal 1.8s var(--ease-reveal) 0.3s forwards;
+  }
+
+  .hero-tree svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-pre {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: gentleReveal 1.6s var(--ease-reveal) 0.6s forwards;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(64px, 10vw, 140px);
+    font-weight: 300;
+    letter-spacing: 20px;
+    line-height: 0.9;
+    color: var(--black);
+    margin-bottom: 32px;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: gentleReveal 1.8s var(--ease-reveal) 0.8s forwards;
+  }
+
+  .hero-rule {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 32px;
+    opacity: 0;
+    animation: gentleReveal 1.6s var(--ease-reveal) 1.0s forwards;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-display);
+    font-size: clamp(18px, 2.2vw, 24px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gray-warm-dark);
+    letter-spacing: 1px;
+    line-height: 1.6;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: gentleReveal 1.6s var(--ease-reveal) 1.2s forwards;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: gentleReveal 1.4s var(--ease-reveal) 2.0s forwards;
+  }
+
+  .hero-scroll span {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-warm);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(180deg, var(--gold), transparent);
+    animation: scrollPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 0.7; transform: scaleY(1.2); }
+  }
+
+  @keyframes gentleReveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* =============================================
+     PHILOSOPHY SECTION — THE GOLDEN RULE
+     ============================================= */
+  .philosophy {
+    position: relative;
+    padding: 140px 60px;
+    background: var(--white);
+    overflow: hidden;
+  }
+
+  .philosophy-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .section-label {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .section-label::before,
+  .section-label::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--gold-border);
+  }
+
+  .philosophy-quote {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--black);
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+
+  .philosophy-quote em {
+    color: var(--gold-dark);
+    font-style: normal;
+  }
+
+  .philosophy-body {
+    font-family: var(--font-body);
+    font-size: 19px;
+    font-weight: 300;
+    color: var(--gray-warm-dark);
+    line-height: 1.9;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* =============================================
+     FEATURES — UNDERSTATED GRID
+     ============================================= */
+  .features {
+    position: relative;
+    padding: 120px 60px;
+    background: var(--white-off);
+    overflow: hidden;
+  }
+
+  .features-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .features-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .features-header h2 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 300;
+    color: var(--black);
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+  }
+
+  .features-header p {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-warm);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--gold-border);
+    border: 1px solid var(--gold-border);
+  }
+
+  .feature-card {
+    background: var(--white);
+    padding: 56px 44px;
+    transition: all 0.6s var(--ease-gentle);
+    position: relative;
+  }
+
+  .feature-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    transition: width 0.6s var(--ease-gentle);
+  }
+
+  .feature-card:hover {
+    background: var(--white-warm);
+  }
+
+  .feature-card:hover::after {
+    width: 40px;
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .feature-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .feature-card h3 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--black);
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+
+  .feature-card p {
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--gray-warm-dark);
+    line-height: 1.7;
+  }
+
+  /* =============================================
+     STATS — QUIET CONFIDENCE
+     ============================================= */
+  .stats {
+    position: relative;
+    padding: 100px 60px;
+    background: var(--black);
+    overflow: hidden;
+  }
+
+  .stats .tree-pattern::before {
+    opacity: 0.6;
+  }
+
+  .stats-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .stats-label {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .stats-label span {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 40px 24px;
+    position: relative;
+  }
+
+  .stat-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 60px;
+    background: rgba(197, 164, 126, 0.15);
+  }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+  }
+
+  .stat-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-warm);
+  }
+
+  /* =============================================
+     SERVICE SECTION — ELEVATED EXPERIENCE
+     ============================================= */
+  .service {
+    position: relative;
+    padding: 140px 60px;
+    background: var(--white);
+    overflow: hidden;
+  }
+
+  .service-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+  }
+
+  .service-content h2 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 300;
+    color: var(--black);
+    letter-spacing: 2px;
+    line-height: 1.2;
+    margin-bottom: 32px;
+  }
+
+  .service-content p {
+    font-family: var(--font-body);
+    font-size: 19px;
+    font-weight: 300;
+    color: var(--gray-warm-dark);
+    line-height: 1.9;
+    margin-bottom: 24px;
+  }
+
+  .service-list {
+    list-style: none;
+    margin-top: 32px;
+  }
+
+  .service-list li {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--black);
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(197, 164, 126, 0.12);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .service-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .service-visual {
+    position: relative;
+    aspect-ratio: 4/5;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--white-warm) 50%, var(--cream) 100%);
+    border: 1px solid var(--gold-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .service-visual-tree {
+    opacity: 0.08;
+  }
+
+  .service-visual-tree svg {
+    width: 200px;
+    height: 260px;
+  }
+
+  .service-visual-text {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    right: 40px;
+  }
+
+  .service-visual-text span {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+  }
+
+  /* =============================================
+     CTA — INVITATION, NOT DEMAND
+     ============================================= */
+  .cta {
+    position: relative;
+    padding: 140px 60px;
+    background: var(--cream);
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .cta-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cta h2 {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4.5vw, 52px);
+    font-weight: 300;
+    color: var(--black);
+    letter-spacing: 3px;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+
+  .cta p {
+    font-family: var(--font-body);
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--gray-warm-dark);
+    line-height: 1.8;
+    margin-bottom: 48px;
+  }
+
+  .cta-button {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--black);
+    padding: 20px 56px;
+    text-decoration: none;
+    transition: all 0.6s var(--ease-gentle);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold-dark);
+    transform: translateY(100%);
+    transition: transform 0.6s var(--ease-gentle);
+  }
+
+  .cta-button span {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-button:hover::before {
+    transform: translateY(0);
+  }
+
+  .cta-secondary {
+    display: block;
+    margin-top: 24px;
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-warm);
+    text-decoration: none;
+    transition: color 0.4s var(--ease-gentle);
+  }
+
+  .cta-secondary:hover { color: var(--gold-dark); }
+
+  /* =============================================
+     FOOTER — MINIMAL, COMPOSED
+     ============================================= */
+  footer {
+    background: var(--black-deep);
+    padding: 80px 60px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(197, 164, 126, 0.1);
+    margin-bottom: 48px;
+  }
+
+  .footer-brand {
+    max-width: 320px;
+  }
+
+  .footer-brand-name {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 10px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .footer-brand p {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--gray-warm);
+    line-height: 1.7;
+  }
+
+  .footer-cols {
+    display: flex;
+    gap: 80px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+  }
+
+  .footer-col li {
+    margin-bottom: 12px;
+  }
+
+  .footer-col a {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--gray-warm);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.3s var(--ease-gentle);
+  }
+
+  .footer-col a:hover { color: var(--gold-light); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-bottom p {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--gray-warm-dark);
+    letter-spacing: 0.5px;
+  }
+
+  .footer-bottom a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  /* =============================================
+     SCROLL ANIMATION STATES
+     ============================================= */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.9s var(--ease-reveal), transform 0.9s var(--ease-reveal);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+  .reveal-delay-6 { transition-delay: 0.6s; }
+
+  /* Subtle fade-in for stat counters */
+  .reveal-stat {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s var(--ease-reveal), transform 0.8s var(--ease-reveal);
+  }
+
+  .reveal-stat.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* =============================================
+     RESPONSIVE — 768px
+     ============================================= */
+  @media (max-width: 768px) {
+    .nav-inner {
+      padding: 20px 24px;
+    }
+
+    nav.scrolled .nav-inner {
+      padding: 14px 24px;
+    }
+
+    .nav-logo {
+      font-size: 16px;
+      letter-spacing: 8px;
+    }
+
+    nav.scrolled .nav-logo {
+      letter-spacing: 6px;
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    .nav-back {
+      min-width: auto;
+    }
+
+    .hero {
+      min-height: 100svh;
+    }
+
+    .hero-content {
+      padding: 0 24px;
+    }
+
+    .hero h1 {
+      letter-spacing: 10px;
+    }
+
+    .hero-tree {
+      width: 60px;
+      height: 76px;
+      margin-bottom: 36px;
+    }
+
+    .philosophy {
+      padding: 80px 24px;
+    }
+
+    .features {
+      padding: 80px 24px;
+    }
+
+    .features-header {
+      margin-bottom: 48px;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .feature-card {
+      padding: 40px 32px;
+    }
+
+    .stats {
+      padding: 64px 24px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+    }
+
+    .stat-item {
+      padding: 32px 16px;
+    }
+
+    .stat-item:nth-child(2)::after {
+      display: none;
+    }
+
+    .stat-item:nth-child(odd):not(:last-child)::after {
+      height: 40px;
+    }
+
+    .service {
+      padding: 80px 24px;
+    }
+
+    .service-inner {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .service-visual {
+      order: -1;
+      aspect-ratio: 3/2;
+    }
+
+    .cta {
+      padding: 80px 24px;
+    }
+
+    .cta-button {
+      padding: 18px 40px;
+    }
+
+    footer {
+      padding: 56px 24px 36px;
+    }
+
+    .footer-top {
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .footer-cols {
+      gap: 48px;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==========================================
+     NAVIGATION
+     ========================================== -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="/index.html" class="nav-back">&larr; Collection</a>
+    <a href="#" class="nav-logo">KPT</a>
+    <ul class="nav-links">
+      <li><a href="#philosophy">Philosophy</a></li>
+      <li><a href="#features">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ==========================================
+     HERO
+     ========================================== -->
+<section class="hero">
+  <div class="tree-pattern"></div>
+  <div class="hero-content">
+    <!-- Four Seasons-inspired tree logo -->
+    <div class="hero-tree">
+      <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Trunk -->
+        <line x1="40" y1="98" x2="40" y2="52" stroke="#C5A47E" stroke-width="1.5"/>
+        <!-- Main canopy circle -->
+        <circle cx="40" cy="34" r="28" stroke="#C5A47E" stroke-width="0.8" fill="none"/>
+        <!-- Inner branches -->
+        <line x1="40" y1="52" x2="24" y2="30" stroke="#C5A47E" stroke-width="0.6" opacity="0.6"/>
+        <line x1="40" y1="52" x2="56" y2="30" stroke="#C5A47E" stroke-width="0.6" opacity="0.6"/>
+        <line x1="40" y1="46" x2="30" y2="20" stroke="#C5A47E" stroke-width="0.5" opacity="0.4"/>
+        <line x1="40" y1="46" x2="50" y2="20" stroke="#C5A47E" stroke-width="0.5" opacity="0.4"/>
+        <line x1="40" y1="42" x2="40" y2="10" stroke="#C5A47E" stroke-width="0.5" opacity="0.4"/>
+        <!-- Leaf clusters -->
+        <circle cx="24" cy="28" r="3" fill="#C5A47E" opacity="0.12"/>
+        <circle cx="56" cy="28" r="3" fill="#C5A47E" opacity="0.12"/>
+        <circle cx="40" cy="10" r="3" fill="#C5A47E" opacity="0.12"/>
+        <circle cx="30" cy="18" r="2.5" fill="#C5A47E" opacity="0.08"/>
+        <circle cx="50" cy="18" r="2.5" fill="#C5A47E" opacity="0.08"/>
+        <circle cx="34" cy="38" r="2" fill="#C5A47E" opacity="0.06"/>
+        <circle cx="46" cy="38" r="2" fill="#C5A47E" opacity="0.06"/>
+        <!-- Root lines -->
+        <line x1="40" y1="98" x2="34" y2="100" stroke="#C5A47E" stroke-width="0.4" opacity="0.3"/>
+        <line x1="40" y1="98" x2="46" y2="100" stroke="#C5A47E" stroke-width="0.4" opacity="0.3"/>
+      </svg>
+    </div>
+    <p class="hero-pre">Understated Excellence</p>
+    <h1>KPT</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-tagline">The measure of true quality is not in what you see,<br>but in everything you feel.</p>
+  </div>
+  <div class="hero-scroll">
+    <span>Discover</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ==========================================
+     PHILOSOPHY — THE GOLDEN RULE
+     ========================================== -->
+<section class="philosophy" id="philosophy">
+  <div class="philosophy-inner">
+    <div class="section-label reveal">
+      <span>The Golden Rule</span>
+    </div>
+    <blockquote class="philosophy-quote reveal reveal-delay-1">
+      "Treat others as you wish to be treated yourself."
+      The simplest principle. The <em>highest standard</em>.
+    </blockquote>
+    <p class="philosophy-body reveal reveal-delay-2">
+      We believe excellence is not a feature to be listed, but an experience to be felt.
+      Every interaction, every detail, every quiet moment of care reflects a commitment
+      that requires no announcement. It simply is.
+    </p>
+  </div>
+</section>
+
+<!-- ==========================================
+     FEATURES — SERVICES GRID
+     ========================================== -->
+<section class="features" id="features">
+  <div class="tree-pattern"></div>
+  <div class="features-inner">
+    <div class="features-header reveal">
+      <h2>Refined by Design</h2>
+      <p>Every detail considered, nothing left to chance</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><circle cx="16" cy="16" r="6"/><circle cx="16" cy="16" r="1.5" fill="#C5A47E" stroke="none"/></svg>
+        </div>
+        <h3>Precision</h3>
+        <p>Engineered with meticulous attention to every component, every threshold, every interaction that shapes the experience.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 32 32"><path d="M4 28 L16 4 L28 28 Z"/><line x1="10" y1="20" x2="22" y2="20"/></svg>
+        </div>
+        <h3>Architecture</h3>
+        <p>Built on foundations that endure. Clean structure, considered hierarchy, and the kind of order that creates calm.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">
+          <svg viewBox="0 0 32 32"><rect x="4" y="4" width="24" height="24" rx="2"/><line x1="4" y1="12" x2="28" y2="12"/><line x1="12" y1="12" x2="12" y2="28"/></svg>
+        </div>
+        <h3>Composition</h3>
+        <p>Layouts that breathe. Spacing that speaks. The discipline of restraint applied to every element on the canvas.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-4">
+        <div class="feature-icon">
+          <svg viewBox="0 0 32 32"><path d="M16 4 C8 4 4 10 4 16 C4 22 8 28 16 28 C24 28 28 22 28 16"/><path d="M28 16 C28 10 24 4 16 4" stroke-dasharray="3 3"/></svg>
+        </div>
+        <h3>Continuity</h3>
+        <p>Seamless transitions between states. No jarring shifts, no broken flows. Everything connects with quiet intention.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-5">
+        <div class="feature-icon">
+          <svg viewBox="0 0 32 32"><path d="M16 2 L20 12 L30 12 L22 19 L25 30 L16 23 L7 30 L10 19 L2 12 L12 12 Z"/></svg>
+        </div>
+        <h3>Distinction</h3>
+        <p>Not louder. Better. The kind of quality that reveals itself gradually, rewarding those who look closely.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-6">
+        <div class="feature-icon">
+          <svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="13"/><path d="M16 6 L16 16 L24 16"/></svg>
+        </div>
+        <h3>Patience</h3>
+        <p>Performance that unfolds at the right pace. Fast where it matters, unhurried where experience demands it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     STATS — BY THE NUMBERS
+     ========================================== -->
+<section class="stats">
+  <div class="tree-pattern"></div>
+  <div class="stats-inner">
+    <div class="stats-label reveal">
+      <span>Measured Excellence</span>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-item reveal-stat reveal-delay-1">
+        <div class="stat-number" data-target="99.9" data-suffix="%">0</div>
+        <div class="stat-label">Uptime</div>
+      </div>
+      <div class="stat-item reveal-stat reveal-delay-2">
+        <div class="stat-number" data-target="12" data-suffix="ms">0</div>
+        <div class="stat-label">Response</div>
+      </div>
+      <div class="stat-item reveal-stat reveal-delay-3">
+        <div class="stat-number" data-target="4.2" data-suffix="M">0</div>
+        <div class="stat-label">Requests Served</div>
+      </div>
+      <div class="stat-item reveal-stat reveal-delay-4">
+        <div class="stat-number" data-target="100" data-prefix="" data-suffix="">100</div>
+        <div class="stat-label">Lighthouse Score</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     SERVICE — ELEVATED EXPERIENCE
+     ========================================== -->
+<section class="service">
+  <div class="service-inner">
+    <div class="service-content">
+      <div class="section-label reveal" style="justify-content: flex-start;">
+        <span>The Experience</span>
+      </div>
+      <h2 class="reveal reveal-delay-1">Crafted for Those<br>Who Notice</h2>
+      <p class="reveal reveal-delay-2">
+        True luxury is invisible. It is the absence of friction, the presence of care,
+        and the quiet confidence that everything has been considered before you arrived.
+      </p>
+      <ul class="service-list">
+        <li class="reveal reveal-delay-3">End-to-end performance optimization</li>
+        <li class="reveal reveal-delay-3">Accessibility as a first principle</li>
+        <li class="reveal reveal-delay-4">Responsive design at every breakpoint</li>
+        <li class="reveal reveal-delay-4">Progressive enhancement, graceful degradation</li>
+        <li class="reveal reveal-delay-5">Security hardened from day one</li>
+      </ul>
+    </div>
+    <div class="service-visual reveal reveal-delay-2">
+      <div class="service-visual-tree">
+        <svg viewBox="0 0 200 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="100" y1="258" x2="100" y2="120" stroke="#C5A47E" stroke-width="2"/>
+          <circle cx="100" cy="80" r="65" stroke="#C5A47E" stroke-width="0.8"/>
+          <line x1="100" y1="120" x2="60" y2="65" stroke="#C5A47E" stroke-width="0.6"/>
+          <line x1="100" y1="120" x2="140" y2="65" stroke="#C5A47E" stroke-width="0.6"/>
+          <line x1="100" y1="105" x2="72" y2="40" stroke="#C5A47E" stroke-width="0.5"/>
+          <line x1="100" y1="105" x2="128" y2="40" stroke="#C5A47E" stroke-width="0.5"/>
+          <line x1="100" y1="95" x2="100" y2="20" stroke="#C5A47E" stroke-width="0.5"/>
+          <circle cx="60" cy="62" r="8" fill="#C5A47E" opacity="0.06"/>
+          <circle cx="140" cy="62" r="8" fill="#C5A47E" opacity="0.06"/>
+          <circle cx="100" cy="20" r="8" fill="#C5A47E" opacity="0.06"/>
+          <circle cx="72" cy="38" r="6" fill="#C5A47E" opacity="0.04"/>
+          <circle cx="128" cy="38" r="6" fill="#C5A47E" opacity="0.04"/>
+        </svg>
+      </div>
+      <div class="service-visual-text">
+        <span>Four Seasons &middot; Inspired</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     CTA — INVITATION
+     ========================================== -->
+<section class="cta" id="contact">
+  <div class="tree-pattern"></div>
+  <div class="cta-inner">
+    <div class="section-label reveal">
+      <span>Begin</span>
+    </div>
+    <h2 class="reveal reveal-delay-1">The Finest Details<br>Await Your Attention</h2>
+    <p class="reveal reveal-delay-2">
+      When every element serves a purpose and every purpose is met with care,
+      the result speaks for itself.
+    </p>
+    <a href="#" class="cta-button reveal reveal-delay-3"><span>Request a Consultation</span></a>
+    <a href="/index.html" class="cta-secondary reveal reveal-delay-4">Return to Collection</a>
+  </div>
+</section>
+
+<!-- ==========================================
+     FOOTER
+     ========================================== -->
+<footer>
+  <div class="tree-pattern"></div>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-name">KPT</div>
+        <p>Inspired by the quiet, unwavering standard of Four Seasons hospitality. Not flashy. Just perfect.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="#philosophy">Philosophy</a></li>
+            <li><a href="#features">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="/index.html">Collection</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Standards</h4>
+          <ul>
+            <li><a href="#">Accessibility</a></li>
+            <li><a href="#">Performance</a></li>
+            <li><a href="#">Security</a></li>
+            <li><a href="#">Privacy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 KPT. Crafted with quiet intention.</p>
+      <p>Inspired by <a href="#">Four Seasons Hotels & Resorts</a></p>
+    </div>
+  </div>
+</footer>
+
+<!-- ==========================================
+     SCRIPTS
+     ========================================== -->
+<script>
+  // Navigation scroll state
+  const nav = document.getElementById('nav');
+  let lastScroll = 0;
+
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y > 60) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+    lastScroll = y;
+  }, { passive: true });
+
+  // IntersectionObserver — gentle scroll reveals
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.reveal, .reveal-stat').forEach(el => {
+    revealObserver.observe(el);
+  });
+
+  // Stat counter animation
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const prefix = el.dataset.prefix || '';
+        const isDecimal = target % 1 !== 0;
+        const duration = 2000;
+        const startTime = performance.now();
+
+        function easeOut(t) {
+          return 1 - Math.pow(1 - t, 3);
+        }
+
+        function animate(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = easeOut(progress);
+          const current = target * eased;
+
+          if (isDecimal) {
+            el.textContent = prefix + current.toFixed(1) + suffix;
+          } else {
+            el.textContent = prefix + Math.round(current) + suffix;
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          }
+        }
+
+        requestAnimationFrame(animate);
+        statObserver.unobserve(el);
+      }
+    });
+  }, {
+    threshold: 0.5
+  });
+
+  document.querySelectorAll('.stat-number').forEach(el => {
+    statObserver.observe(el);
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Gucci</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* =============================================
+     RESET & CUSTOM PROPERTIES
+     ============================================= */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gucci-green: #006B3F;
+    --gucci-green-deep: #004D2C;
+    --gucci-green-light: #008C52;
+    --gucci-red: #CE2029;
+    --gucci-red-deep: #A01A20;
+    --gucci-red-light: #E8333C;
+    --gold: #C4A265;
+    --gold-bright: #D4B275;
+    --gold-dim: rgba(196, 162, 101, 0.12);
+    --gold-glow: rgba(196, 162, 101, 0.06);
+    --cream: #FAF6F0;
+    --cream-dark: #EDE6DA;
+    --cream-warm: #FDF9F4;
+    --black: #1A1A1A;
+    --black-deep: #0C0C0C;
+    --black-soft: #2A2A2A;
+    --white-soft: rgba(250, 246, 240, 0.55);
+    --white-muted: rgba(250, 246, 240, 0.3);
+
+    --font-display: 'Playfair Display', 'Georgia', serif;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+    --ease-luxury: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    background: var(--black-deep);
+    color: var(--cream);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--gucci-green);
+    color: var(--cream);
+  }
+
+  img { display: block; max-width: 100%; }
+
+  /* =============================================
+     GG MONOGRAM PATTERN (CSS-only SVG)
+     ============================================= */
+  .gg-pattern {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .gg-pattern::before {
+    content: '';
+    position: absolute;
+    inset: -60%;
+    width: 220%;
+    height: 220%;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cdefs%3E%3Cstyle%3E.g%7Bfill:none;stroke:%23C4A265;stroke-width:0.8;opacity:0.06%7D%3C/style%3E%3C/defs%3E%3C!-- Outer G arc (left) --%3E%3Cpath d='M 42 60 A 22 22 0 1 1 60 38' class='g'/%3E%3C!-- Inner crossbar left G --%3E%3Cline x1='52' y1='60' x2='65' y2='60' class='g'/%3E%3C!-- Outer G arc (right, mirrored) --%3E%3Cpath d='M 78 60 A 22 22 0 1 0 60 82' class='g'/%3E%3C!-- Inner crossbar right G --%3E%3Cline x1='68' y1='60' x2='55' y2='60' class='g' stroke-width='0.6'/%3E%3C!-- Diamond accent --%3E%3Crect x='40' y='40' width='40' height='40' rx='2' fill='none' stroke='%23C4A265' stroke-width='0.3' opacity='0.03' transform='rotate(45 60 60)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 120px 120px;
+    transform: rotate(-8deg);
+    animation: patternDrift 200s linear infinite;
+  }
+
+  @keyframes patternDrift {
+    0% { transform: rotate(-8deg) translate(0, 0); }
+    100% { transform: rotate(-8deg) translate(-120px, -120px); }
+  }
+
+  /* Dense variant for accent sections */
+  .gg-dense {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .gg-dense::before {
+    content: '';
+    position: absolute;
+    inset: -30%;
+    width: 160%;
+    height: 160%;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M 28 40 A 15 15 0 1 1 40 25' fill='none' stroke='%23C4A265' stroke-width='0.5' opacity='0.04'/%3E%3Cpath d='M 52 40 A 15 15 0 1 0 40 55' fill='none' stroke='%23C4A265' stroke-width='0.5' opacity='0.04'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 80px 80px;
+  }
+
+  /* =============================================
+     GUCCI STRIPE
+     ============================================= */
+  .gucci-stripe {
+    height: 4px;
+    background: linear-gradient(
+      to right,
+      var(--gucci-green) 0%,
+      var(--gucci-green) 33.33%,
+      var(--gucci-red) 33.33%,
+      var(--gucci-red) 66.66%,
+      var(--gucci-green) 66.66%,
+      var(--gucci-green) 100%
+    );
+    width: 100%;
+  }
+
+  .gucci-stripe-thin {
+    height: 2px;
+    background: linear-gradient(
+      to right,
+      var(--gucci-green) 0%,
+      var(--gucci-green) 33.33%,
+      var(--gucci-red) 33.33%,
+      var(--gucci-red) 66.66%,
+      var(--gucci-green) 66.66%,
+      var(--gucci-green) 100%
+    );
+  }
+
+  .gucci-stripe-vertical {
+    width: 4px;
+    background: linear-gradient(
+      to bottom,
+      var(--gucci-green) 0%,
+      var(--gucci-green) 33.33%,
+      var(--gucci-red) 33.33%,
+      var(--gucci-red) 66.66%,
+      var(--gucci-green) 66.66%,
+      var(--gucci-green) 100%
+    );
+  }
+
+  /* =============================================
+     NAVIGATION
+     ============================================= */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(12, 12, 12, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    border-bottom: 1px solid rgba(196, 162, 101, 0);
+    transition: all 0.8s var(--ease-luxury);
+    padding: 0;
+  }
+
+  nav.scrolled {
+    background: rgba(12, 12, 12, 0.95);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom-color: rgba(196, 162, 101, 0.08);
+  }
+
+  .nav-stripe {
+    height: 3px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      transparent 30%,
+      var(--gucci-green) 30%,
+      var(--gucci-green) 38%,
+      var(--gucci-red) 38%,
+      var(--gucci-red) 62%,
+      var(--gucci-green) 62%,
+      var(--gucci-green) 70%,
+      transparent 70%,
+      transparent 100%
+    );
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-luxury);
+  }
+
+  nav.scrolled .nav-stripe {
+    opacity: 1;
+  }
+
+  .nav-inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 28px 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: padding 0.6s var(--ease-luxury);
+  }
+
+  nav.scrolled .nav-inner {
+    padding: 18px 64px;
+  }
+
+  .nav-back {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--white-soft);
+    text-decoration: none;
+    transition: color 0.4s var(--ease-luxury);
+    min-width: 120px;
+  }
+
+  .nav-back:hover { color: var(--gold); }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 16px;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: letter-spacing 0.6s var(--ease-luxury);
+  }
+
+  nav.scrolled .nav-logo {
+    letter-spacing: 12px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 44px;
+    list-style: none;
+    min-width: 120px;
+    justify-content: flex-end;
+  }
+
+  .nav-links a {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--white-soft);
+    text-decoration: none;
+    transition: color 0.4s var(--ease-luxury);
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* =============================================
+     HERO SECTION
+     ============================================= */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 40px 100px;
+    overflow: hidden;
+  }
+
+  /* Radial green glow behind hero */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(0, 107, 63, 0.08) 0%,
+      rgba(0, 107, 63, 0.03) 40%,
+      transparent 70%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Gold accent glow */
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 15%;
+    right: 10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(196, 162, 101, 0.05) 0%,
+      transparent 60%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-overline {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s var(--ease-reveal) 0.3s forwards;
+  }
+
+  .hero-overline::before,
+  .hero-overline::after {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    vertical-align: middle;
+    opacity: 0.4;
+  }
+
+  .hero-overline::before { margin-right: 20px; }
+  .hero-overline::after { margin-left: 20px; }
+
+  .hero-monogram {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 32px;
+    opacity: 0;
+    transform: scale(0.9);
+    animation: fadeInScale 1.2s var(--ease-reveal) 0.5s forwards;
+  }
+
+  .hero-monogram svg {
+    width: 120px;
+    height: 120px;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(72px, 12vw, 160px);
+    font-weight: 900;
+    letter-spacing: 24px;
+    text-transform: uppercase;
+    line-height: 0.9;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(
+      180deg,
+      var(--cream) 0%,
+      var(--gold) 50%,
+      var(--gold-bright) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 1.2s var(--ease-reveal) 0.6s forwards;
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-display);
+    font-size: clamp(16px, 2.5vw, 24px);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--white-muted);
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s var(--ease-reveal) 0.9s forwards;
+  }
+
+  .hero-desc {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--white-soft);
+    max-width: 560px;
+    margin-bottom: 56px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s var(--ease-reveal) 1.1s forwards;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s var(--ease-reveal) 1.3s forwards;
+  }
+
+  .btn-primary {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--gucci-green);
+    border: 2px solid var(--gucci-green);
+    padding: 18px 48px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s var(--ease-luxury);
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--gucci-green-light), var(--gucci-green-deep));
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-luxury);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 107, 63, 0.3);
+  }
+
+  .btn-primary:hover::before { opacity: 1; }
+
+  .btn-primary span {
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-secondary {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(196, 162, 101, 0.3);
+    padding: 17px 42px;
+    text-decoration: none;
+    transition: all 0.5s var(--ease-luxury);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    background: rgba(196, 162, 101, 0.06);
+    transform: translateY(-2px);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeInUp 1s var(--ease-reveal) 1.8s forwards;
+  }
+
+  .hero-scroll span {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white-muted);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  @keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInScale {
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* =============================================
+     SECTION FRAMEWORK
+     ============================================= */
+  section {
+    position: relative;
+    padding: 120px 40px;
+    overflow: hidden;
+  }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-label {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 2px;
+    color: var(--cream);
+    margin-bottom: 20px;
+  }
+
+  .section-subtitle {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--white-soft);
+    max-width: 580px;
+    margin-bottom: 64px;
+  }
+
+  /* =============================================
+     FEATURES SECTION
+     ============================================= */
+  .features {
+    background: var(--black-deep);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .feature-card {
+    position: relative;
+    background: var(--black-soft);
+    padding: 56px 40px;
+    border: 1px solid rgba(196, 162, 101, 0.06);
+    transition: all 0.6s var(--ease-luxury);
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      to right,
+      var(--gucci-green) 0%,
+      var(--gucci-green) 33.33%,
+      var(--gucci-red) 33.33%,
+      var(--gucci-red) 66.66%,
+      var(--gucci-green) 66.66%,
+      var(--gucci-green) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-luxury);
+  }
+
+  .feature-card:hover {
+    background: rgba(0, 107, 63, 0.04);
+    border-color: rgba(196, 162, 101, 0.12);
+    transform: translateY(-4px);
+  }
+
+  .feature-card:hover::before {
+    opacity: 1;
+  }
+
+  .feature-icon {
+    width: 52px;
+    height: 52px;
+    border: 1px solid rgba(196, 162, 101, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  .feature-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  /* Corner accents on icon */
+  .feature-icon::before,
+  .feature-icon::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.3;
+  }
+
+  .feature-icon::before {
+    top: -1px;
+    left: -1px;
+    border-width: 1px 0 0 1px;
+  }
+
+  .feature-icon::after {
+    bottom: -1px;
+    right: -1px;
+    border-width: 0 1px 1px 0;
+  }
+
+  .feature-card h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--cream);
+    margin-bottom: 14px;
+  }
+
+  .feature-card p {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--white-soft);
+  }
+
+  .feature-num {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 800;
+    color: rgba(196, 162, 101, 0.04);
+    line-height: 1;
+  }
+
+  /* =============================================
+     STATS / RIBBON SECTION
+     ============================================= */
+  .stats-section {
+    background: var(--gucci-green-deep);
+    padding: 80px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent calc(50% - 52px),
+        var(--gucci-green) calc(50% - 52px),
+        var(--gucci-green) calc(50% - 36px),
+        var(--gucci-red) calc(50% - 36px),
+        var(--gucci-red) calc(50% + 36px),
+        var(--gucci-green) calc(50% + 36px),
+        var(--gucci-green) calc(50% + 52px),
+        transparent calc(50% + 52px),
+        transparent 100%
+      );
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .stats-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-item {
+    text-align: center;
+    position: relative;
+  }
+
+  .stat-item::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    right: 0;
+    height: 80%;
+    width: 1px;
+    background: rgba(250, 246, 240, 0.1);
+  }
+
+  .stat-item:last-child::after { display: none; }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5vw, 60px);
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(250, 246, 240, 0.6);
+  }
+
+  /* =============================================
+     SHOWCASE SECTION (Maximalist)
+     ============================================= */
+  .showcase {
+    background: linear-gradient(180deg, var(--black-deep) 0%, #0F0F0F 100%);
+    padding: 140px 40px;
+  }
+
+  .showcase-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .showcase-card {
+    position: relative;
+    background: linear-gradient(145deg, rgba(0, 107, 63, 0.06), rgba(196, 162, 101, 0.03));
+    border: 1px solid rgba(196, 162, 101, 0.08);
+    padding: 52px 44px;
+    transition: all 0.6s var(--ease-luxury);
+    overflow: hidden;
+  }
+
+  .showcase-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(
+      to bottom,
+      var(--gucci-green),
+      var(--gucci-red),
+      var(--gucci-green)
+    );
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-luxury);
+  }
+
+  .showcase-card:hover {
+    border-color: rgba(196, 162, 101, 0.16);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+  }
+
+  .showcase-card:hover::before { opacity: 1; }
+
+  .showcase-card .card-label {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gucci-green-light);
+    margin-bottom: 16px;
+  }
+
+  .showcase-card h3 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+
+  .showcase-card p {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--white-soft);
+    margin-bottom: 24px;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card-tag {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(196, 162, 101, 0.15);
+    padding: 6px 14px;
+  }
+
+  /* =============================================
+     CTA SECTION
+     ============================================= */
+  .cta-section {
+    background: linear-gradient(180deg, #0F0F0F 0%, var(--black-deep) 100%);
+    padding: 140px 40px;
+    text-align: center;
+    position: relative;
+  }
+
+  .cta-gg {
+    margin-bottom: 48px;
+    opacity: 0.12;
+  }
+
+  .cta-gg svg {
+    width: 80px;
+    height: 80px;
+  }
+
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--cream);
+    margin-bottom: 20px;
+  }
+
+  .cta-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .cta-desc {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--white-soft);
+    max-width: 520px;
+    margin: 0 auto 48px;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* =============================================
+     FOOTER
+     ============================================= */
+  footer {
+    position: relative;
+    background: var(--black-deep);
+    padding: 0;
+  }
+
+  .footer-stripe {
+    height: 4px;
+    background: linear-gradient(
+      to right,
+      var(--gucci-green) 0%,
+      var(--gucci-green) 33.33%,
+      var(--gucci-red) 33.33%,
+      var(--gucci-red) 66.66%,
+      var(--gucci-green) 66.66%,
+      var(--gucci-green) 100%
+    );
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 64px 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 64px;
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 12px;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+
+  .footer-tagline {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--white-muted);
+    letter-spacing: 2px;
+  }
+
+  .footer-columns {
+    display: flex;
+    gap: 80px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-col a {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--white-muted);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.4s var(--ease-luxury);
+  }
+
+  .footer-col a:hover { color: var(--gold); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(196, 162, 101, 0.06);
+    padding-top: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(250, 246, 240, 0.25);
+    letter-spacing: 1px;
+  }
+
+  .footer-made {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-style: italic;
+    color: rgba(250, 246, 240, 0.2);
+    letter-spacing: 1px;
+  }
+
+  /* =============================================
+     SCROLL ANIMATIONS
+     ============================================= */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s var(--ease-reveal), transform 0.8s var(--ease-reveal);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.8s var(--ease-reveal), transform 0.8s var(--ease-reveal);
+  }
+
+  .reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.8s var(--ease-reveal), transform 0.8s var(--ease-reveal);
+  }
+
+  .reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.8s var(--ease-reveal), transform 0.8s var(--ease-reveal);
+  }
+
+  .reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Staggered children */
+  .stagger > * {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s var(--ease-reveal), transform 0.6s var(--ease-reveal);
+  }
+
+  .stagger.visible > *:nth-child(1) { transition-delay: 0.05s; }
+  .stagger.visible > *:nth-child(2) { transition-delay: 0.12s; }
+  .stagger.visible > *:nth-child(3) { transition-delay: 0.19s; }
+  .stagger.visible > *:nth-child(4) { transition-delay: 0.26s; }
+  .stagger.visible > *:nth-child(5) { transition-delay: 0.33s; }
+  .stagger.visible > *:nth-child(6) { transition-delay: 0.40s; }
+
+  .stagger.visible > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* =============================================
+     RESPONSIVE — 768px
+     ============================================= */
+  @media (max-width: 768px) {
+    .nav-inner {
+      padding: 20px 24px;
+    }
+
+    nav.scrolled .nav-inner {
+      padding: 14px 24px;
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      letter-spacing: 10px;
+      position: relative;
+      left: auto;
+      transform: none;
+    }
+
+    .hero {
+      padding: 120px 24px 80px;
+      min-height: 90vh;
+    }
+
+    .hero-title {
+      letter-spacing: 12px;
+    }
+
+    .hero-subtitle {
+      letter-spacing: 4px;
+    }
+
+    .hero-desc {
+      font-size: 14px;
+    }
+
+    .hero-cta-group {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      width: 100%;
+      text-align: center;
+    }
+
+    section {
+      padding: 80px 24px;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 1px;
+    }
+
+    .feature-card {
+      padding: 40px 28px;
+    }
+
+    .stats-section {
+      padding: 60px 24px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    .stat-item:nth-child(2)::after { display: none; }
+
+    .showcase-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .showcase-card {
+      padding: 36px 28px;
+    }
+
+    .cta-section {
+      padding: 100px 24px;
+    }
+
+    .cta-buttons {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .cta-buttons .btn-primary,
+    .cta-buttons .btn-secondary {
+      width: 100%;
+      text-align: center;
+    }
+
+    .footer-inner {
+      padding: 48px 24px 32px;
+    }
+
+    .footer-top {
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .footer-columns {
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================= -->
+<!-- NAVIGATION                                    -->
+<!-- ============================================= -->
+<nav id="nav">
+  <div class="nav-stripe"></div>
+  <div class="nav-inner">
+    <a href="/index.html" class="nav-back">&#8592; Collection</a>
+    <a href="#" class="nav-logo">KPT</a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#showcase">Showcase</a></li>
+      <li><a href="#start">Begin</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============================================= -->
+<!-- HERO                                          -->
+<!-- ============================================= -->
+<section class="hero">
+  <div class="gg-pattern"></div>
+
+  <div class="hero-overline">Italian Craftsmanship in Code</div>
+
+  <!-- GG Monogram SVG -->
+  <div class="hero-monogram">
+    <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer ring -->
+      <circle cx="60" cy="60" r="55" fill="none" stroke="#C4A265" stroke-width="0.5" opacity="0.3"/>
+      <!-- Left G -->
+      <path d="M 44 60 A 20 20 0 1 1 60 40" fill="none" stroke="#C4A265" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+      <line x1="52" y1="60" x2="64" y2="60" stroke="#C4A265" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+      <!-- Right G (mirrored/interlocked) -->
+      <path d="M 76 60 A 20 20 0 1 0 60 80" fill="none" stroke="#C4A265" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+      <line x1="68" y1="60" x2="56" y2="60" stroke="#C4A265" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+      <!-- Corner diamonds -->
+      <rect x="48" y="48" width="24" height="24" rx="1" fill="none" stroke="#C4A265" stroke-width="0.4" opacity="0.15" transform="rotate(45 60 60)"/>
+    </svg>
+  </div>
+
+  <h1 class="hero-title">KPT</h1>
+  <p class="hero-subtitle">Eclectic Excellence</p>
+  <p class="hero-desc">
+    Where audacious vision meets meticulous craftsmanship. A platform orchestrated
+    with the precision of Italian atelier tradition and the boldness of maximalist design.
+  </p>
+
+  <div class="hero-cta-group">
+    <a href="#start" class="btn-primary"><span>Enter the Maison</span></a>
+    <a href="#features" class="btn-secondary">Explore Collection</a>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Discover</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- GUCCI STRIPE DIVIDER                          -->
+<!-- ============================================= -->
+<div class="gucci-stripe"></div>
+
+<!-- ============================================= -->
+<!-- FEATURES                                      -->
+<!-- ============================================= -->
+<section class="features" id="features">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">The Collection</p>
+      <h2 class="section-title">Six Pillars of<br>Uncompromising Craft</h2>
+      <p class="section-subtitle">
+        Each capability curated with intention. Nothing extraneous, nothing lacking
+        &mdash; the balance of maximalism with purpose.
+      </p>
+    </div>
+    <div class="features-grid stagger">
+      <div class="feature-card">
+        <span class="feature-num">01</span>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Layered Architecture</h3>
+        <p>Systems composed like couture &mdash; each layer purposeful, each connection deliberate. Structure that reveals its beauty under scrutiny.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-num">02</span>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </div>
+        <h3>Luminous Intelligence</h3>
+        <p>AI that illuminates rather than obscures. Transparent reasoning, auditable decisions, and insights that feel like revelation.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-num">03</span>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Fortified Security</h3>
+        <p>Protection woven into every seam. Zero-trust principles applied with the rigor of a master artisan &mdash; invisible yet impenetrable.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-num">04</span>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Real-Time Pulse</h3>
+        <p>Live telemetry flowing like silk through the system. Every metric, every event, captured and displayed with effortless elegance.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-num">05</span>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>Opulent Interface</h3>
+        <p>Surfaces designed with the reverence of a Renaissance palazzo. Every pixel considered, every interaction a moment of delight.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-num">06</span>
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h3>Ensemble Orchestration</h3>
+        <p>Agents collaborating like an Italian opera ensemble &mdash; each voice distinct, the harmony unmistakable, the result transcendent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- STATS RIBBON                                  -->
+<!-- ============================================= -->
+<section class="stats-section">
+  <div class="stats-grid stagger">
+    <div class="stat-item">
+      <div class="stat-number">99.9%</div>
+      <div class="stat-label">Uptime Guarantee</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">&lt;12ms</div>
+      <div class="stat-label">Response Latency</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">256-bit</div>
+      <div class="stat-label">Encryption Standard</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Concierge Support</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- SHOWCASE                                      -->
+<!-- ============================================= -->
+<section class="showcase" id="showcase">
+  <div class="gg-dense"></div>
+  <div class="section-inner">
+    <div class="showcase-header reveal">
+      <p class="section-label" style="text-align:center">Atelier Highlights</p>
+      <h2 class="section-title" style="text-align:center">Crafted Without<br>Compromise</h2>
+      <p class="section-subtitle" style="text-align:center;margin-left:auto;margin-right:auto;">
+        The intersection of heritage and innovation &mdash; where time-honored principles
+        meet fearless experimentation.
+      </p>
+    </div>
+    <div class="showcase-grid">
+      <div class="showcase-card reveal-left">
+        <span class="card-label">Pipeline</span>
+        <h3>Autonomous Orchestration</h3>
+        <p>Multi-agent workflows that self-coordinate with the precision of a fashion house runway. Tasks flow from conception to completion without human bottlenecks.</p>
+        <div class="card-tags">
+          <span class="card-tag">AI Agents</span>
+          <span class="card-tag">Workflow</span>
+          <span class="card-tag">Automation</span>
+        </div>
+      </div>
+      <div class="showcase-card reveal-right">
+        <span class="card-label">Intelligence</span>
+        <h3>Contextual Memory</h3>
+        <p>Persistent knowledge that accumulates like the heritage of a century-old maison. Every interaction enriches the system's understanding.</p>
+        <div class="card-tags">
+          <span class="card-tag">Memory</span>
+          <span class="card-tag">Context</span>
+          <span class="card-tag">Learning</span>
+        </div>
+      </div>
+      <div class="showcase-card reveal-left">
+        <span class="card-label">Governance</span>
+        <h3>Principled Authority</h3>
+        <p>Role-based access that mirrors the structured elegance of Italian governance. Every action audited, every permission intentional.</p>
+        <div class="card-tags">
+          <span class="card-tag">RBAC</span>
+          <span class="card-tag">Audit</span>
+          <span class="card-tag">Compliance</span>
+        </div>
+      </div>
+      <div class="showcase-card reveal-right">
+        <span class="card-label">Resilience</span>
+        <h3>Graceful Degradation</h3>
+        <p>Systems that fail like haute couture tears &mdash; beautifully, predictably, and with automatic recovery that restores perfection.</p>
+        <div class="card-tags">
+          <span class="card-tag">Failover</span>
+          <span class="card-tag">Recovery</span>
+          <span class="card-tag">Durability</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- CTA SECTION                                   -->
+<!-- ============================================= -->
+<div class="gucci-stripe"></div>
+<section class="cta-section" id="start">
+  <div class="gg-pattern"></div>
+  <div class="section-inner" style="max-width:720px;margin:0 auto;">
+    <div class="cta-gg reveal-scale">
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 44 60 A 20 20 0 1 1 60 40" fill="none" stroke="#C4A265" stroke-width="2" stroke-linecap="round"/>
+        <line x1="52" y1="60" x2="64" y2="60" stroke="#C4A265" stroke-width="2" stroke-linecap="round"/>
+        <path d="M 76 60 A 20 20 0 1 0 60 80" fill="none" stroke="#C4A265" stroke-width="2" stroke-linecap="round"/>
+        <line x1="68" y1="60" x2="56" y2="60" stroke="#C4A265" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <h2 class="cta-title reveal">Begin Your<br><em>Atelier</em> Journey</h2>
+    <p class="cta-desc reveal">
+      Step into a world where technology is crafted with the same devotion
+      as the finest Italian luxury. Your orchestration maison awaits.
+    </p>
+    <div class="cta-buttons reveal">
+      <a href="#" class="btn-primary"><span>Commission Your System</span></a>
+      <a href="#features" class="btn-secondary">View the Collection</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- FOOTER                                        -->
+<!-- ============================================= -->
+<footer>
+  <div class="footer-stripe"></div>
+  <div class="gg-dense"></div>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">KPT</div>
+        <div class="footer-tagline">Eclectic Excellence &middot; Since MMXXVI</div>
+      </div>
+      <div class="footer-columns">
+        <div class="footer-col">
+          <h4>Maison</h4>
+          <ul>
+            <li><a href="#features">Collection</a></li>
+            <li><a href="#showcase">Atelier</a></li>
+            <li><a href="#start">Commission</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Craft</h4>
+          <ul>
+            <li><a href="#">Architecture</a></li>
+            <li><a href="#">Intelligence</a></li>
+            <li><a href="#">Security</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Heritage</h4>
+          <ul>
+            <li><a href="#">Philosophy</a></li>
+            <li><a href="#">Changelog</a></li>
+            <li><a href="/index.html">Collection</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">KPT &copy; 2026 &mdash; All rights reserved</span>
+      <span class="footer-made">Fatto a mano con amore</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================= -->
+<!-- JAVASCRIPT                                    -->
+<!-- ============================================= -->
+<script>
+  // ── Nav scroll effect ──
+  const nav = document.getElementById('nav');
+  let lastScroll = 0;
+
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y > 60) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+    lastScroll = y;
+  }, { passive: true });
+
+  // ── IntersectionObserver scroll reveals ──
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -80px 0px',
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger').forEach(el => {
+    observer.observe(el);
+  });
+
+  // ── Smooth scroll for anchor links ──
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

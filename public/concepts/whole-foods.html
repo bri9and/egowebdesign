@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Naturally Engineered.</title>
+<meta name="description" content="KPT. Technology rooted in nature. Organic innovation, artisanal craft, premium quality.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Caveat:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green: #00674B;
+    --green-dark: #004730;
+    --green-deep: #002E1F;
+    --green-light: #3A8F6F;
+    --cream: #F5F0E0;
+    --cream-light: #FAF7EE;
+    --cream-dark: #E8DFC8;
+    --earth: #8B6914;
+    --earth-light: #C4A35A;
+    --earth-dark: #5C4710;
+    --chalk-bg: #2C3E2E;
+    --chalk-text: #E8E2D0;
+    --brown: #6B4226;
+    --brown-light: #9E7B5A;
+    --terra: #C65D3E;
+    --leaf: #4CAF50;
+    --white: #FFFFFF;
+    --text-dark: #1A2E1A;
+    --text-body: #3D4F3D;
+    --border-natural: rgba(0, 103, 75, 0.15);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text-dark);
+    font-family: 'Source Sans 3', 'Segoe UI', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ── Typography ────────────────────────────────────────────── */
+  .font-serif { font-family: 'Playfair Display', 'Georgia', serif; }
+  .font-body-serif { font-family: 'Lora', 'Georgia', serif; }
+  .font-hand { font-family: 'Caveat', cursive; }
+
+  /* ── Back Link ─────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    background: var(--green-dark);
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .back-link:hover {
+    background: var(--green);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 71, 48, 0.3);
+  }
+
+  /* ── Leaf Decorations ───────────────────────────────────────── */
+  .leaf-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 48px auto;
+    max-width: 300px;
+  }
+  .leaf-divider::before,
+  .leaf-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--green-light);
+    opacity: 0.4;
+  }
+  .leaf-icon {
+    font-size: 20px;
+    color: var(--green);
+    opacity: 0.6;
+  }
+
+  /* ── Navigation ────────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: rgba(0, 71, 48, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 2px solid rgba(196, 163, 90, 0.3);
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(0, 46, 31, 0.98);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--cream);
+    letter-spacing: 6px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-logo-leaf {
+    font-size: 18px;
+    opacity: 0.7;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--cream-dark);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--earth-light);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--cream); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ── Hero ────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: var(--green-dark);
+    position: relative;
+    overflow: hidden;
+    padding: 100px 24px 80px;
+  }
+
+  /* Organic background pattern */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 800px 600px at 20% 30%, rgba(74, 175, 80, 0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 600px 800px at 80% 70%, rgba(196, 163, 90, 0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 400px 400px at 50% 50%, rgba(0, 103, 75, 0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Subtle leaf pattern overlay */
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M40 10 C40 10 55 25 55 40 C55 55 40 55 40 55 C40 55 25 55 25 40 C25 25 40 10 40 10Z' fill='%23FFFFFF' fill-opacity='1'/%3E%3C/svg%3E");
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    color: var(--earth-light);
+    margin-bottom: 32px;
+    padding: 8px 24px;
+    border: 1px solid rgba(196, 163, 90, 0.25);
+    border-radius: 30px;
+    background: rgba(196, 163, 90, 0.06);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease;
+  }
+  .hero-badge.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hero-kpt {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(100px, 18vw, 220px);
+    letter-spacing: 20px;
+    color: var(--cream);
+    line-height: 0.9;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .hero-kpt.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .hero-kpt-underline {
+    width: 120px;
+    height: 3px;
+    background: var(--earth-light);
+    margin: 0 auto 28px;
+    border-radius: 2px;
+    opacity: 0;
+    transform: scaleX(0);
+    transition: all 0.8s ease 0.4s;
+  }
+  .hero-kpt-underline.visible {
+    opacity: 0.7;
+    transform: scaleX(1);
+  }
+
+  .hero-tagline {
+    font-family: 'Lora', serif;
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--cream-dark);
+    max-width: 600px;
+    margin: 0 auto 16px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease 0.3s;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-tagline.visible {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+
+  .hero-sub {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green-light);
+    margin-bottom: 48px;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.8s ease 0.5s;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-sub.visible {
+    opacity: 0.6;
+    transform: translateY(0);
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    background: var(--cream);
+    padding: 16px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  .hero-cta.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.4s ease, opacity 0.8s ease 0.7s, transform 0.8s ease 0.7s;
+  }
+  .hero-cta:hover {
+    background: transparent;
+    color: var(--cream);
+    border-color: var(--cream);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Floating leaves animation */
+  .floating-leaf {
+    position: absolute;
+    font-size: 24px;
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+    animation: floatLeaf 20s ease-in-out infinite;
+  }
+  .floating-leaf:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; animation-duration: 18s; }
+  .floating-leaf:nth-child(2) { top: 25%; right: 15%; animation-delay: -4s; animation-duration: 22s; font-size: 32px; }
+  .floating-leaf:nth-child(3) { bottom: 30%; left: 20%; animation-delay: -8s; animation-duration: 16s; }
+  .floating-leaf:nth-child(4) { bottom: 20%; right: 10%; animation-delay: -12s; animation-duration: 24s; font-size: 28px; }
+  .floating-leaf:nth-child(5) { top: 60%; left: 5%; animation-delay: -6s; animation-duration: 20s; }
+
+  @keyframes floatLeaf {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(15px, -20px) rotate(10deg); }
+    50% { transform: translate(-10px, -35px) rotate(-5deg); }
+    75% { transform: translate(20px, -15px) rotate(8deg); }
+  }
+
+  /* ── Scroll indicator ───────────────────────────────────────── */
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 1s ease 1.2s;
+    z-index: 1;
+  }
+  .scroll-hint.visible { opacity: 0.5; }
+  .scroll-hint span {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cream-dark);
+  }
+  .scroll-arrow {
+    width: 20px;
+    height: 20px;
+    border-right: 2px solid var(--cream-dark);
+    border-bottom: 2px solid var(--cream-dark);
+    transform: rotate(45deg);
+    animation: scrollBounce 2s ease-in-out infinite;
+  }
+  @keyframes scrollBounce {
+    0%, 100% { transform: rotate(45deg) translate(0, 0); opacity: 0.5; }
+    50% { transform: rotate(45deg) translate(4px, 4px); opacity: 1; }
+  }
+
+  /* ── Chalkboard Section ──────────────────────────────────── */
+  .chalkboard {
+    background: var(--chalk-bg);
+    position: relative;
+    padding: 80px 24px;
+    overflow: hidden;
+  }
+  .chalkboard::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.03) 2px,
+        rgba(0,0,0,0.03) 4px
+      );
+    pointer-events: none;
+  }
+  /* Chalk dust effect */
+  .chalkboard::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.02) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, rgba(255,255,255,0.015) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .chalk-border-top,
+  .chalk-border-bottom {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    height: 6px;
+    background: #5C3D24;
+    border-radius: 3px;
+  }
+  .chalk-border-top { top: 0; }
+  .chalk-border-bottom { bottom: 0; }
+
+  .chalk-title {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--chalk-text);
+    text-align: center;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .chalk-subtitle {
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    color: rgba(232, 226, 208, 0.5);
+    text-align: center;
+    margin-bottom: 56px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .chalk-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .chalk-item {
+    text-align: center;
+    padding: 32px 20px;
+    border: 1px dashed rgba(232, 226, 208, 0.15);
+    border-radius: 8px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+  }
+  .chalk-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .chalk-item:nth-child(2) { transition-delay: 0.15s; }
+  .chalk-item:nth-child(3) { transition-delay: 0.3s; }
+
+  .chalk-item-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .chalk-item-name {
+    font-family: 'Caveat', cursive;
+    font-size: 26px;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+  .chalk-item-desc {
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    color: rgba(232, 226, 208, 0.55);
+    line-height: 1.7;
+  }
+  .chalk-item-price {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    color: var(--earth-light);
+    margin-top: 12px;
+  }
+
+  /* ── Philosophy Section ──────────────────────────────────── */
+  .philosophy {
+    padding: 100px 24px;
+    background: var(--cream-light);
+    position: relative;
+  }
+  .philosophy::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(to bottom, var(--cream), var(--cream-light));
+    pointer-events: none;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 64px;
+    position: relative;
+    z-index: 1;
+  }
+  .section-eyebrow {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+  .section-eyebrow.visible { opacity: 1; transform: translateY(0); }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease 0.1s;
+  }
+  .section-title.visible { opacity: 1; transform: translateY(0); }
+
+  .section-description {
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--text-body);
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease 0.2s;
+  }
+  .section-description.visible { opacity: 0.7; transform: translateY(0); }
+
+  .philosophy-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .phil-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 40px 28px;
+    text-align: center;
+    border: 1px solid var(--border-natural);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  .phil-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .phil-card:nth-child(2) { transition-delay: 0.15s; }
+  .phil-card:nth-child(3) { transition-delay: 0.3s; }
+
+  .phil-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--green), var(--green-light));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .phil-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(0, 71, 48, 0.1);
+    border-color: var(--green-light);
+  }
+  .phil-card:hover::before { opacity: 1; }
+
+  .phil-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 103, 75, 0.08), rgba(0, 103, 75, 0.03));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 28px;
+    border: 1px solid rgba(0, 103, 75, 0.1);
+  }
+  .phil-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 12px;
+  }
+  .phil-text {
+    font-family: 'Lora', serif;
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 1.7;
+  }
+
+  /* ── Features / Artisanal Cards ──────────────────────────── */
+  .features {
+    padding: 100px 24px;
+    background: var(--cream);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .feature-card {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--border-natural);
+    transition: all 0.4s ease;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  .feature-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .feature-card:nth-child(2) { transition-delay: 0.1s; }
+  .feature-card:nth-child(3) { transition-delay: 0.2s; }
+  .feature-card:nth-child(4) { transition-delay: 0.3s; }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 48px rgba(0, 71, 48, 0.08);
+  }
+
+  .feature-img {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-img-1 {
+    background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+  }
+  .feature-img-2 {
+    background: linear-gradient(135deg, #FFF8E1, #FFECB3);
+  }
+  .feature-img-3 {
+    background: linear-gradient(135deg, #E0F2F1, #B2DFDB);
+  }
+  .feature-img-4 {
+    background: linear-gradient(135deg, #FBE9E7, #FFCCBC);
+  }
+
+  .feature-img-icon {
+    font-size: 64px;
+    opacity: 0.5;
+  }
+
+  .feature-stamp {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-family: 'Caveat', cursive;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    background: var(--green);
+    padding: 4px 14px;
+    border-radius: 20px;
+  }
+
+  .feature-body {
+    padding: 28px;
+  }
+  .feature-label {
+    font-family: 'Caveat', cursive;
+    font-size: 15px;
+    color: var(--earth);
+    margin-bottom: 4px;
+  }
+  .feature-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 10px;
+  }
+  .feature-desc {
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    color: var(--text-body);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .feature-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .feature-tag {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--green);
+    background: rgba(0, 103, 75, 0.06);
+    padding: 4px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 103, 75, 0.12);
+  }
+
+  /* ── Stats Banner ────────────────────────────────────────── */
+  .stats {
+    background: var(--green-dark);
+    padding: 72px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stats::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(74, 175, 80, 0.08), transparent 60%),
+      radial-gradient(ellipse at 80% 50%, rgba(196, 163, 90, 0.05), transparent 60%);
+    pointer-events: none;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-item {
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+  }
+  .stat-item.visible { opacity: 1; transform: translateY(0); }
+  .stat-item:nth-child(2) { transition-delay: 0.1s; }
+  .stat-item:nth-child(3) { transition-delay: 0.2s; }
+  .stat-item:nth-child(4) { transition-delay: 0.3s; }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 800;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-unit {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    color: var(--earth-light);
+  }
+  .stat-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(232, 226, 208, 0.5);
+    margin-top: 8px;
+  }
+
+  /* ── Testimonial / Quote ─────────────────────────────────── */
+  .quote-section {
+    padding: 100px 24px;
+    background: var(--cream-light);
+    text-align: center;
+    position: relative;
+  }
+  .quote-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='%23004730'/%3E%3C/svg%3E");
+    background-size: 30px 30px;
+    pointer-events: none;
+  }
+
+  .quote-mark {
+    font-family: 'Playfair Display', serif;
+    font-size: 120px;
+    font-weight: 800;
+    color: var(--green);
+    opacity: 0.12;
+    line-height: 0.6;
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.8s ease;
+  }
+  .quote-mark.visible { opacity: 0.12; transform: scale(1); }
+
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--green-dark);
+    max-width: 700px;
+    margin: 0 auto 24px;
+    line-height: 1.5;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease 0.2s;
+    position: relative;
+    z-index: 1;
+  }
+  .quote-text.visible { opacity: 1; transform: translateY(0); }
+
+  .quote-attribution {
+    font-family: 'Caveat', cursive;
+    font-size: 20px;
+    color: var(--earth);
+    opacity: 0;
+    transition: opacity 0.8s ease 0.5s;
+    position: relative;
+    z-index: 1;
+  }
+  .quote-attribution.visible { opacity: 0.7; }
+
+  /* ── Process / How It Works ──────────────────────────────── */
+  .process {
+    padding: 100px 24px;
+    background: var(--cream);
+  }
+
+  .process-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    left: 32px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--green-light) 0,
+      var(--green-light) 6px,
+      transparent 6px,
+      transparent 12px
+    );
+    opacity: 0.3;
+  }
+
+  .process-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 28px;
+    padding: 32px 0;
+    position: relative;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.6s ease;
+  }
+  .process-step.visible { opacity: 1; transform: translateX(0); }
+  .process-step:nth-child(2) { transition-delay: 0.15s; }
+  .process-step:nth-child(3) { transition-delay: 0.3s; }
+  .process-step:nth-child(4) { transition-delay: 0.45s; }
+
+  .step-number {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--cream);
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 16px rgba(0, 71, 48, 0.2);
+  }
+  .step-content {}
+  .step-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--green-dark);
+    margin-bottom: 6px;
+  }
+  .step-text {
+    font-family: 'Lora', serif;
+    font-size: 15px;
+    color: var(--text-body);
+    line-height: 1.7;
+  }
+  .step-hand {
+    font-family: 'Caveat', cursive;
+    font-size: 16px;
+    color: var(--earth);
+    margin-top: 8px;
+    display: block;
+  }
+
+  /* ── CTA Section ─────────────────────────────────────────── */
+  .cta {
+    padding: 100px 24px;
+    background: var(--green);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 500px 500px at 30% 30%, rgba(255,255,255,0.04), transparent),
+      radial-gradient(ellipse 500px 500px at 70% 70%, rgba(0,0,0,0.1), transparent);
+    pointer-events: none;
+  }
+  .cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M40 10 C40 10 55 25 55 40 C55 55 40 55 40 55 C40 55 25 55 25 40 C25 25 40 10 40 10Z' fill='%23FFFFFF' fill-opacity='1'/%3E%3C/svg%3E");
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+
+  .cta-hand-label {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    color: var(--earth-light);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+  .cta-hand-label.visible { opacity: 0.8; transform: translateY(0); }
+
+  .cta-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800;
+    color: var(--cream);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease 0.15s;
+  }
+  .cta-title.visible { opacity: 1; transform: translateY(0); }
+
+  .cta-sub {
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    font-style: italic;
+    color: rgba(245, 240, 224, 0.7);
+    max-width: 500px;
+    margin: 0 auto 40px;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease 0.3s;
+  }
+  .cta-sub.visible { opacity: 1; transform: translateY(0); }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green-dark);
+    background: var(--cream);
+    padding: 18px 48px;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    position: relative;
+    z-index: 1;
+    border: 2px solid var(--cream);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.4s ease, opacity 0.6s ease 0.45s, transform 0.6s ease 0.45s;
+  }
+  .cta-btn.visible { opacity: 1; transform: translateY(0); }
+  .cta-btn:hover {
+    background: transparent;
+    color: var(--cream);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .cta-note {
+    font-family: 'Caveat', cursive;
+    font-size: 16px;
+    color: rgba(245, 240, 224, 0.4);
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Footer ──────────────────────────────────────────────── */
+  footer {
+    background: var(--green-deep);
+    padding: 64px 24px 32px;
+    position: relative;
+  }
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--earth-dark), var(--earth-light), var(--earth-dark));
+    opacity: 0.4;
+  }
+
+  .footer-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+
+  .footer-brand {}
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--cream);
+    letter-spacing: 6px;
+    margin-bottom: 12px;
+  }
+  .footer-tagline {
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    font-style: italic;
+    color: rgba(245, 240, 224, 0.45);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .footer-organic-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Caveat', cursive;
+    font-size: 15px;
+    color: var(--earth-light);
+    border: 1px solid rgba(196, 163, 90, 0.25);
+    border-radius: 20px;
+    padding: 6px 16px;
+  }
+
+  .footer-heading {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green-light);
+    margin-bottom: 20px;
+  }
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .footer-links a {
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    color: rgba(245, 240, 224, 0.45);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .footer-links a:hover { color: var(--cream); }
+
+  .footer-bottom {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-top: 24px;
+    border-top: 1px solid rgba(245, 240, 224, 0.08);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-copy {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    color: rgba(245, 240, 224, 0.3);
+    letter-spacing: 1px;
+  }
+  .footer-badge {
+    font-family: 'Caveat', cursive;
+    font-size: 14px;
+    color: rgba(245, 240, 224, 0.25);
+  }
+
+  /* ── Responsive ──────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .back-link { top: 12px; left: 12px; font-size: 11px; padding: 6px 12px; }
+
+    .hero { padding: 80px 20px 60px; }
+    .hero-kpt { letter-spacing: 10px; }
+
+    .chalk-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .philosophy-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px 16px;
+    }
+
+    .process-steps::before { left: 24px; }
+    .step-number { width: 48px; height: 48px; font-size: 18px; }
+
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  /* ── Smooth section transitions ──────────────────────────── */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+  <!-- Back Link -->
+  <a href="/index.html" class="back-link">&larr; Gallery</a>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-leaf">&#127807;</span>
+      KPT
+    </a>
+    <ul class="nav-links">
+      <li><a href="#philosophy">Philosophy</a></li>
+      <li><a href="#features">Solutions</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#cta">Begin</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="floating-leaf">&#127811;</div>
+    <div class="floating-leaf">&#127807;</div>
+    <div class="floating-leaf">&#127808;</div>
+    <div class="floating-leaf">&#127811;</div>
+    <div class="floating-leaf">&#127807;</div>
+
+    <div class="hero-badge animate-hero">&#127807; Certified Organic Technology</div>
+    <div class="hero-kpt animate-hero">KPT</div>
+    <div class="hero-kpt-underline animate-hero"></div>
+    <p class="hero-tagline animate-hero">Naturally engineered for those who<br>demand the highest quality.</p>
+    <p class="hero-sub animate-hero">Wholesome technology &middot; Artisanal craft &middot; Rooted in purpose</p>
+    <a href="#philosophy" class="hero-cta animate-hero">Explore Our Roots &darr;</a>
+
+    <div class="scroll-hint animate-hero">
+      <span>Scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- Chalkboard Menu Section -->
+  <section class="chalkboard">
+    <div class="chalk-border-top"></div>
+    <h2 class="chalk-title animate-on-scroll">Today's Fresh Picks</h2>
+    <p class="chalk-subtitle animate-on-scroll">Hand-selected solutions, crafted with care</p>
+
+    <div class="chalk-grid">
+      <div class="chalk-item">
+        <span class="chalk-item-icon">&#127793;</span>
+        <h3 class="chalk-item-name">Seedling Plan</h3>
+        <p class="chalk-item-desc">Start small, grow organically. Core AI tools with room to flourish.</p>
+        <div class="chalk-item-price">from $49/mo</div>
+      </div>
+      <div class="chalk-item">
+        <span class="chalk-item-icon">&#127795;</span>
+        <h3 class="chalk-item-name">Harvest Plan</h3>
+        <p class="chalk-item-desc">Full-spectrum solution. Premium agents, voice, and orchestration.</p>
+        <div class="chalk-item-price">from $149/mo</div>
+      </div>
+      <div class="chalk-item">
+        <span class="chalk-item-icon">&#127806;</span>
+        <h3 class="chalk-item-name">Estate Plan</h3>
+        <p class="chalk-item-desc">Enterprise-grade. White-glove onboarding, dedicated support, custom agents.</p>
+        <div class="chalk-item-price">Custom</div>
+      </div>
+    </div>
+    <div class="chalk-border-bottom"></div>
+  </section>
+
+  <!-- Philosophy Section -->
+  <section class="philosophy" id="philosophy">
+    <div class="section-header">
+      <p class="section-eyebrow animate-on-scroll">Our Philosophy</p>
+      <h2 class="section-title animate-on-scroll">Rooted in What Matters</h2>
+      <p class="section-description animate-on-scroll">We believe technology should be cultivated, not manufactured. Every system we build grows from honest principles.</p>
+    </div>
+
+    <div class="philosophy-grid">
+      <div class="phil-card">
+        <div class="phil-icon">&#127793;</div>
+        <h3 class="phil-title">Organic Growth</h3>
+        <p class="phil-text">No artificial shortcuts. Our systems evolve naturally, adapting to your needs like a well-tended garden.</p>
+      </div>
+      <div class="phil-card">
+        <div class="phil-icon">&#129516;</div>
+        <h3 class="phil-title">Clean Ingredients</h3>
+        <p class="phil-text">No bloated dependencies. No hidden trackers. Pure, transparent code you can trust with your business.</p>
+      </div>
+      <div class="phil-card">
+        <div class="phil-icon">&#127807;</div>
+        <h3 class="phil-title">Sustainably Built</h3>
+        <p class="phil-text">Efficient by design. Minimal footprint, maximum impact. Technology that respects both your budget and the planet.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="section-header">
+      <p class="section-eyebrow animate-on-scroll">Our Solutions</p>
+      <h2 class="section-title animate-on-scroll">Farm-to-Table Technology</h2>
+      <p class="section-description animate-on-scroll">Handcrafted systems, locally sourced talent, artisanal attention to every detail.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-img feature-img-1">
+          <span class="feature-img-icon">&#129302;</span>
+          <span class="feature-stamp">Fresh</span>
+        </div>
+        <div class="feature-body">
+          <div class="feature-label">~ small batch ~</div>
+          <h3 class="feature-name">AI Voice Agents</h3>
+          <p class="feature-desc">Conversations that feel human because they're crafted with care. No generic scripts. Each voice agent is cultivated for your brand's unique personality.</p>
+          <div class="feature-tags">
+            <span class="feature-tag">Natural Language</span>
+            <span class="feature-tag">24/7 Support</span>
+            <span class="feature-tag">Brand-Tuned</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-img feature-img-2">
+          <span class="feature-img-icon">&#127760;</span>
+          <span class="feature-stamp">Artisanal</span>
+        </div>
+        <div class="feature-body">
+          <div class="feature-label">~ hand-crafted ~</div>
+          <h3 class="feature-name">Premium Web Design</h3>
+          <p class="feature-desc">Websites grown from scratch, not factory-assembled from templates. Every pixel placed with intention, every interaction nurtured to delight.</p>
+          <div class="feature-tags">
+            <span class="feature-tag">Responsive</span>
+            <span class="feature-tag">Accessible</span>
+            <span class="feature-tag">Fast</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-img feature-img-3">
+          <span class="feature-img-icon">&#9881;&#65039;</span>
+          <span class="feature-stamp">Organic</span>
+        </div>
+        <div class="feature-body">
+          <div class="feature-label">~ sustainably sourced ~</div>
+          <h3 class="feature-name">Agent Orchestration</h3>
+          <p class="feature-desc">A living ecosystem of AI agents that collaborate, adapt, and grow. Like a healthy garden, each agent plays its role in the greater harvest.</p>
+          <div class="feature-tags">
+            <span class="feature-tag">Multi-Agent</span>
+            <span class="feature-tag">Self-Healing</span>
+            <span class="feature-tag">Scalable</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-img feature-img-4">
+          <span class="feature-img-icon">&#128202;</span>
+          <span class="feature-stamp">Local</span>
+        </div>
+        <div class="feature-body">
+          <div class="feature-label">~ farm-fresh ~</div>
+          <h3 class="feature-name">Analytics Dashboard</h3>
+          <p class="feature-desc">Know exactly what's in your data. Clean, transparent metrics without the processed junk. Real-time insights you can actually digest.</p>
+          <div class="feature-tags">
+            <span class="feature-tag">Real-Time</span>
+            <span class="feature-tag">Privacy-First</span>
+            <span class="feature-tag">Actionable</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Banner -->
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">99.9</div>
+        <div class="stat-unit">percent</div>
+        <div class="stat-label">Uptime Guaranteed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">40+</div>
+        <div class="stat-unit">happy growers</div>
+        <div class="stat-label">Clients Served</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">&lt;200</div>
+        <div class="stat-unit">milliseconds</div>
+        <div class="stat-label">Response Time</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">0</div>
+        <div class="stat-unit">artificial additives</div>
+        <div class="stat-label">No Vendor Lock-In</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote Section -->
+  <section class="quote-section">
+    <div class="quote-mark animate-on-scroll">&ldquo;</div>
+    <p class="quote-text animate-on-scroll">Working with KPT felt like finding a farmers market in a world of fast food tech. Everything was fresh, intentional, and built to nourish our business for the long haul.</p>
+    <p class="quote-attribution animate-on-scroll">&mdash; A very satisfied grower</p>
+  </section>
+
+  <!-- Process Section -->
+  <section class="process" id="process">
+    <div class="section-header">
+      <p class="section-eyebrow animate-on-scroll">Our Process</p>
+      <h2 class="section-title animate-on-scroll">Seed to Harvest</h2>
+      <p class="section-description animate-on-scroll">Great things take time to grow. Here's how we cultivate your project.</p>
+    </div>
+
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3 class="step-title">Plant the Seed</h3>
+          <p class="step-text">We sit down together and dig into the soil of your business. What are you growing? What conditions does it need? We listen before we plant.</p>
+          <span class="step-hand">Discovery &amp; research phase ~</span>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3 class="step-title">Prepare the Soil</h3>
+          <p class="step-text">Architecture, design, and strategy. We enrich the foundation with clean code and sustainable patterns so everything that follows can thrive.</p>
+          <span class="step-hand">Planning &amp; design phase ~</span>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3 class="step-title">Nurture Growth</h3>
+          <p class="step-text">Daily cultivation. We build in focused sprints, tending each feature with care. Regular check-ins so you can watch your project bloom.</p>
+          <span class="step-hand">Build &amp; iterate phase ~</span>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h3 class="step-title">Harvest &amp; Sustain</h3>
+          <p class="step-text">Launch day is harvest day, but our commitment doesn't end there. Ongoing support, optimization, and seasonal updates keep your product thriving.</p>
+          <span class="step-hand">Launch &amp; ongoing care ~</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta" id="cta">
+    <p class="cta-hand-label animate-on-scroll">&#127807; Ready to grow something real?</p>
+    <h2 class="cta-title animate-on-scroll">Start Your Harvest</h2>
+    <p class="cta-sub animate-on-scroll">Join the community of businesses that chose organic technology over processed alternatives.</p>
+    <a href="#" class="cta-btn animate-on-scroll">Plant the First Seed &rarr;</a>
+    <p class="cta-note">No pesticides. No preservatives. Just pure, clean tech.</p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">KPT</div>
+        <p class="footer-tagline">Naturally engineered technology.<br>Artisanal craft meets modern innovation.</p>
+        <div class="footer-organic-badge">&#127807; Certified Organic Tech</div>
+      </div>
+      <div>
+        <h4 class="footer-heading">Solutions</h4>
+        <ul class="footer-links">
+          <li><a href="#">AI Voice Agents</a></li>
+          <li><a href="#">Web Design</a></li>
+          <li><a href="#">Orchestration</a></li>
+          <li><a href="#">Analytics</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading">Company</h4>
+        <ul class="footer-links">
+          <li><a href="#">Our Farm</a></li>
+          <li><a href="#">The Team</a></li>
+          <li><a href="#">Standards</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 KPT. All rights reserved. Grown with care.</p>
+      <p class="footer-badge">&#127793; Whole Foods inspired brand concept</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // ── IntersectionObserver Scroll Animations ────────────────
+    const observerOptions = {
+      threshold: 0.15,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Don't unobserve — keep it simple
+        }
+      });
+    }, observerOptions);
+
+    // Observe all scroll-animated elements
+    document.querySelectorAll('.animate-on-scroll, .chalk-item, .phil-card, .feature-card, .stat-item, .process-step').forEach(el => {
+      observer.observe(el);
+    });
+
+    // ── Hero Animations (on load) ─────────────────────────────
+    window.addEventListener('load', () => {
+      const heroEls = document.querySelectorAll('.animate-hero');
+      heroEls.forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), 200 + i * 150);
+      });
+    });
+
+    // ── Nav scroll effect ─────────────────────────────────────
+    let lastScroll = 0;
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > 80) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+      lastScroll = currentScroll;
+    }, { passive: true });
+
+    // ── Smooth scroll for anchor links ────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // ── Parallax floating leaves ──────────────────────────────
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      document.querySelectorAll('.floating-leaf').forEach((leaf, i) => {
+        const speed = 0.02 + (i * 0.01);
+        leaf.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.02}deg)`;
+      });
+    }, { passive: true });
+  </script>
+
+</body>
+</html>

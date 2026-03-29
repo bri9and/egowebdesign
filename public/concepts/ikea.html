@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — The Wonderful Everyday of Tech</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+  /* ═══ RESET & BASE ═══ */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Noto Sans', sans-serif;
+    background: #FAFAF8;
+    color: #111;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ═══ BACK LINK ═══ */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #003399;
+    color: #FFDA1A;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,51,153,0.3);
+  }
+  .back-link:hover {
+    background: #002277;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,51,153,0.4);
+  }
+  .back-link svg { width: 14px; height: 14px; fill: currentColor; }
+
+  /* ═══ HERO ═══ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #003399;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 20px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 500px;
+    height: 500px;
+    background: rgba(255,218,26,0.06);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -150px;
+    left: -80px;
+    width: 400px;
+    height: 400px;
+    background: rgba(255,218,26,0.04);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* Price tag shape behind logo */
+  .hero-tag {
+    position: relative;
+    background: #FFDA1A;
+    padding: 40px 80px 50px;
+    margin-bottom: 40px;
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+    animation: tagDrop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  @keyframes tagDrop {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-tag .logo {
+    font-size: 96px;
+    font-weight: 900;
+    color: #003399;
+    letter-spacing: -2px;
+    line-height: 1;
+    text-align: center;
+  }
+  .hero-tag .logo-sub {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #003399;
+    text-align: center;
+    margin-top: 4px;
+    opacity: 0.7;
+  }
+
+  .hero-tagline {
+    font-size: 28px;
+    font-weight: 400;
+    color: #fff;
+    text-align: center;
+    max-width: 600px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.5s ease forwards;
+    line-height: 1.4;
+  }
+  .hero-tagline strong {
+    color: #FFDA1A;
+    font-weight: 700;
+  }
+  .hero-price {
+    margin-top: 32px;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.7s ease forwards;
+  }
+  .hero-price .currency { font-size: 24px; color: #FFDA1A; font-weight: 700; vertical-align: super; }
+  .hero-price .amount { font-size: 72px; font-weight: 900; color: #fff; line-height: 1; }
+  .hero-price .cents { font-size: 24px; color: #FFDA1A; font-weight: 700; vertical-align: super; }
+  .hero-price-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    margin-top: 8px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.8s ease forwards;
+    letter-spacing: 1px;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.4);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.6s 1.2s ease forwards;
+  }
+  .scroll-hint .arrow {
+    width: 20px;
+    height: 20px;
+    border-right: 2px solid rgba(255,255,255,0.4);
+    border-bottom: 2px solid rgba(255,255,255,0.4);
+    transform: rotate(45deg);
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50% { transform: rotate(45deg) translateY(6px); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ═══ SECTION SHARED ═══ */
+  section { padding: 100px 20px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #003399;
+    background: #FFDA1A;
+    padding: 4px 12px;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: 42px;
+    font-weight: 900;
+    color: #003399;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    font-size: 18px;
+    color: #555;
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* ═══ ASSEMBLY INSTRUCTIONS ═══ */
+  .assembly {
+    background: #fff;
+    border-top: 4px solid #003399;
+    border-bottom: 4px solid #003399;
+  }
+  .assembly-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .assembly-header .section-title { margin-bottom: 8px; }
+  .assembly-header .section-desc { margin: 0 auto; text-align: center; }
+
+  .assembly-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 2px solid #111;
+  }
+  .step {
+    padding: 40px 30px;
+    border-right: 2px solid #111;
+    border-bottom: 2px solid #111;
+    position: relative;
+    background: #fff;
+    transition: background 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s ease;
+  }
+  .step.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .step:nth-child(3n) { border-right: none; }
+  .step:nth-child(n+4) { border-bottom: none; }
+  .step:hover { background: #FFFBE6; }
+
+  .step-number {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #003399;
+    color: #FFDA1A;
+    font-size: 22px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .step-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .step h3 {
+    font-size: 18px;
+    font-weight: 900;
+    color: #003399;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .step p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+  }
+
+  /* Allen wrench decoration */
+  .allen-wrench {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 30px 0;
+    color: #ccc;
+  }
+  .allen-wrench svg { width: 40px; height: 40px; fill: #ccc; }
+  .allen-wrench .hex {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #ddd;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    position: relative;
+  }
+  .allen-wrench .hex::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background: #ddd;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+  .allen-wrench .dot { width: 6px; height: 6px; background: #ddd; border-radius: 50%; }
+
+  /* ═══ SHOWROOM SECTION ═══ */
+  .showroom {
+    background: #F5F0E8;
+    position: relative;
+  }
+  .showroom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(
+      90deg,
+      #003399 0px,
+      #003399 20px,
+      #FFDA1A 20px,
+      #FFDA1A 40px
+    );
+  }
+
+  .showroom-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 60px;
+    margin-bottom: 60px;
+  }
+  .showroom-top .section-title { max-width: 500px; }
+
+  .room-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .room-card {
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s ease;
+  }
+  .room-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .room-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  }
+  .room-card.visible:hover {
+    transform: translateY(-4px);
+  }
+  .room-visual {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .room-visual .room-icon {
+    font-size: 64px;
+    position: relative;
+    z-index: 1;
+  }
+  .room-visual .room-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+  }
+  .room-visual .room-pattern.grid-pattern {
+    background-image:
+      linear-gradient(#003399 1px, transparent 1px),
+      linear-gradient(90deg, #003399 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  .room-visual .room-pattern.dot-pattern {
+    background-image: radial-gradient(#003399 1.5px, transparent 1.5px);
+    background-size: 20px 20px;
+  }
+  .room-visual .room-pattern.line-pattern {
+    background-image: repeating-linear-gradient(
+      45deg,
+      #003399 0px,
+      #003399 1px,
+      transparent 1px,
+      transparent 15px
+    );
+  }
+  .room-visual .room-pattern.cross-pattern {
+    background-image:
+      linear-gradient(#003399 1px, transparent 1px),
+      linear-gradient(90deg, #003399 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: center;
+  }
+
+  .rv-1 { background: linear-gradient(135deg, #E8F0FE, #D4E4FF); }
+  .rv-2 { background: linear-gradient(135deg, #FFF8E1, #FFECB3); }
+  .rv-3 { background: linear-gradient(135deg, #E8F5E9, #C8E6C9); }
+  .rv-4 { background: linear-gradient(135deg, #FFF3E0, #FFE0B2); }
+
+  .room-info {
+    padding: 24px;
+  }
+  .room-info .room-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #003399;
+    background: #E8F0FE;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+  }
+  .room-info h3 {
+    font-size: 20px;
+    font-weight: 900;
+    color: #111;
+    margin-bottom: 6px;
+  }
+  .room-info p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+  }
+  .room-price {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+  }
+  .room-price .rp-label { font-size: 11px; color: #999; margin-right: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .room-price .rp-amount { font-size: 28px; font-weight: 900; color: #003399; }
+  .room-price .rp-unit { font-size: 12px; color: #999; margin-left: 4px; }
+
+  /* ═══ STATS BAR ═══ */
+  .stats-bar {
+    background: #003399;
+    padding: 60px 20px;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .stat {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .stat.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .stat-number {
+    font-size: 52px;
+    font-weight: 900;
+    color: #FFDA1A;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .stat-divider {
+    width: 24px;
+    height: 3px;
+    background: rgba(255,218,26,0.3);
+    margin: 10px auto 0;
+  }
+
+  /* ═══ PARTS LIST ═══ */
+  .parts-list {
+    background: #fff;
+  }
+  .parts-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 48px;
+  }
+  .parts-header .article-no {
+    font-size: 13px;
+    color: #999;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .parts-table {
+    width: 100%;
+    border: 2px solid #111;
+  }
+  .parts-table thead {
+    background: #003399;
+    color: #FFDA1A;
+  }
+  .parts-table th {
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .parts-table td {
+    padding: 16px 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+  }
+  .parts-table tr:last-child td { border-bottom: none; }
+  .parts-table tbody tr {
+    transition: background 0.2s ease;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.4s ease, transform 0.4s ease, background 0.2s ease;
+  }
+  .parts-table tbody tr.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .parts-table tbody tr:hover { background: #FFFBE6; }
+  .parts-table .part-id {
+    font-weight: 900;
+    color: #003399;
+    font-size: 16px;
+  }
+  .parts-table .part-icon { font-size: 24px; }
+  .parts-table .qty {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #FFDA1A;
+    color: #003399;
+    font-weight: 900;
+    font-size: 14px;
+    border-radius: 2px;
+  }
+  .parts-table .check {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #ccc;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .parts-table .check.checked {
+    background: #003399;
+    border-color: #003399;
+  }
+  .parts-table .check.checked::after {
+    content: '';
+    width: 6px;
+    height: 10px;
+    border: 2px solid #FFDA1A;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+  }
+
+  /* ═══ CTA SECTION ═══ */
+  .cta-section {
+    background: #FFDA1A;
+    text-align: center;
+    padding: 100px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #003399;
+  }
+  .cta-section .cta-kpt {
+    font-size: 120px;
+    font-weight: 900;
+    color: #003399;
+    line-height: 1;
+    margin-bottom: 16px;
+    letter-spacing: -3px;
+  }
+  .cta-section .cta-tagline {
+    font-size: 24px;
+    color: #003399;
+    max-width: 500px;
+    margin: 0 auto 40px;
+    line-height: 1.5;
+    opacity: 0.8;
+  }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 48px;
+    background: #003399;
+    color: #FFDA1A;
+    font-size: 16px;
+    font-weight: 900;
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0,51,153,0.3);
+  }
+  .cta-btn:hover {
+    background: #002277;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,51,153,0.4);
+  }
+  .cta-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+  /* Scattered bolts decoration */
+  .cta-bolt {
+    position: absolute;
+    font-size: 24px;
+    opacity: 0.15;
+    pointer-events: none;
+  }
+  .cta-bolt:nth-child(1) { top: 15%; left: 10%; transform: rotate(15deg); }
+  .cta-bolt:nth-child(2) { top: 25%; right: 8%; transform: rotate(-30deg); }
+  .cta-bolt:nth-child(3) { bottom: 20%; left: 15%; transform: rotate(45deg); }
+  .cta-bolt:nth-child(4) { bottom: 30%; right: 12%; transform: rotate(-10deg); }
+  .cta-bolt:nth-child(5) { top: 50%; left: 5%; transform: rotate(60deg); }
+  .cta-bolt:nth-child(6) { top: 40%; right: 5%; transform: rotate(-45deg); }
+
+  /* ═══ FOOTER ═══ */
+  footer {
+    background: #111;
+    color: rgba(255,255,255,0.5);
+    padding: 50px 20px;
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  .footer-logo {
+    font-size: 28px;
+    font-weight: 900;
+    color: #FFDA1A;
+    letter-spacing: -1px;
+  }
+  .footer-logo span { color: #003399; }
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+  .footer-links a {
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    font-size: 13px;
+    transition: color 0.2s ease;
+  }
+  .footer-links a:hover { color: #FFDA1A; }
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* ═══ WOODEN TEXTURE DIVIDER ═══ */
+  .wood-divider {
+    height: 8px;
+    background: linear-gradient(
+      90deg,
+      #D4A574 0%,
+      #C49A6C 15%,
+      #D4A574 20%,
+      #B8895E 35%,
+      #D4A574 50%,
+      #C49A6C 65%,
+      #D4A574 80%,
+      #B8895E 90%,
+      #D4A574 100%
+    );
+    position: relative;
+  }
+  .wood-divider::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(0,0,0,0.03) 2px,
+      transparent 4px
+    );
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 768px) {
+    .hero-tag { padding: 28px 48px 36px; }
+    .hero-tag .logo { font-size: 64px; }
+    .hero-tagline { font-size: 20px; }
+    .hero-price .amount { font-size: 48px; }
+
+    .section-title { font-size: 28px; }
+    .section-desc { font-size: 16px; }
+
+    .assembly-grid {
+      grid-template-columns: 1fr;
+    }
+    .step { border-right: none !important; border-bottom: 2px solid #111 !important; }
+    .step:last-child { border-bottom: none !important; }
+
+    .showroom-top { flex-direction: column; gap: 16px; }
+    .room-grid { grid-template-columns: 1fr; }
+    .room-visual { height: 160px; }
+
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .stat-number { font-size: 36px; }
+
+    .parts-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .parts-table { font-size: 13px; }
+    .parts-table th, .parts-table td { padding: 10px 12px; }
+    .parts-table .part-id { font-size: 14px; }
+
+    .cta-section .cta-kpt { font-size: 64px; }
+    .cta-section .cta-tagline { font-size: 18px; }
+
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-links { justify-content: center; }
+
+    .back-link { top: 12px; left: 12px; padding: 6px 12px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">
+  <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+  All Concepts
+</a>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-tag">
+    <div class="logo">KPT</div>
+    <div class="logo-sub">Technology</div>
+  </div>
+  <p class="hero-tagline">Making <strong>the wonderful everyday</strong> of technology accessible to everyone.</p>
+  <div class="hero-price">
+    <span class="currency">$</span>
+    <span class="amount">0</span>
+    <span class="cents">.00</span>
+  </div>
+  <p class="hero-price-label">Free to start. Always.</p>
+  <div class="scroll-hint">
+    <span>Explore</span>
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<!-- ═══ ASSEMBLY INSTRUCTIONS ═══ -->
+<div class="wood-divider"></div>
+<section class="assembly">
+  <div class="container">
+    <div class="assembly-header">
+      <span class="section-label">Assembly Instructions</span>
+      <h2 class="section-title">Easy to Assemble. Built to Last.</h2>
+      <p class="section-desc">Follow these steps to get started. No Allen wrench required.</p>
+    </div>
+
+    <div class="allen-wrench">
+      <div class="dot"></div>
+      <div class="hex"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="hex"></div>
+      <div class="dot"></div>
+    </div>
+
+    <div class="assembly-grid">
+      <div class="step" data-animate>
+        <div class="step-number">1</div>
+        <span class="step-icon">📦</span>
+        <h3>Unbox</h3>
+        <p>Open your workspace. Lay out all the components. Check against the parts list below.</p>
+      </div>
+      <div class="step" data-animate>
+        <div class="step-number">2</div>
+        <span class="step-icon">📐</span>
+        <h3>Measure</h3>
+        <p>Define your project scope. Set clear goals. Estimate timelines with honest precision.</p>
+      </div>
+      <div class="step" data-animate>
+        <div class="step-number">3</div>
+        <span class="step-icon">🔧</span>
+        <h3>Connect</h3>
+        <p>Integrate your tools. API-first architecture. Everything clicks together cleanly.</p>
+      </div>
+      <div class="step" data-animate>
+        <div class="step-number">4</div>
+        <span class="step-icon">⚡</span>
+        <h3>Power On</h3>
+        <p>Deploy with confidence. One command. Zero friction. Your platform goes live.</p>
+      </div>
+      <div class="step" data-animate>
+        <div class="step-number">5</div>
+        <span class="step-icon">🔄</span>
+        <h3>Adjust</h3>
+        <p>Fine-tune and iterate. Monitor performance. Scale what works, fix what doesn't.</p>
+      </div>
+      <div class="step" data-animate>
+        <div class="step-number">6</div>
+        <span class="step-icon">✨</span>
+        <h3>Enjoy</h3>
+        <p>Step back and admire. A reliable system, beautifully organized. The wonderful everyday.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SHOWROOM ═══ -->
+<div class="wood-divider"></div>
+<section class="showroom">
+  <div class="container">
+    <div class="showroom-top">
+      <div>
+        <span class="section-label">Showroom</span>
+        <h2 class="section-title">Room Settings for Every Workflow</h2>
+      </div>
+      <p class="section-desc">Pre-configured environments designed for how you actually work. Walk through, get inspired, take what fits.</p>
+    </div>
+
+    <div class="room-grid">
+      <div class="room-card" data-animate>
+        <div class="room-visual rv-1">
+          <div class="room-pattern grid-pattern"></div>
+          <span class="room-icon">🏗️</span>
+        </div>
+        <div class="room-info">
+          <span class="room-tag">Development</span>
+          <h3>KODSTUGA</h3>
+          <p>Full-stack development environment. Git workflows, CI/CD pipelines, and automated testing in one clean workspace.</p>
+          <div class="room-price">
+            <span class="rp-label">From</span>
+            <span class="rp-amount">$0</span>
+            <span class="rp-unit">/mo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card" data-animate>
+        <div class="room-visual rv-2">
+          <div class="room-pattern dot-pattern"></div>
+          <span class="room-icon">📊</span>
+        </div>
+        <div class="room-info">
+          <span class="room-tag">Analytics</span>
+          <h3>DATARUM</h3>
+          <p>Dashboards, metrics, and real-time monitoring. Every number you need, organized like a well-lit showroom.</p>
+          <div class="room-price">
+            <span class="rp-label">From</span>
+            <span class="rp-amount">$29</span>
+            <span class="rp-unit">/mo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card" data-animate>
+        <div class="room-visual rv-3">
+          <div class="room-pattern line-pattern"></div>
+          <span class="room-icon">🤖</span>
+        </div>
+        <div class="room-info">
+          <span class="room-tag">Automation</span>
+          <h3>ARBETSFLYT</h3>
+          <p>Orchestrate agents and workflows. Event-driven automation that runs while you sleep. Set it and trust it.</p>
+          <div class="room-price">
+            <span class="rp-label">From</span>
+            <span class="rp-amount">$49</span>
+            <span class="rp-unit">/mo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card" data-animate>
+        <div class="room-visual rv-4">
+          <div class="room-pattern cross-pattern"></div>
+          <span class="room-icon">🛡️</span>
+        </div>
+        <div class="room-info">
+          <span class="room-tag">Security</span>
+          <h3>TRYGGHET</h3>
+          <p>Zero-trust architecture, audit logging, and compliance tooling. Sleep well knowing your systems are safe.</p>
+          <div class="room-price">
+            <span class="rp-label">From</span>
+            <span class="rp-amount">$79</span>
+            <span class="rp-unit">/mo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS BAR ═══ -->
+<section class="stats-bar">
+  <div class="stats-grid">
+    <div class="stat" data-animate>
+      <div class="stat-number" data-count="12847">0</div>
+      <div class="stat-label">Active Projects</div>
+      <div class="stat-divider"></div>
+    </div>
+    <div class="stat" data-animate>
+      <div class="stat-number" data-count="99.9">0</div>
+      <div class="stat-label">Uptime %</div>
+      <div class="stat-divider"></div>
+    </div>
+    <div class="stat" data-animate>
+      <div class="stat-number" data-count="42">0</div>
+      <div class="stat-label">Integrations</div>
+      <div class="stat-divider"></div>
+    </div>
+    <div class="stat" data-animate>
+      <div class="stat-number" data-count="6">0</div>
+      <div class="stat-label">Assembly Steps</div>
+      <div class="stat-divider"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PARTS LIST ═══ -->
+<div class="wood-divider"></div>
+<section class="parts-list">
+  <div class="container">
+    <div class="parts-header">
+      <div>
+        <span class="section-label">Parts List</span>
+        <h2 class="section-title">What's in the Box</h2>
+      </div>
+      <span class="article-no">Art. No. KPT-2026-001</span>
+    </div>
+
+    <table class="parts-table">
+      <thead>
+        <tr>
+          <th>Part</th>
+          <th>Component</th>
+          <th>Description</th>
+          <th>Qty</th>
+          <th>Check</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-animate>
+          <td class="part-id">A</td>
+          <td class="part-icon">🧠</td>
+          <td>AI Orchestration Engine — coordinates agents, manages tasks</td>
+          <td><span class="qty">1</span></td>
+          <td><div class="check" onclick="this.classList.toggle('checked')"></div></td>
+        </tr>
+        <tr data-animate>
+          <td class="part-id">B</td>
+          <td class="part-icon">📡</td>
+          <td>API Gateway — RESTful endpoints with rate limiting and auth</td>
+          <td><span class="qty">1</span></td>
+          <td><div class="check" onclick="this.classList.toggle('checked')"></div></td>
+        </tr>
+        <tr data-animate>
+          <td class="part-id">C</td>
+          <td class="part-icon">🗄️</td>
+          <td>Database Layer — PostgreSQL with row-level security</td>
+          <td><span class="qty">1</span></td>
+          <td><div class="check" onclick="this.classList.toggle('checked')"></div></td>
+        </tr>
+        <tr data-animate>
+          <td class="part-id">D</td>
+          <td class="part-icon">📊</td>
+          <td>Dashboard — real-time monitoring and pipeline visualization</td>
+          <td><span class="qty">1</span></td>
+          <td><div class="check" onclick="this.classList.toggle('checked')"></div></td>
+        </tr>
+        <tr data-animate>
+          <td class="part-id">E</td>
+          <td class="part-icon">🔐</td>
+          <td>Auth Module — JWT sessions, refresh rotation, MFA</td>
+          <td><span class="qty">1</span></td>
+          <td><div class="check" onclick="this.classList.toggle('checked')"></div></td>
+        </tr>
+        <tr data-animate>
+          <td class="part-id">F</td>
+          <td class="part-icon">🔩</td>
+          <td>Misc. fasteners — config files, env templates, type definitions</td>
+          <td><span class="qty">24</span></td>
+          <td><div class="check" onclick="this.classList.toggle('checked')"></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-section">
+  <span class="cta-bolt">🔩</span>
+  <span class="cta-bolt">⚙️</span>
+  <span class="cta-bolt">🔧</span>
+  <span class="cta-bolt">🪛</span>
+  <span class="cta-bolt">🔩</span>
+  <span class="cta-bolt">⚙️</span>
+  <div class="cta-kpt">KPT</div>
+  <p class="cta-tagline">Technology for the many. Not the few. Start building your wonderful everyday.</p>
+  <a href="#" class="cta-btn">
+    Start Assembling
+    <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+  </a>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">KPT<span>.</span></div>
+    <ul class="footer-links">
+      <li><a href="#">Products</a></li>
+      <li><a href="#">Rooms</a></li>
+      <li><a href="#">Inspiration</a></li>
+      <li><a href="#">Support</a></li>
+    </ul>
+    <p class="footer-copy">&copy; 2026 KPT Technology. Designed in Sweden. Assembled everywhere.</p>
+  </div>
+</footer>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+(function() {
+  // IntersectionObserver for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        // Stagger animations within the same batch
+        const el = entry.target;
+        const siblings = Array.from(el.parentElement.querySelectorAll('[data-animate]'));
+        const idx = siblings.indexOf(el);
+        const delay = idx * 100;
+        setTimeout(() => {
+          el.classList.add('visible');
+        }, delay);
+        observer.unobserve(el);
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('[data-animate]').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Animated stat counters
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const numEl = entry.target.querySelector('.stat-number');
+        const target = parseFloat(numEl.dataset.count);
+        const isDecimal = String(target).includes('.');
+        const duration = 2000;
+        const startTime = performance.now();
+
+        function animate(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = target * eased;
+
+          if (isDecimal) {
+            numEl.textContent = current.toFixed(1) + '%';
+          } else if (target >= 1000) {
+            numEl.textContent = Math.floor(current).toLocaleString();
+          } else {
+            numEl.textContent = Math.floor(current);
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            if (isDecimal) {
+              numEl.textContent = target.toFixed(1) + '%';
+            } else if (target >= 1000) {
+              numEl.textContent = target.toLocaleString();
+            } else {
+              numEl.textContent = target;
+            }
+          }
+        }
+
+        requestAnimationFrame(animate);
+        statObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.stat').forEach(el => {
+    statObserver.observe(el);
+  });
+})();
+</script>
+
+</body>
+</html>

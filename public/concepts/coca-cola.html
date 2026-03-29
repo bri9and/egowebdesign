@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Coca-Cola</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --red: #F40009;
+    --red-dark: #C50007;
+    --red-deep: #8B0006;
+    --red-deeper: #5A0004;
+    --white: #FFFFFF;
+    --black: #1A0A0B;
+    --cream: #FFF5E1;
+    --cream-warm: #FFF0D4;
+    --surface-light: #FFF8F0;
+    --text-dark: #1A0A0B;
+    --text-muted: #8C6B6E;
+    --border-light: rgba(244, 0, 9, 0.12);
+    --border-red: rgba(244, 0, 9, 0.25);
+    --gold: #D4A44A;
+    --font-script: 'Pacifico', cursive;
+    --font-body: 'Lora', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --max-width: 1200px;
+    --nav-height: 72px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--text-dark);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-body);
+    color: var(--text-dark);
+    line-height: 1.2;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ==============================
+     BACK LINK
+     ============================== */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--white);
+    background: rgba(244, 0, 9, 0.85);
+    backdrop-filter: blur(12px);
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+  .back-link:hover {
+    background: var(--red);
+    transform: translateX(-2px);
+  }
+  .back-link svg { width: 14px; height: 14px; }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    background: var(--red);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .nav-logo {
+    font-family: var(--font-script);
+    font-size: 36px;
+    color: var(--white);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+  .nav-logo:hover { transform: scale(1.05); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--white);
+    border-radius: 1px;
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    background: var(--white);
+    color: var(--red) !important;
+    padding: 8px 20px;
+    border-radius: 24px;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+  }
+  .nav-cta:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+  .nav-cta::after { display: none !important; }
+
+  .mobile-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .mobile-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  /* ==============================
+     HERO SECTION
+     ============================== */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(170deg, #D60008 0%, var(--red) 30%, #E8000A 60%, var(--red-dark) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: calc(var(--nav-height) + 40px) 24px 120px;
+    overflow: hidden;
+  }
+
+  /* Bubble canvas sits behind hero content */
+  #bubbleCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* Contour ribbon decorations */
+  .hero-ribbon {
+    position: absolute;
+    width: 140%;
+    left: -20%;
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .hero-ribbon-1 { top: 18%; }
+  .hero-ribbon-2 { top: 55%; transform: scaleX(-1); }
+  .hero-ribbon-3 { top: 78%; }
+
+  .hero-ribbon svg {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Radial glow spots */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: -5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: heroGlow 10s ease-in-out infinite;
+    z-index: 0;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 5%;
+    right: -8%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255,200,180,0.06) 0%, transparent 60%);
+    border-radius: 50%;
+    animation: heroGlow 12s ease-in-out infinite 3s;
+    z-index: 0;
+  }
+
+  @keyframes heroGlow {
+    0%, 100% { transform: scale(1) translate(0, 0); opacity: 1; }
+    50% { transform: scale(1.15) translate(10px, -15px); opacity: 0.7; }
+  }
+
+  .hero-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 24px;
+  }
+
+  /* The big Spencerian-inspired KPT logotype */
+  .hero-title {
+    font-family: var(--font-script);
+    font-size: clamp(90px, 18vw, 200px);
+    color: var(--white);
+    text-shadow:
+      0 4px 8px rgba(0,0,0,0.15),
+      0 0 80px rgba(255,255,255,0.1);
+    margin-bottom: 4px;
+    line-height: 1;
+    animation: heroTitleIn 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+  }
+
+  /* Sparkle pseudo-elements on the title */
+  .hero-title::before,
+  .hero-title::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--white);
+    border-radius: 50%;
+    animation: sparkleFloat 3s ease-in-out infinite;
+    box-shadow: 0 0 8px 2px rgba(255,255,255,0.6);
+  }
+  .hero-title::before {
+    top: 15%;
+    right: 5%;
+    animation-delay: 0s;
+  }
+  .hero-title::after {
+    bottom: 25%;
+    left: 8%;
+    animation-delay: 1.5s;
+    width: 4px;
+    height: 4px;
+  }
+
+  @keyframes sparkleFloat {
+    0%, 100% { opacity: 0; transform: scale(0.5) translateY(0); }
+    20% { opacity: 1; transform: scale(1.2) translateY(-5px); }
+    40% { opacity: 0.6; transform: scale(0.8) translateY(-10px); }
+    60% { opacity: 1; transform: scale(1) translateY(-6px); }
+    80% { opacity: 0.3; transform: scale(0.6) translateY(-2px); }
+  }
+
+  @keyframes heroTitleIn {
+    from { opacity: 0; transform: translateY(40px) scale(0.9); filter: blur(4px); }
+    to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  }
+
+  .hero-tagline {
+    font-family: var(--font-script);
+    font-size: clamp(24px, 4vw, 44px);
+    color: var(--cream);
+    margin-bottom: 20px;
+    animation: heroFadeUp 1s ease-out 0.3s backwards;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .hero-sub {
+    font-family: var(--font-body);
+    font-size: 17px;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 560px;
+    margin: 0 auto 44px;
+    line-height: 1.8;
+    animation: heroFadeUp 1s ease-out 0.5s backwards;
+  }
+
+  @keyframes heroFadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: heroFadeUp 1s ease-out 0.7s backwards;
+  }
+
+  .btn-white {
+    background: var(--white);
+    color: var(--red);
+    padding: 14px 36px;
+    border-radius: 32px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-white::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(244, 0, 9, 0.08);
+    border-radius: 50%;
+    transition: all 0.5s ease;
+    transform: translate(-50%, -50%);
+  }
+  .btn-white:hover::before { width: 300px; height: 300px; }
+  .btn-white:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    padding: 14px 36px;
+    border-radius: 32px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 500;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--white);
+    transform: translateY(-3px);
+  }
+
+  /* Scroll indicator */
+  .hero-scroll {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: heroFadeUp 1s ease-out 1.2s backwards;
+  }
+  .hero-scroll span {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  /* ==============================
+     WAVE / RIBBON DIVIDERS
+     ============================== */
+  .wave-divider {
+    position: relative;
+    height: 120px;
+    overflow: hidden;
+  }
+  .wave-divider.red-to-white { background: var(--white); }
+  .wave-divider.white-to-red { background: var(--red); }
+  .wave-divider.red-to-cream { background: var(--cream); }
+  .wave-divider.cream-to-red { background: var(--red); }
+  .wave-divider.white-to-cream { background: var(--cream); }
+
+  .wave-divider svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .ribbon-accent {
+    position: relative;
+    overflow: hidden;
+    height: 80px;
+  }
+  .ribbon-accent svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* ==============================
+     PRODUCTS SECTION
+     ============================== */
+  .products {
+    background: var(--red);
+    padding: 100px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Floating contour lines in products bg */
+  .products::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: -10%;
+    width: 120%;
+    height: 200px;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 38px,
+        rgba(255,255,255,0.02) 38px,
+        rgba(255,255,255,0.02) 40px
+      );
+    transform: rotate(-2deg);
+    pointer-events: none;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .section-heading {
+    font-family: var(--font-script);
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .section-sub {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 60px;
+    line-height: 1.7;
+    font-size: 17px;
+  }
+
+  .products .section-label { color: rgba(255,255,255,0.5); }
+  .products .section-heading { color: var(--white); font-size: clamp(36px, 5vw, 52px); }
+  .products .section-sub { color: rgba(255,255,255,0.7); }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 32px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .product-card {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 48px 36px;
+    text-align: center;
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  .product-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .product-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Contour wave inside card */
+  .product-card::before {
+    content: '';
+    position: absolute;
+    bottom: -40px;
+    left: -20%;
+    width: 140%;
+    height: 100px;
+    background: linear-gradient(to right, transparent, rgba(244,0,9,0.04), transparent);
+    border-radius: 50%;
+    transition: transform 0.5s ease;
+  }
+  .product-card:hover::before {
+    transform: translateY(-20px);
+  }
+
+  .product-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 32px;
+    color: var(--white);
+    box-shadow: 0 8px 24px rgba(244, 0, 9, 0.3);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .product-card:hover .product-icon {
+    transform: scale(1.1) rotate(-5deg);
+    box-shadow: 0 12px 32px rgba(244, 0, 9, 0.4);
+  }
+
+  .product-card h3 {
+    font-family: var(--font-body);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+  }
+  .product-card .product-script {
+    font-family: var(--font-script);
+    font-size: 16px;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
+  .product-card p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .product-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--red), var(--red-dark), var(--red));
+    transform: scaleX(0);
+    transition: transform 0.5s ease;
+  }
+  .product-card:hover::after { transform: scaleX(1); }
+
+  /* ==============================
+     HAPPINESS / FEATURES SECTION
+     ============================== */
+  .happiness {
+    background: var(--cream);
+    padding: 100px 24px;
+    position: relative;
+  }
+
+  .happiness .section-label { color: var(--red); }
+  .happiness .section-heading {
+    color: var(--text-dark);
+    font-size: clamp(36px, 5vw, 52px);
+  }
+  .happiness .section-sub { color: var(--text-muted); }
+
+  .moments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .moment-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 36px 28px;
+    border: 1px solid var(--border-light);
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 0;
+    transform: translateY(30px);
+    position: relative;
+    overflow: hidden;
+  }
+  .moment-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .moment-card:hover {
+    border-color: var(--border-red);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(244, 0, 9, 0.1);
+  }
+
+  /* Subtle ribbon accent on hover */
+  .moment-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--red), transparent);
+    transition: left 0.6s ease;
+  }
+  .moment-card:hover::before { left: 100%; }
+
+  .moment-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(244,0,9,0.08), rgba(244,0,9,0.03));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 28px;
+    transition: transform 0.3s ease;
+  }
+  .moment-card:hover .moment-icon { transform: scale(1.1); }
+
+  .moment-card h4 {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+  }
+  .moment-card .moment-script {
+    font-family: var(--font-script);
+    font-size: 14px;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+  .moment-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ==============================
+     STATS SECTION — with fizz canvas
+     ============================== */
+  .stats {
+    background: linear-gradient(175deg, var(--red) 0%, var(--red-dark) 100%);
+    padding: 100px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #fizzCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .stats .container { position: relative; z-index: 1; }
+
+  .stats .section-label {
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 12px;
+  }
+  .stats .section-heading {
+    color: var(--white);
+    font-size: clamp(36px, 5vw, 52px);
+    margin-bottom: 60px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .stat-item {
+    opacity: 0;
+    transform: translateY(20px);
+    padding: 24px 12px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(4px);
+    transition: all 0.4s ease;
+  }
+  .stat-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .stat-item:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-4px);
+  }
+
+  .stat-number {
+    font-family: var(--font-script);
+    font-size: clamp(44px, 6vw, 68px);
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .stat-desc {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* ==============================
+     SHARE A KPT / TESTIMONIALS
+     ============================== */
+  .share {
+    background: var(--white);
+    padding: 100px 24px;
+  }
+
+  .share .section-label { color: var(--red); }
+  .share .section-heading {
+    color: var(--text-dark);
+    font-size: clamp(36px, 5vw, 52px);
+  }
+  .share .section-sub { color: var(--text-muted); }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .testimonial-card {
+    background: var(--surface-light);
+    border-radius: 24px;
+    padding: 40px;
+    border: 1px solid var(--border-light);
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  .testimonial-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .testimonial-card:hover {
+    border-color: var(--border-red);
+    box-shadow: 0 16px 48px rgba(244, 0, 9, 0.08);
+    transform: translateY(-4px);
+  }
+
+  .testimonial-card::before {
+    content: '\201C';
+    font-family: var(--font-script);
+    font-size: 80px;
+    color: var(--red);
+    opacity: 0.1;
+    position: absolute;
+    top: 12px;
+    left: 24px;
+    line-height: 1;
+  }
+
+  .testimonial-stars {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+  .testimonial-stars svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--gold);
+  }
+
+  .testimonial-text {
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--text-dark);
+    line-height: 1.8;
+    font-style: italic;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .testimonial-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-family: var(--font-script);
+    font-size: 20px;
+    box-shadow: 0 4px 12px rgba(244, 0, 9, 0.2);
+  }
+
+  .testimonial-name {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-dark);
+  }
+  .testimonial-role {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  .cta {
+    background: var(--cream);
+    padding: 120px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Decorative contour rings */
+  .cta::before,
+  .cta::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(244, 0, 9, 0.06);
+    pointer-events: none;
+  }
+  .cta::before {
+    width: 500px;
+    height: 500px;
+    top: -200px;
+    right: -150px;
+  }
+  .cta::after {
+    width: 400px;
+    height: 400px;
+    bottom: -180px;
+    left: -120px;
+  }
+
+  .cta-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta .section-label { color: var(--red); }
+
+  .cta-heading {
+    font-family: var(--font-script);
+    font-size: clamp(44px, 7vw, 80px);
+    color: var(--text-dark);
+    margin-bottom: 16px;
+  }
+
+  .cta-sub {
+    font-family: var(--font-body);
+    font-size: 18px;
+    color: var(--text-muted);
+    margin-bottom: 44px;
+    line-height: 1.8;
+  }
+
+  .btn-red {
+    background: var(--red);
+    color: var(--white);
+    padding: 18px 52px;
+    border-radius: 32px;
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 32px rgba(244, 0, 9, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-red::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.6s ease;
+  }
+  .btn-red:hover::before { left: 100%; }
+  .btn-red:hover {
+    background: var(--red-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 48px rgba(244, 0, 9, 0.4);
+  }
+
+  .cta-note {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-top: 24px;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: var(--red-deep);
+    padding: 72px 24px 36px;
+    color: rgba(255, 255, 255, 0.6);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle wave texture */
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(ellipse 600px 300px at 20% 50%, rgba(255,255,255,0.02), transparent),
+      radial-gradient(ellipse 400px 200px at 80% 30%, rgba(255,255,255,0.015), transparent);
+    pointer-events: none;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    max-width: var(--max-width);
+    margin: 0 auto 48px;
+    position: relative;
+  }
+
+  .footer-brand {
+    font-family: var(--font-script);
+    font-size: 48px;
+    color: var(--white);
+    margin-bottom: 16px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .footer-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.45);
+    max-width: 300px;
+  }
+
+  .footer-col h5 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.35);
+    margin-bottom: 16px;
+  }
+
+  .footer-col a {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.55);
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+  }
+  .footer-col a:hover {
+    color: var(--white);
+    transform: translateX(4px);
+  }
+
+  .footer-divider {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  }
+
+  .footer-bottom {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  .footer-ribbon {
+    font-family: var(--font-script);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  /* ==============================
+     SPARKLE EFFECT (CSS-only)
+     ============================== */
+  .sparkle-field {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 6px 1px rgba(255,255,255,0.5);
+    animation: sparkleAnim var(--dur) ease-in-out infinite;
+    animation-delay: var(--delay);
+    opacity: 0;
+  }
+  @keyframes sparkleAnim {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+
+  /* ==============================
+     SCROLL REVEAL
+     ============================== */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stagger-children .fade-in:nth-child(1) { transition-delay: 0s; }
+  .stagger-children .fade-in:nth-child(2) { transition-delay: 0.12s; }
+  .stagger-children .fade-in:nth-child(3) { transition-delay: 0.24s; }
+  .stagger-children .fade-in:nth-child(4) { transition-delay: 0.36s; }
+  .stagger-children .fade-in:nth-child(5) { transition-delay: 0.48s; }
+  .stagger-children .fade-in:nth-child(6) { transition-delay: 0.60s; }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .mobile-toggle { display: flex; }
+
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: var(--nav-height);
+      left: 0;
+      right: 0;
+      background: var(--red-dark);
+      padding: 24px;
+      gap: 16px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero { padding-top: calc(var(--nav-height) + 60px); min-height: 90vh; }
+    .hero-title { font-size: clamp(72px, 20vw, 140px); }
+
+    .products-grid { grid-template-columns: 1fr; }
+    .moments-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+
+    .hero-ribbon { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .hero-buttons { flex-direction: column; align-items: center; }
+    .stat-item { padding: 20px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 12H5M12 19l-7-7 7-7"/>
+  </svg>
+  Back
+</a>
+
+<!-- Navigation -->
+<nav>
+  <div class="container">
+    <a href="#hero" class="nav-logo">KPT</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#happiness">Happiness</a></li>
+      <li><a href="#stats">Impact</a></li>
+      <li><a href="#share">Stories</a></li>
+      <li><a href="#cta" class="nav-cta">Open Happiness</a></li>
+    </ul>
+    <div class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="hero">
+  <!-- Bubble canvas -->
+  <canvas id="bubbleCanvas"></canvas>
+
+  <!-- Contour ribbon decorations -->
+  <div class="hero-ribbon hero-ribbon-1">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,30 C180,60 360,0 540,30 C720,60 900,0 1080,30 C1260,60 1440,10 1440,30" fill="none" stroke="white" stroke-width="2"/>
+      <path d="M0,40 C200,10 400,55 600,30 C800,5 1000,50 1200,25 C1350,10 1440,35 1440,35" fill="none" stroke="white" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <div class="hero-ribbon hero-ribbon-2">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,25 C240,55 480,5 720,35 C960,65 1200,15 1440,25" fill="none" stroke="white" stroke-width="1.8"/>
+    </svg>
+  </div>
+  <div class="hero-ribbon hero-ribbon-3">
+    <svg viewBox="0 0 1440 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,20 C360,50 720,0 1080,30 C1260,45 1440,15 1440,20" fill="none" stroke="white" stroke-width="1.2"/>
+    </svg>
+  </div>
+
+  <!-- CSS sparkle field -->
+  <div class="sparkle-field" id="heroSparkles"></div>
+
+  <div class="hero-content">
+    <div class="hero-label">Technology That Refreshes</div>
+    <h1 class="hero-title">KPT</h1>
+    <p class="hero-tagline">Open Innovation.</p>
+    <p class="hero-sub">Where AI voice agents and premium web design come together to create moments of real connection for your business.</p>
+    <div class="hero-buttons">
+      <a href="#products" class="btn-white">
+        Explore Products
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </a>
+      <a href="#share" class="btn-outline">Hear Stories</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- Ribbon accent -->
+<div class="ribbon-accent" style="background: var(--red);">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C120,80 240,0 360,40 C480,80 600,0 720,40 C840,80 960,0 1080,40 C1200,80 1320,0 1440,40 L1440,80 L0,80 Z" fill="rgba(255,255,255,0.03)"/>
+    <path d="M0,50 C160,10 320,70 480,40 C640,10 800,70 960,40 C1120,10 1280,70 1440,50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+  </svg>
+</div>
+
+<!-- Products Section -->
+<section class="products" id="products">
+  <div class="container">
+    <div class="section-label fade-in">Our Refreshing Products</div>
+    <h2 class="section-heading fade-in">Share the Joy</h2>
+    <p class="section-sub fade-in">Two products. One mission. Creating real happiness for businesses everywhere.</p>
+
+    <div class="products-grid stagger-children">
+      <div class="product-card fade-in">
+        <div class="product-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </div>
+        <h3>KPT Agents</h3>
+        <div class="product-script">Always refreshing</div>
+        <p>AI voice agents that answer every call with warmth, personality, and perfect recall. Your customers feel heard, valued, and happy — 24 hours a day, 7 days a week.</p>
+      </div>
+
+      <div class="product-card fade-in">
+        <div class="product-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <h3>KPT Designs</h3>
+        <div class="product-script">The real thing</div>
+        <p>Premium web design that captures your brand's spirit and pours it into every pixel. Beautiful, fast, and built to make visitors feel something real the moment they arrive.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave: Products (Red) to Happiness (Cream) -->
+<div class="wave-divider red-to-cream">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 L0,60 C180,120 360,0 540,60 C720,120 900,0 1080,60 C1260,120 1440,20 1440,60 L1440,0 Z" fill="#F40009"/>
+    <path d="M0,70 C240,30 480,100 720,60 C960,20 1200,90 1440,70" fill="none" stroke="rgba(244,0,9,0.12)" stroke-width="3"/>
+    <path d="M0,85 C300,50 600,110 900,70 C1100,45 1300,95 1440,80" fill="none" stroke="rgba(244,0,9,0.06)" stroke-width="2"/>
+  </svg>
+</div>
+
+<!-- Happiness / Features Section -->
+<section class="happiness" id="happiness">
+  <div class="container">
+    <div class="section-label fade-in">Moments of Joy</div>
+    <h2 class="section-heading fade-in">Open Happiness</h2>
+    <p class="section-sub fade-in">Every feature is designed to create a moment of delight — for you and your customers.</p>
+
+    <div class="moments-grid stagger-children">
+      <div class="moment-card fade-in">
+        <div class="moment-icon" aria-hidden="true">&#9742;</div>
+        <h4>Every Call Answered</h4>
+        <div class="moment-script">No more missed moments</div>
+        <p>Your AI agent picks up instantly with a warm greeting. No hold music, no frustration — just real conversation that makes callers smile.</p>
+      </div>
+
+      <div class="moment-card fade-in">
+        <div class="moment-icon" aria-hidden="true">&#10024;</div>
+        <h4>Designs That Spark Joy</h4>
+        <div class="moment-script">Love at first scroll</div>
+        <p>Websites so beautiful that visitors pause and take notice. Hand-crafted layouts that feel personal, warm, and unmistakably yours.</p>
+      </div>
+
+      <div class="moment-card fade-in">
+        <div class="moment-icon" aria-hidden="true">&#9889;</div>
+        <h4>Lightning Fast</h4>
+        <div class="moment-script">That crisp, refreshing feeling</div>
+        <p>Sub-second page loads and instant voice responses. Speed that feels effortless, like cracking open something ice cold on a hot day.</p>
+      </div>
+
+      <div class="moment-card fade-in">
+        <div class="moment-icon" aria-hidden="true">&#127760;</div>
+        <h4>Always Available</h4>
+        <div class="moment-script">Share it with the world</div>
+        <p>Your business never sleeps. AI agents and websites that serve customers across every timezone, every language, every moment.</p>
+      </div>
+
+      <div class="moment-card fade-in">
+        <div class="moment-icon" aria-hidden="true">&#128200;</div>
+        <h4>Real Results</h4>
+        <div class="moment-script">Happiness you can measure</div>
+        <p>Watch conversion rates climb and customer satisfaction soar. Numbers that prove what you already feel — it's working.</p>
+      </div>
+
+      <div class="moment-card fade-in">
+        <div class="moment-icon" aria-hidden="true">&#129309;</div>
+        <h4>Together We Grow</h4>
+        <div class="moment-script">Better shared</div>
+        <p>A dedicated team that treats your success like their own celebration. Strategy sessions, ongoing support, and genuine partnership.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave: Happiness (Cream) to Stats (Red) -->
+<div class="wave-divider cream-to-red">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 L0,40 C160,100 320,0 480,60 C640,120 800,10 960,60 C1120,110 1280,20 1440,50 L1440,0 Z" fill="#FFF5E1"/>
+    <path d="M0,55 C200,95 400,15 600,55 C800,95 1000,15 1200,55 C1340,80 1440,45 1440,45" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="3"/>
+  </svg>
+</div>
+
+<!-- Stats Section -->
+<section class="stats" id="stats">
+  <canvas id="fizzCanvas"></canvas>
+  <div class="container">
+    <div class="section-label fade-in">The Numbers</div>
+    <h2 class="section-heading fade-in">Effervescent Impact</h2>
+
+    <div class="stats-grid stagger-children">
+      <div class="stat-item fade-in">
+        <div class="stat-number">99.9%</div>
+        <div class="stat-label">Uptime</div>
+        <div class="stat-desc">Always there for you</div>
+      </div>
+      <div class="stat-item fade-in">
+        <div class="stat-number">50k+</div>
+        <div class="stat-label">Calls Handled</div>
+        <div class="stat-desc">Conversations that matter</div>
+      </div>
+      <div class="stat-item fade-in">
+        <div class="stat-number">3x</div>
+        <div class="stat-label">More Leads</div>
+        <div class="stat-desc">Growth worth celebrating</div>
+      </div>
+      <div class="stat-item fade-in">
+        <div class="stat-number">4.9</div>
+        <div class="stat-label">Happiness Score</div>
+        <div class="stat-desc">Out of five stars</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave: Stats (Red) to Share (White) -->
+<div class="wave-divider red-to-white">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 L0,80 C240,20 480,100 720,60 C960,20 1200,100 1440,40 L1440,0 Z" fill="#F40009"/>
+    <path d="M0,90 C180,50 360,110 540,70 C720,30 900,100 1080,60 C1260,20 1440,80 1440,60" fill="none" stroke="rgba(244,0,9,0.08)" stroke-width="3"/>
+    <path d="M0,100 C360,70 720,110 1080,80 C1260,65 1440,95 1440,90" fill="none" stroke="rgba(244,0,9,0.04)" stroke-width="2"/>
+  </svg>
+</div>
+
+<!-- Share a KPT / Testimonials -->
+<section class="share" id="share">
+  <div class="container">
+    <div class="section-label fade-in">Share a KPT</div>
+    <h2 class="section-heading fade-in">Real Stories</h2>
+    <p class="section-sub fade-in">Every business has a story. Here's how KPT became part of theirs.</p>
+
+    <div class="testimonials-grid stagger-children">
+      <div class="testimonial-card fade-in">
+        <div class="testimonial-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="testimonial-text">We turned on KPT Agents on a Monday morning. By Friday, we'd captured 34 leads we would have missed entirely. It felt like uncorking something magical.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">M</div>
+          <div>
+            <div class="testimonial-name">Maria Chen</div>
+            <div class="testimonial-role">Owner, Lakeside Dental</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card fade-in">
+        <div class="testimonial-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="testimonial-text">Our new website from KPT Designs gets more compliments than our food. Guests say it's the reason they booked. That's the kind of happiness money can't buy — but apparently great design can.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">J</div>
+          <div>
+            <div class="testimonial-name">James Whitfield</div>
+            <div class="testimonial-role">GM, The Copper Table</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card fade-in">
+        <div class="testimonial-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="testimonial-text">I shared KPT with three other business owners at our networking group. All three signed up within a week. Good things are meant to be shared.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">R</div>
+          <div>
+            <div class="testimonial-name">Rachel Torres</div>
+            <div class="testimonial-role">Director, Apex Realty Group</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave: Share (White) to CTA (Cream) -->
+<div class="wave-divider white-to-cream">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 L0,60 C200,110 400,10 600,60 C800,110 1000,10 1200,60 C1350,95 1440,40 1440,60 L1440,0 Z" fill="#FFFFFF"/>
+    <path d="M0,75 C240,35 480,105 720,65 C960,25 1200,95 1440,75" fill="none" stroke="rgba(244,0,9,0.06)" stroke-width="2"/>
+  </svg>
+</div>
+
+<!-- CTA Section -->
+<section class="cta" id="cta">
+  <div class="cta-inner">
+    <div class="section-label fade-in">The Future Is Refreshing</div>
+    <h2 class="cta-heading fade-in">Taste the Future.</h2>
+    <p class="cta-sub fade-in">Your business deserves technology that feels good — not just works well. AI agents that charm. Websites that inspire. Let's open something beautiful together.</p>
+    <a href="#hero" class="btn-red fade-in">
+      Open Happiness
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+    <div class="cta-note fade-in">Free consultation &middot; No commitment &middot; Pure happiness</div>
+  </div>
+</section>
+
+<!-- Wave: CTA (Cream) to Footer (Dark Red) -->
+<div class="wave-divider" style="background: var(--red-deep);">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 L0,50 C180,100 360,0 540,60 C720,120 900,10 1080,50 C1200,80 1380,20 1440,40 L1440,0 Z" fill="#FFF5E1"/>
+    <path d="M0,65 C300,25 600,95 900,55 C1100,30 1300,85 1440,65" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="2"/>
+  </svg>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">KPT</div>
+      <p class="footer-desc">Technology that brings people together. AI voice agents and premium web design, crafted with warmth and served with joy.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Products</h5>
+      <a href="#products">KPT Agents</a>
+      <a href="#products">KPT Designs</a>
+      <a href="#happiness">Features</a>
+      <a href="#stats">Impact</a>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a href="#share">Stories</a>
+      <a href="#cta">Contact</a>
+      <a href="#">Careers</a>
+      <a href="#">Blog</a>
+    </div>
+    <div class="footer-col">
+      <h5>Connect</h5>
+      <a href="#">Twitter / X</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Instagram</a>
+      <a href="#">YouTube</a>
+    </div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2026 KPT. Open Innovation.</div>
+    <div class="footer-ribbon">Enjoy responsibly</div>
+  </div>
+</footer>
+
+<!-- JavaScript -->
+<script>
+  /* ==============================
+     CANVAS: HERO BUBBLE EFFECT
+     Rising bubbles that look like carbonation
+     ============================== */
+  (function() {
+    const canvas = document.getElementById('bubbleCanvas');
+    const ctx = canvas.getContext('2d');
+    let bubbles = [];
+    let w, h;
+    const BUBBLE_COUNT = 60;
+
+    function resize() {
+      const hero = canvas.parentElement;
+      w = canvas.width = hero.offsetWidth;
+      h = canvas.height = hero.offsetHeight;
+    }
+
+    function createBubble(startFromBottom) {
+      const size = Math.random() * 6 + 1.5;
+      return {
+        x: Math.random() * w,
+        y: startFromBottom ? h + Math.random() * 40 : Math.random() * h,
+        radius: size,
+        speed: size * 0.25 + Math.random() * 0.4,
+        wobbleSpeed: Math.random() * 0.02 + 0.005,
+        wobbleAmp: Math.random() * 30 + 10,
+        phase: Math.random() * Math.PI * 2,
+        opacity: Math.random() * 0.25 + 0.05,
+        growing: Math.random() > 0.5,
+        growSpeed: Math.random() * 0.003 + 0.001,
+      };
+    }
+
+    function init() {
+      resize();
+      bubbles = [];
+      for (let i = 0; i < BUBBLE_COUNT; i++) {
+        bubbles.push(createBubble(false));
+      }
+    }
+
+    function drawBubble(b) {
+      ctx.beginPath();
+      ctx.arc(b.x + Math.sin(b.phase) * b.wobbleAmp, b.y, b.radius, 0, Math.PI * 2);
+
+      // Main bubble fill
+      ctx.fillStyle = 'rgba(255, 255, 255, ' + b.opacity + ')';
+      ctx.fill();
+
+      // Highlight/glint
+      if (b.radius > 2.5) {
+        ctx.beginPath();
+        const glintX = b.x + Math.sin(b.phase) * b.wobbleAmp - b.radius * 0.3;
+        const glintY = b.y - b.radius * 0.3;
+        ctx.arc(glintX, glintY, b.radius * 0.25, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, ' + (b.opacity * 1.5) + ')';
+        ctx.fill();
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+
+      for (let i = 0; i < bubbles.length; i++) {
+        const b = bubbles[i];
+
+        // Rise
+        b.y -= b.speed;
+        b.phase += b.wobbleSpeed;
+
+        // Gentle size pulsing
+        if (b.growing) {
+          b.radius += b.growSpeed;
+          if (b.radius > 7) b.growing = false;
+        } else {
+          b.radius -= b.growSpeed;
+          if (b.radius < 1.5) b.growing = true;
+        }
+
+        // Reset when off screen
+        if (b.y + b.radius < -20) {
+          bubbles[i] = createBubble(true);
+        }
+
+        drawBubble(b);
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize);
+    init();
+    animate();
+  })();
+
+  /* ==============================
+     CANVAS: STATS FIZZ EFFECT
+     Smaller, denser carbonation bubbles
+     ============================== */
+  (function() {
+    const canvas = document.getElementById('fizzCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let w, h;
+    const PARTICLE_COUNT = 45;
+
+    function resize() {
+      const section = canvas.parentElement;
+      w = canvas.width = section.offsetWidth;
+      h = canvas.height = section.offsetHeight;
+    }
+
+    function createParticle(fromBottom) {
+      const size = Math.random() * 3.5 + 0.8;
+      return {
+        x: Math.random() * w,
+        y: fromBottom ? h + Math.random() * 20 : Math.random() * h,
+        radius: size,
+        speed: size * 0.3 + Math.random() * 0.3,
+        drift: (Math.random() - 0.5) * 0.3,
+        opacity: Math.random() * 0.2 + 0.04,
+        phase: Math.random() * Math.PI * 2,
+        wobble: Math.random() * 0.015 + 0.005,
+      };
+    }
+
+    function init() {
+      resize();
+      particles = [];
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        particles.push(createParticle(false));
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        p.y -= p.speed;
+        p.x += p.drift + Math.sin(p.phase) * 0.3;
+        p.phase += p.wobble;
+
+        if (p.y + p.radius < -10) {
+          particles[i] = createParticle(true);
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, ' + p.opacity + ')';
+        ctx.fill();
+
+        // Tiny glint
+        if (p.radius > 2) {
+          ctx.beginPath();
+          ctx.arc(p.x - p.radius * 0.25, p.y - p.radius * 0.25, p.radius * 0.2, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255, 255, 255, ' + (p.opacity * 1.8) + ')';
+          ctx.fill();
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize);
+    init();
+    animate();
+  })();
+
+  /* ==============================
+     CSS SPARKLES IN HERO
+     ============================== */
+  (function() {
+    const field = document.getElementById('heroSparkles');
+    const count = 18;
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top = Math.random() * 100 + '%';
+      s.style.setProperty('--dur', (Math.random() * 3 + 2) + 's');
+      s.style.setProperty('--delay', (Math.random() * 4) + 's');
+      const size = Math.random() * 4 + 2;
+      s.style.width = size + 'px';
+      s.style.height = size + 'px';
+      field.appendChild(s);
+    }
+  })();
+
+  /* ==============================
+     INTERSECTION OBSERVER (scroll reveal)
+     ============================== */
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.fade-in, .product-card, .moment-card, .stat-item, .testimonial-card').forEach(el => {
+    observer.observe(el);
+  });
+
+  /* ==============================
+     SMOOTH SCROLL
+     ============================== */
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      const target = document.querySelector(targetId);
+      if (target) {
+        const navHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height'));
+        const top = target.getBoundingClientRect().top + window.scrollY - navHeight;
+        window.scrollTo({ top, behavior: 'smooth' });
+        document.getElementById('navLinks').classList.remove('open');
+      }
+    });
+  });
+
+  /* ==============================
+     MOBILE NAVIGATION
+     ============================== */
+  const mobileToggle = document.getElementById('mobileToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  mobileToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('nav')) {
+      navLinks.classList.remove('open');
+    }
+  });
+
+  /* ==============================
+     NAV SCROLL EFFECT
+     ============================== */
+  const nav = document.querySelector('nav');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 100) {
+      nav.style.boxShadow = '0 4px 32px rgba(0, 0, 0, 0.4)';
+      nav.style.background = 'rgba(244, 0, 9, 0.95)';
+      nav.style.backdropFilter = 'blur(12px)';
+    } else {
+      nav.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
+      nav.style.background = '';
+      nav.style.backdropFilter = 'none';
+    }
+  });
+
+  /* ==============================
+     STAT COUNTER ANIMATION
+     ============================== */
+  const statNumbers = document.querySelectorAll('.stat-number');
+  const statsSection = document.querySelector('.stats');
+  let statsCounted = false;
+
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !statsCounted) {
+        statsCounted = true;
+        animateStats();
+      }
+    });
+  }, { threshold: 0.3 });
+
+  statsObserver.observe(statsSection);
+
+  function animateStats() {
+    statNumbers.forEach(el => {
+      const text = el.textContent;
+      const hasPercent = text.includes('%');
+      const hasPlus = text.includes('+');
+      const hasX = text.includes('x');
+      const numStr = text.replace(/[%+x,k]/gi, '');
+      const target = parseFloat(numStr);
+      const hasK = text.toLowerCase().includes('k');
+      const hasDot = text.includes('.');
+      const duration = 2200;
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // Ease-out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = target * eased;
+
+        let display;
+        if (hasDot) {
+          display = current.toFixed(1);
+        } else {
+          display = Math.floor(current).toString();
+        }
+
+        if (hasK) display += 'k';
+        if (hasPlus) display += '+';
+        if (hasPercent) display += '%';
+        if (hasX) display += 'x';
+
+        el.textContent = display;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+      requestAnimationFrame(update);
+    });
+  }
+</script>
+</body>
+</html>

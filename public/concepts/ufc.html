@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — The Octagon</title>
+<meta name="description" content="KPT. Bespoke AI voice agents and premium web design. Step into the octagon. No retreat. No surrender.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0A0A0A;
+    --deep-black: #050505;
+    --red: #D20A0A;
+    --red-dim: rgba(210, 10, 10, 0.15);
+    --red-glow: rgba(210, 10, 10, 0.35);
+    --red-bright: #FF1A1A;
+    --gold: #C8AA6E;
+    --gold-dim: rgba(200, 170, 110, 0.12);
+    --gold-glow: rgba(200, 170, 110, 0.25);
+    --white: #FFFFFF;
+    --off-white: #E8E6E3;
+    --gray: #7A7A7A;
+    --gray-light: #999;
+    --surface: #111111;
+    --surface-light: #1A1A1A;
+    --border: rgba(200, 170, 110, 0.08);
+    --border-hover: rgba(200, 170, 110, 0.25);
+    --cage: rgba(255, 255, 255, 0.03);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--off-white);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald', Impact, sans-serif;
+    line-height: 1.1;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  /* ── Layout ───────────────────────────────────────────────── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .section {
+    padding: 120px 0;
+  }
+
+  /* ── Cage Wire Mesh Background ────────────────────────────── */
+  .cage-mesh {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.3;
+    background-image:
+      linear-gradient(0deg, rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(45deg, rgba(255,255,255,0.008) 1px, transparent 1px),
+      linear-gradient(-45deg, rgba(255,255,255,0.008) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px, 56px 56px, 56px 56px;
+  }
+
+  /* ── Reveal Animation ──────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ── Back Link ─────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border-radius: 2px;
+    background: rgba(10, 10, 10, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(210, 10, 10, 0.15);
+    transition: all 0.25s ease;
+  }
+  .back-link:hover {
+    color: var(--red);
+    border-color: var(--red);
+    box-shadow: 0 0 12px var(--red-dim);
+  }
+
+  /* ── Nav ──────────────────────────────────────────────────── */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0 24px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 5, 5, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 2px solid var(--red);
+    transition: background 0.3s ease;
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    flex-shrink: 0;
+    font-family: 'Oswald', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 8px;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+  .nav-logo span {
+    color: var(--red);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-light);
+    transition: color 0.2s ease;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .nav-links a:hover { color: var(--red); }
+
+  .nav-cta {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    background: var(--red);
+    padding: 10px 28px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+  .nav-cta:hover {
+    background: var(--red-bright);
+    box-shadow: 0 0 24px var(--red-glow);
+  }
+
+  .nav-mobile-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .nav-mobile-toggle span {
+    width: 24px;
+    height: 2px;
+    background: var(--red);
+    border-radius: 1px;
+    transition: all 0.25s ease;
+  }
+
+  /* ── Red Divider ──────────────────────────────────────────── */
+  .red-divider {
+    width: 80px;
+    height: 3px;
+    background: var(--red);
+    margin: 0 auto 20px;
+  }
+
+  .section-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--red);
+    text-align: center;
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+
+  /* ── Octagon Shape ───────────────────────────────────────── */
+  .octagon-frame {
+    width: 280px;
+    height: 280px;
+    position: relative;
+    margin: 0 auto 48px;
+  }
+
+  .octagon-border {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    background: linear-gradient(135deg, var(--red), #8B0000, var(--red));
+    animation: octaPulse 3s ease-in-out infinite;
+  }
+
+  .octagon-inner {
+    position: absolute;
+    inset: 4px;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    background: var(--deep-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .octagon-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    background:
+      radial-gradient(circle at 50% 30%, rgba(210, 10, 10, 0.15) 0%, transparent 60%),
+      repeating-linear-gradient(0deg, transparent, transparent 8px, rgba(255,255,255,0.02) 8px, rgba(255,255,255,0.02) 9px),
+      repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(255,255,255,0.02) 8px, rgba(255,255,255,0.02) 9px);
+    pointer-events: none;
+  }
+
+  .octagon-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 72px;
+    font-weight: 700;
+    letter-spacing: 12px;
+    color: var(--white);
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 0 40px var(--red-glow), 0 0 80px rgba(210, 10, 10, 0.15);
+  }
+
+  .octagon-sub {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 8px;
+    color: var(--gold);
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+    margin-top: 4px;
+  }
+
+  @keyframes octaPulse {
+    0%, 100% { box-shadow: 0 0 30px rgba(210, 10, 10, 0.2), inset 0 0 30px rgba(210, 10, 10, 0.1); }
+    50% { box-shadow: 0 0 60px rgba(210, 10, 10, 0.4), inset 0 0 50px rgba(210, 10, 10, 0.15); }
+  }
+
+  /* ── Spotlight Sweep ─────────────────────────────────────── */
+  @keyframes spotlightSweep {
+    0% { transform: translateX(-100%) rotate(15deg); }
+    100% { transform: translateX(200%) rotate(15deg); }
+  }
+
+  /* ── Hero ───────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 30%, rgba(210, 10, 10, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 20% 70%, rgba(200, 170, 110, 0.03) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 80% 70%, rgba(200, 170, 110, 0.03) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-spotlight {
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 40%;
+    height: 160%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.02), transparent);
+    animation: spotlightSweep 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--red);
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding: 8px 24px;
+    border: 1px solid rgba(210, 10, 10, 0.3);
+    background: rgba(210, 10, 10, 0.05);
+    clip-path: polygon(6px 0%, calc(100% - 6px) 0%, 100% 50%, calc(100% - 6px) 100%, 6px 100%, 0% 50%);
+  }
+  .hero-badge::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--red);
+    animation: livePulse 1.5s ease-in-out infinite;
+    box-shadow: 0 0 6px var(--red);
+  }
+  @keyframes livePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-size: clamp(42px, 6vw, 80px);
+    font-weight: 700;
+    letter-spacing: 6px;
+    margin-bottom: 24px;
+    line-height: 1.05;
+  }
+  .hero h1 .red { color: var(--red); }
+  .hero h1 .gold { color: var(--gold); }
+
+  .hero-sub {
+    font-size: clamp(15px, 1.8vw, 18px);
+    color: var(--gray-light);
+    max-width: 600px;
+    margin: 0 auto 48px;
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-red {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    background: var(--red);
+    padding: 16px 40px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+  }
+  .btn-red:hover {
+    background: var(--red-bright);
+    box-shadow: 0 4px 40px var(--red-glow);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+    background: transparent;
+    padding: 16px 40px;
+    border: 2px solid rgba(200, 170, 110, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .btn-outline:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(200, 170, 110, 0.05);
+    transform: translateY(-2px);
+  }
+
+  /* ── Red Strip ─────────────────────────────────────────────── */
+  .red-strip {
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--red) 20%,
+      var(--gold) 50%,
+      var(--red) 80%,
+      transparent 100%
+    );
+  }
+
+  /* ── Features (Fight Disciplines) ──────────────────────────── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-top: 64px;
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .feature-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .feature-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 12px, rgba(255,255,255,0.008) 12px, rgba(255,255,255,0.008) 13px),
+      repeating-linear-gradient(90deg, transparent, transparent 12px, rgba(255,255,255,0.008) 12px, rgba(255,255,255,0.008) 13px);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .feature-card:hover::after {
+    opacity: 1;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(210, 10, 10, 0.3);
+    background: var(--surface-light);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 30px var(--red-dim);
+  }
+
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, var(--red), #8B0000);
+    position: relative;
+  }
+
+  .feature-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--white);
+    fill: none;
+    stroke-width: 1.5;
+    position: relative;
+    z-index: 1;
+  }
+
+  .feature-number {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+
+  .feature-card h3 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+  }
+
+  .feature-card p {
+    font-size: 15px;
+    color: var(--gray-light);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .feature-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .feature-list li {
+    font-size: 13px;
+    color: var(--off-white);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.8;
+  }
+
+  .feature-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    background: var(--red);
+    flex-shrink: 0;
+  }
+
+  /* ── Fight Card Stats ───────────────────────────────────────── */
+  .stats-section {
+    background: var(--surface);
+    border-top: 3px solid var(--red);
+    border-bottom: 3px solid var(--red);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 50% 50%, rgba(210, 10, 10, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 64px;
+  }
+
+  .stat-card {
+    text-align: center;
+    padding: 48px 20px;
+    border-right: 1px solid rgba(210, 10, 10, 0.1);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .stat-card:last-child {
+    border-right: none;
+  }
+
+  .stat-card:hover {
+    background: rgba(210, 10, 10, 0.03);
+  }
+
+  .stat-vs {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .stat-value {
+    font-family: 'Oswald', sans-serif;
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 8px;
+    text-shadow: 0 0 30px var(--red-dim);
+  }
+
+  .stat-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .stat-desc {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+
+  .stat-bar {
+    width: 60%;
+    height: 4px;
+    background: rgba(255,255,255,0.05);
+    margin: 16px auto 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stat-card.visible .stat-bar-fill {
+    width: var(--fill, 90%);
+  }
+
+  /* ── Principles (The Rules of the Octagon) ──────────────── */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 64px;
+  }
+
+  .principle-card {
+    padding: 48px 32px;
+    border-right: 1px solid rgba(210, 10, 10, 0.08);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .principle-card:last-child {
+    border-right: none;
+  }
+
+  .principle-card:hover {
+    background: rgba(210, 10, 10, 0.02);
+  }
+
+  .principle-round {
+    font-family: 'Oswald', sans-serif;
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--red);
+    opacity: 0.12;
+    margin-bottom: 16px;
+    line-height: 1;
+  }
+
+  .principle-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    letter-spacing: 2px;
+  }
+
+  .principle-card p {
+    font-size: 14px;
+    color: var(--gray-light);
+    line-height: 1.7;
+  }
+
+  /* ── Testimonials (Fight Record) ─────────────────────────── */
+  .testimonials-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+  }
+
+  .testimonial-card {
+    padding: 40px 32px;
+    border: 1px solid var(--border);
+    background: rgba(10, 10, 10, 0.6);
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .testimonial-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--red);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.4s ease;
+  }
+
+  .testimonial-card:hover::before {
+    transform: scaleY(1);
+  }
+
+  .testimonial-card:hover {
+    border-color: rgba(210, 10, 10, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .testimonial-result {
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    background: rgba(210, 10, 10, 0.1);
+    padding: 4px 12px;
+    margin-bottom: 20px;
+  }
+
+  .testimonial-text {
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--off-white);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .testimonial-avatar {
+    width: 44px;
+    height: 44px;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    background: linear-gradient(135deg, var(--red), #6B0000);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .testimonial-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .testimonial-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── CTA Section ───────────────────────────────────────────── */
+  .cta-section {
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(210, 10, 10, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .cta-octagon {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 40px;
+    position: relative;
+  }
+
+  .cta-octagon-border {
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    background: linear-gradient(135deg, var(--red), var(--gold));
+    animation: octaPulse 3s ease-in-out infinite;
+  }
+
+  .cta-octagon-inner {
+    position: absolute;
+    inset: 2px;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+    background: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cta-octagon-inner svg {
+    width: 36px;
+    height: 36px;
+    stroke: var(--red);
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  .cta-section h2 {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    letter-spacing: 4px;
+  }
+  .cta-section h2 .red { color: var(--red); }
+
+  .cta-section .cta-sub {
+    font-size: 17px;
+    color: var(--gray-light);
+    max-width: 520px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-form {
+    display: flex;
+    gap: 0;
+    max-width: 500px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-input {
+    flex: 1;
+    padding: 16px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--white);
+    background: var(--surface);
+    border: 2px solid rgba(210, 10, 10, 0.15);
+    border-right: none;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .cta-input::placeholder {
+    color: var(--gray);
+    opacity: 0.6;
+  }
+
+  .cta-input:focus {
+    border-color: var(--red);
+  }
+
+  .cta-submit {
+    padding: 16px 36px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--red);
+    border: 2px solid var(--red);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .cta-submit:hover {
+    background: var(--red-bright);
+    box-shadow: 0 0 30px var(--red-glow);
+  }
+
+  .cta-note {
+    margin-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gray);
+    opacity: 0.5;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Footer ────────────────────────────────────────────────── */
+  .footer {
+    padding: 60px 24px 40px;
+    border-top: 3px solid var(--red);
+    background: var(--deep-black);
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .footer-brand {
+    max-width: 280px;
+  }
+
+  .footer-logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 8px;
+    color: var(--white);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .footer-logo span { color: var(--red); }
+
+  .footer-tagline {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 60px;
+  }
+
+  .footer-col h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red);
+    opacity: 0.6;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-col li a {
+    font-size: 14px;
+    color: var(--gray);
+    transition: color 0.2s ease;
+  }
+  .footer-col li a:hover { color: var(--white); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 48px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid rgba(210, 10, 10, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gray);
+    opacity: 0.4;
+    letter-spacing: 0.5px;
+  }
+
+  .footer-tagline-bottom {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--gray);
+    opacity: 0.3;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  /* ── Responsive ────────────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .principles-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .principle-card {
+      border-right: none;
+      border-bottom: 1px solid rgba(210, 10, 10, 0.08);
+    }
+    .principle-card:last-child { border-bottom: none; }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .nav-mobile-toggle { display: flex; }
+
+    .section { padding: 80px 0; }
+
+    .hero { padding: 100px 20px 60px; min-height: 90vh; }
+    .hero h1 { font-size: clamp(32px, 8vw, 52px); letter-spacing: 3px; }
+
+    .octagon-frame {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 36px;
+    }
+    .octagon-text { font-size: 48px; letter-spacing: 8px; }
+    .octagon-sub { font-size: 9px; letter-spacing: 5px; }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .feature-card { padding: 36px 28px; }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-card {
+      padding: 32px 16px;
+      border-bottom: 1px solid rgba(210, 10, 10, 0.08);
+    }
+
+    .stat-card:nth-child(odd) { border-right: 1px solid rgba(210, 10, 10, 0.08); }
+    .stat-card:nth-child(even) { border-right: none; }
+
+    .stat-value { font-size: 42px; }
+
+    .testimonials-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .cta-form {
+      flex-direction: column;
+    }
+    .cta-input {
+      border-right: 2px solid rgba(210, 10, 10, 0.15);
+      border-bottom: none;
+    }
+
+    .footer-inner { flex-direction: column; gap: 32px; }
+    .footer-links { gap: 40px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+      border-right: none !important;
+    }
+
+    .hero-ctas {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn-red, .btn-outline { width: 100%; justify-content: center; }
+
+    .footer-links { flex-direction: column; gap: 28px; }
+  }
+
+  /* ── Mobile Nav Open ───────────────────────────────────────── */
+  .nav.open .nav-links {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: rgba(5, 5, 5, 0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 24px;
+    gap: 20px;
+    border-bottom: 2px solid var(--red);
+  }
+
+  .nav.open .nav-cta {
+    display: inline-block;
+    position: absolute;
+    top: calc(72px + 160px);
+    left: 24px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Cage Mesh Background -->
+<div class="cage-mesh"></div>
+
+<!-- Back -->
+<a href="/index.html" class="back-link">&larr; Back</a>
+
+<!-- Nav -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo"><span>K</span>PT</div>
+    <ul class="nav-links">
+      <li><a href="#disciplines">Disciplines</a></li>
+      <li><a href="#record">Record</a></li>
+      <li><a href="#rules">Rules</a></li>
+      <li><a href="#champions">Champions</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Enter the Octagon</a>
+    <button class="nav-mobile-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-spotlight"></div>
+  <div class="hero-content reveal">
+    <div class="octagon-frame reveal-scale">
+      <div class="octagon-border"></div>
+      <div class="octagon-inner">
+        <div class="octagon-text">KPT</div>
+        <div class="octagon-sub">Fight Night</div>
+      </div>
+    </div>
+    <div class="hero-badge">Live &mdash; Main Event</div>
+    <h1>Step Into<br>The <span class="red">Octagon</span></h1>
+    <p class="hero-sub">
+      AI voice agents and premium web design that hit harder than the competition.
+      No tap-outs. No split decisions. Just knockouts.
+    </p>
+    <div class="hero-ctas">
+      <a href="#disciplines" class="btn-red">View Fight Card</a>
+      <a href="#contact" class="btn-outline">Book Your Corner</a>
+    </div>
+  </div>
+</section>
+
+<div class="red-strip"></div>
+
+<!-- Features / Disciplines -->
+<section class="section" id="disciplines">
+  <div class="container">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label">Main Card</div>
+      <div class="red-divider"></div>
+      <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 700;">Choose Your Discipline</h2>
+      <p style="color: var(--gray-light); max-width: 520px; margin: 16px auto 0; font-size: 15px; line-height: 1.7;">
+        Two weapons. Both devastating. Pick the one that finishes the fight.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal-left">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </div>
+        <div class="feature-number">Bout I &mdash; Championship</div>
+        <h3>KPT Agents</h3>
+        <p>
+          AI voice agents that answer, qualify, and close &mdash; 24/7, 365 days a year.
+          Your phones never go unanswered. Every lead gets handled with knockout precision.
+        </p>
+        <ul class="feature-list">
+          <li>Human-grade voice AI, zero hold times</li>
+          <li>Lead qualification on autopilot</li>
+          <li>Appointment booking &amp; CRM integration</li>
+          <li>Custom personality &amp; brand voice</li>
+          <li>Real-time analytics dashboard</li>
+        </ul>
+      </div>
+
+      <div class="feature-card reveal-right">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+          </svg>
+        </div>
+        <div class="feature-number">Bout II &mdash; Co-Main Event</div>
+        <h3>KPT Designs</h3>
+        <p>
+          Premium web experiences built to dominate. Every pixel is a calculated strike.
+          Every interaction engineered for maximum impact.
+        </p>
+        <ul class="feature-list">
+          <li>Conversion-optimized architecture</li>
+          <li>Performance-first engineering</li>
+          <li>Mobile-native responsive design</li>
+          <li>SEO &amp; analytics integration</li>
+          <li>Ongoing support &amp; iteration</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="red-strip"></div>
+
+<!-- Fight Card Stats -->
+<section class="section stats-section" id="record">
+  <div class="container">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label">Official Record</div>
+      <div class="red-divider"></div>
+      <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 700;">The Fight Card</h2>
+      <p style="color: var(--gray-light); max-width: 500px; margin: 16px auto 0; font-size: 15px; line-height: 1.7;">
+        Numbers don't lie. These are our stats going into fight night.
+      </p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="stat-vs">Record</div>
+        <div class="stat-value">99%</div>
+        <div class="stat-label">Uptime</div>
+        <div class="stat-desc">AI agents that never<br>tap out, never rest</div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="--fill: 99%"></div></div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-vs">Speed</div>
+        <div class="stat-value">&lt;3s</div>
+        <div class="stat-label">Response</div>
+        <div class="stat-desc">Average pickup time,<br>faster than any contender</div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="--fill: 95%"></div></div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-vs">Power</div>
+        <div class="stat-value">40%</div>
+        <div class="stat-label">Conversion</div>
+        <div class="stat-desc">Average lead-to-booking<br>rate increase</div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="--fill: 85%"></div></div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-vs">Finish</div>
+        <div class="stat-value">&lt;1s</div>
+        <div class="stat-label">Load Time</div>
+        <div class="stat-desc">Every site engineered<br>for first-round speed</div>
+        <div class="stat-bar"><div class="stat-bar-fill" style="--fill: 97%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Rules of the Octagon -->
+<section class="section" id="rules">
+  <div class="container">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label">Unified Rules</div>
+      <div class="red-divider"></div>
+      <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 700;">Rules of the Octagon</h2>
+      <p style="color: var(--gray-light); max-width: 500px; margin: 16px auto 0; font-size: 15px; line-height: 1.7;">
+        Every fighter lives by a code. These are the rules we never break.
+      </p>
+    </div>
+
+    <div class="principles-grid">
+      <div class="principle-card reveal">
+        <div class="principle-round">R1</div>
+        <h3>No Tap Outs</h3>
+        <p>
+          Every project is built with championship discipline. From a single landing page
+          to a full AI deployment &mdash; we finish every fight.
+        </p>
+      </div>
+      <div class="principle-card reveal">
+        <div class="principle-round">R2</div>
+        <h3>Honor the Contract</h3>
+        <p>
+          Deadlines are sacred. Deliverables are non-negotiable. When we commit to a bout,
+          we show up ready and we leave nothing to the judges.
+        </p>
+      </div>
+      <div class="principle-card reveal">
+        <div class="principle-round">R3</div>
+        <h3>Train Relentless</h3>
+        <p>
+          Your business is not a number on a card. Every solution is custom-built.
+          We study the tape, find the openings, and exploit them.
+        </p>
+      </div>
+      <div class="principle-card reveal">
+        <div class="principle-round">R4</div>
+        <h3>Precision Strikes</h3>
+        <p>
+          We do not swing wild. Every line of code, every design choice, every automation
+          is a calculated strike. Fewer punches, higher accuracy.
+        </p>
+      </div>
+      <div class="principle-card reveal">
+        <div class="principle-round">R5</div>
+        <h3>Cornermen for Life</h3>
+        <p>
+          Long-term clients get priority, preferential rates, and first access
+          to new capabilities. Loyalty earns you a permanent spot in the corner.
+        </p>
+      </div>
+      <div class="principle-card reveal">
+        <div class="principle-round">KO</div>
+        <h3>Results or Nothing</h3>
+        <p>
+          Every deployment is measured. Every campaign tracked. If something is not performing,
+          we adjust and attack again. Only knockouts count.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="red-strip"></div>
+
+<!-- Champions / Testimonials -->
+<section class="section testimonials-section" id="champions">
+  <div class="container">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label">Hall of Champions</div>
+      <div class="red-divider"></div>
+      <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 700;">Title Holders</h2>
+      <p style="color: var(--gray-light); max-width: 500px; margin: 16px auto 0; font-size: 15px; line-height: 1.7;">
+        Fighters who stepped into the octagon with us &mdash; and came out champions.
+      </p>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal">
+        <div class="testimonial-result">KO &mdash; Round 1</div>
+        <p class="testimonial-text">
+          &ldquo;They built our AI phone system in two weeks. Our missed calls dropped to zero.
+          It is like having a fighter in the ring who never gets tired.&rdquo;
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">M</div>
+          <div>
+            <div class="testimonial-name">Marcus Webb</div>
+            <div class="testimonial-role">Director, Meridian Group</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="testimonial-result">TKO &mdash; Round 2</div>
+        <p class="testimonial-text">
+          &ldquo;Our new site converts at triple the old rate. Every detail was precision-engineered.
+          They do not just build websites &mdash; they build weapons.&rdquo;
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">S</div>
+          <div>
+            <div class="testimonial-name">Sofia Reyes</div>
+            <div class="testimonial-role">Founder, Lux Hospitality</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <div class="testimonial-result">Decision &mdash; Unanimous</div>
+        <p class="testimonial-text">
+          &ldquo;Professional. Precise. Relentless. They treated our launch like a title fight &mdash;
+          and the results hit harder than any pitch deck ever could.&rdquo;
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">D</div>
+          <div>
+            <div class="testimonial-name">Daniel Park</div>
+            <div class="testimonial-role">CTO, Ironclad Ventures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta-section" id="contact">
+  <div class="container">
+    <div class="reveal">
+      <div class="cta-octagon">
+        <div class="cta-octagon-border"></div>
+        <div class="cta-octagon-inner">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </div>
+      </div>
+      <div class="section-label">Main Event</div>
+      <div class="red-divider"></div>
+      <h2>Ready to <span class="red">Fight</span>?</h2>
+      <p class="cta-sub">
+        Step into the octagon. We will match you with the right gameplan within 24 hours.
+        No obligations. Just opportunity.
+      </p>
+      <form class="cta-form" onsubmit="return false;">
+        <input type="email" class="cta-input" placeholder="your@email.com" required>
+        <button type="submit" class="cta-submit">Let's Go</button>
+      </form>
+      <p class="cta-note">No spam. No cheap shots. Just business.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo"><span>K</span>PT</div>
+      <p class="footer-tagline">
+        Bespoke AI agents and premium web design. Built to fight. Engineered to win.
+      </p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Fight Card</h4>
+        <ul>
+          <li><a href="#disciplines">KPT Agents</a></li>
+          <li><a href="#disciplines">KPT Designs</a></li>
+          <li><a href="#contact">Book a Bout</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>The Octagon</h4>
+        <ul>
+          <li><a href="#rules">Rules</a></li>
+          <li><a href="#record">Fight Record</a></li>
+          <li><a href="#champions">Champions</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:hello@kpt.com">hello@kpt.com</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Twitter / X</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">&copy; 2024 KPT. All rights reserved.</span>
+    <span class="footer-tagline-bottom">It's Time.</span>
+  </div>
+</footer>
+
+<script>
+  /* ── Mobile Nav Toggle ───────────────────────────────────── */
+  const navToggle = document.getElementById('navToggle');
+  const nav = document.getElementById('nav');
+
+  navToggle.addEventListener('click', () => {
+    nav.classList.toggle('open');
+  });
+
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('open');
+    });
+  });
+
+  /* ── Intersection Observer — Reveal on Scroll ────────────── */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+    revealObserver.observe(el);
+  });
+
+  /* ── Nav background on scroll ────────────────────────────── */
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    if (scrollY > 60) {
+      nav.style.background = 'rgba(5, 5, 5, 0.97)';
+    } else {
+      nav.style.background = 'rgba(5, 5, 5, 0.85)';
+    }
+  }, { passive: true });
+
+  /* ── Staggered reveal for grid children ──────────────────── */
+  const staggerObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const children = entry.target.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        children.forEach((child, i) => {
+          setTimeout(() => {
+            child.classList.add('visible');
+          }, i * 150);
+        });
+        staggerObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.05,
+    rootMargin: '0px 0px -20px 0px'
+  });
+
+  document.querySelectorAll('.features-grid, .principles-grid, .stats-grid, .testimonials-grid').forEach(grid => {
+    staggerObserver.observe(grid);
+  });
+
+  /* ── Stat bar fill animation on scroll ──────────────────── */
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        statObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.3
+  });
+
+  document.querySelectorAll('.stat-card').forEach(card => {
+    statObserver.observe(card);
+  });
+</script>
+</body>
+</html>

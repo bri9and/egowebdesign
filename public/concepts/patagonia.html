@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Don't Buy This Software (Unless You Mean It)</title>
+<meta name="description" content="KPT. Purpose-driven technology. Build only what matters. Every line of code is an environmental decision.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --pat-blue: #1B3A4B;
+    --pat-blue-deep: #0F2633;
+    --pat-blue-dark: #091A24;
+    --pat-blue-light: #2C5F7B;
+    --sunset: #FF6B35;
+    --sunset-light: #FF8A5C;
+    --sunset-glow: rgba(255, 107, 53, 0.15);
+    --mountain-gray: #6B7B8D;
+    --mountain-light: #8A9AAC;
+    --ridge: #4A5A6B;
+    --snow: #E8EDF2;
+    --white: #FFFFFF;
+    --off-white: #F7F9FB;
+    --cream: #F0F3F5;
+    --slate: #3D4F5F;
+    --charcoal: #1E2D3A;
+    --night: #0A1520;
+    --border: rgba(27, 58, 75, 0.12);
+    --border-light: rgba(255, 255, 255, 0.1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--off-white);
+    color: var(--charcoal);
+    font-family: 'Inter', 'Source Sans 3', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ── Back Link ─────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 24px;
+    z-index: 1000;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .back-link:hover { color: var(--sunset); }
+  .back-link svg { width: 14px; height: 14px; }
+
+  /* ── Scroll Animations ──────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ── Hero ────────────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, var(--pat-blue-dark) 0%, var(--pat-blue) 40%, var(--pat-blue-light) 100%);
+    overflow: hidden;
+    padding: 80px 24px 120px;
+    text-align: center;
+  }
+
+  /* Mountain silhouette SVG background */
+  .hero-mountains {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    pointer-events: none;
+  }
+
+  /* Starfield dots */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.4) 50%, transparent 50%),
+      radial-gradient(1px 1px at 25% 8%, rgba(255,255,255,0.3) 50%, transparent 50%),
+      radial-gradient(1.5px 1.5px at 40% 22%, rgba(255,255,255,0.5) 50%, transparent 50%),
+      radial-gradient(1px 1px at 55% 5%, rgba(255,255,255,0.35) 50%, transparent 50%),
+      radial-gradient(1px 1px at 70% 18%, rgba(255,255,255,0.3) 50%, transparent 50%),
+      radial-gradient(1.5px 1.5px at 85% 12%, rgba(255,255,255,0.45) 50%, transparent 50%),
+      radial-gradient(1px 1px at 15% 35%, rgba(255,255,255,0.25) 50%, transparent 50%),
+      radial-gradient(1px 1px at 60% 30%, rgba(255,255,255,0.3) 50%, transparent 50%),
+      radial-gradient(1px 1px at 90% 25%, rgba(255,255,255,0.35) 50%, transparent 50%),
+      radial-gradient(1px 1px at 35% 40%, rgba(255,255,255,0.2) 50%, transparent 50%),
+      radial-gradient(1px 1px at 78% 38%, rgba(255,255,255,0.25) 50%, transparent 50%),
+      radial-gradient(1.5px 1.5px at 50% 10%, rgba(255,255,255,0.4) 50%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 800px;
+  }
+
+  .hero-tagline {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--sunset);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeDown 1s 0.3s forwards;
+  }
+
+  .hero-logo-wrap {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 1.2s 0.5s forwards;
+  }
+
+  .hero-kpt {
+    font-family: 'Inter', sans-serif;
+    font-size: 140px;
+    font-weight: 900;
+    letter-spacing: 20px;
+    color: var(--white);
+    line-height: 1;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Mountain silhouette behind KPT */
+  .hero-fitz-roy {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 420px;
+    height: 140px;
+    z-index: 1;
+    opacity: 0.3;
+  }
+
+  .hero-subtitle {
+    font-size: 20px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    max-width: 560px;
+    margin: 0 auto 16px;
+    opacity: 0;
+    animation: fadeUp 1s 0.8s forwards;
+  }
+
+  .hero-manifesto {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 1px;
+    max-width: 480px;
+    margin: 0 auto 48px;
+    opacity: 0;
+    animation: fadeUp 1s 1s forwards;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 1s 1.2s forwards;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 36px;
+    background: var(--sunset);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .btn-primary:hover {
+    background: var(--sunset-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(255, 107, 53, 0.35);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 36px;
+    background: transparent;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .btn-secondary:hover {
+    border-color: var(--white);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+  }
+
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: scrollPulse 2.5s infinite;
+  }
+  .hero-scroll-hint svg { width: 16px; height: 16px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.35; transform: translateX(-50%) translateY(0); }
+    50% { opacity: 0.6; transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ── Anti-Consumerism Banner ──────────────────────────────── */
+  .anti-banner {
+    background: var(--night);
+    padding: 80px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .anti-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 40px,
+      rgba(255, 255, 255, 0.02) 40px,
+      rgba(255, 255, 255, 0.02) 41px
+    );
+    pointer-events: none;
+  }
+
+  .anti-banner-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .anti-headline {
+    font-family: 'Inter', sans-serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 24px;
+    letter-spacing: -1px;
+  }
+
+  .anti-headline span {
+    color: var(--sunset);
+  }
+
+  .anti-body {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.8;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  /* ── Section Shared ──────────────────────────────────────── */
+  .section {
+    padding: 120px 24px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--sunset);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--pat-blue);
+    line-height: 1.2;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  .section-subtitle {
+    font-size: 17px;
+    color: var(--mountain-gray);
+    line-height: 1.7;
+    max-width: 560px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* ── Features ────────────────────────────────────────────── */
+  .features {
+    background: var(--off-white);
+  }
+
+  .features-header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+
+  .features-header .section-subtitle {
+    margin: 0 auto;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  .feature-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 48px 36px;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--sunset);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .feature-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(27, 58, 75, 0.1);
+    border-color: transparent;
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--sunset-glow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .feature-icon svg {
+    width: 24px;
+    height: 24px;
+    color: var(--sunset);
+  }
+
+  .feature-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--pat-blue);
+    margin-bottom: 12px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    color: var(--mountain-gray);
+    line-height: 1.7;
+  }
+
+  /* ── Purpose Section ─────────────────────────────────────── */
+  .purpose {
+    background: var(--pat-blue);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .purpose::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 107, 53, 0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  .purpose-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .purpose .section-label { color: var(--sunset-light); }
+  .purpose .section-title { color: var(--white); }
+  .purpose .section-subtitle { color: rgba(255, 255, 255, 0.65); }
+
+  .purpose-principles {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .principle {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .principle-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--sunset);
+    line-height: 1;
+    min-width: 48px;
+    opacity: 0.7;
+  }
+
+  .principle-text h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .principle-text p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 1.6;
+  }
+
+  /* ── Stats ───────────────────────────────────────────────── */
+  .stats {
+    background: var(--cream);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
+    text-align: center;
+  }
+
+  .stat-item {
+    position: relative;
+  }
+
+  .stat-item::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    right: -24px;
+    width: 1px;
+    height: 80%;
+    background: var(--border);
+  }
+
+  .stat-item:last-child::after { display: none; }
+
+  .stat-number {
+    font-family: 'Inter', sans-serif;
+    font-size: 52px;
+    font-weight: 900;
+    color: var(--pat-blue);
+    line-height: 1;
+    margin-bottom: 8px;
+    letter-spacing: -2px;
+  }
+
+  .stat-number span {
+    color: var(--sunset);
+  }
+
+  .stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--mountain-gray);
+  }
+
+  /* ── Activism / Mission Section ──────────────────────────── */
+  .activism {
+    background: var(--off-white);
+  }
+
+  .activism-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .activism-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .activism-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 32px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    transition: all 0.3s ease;
+  }
+
+  .activism-card:hover {
+    border-color: var(--sunset);
+    box-shadow: 0 4px 24px rgba(255, 107, 53, 0.08);
+  }
+
+  .activism-card-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    background: var(--pat-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .activism-card-icon svg {
+    width: 20px;
+    height: 20px;
+    color: var(--sunset-light);
+  }
+
+  .activism-card h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--pat-blue);
+    margin-bottom: 6px;
+  }
+
+  .activism-card p {
+    font-size: 13px;
+    color: var(--mountain-gray);
+    line-height: 1.6;
+  }
+
+  /* ── CTA Section ─────────────────────────────────────────── */
+  .cta-section {
+    background: linear-gradient(135deg, var(--pat-blue-dark) 0%, var(--pat-blue) 100%);
+    text-align: center;
+    padding: 120px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    pointer-events: none;
+  }
+
+  .cta-mountain-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .cta-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--sunset);
+    margin-bottom: 24px;
+  }
+
+  .cta-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 44px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+  }
+
+  .cta-desc {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  /* ── Footer ──────────────────────────────────────────────── */
+  footer {
+    background: var(--night);
+    padding: 64px 24px 40px;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .footer-brand-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: 6px;
+    margin-bottom: 16px;
+  }
+
+  .footer-brand-desc {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.4);
+    line-height: 1.7;
+    max-width: 280px;
+  }
+
+  .footer-col h5 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 20px;
+  }
+
+  .footer-col a {
+    display: block;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.35);
+    text-decoration: none;
+    padding: 4px 0;
+    transition: color 0.2s ease;
+  }
+
+  .footer-col a:hover { color: var(--sunset); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 0.5px;
+  }
+
+  .footer-env {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sunset);
+    opacity: 0.6;
+  }
+
+  /* ── Responsive ──────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .hero { min-height: 100svh; padding: 60px 20px 100px; }
+    .hero-kpt { font-size: 72px; letter-spacing: 10px; }
+    .hero-fitz-roy { width: 260px; height: 90px; }
+    .hero-subtitle { font-size: 17px; }
+    .hero-manifesto { font-size: 13px; }
+    .hero-cta-group { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-secondary { width: 100%; max-width: 300px; justify-content: center; }
+
+    .anti-headline { font-size: 28px; }
+    .anti-body { font-size: 15px; }
+
+    .section { padding: 80px 20px; }
+    .section-title { font-size: 28px; }
+
+    .features-grid { grid-template-columns: 1fr; gap: 20px; }
+    .feature-card { padding: 36px 28px; }
+
+    .purpose-grid { grid-template-columns: 1fr; gap: 48px; }
+
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+    .stat-item::after { display: none; }
+    .stat-number { font-size: 40px; }
+
+    .activism-layout { grid-template-columns: 1fr; gap: 48px; }
+
+    .cta-title { font-size: 30px; }
+
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+  All Concepts
+</a>
+
+<!-- ════════════════════════════════════════════════════════════
+     HERO
+     ════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <!-- Mountain range background -->
+  <svg class="hero-mountains" viewBox="0 0 1440 500" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Far range -->
+    <path d="M0 350 L80 280 L160 310 L240 240 L320 290 L400 220 L480 270 L560 200 L620 260 L680 180 L720 150 L760 180 L820 140 L860 170 L900 220 L960 190 L1020 250 L1080 210 L1140 270 L1200 230 L1260 280 L1320 250 L1380 300 L1440 260 L1440 500 L0 500Z" fill="rgba(255,255,255,0.03)"/>
+    <!-- Mid range -->
+    <path d="M0 420 L100 370 L180 390 L260 340 L340 370 L400 310 L460 350 L520 290 L580 330 L640 280 L700 250 L740 230 L780 260 L840 300 L900 270 L960 320 L1040 290 L1100 340 L1160 310 L1240 360 L1320 330 L1400 370 L1440 350 L1440 500 L0 500Z" fill="rgba(255,255,255,0.04)"/>
+    <!-- Near range -->
+    <path d="M0 460 L120 430 L240 450 L360 410 L480 440 L560 400 L640 420 L720 390 L800 410 L880 380 L960 400 L1040 420 L1120 395 L1200 430 L1280 410 L1360 440 L1440 420 L1440 500 L0 500Z" fill="rgba(255,255,255,0.05)"/>
+  </svg>
+
+  <div class="hero-content">
+    <p class="hero-tagline">Purpose-Driven Technology</p>
+
+    <div class="hero-logo-wrap">
+      <!-- Fitz Roy silhouette behind KPT -->
+      <svg class="hero-fitz-roy" viewBox="0 0 420 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 140 L30 110 L55 95 L70 105 L90 75 L105 85 L120 55 L135 65 L150 35 L160 45 L175 20 L185 30 L195 8 L210 0 L225 8 L235 30 L245 20 L260 45 L270 35 L285 65 L300 55 L315 85 L330 75 L350 105 L365 95 L385 110 L405 120 L420 140Z" fill="rgba(255,255,255,0.5)"/>
+        <!-- Snow caps -->
+        <path d="M175 20 L185 30 L195 8 L210 0 L225 8 L235 30 L245 20 L240 28 L230 18 L222 12 L210 6 L198 12 L190 18 L180 28Z" fill="rgba(255,255,255,0.7)"/>
+        <path d="M120 55 L135 65 L150 35 L160 45 L155 40 L148 38 L140 48 L130 55 L125 52Z" fill="rgba(255,255,255,0.5)"/>
+        <path d="M270 35 L285 65 L300 55 L295 52 L288 48 L280 38 L275 40Z" fill="rgba(255,255,255,0.5)"/>
+      </svg>
+      <div class="hero-kpt">KPT</div>
+    </div>
+
+    <p class="hero-subtitle">Build only what the world actually needs. Technology with intention, craft with conscience.</p>
+    <p class="hero-manifesto">We're in business to save our home planet. Every product we ship, every line we write, every system we build serves that mission.</p>
+
+    <div class="hero-cta-group">
+      <a href="#features" class="btn-primary">
+        Our Approach
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#purpose" class="btn-secondary">
+        The Mission
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint">
+    Scroll
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/></svg>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     ANTI-CONSUMERISM BANNER
+     ════════════════════════════════════════════════════════════ -->
+<section class="anti-banner">
+  <div class="anti-banner-inner">
+    <h2 class="anti-headline reveal">Don't Buy This <span>Software.</span></h2>
+    <p class="anti-body reveal reveal-delay-1">The most responsible thing we can do is build less and build better. We don't sell features you don't need. We don't ship bloat. We don't chase vanity metrics. If our product lasts, we've done our job.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     FEATURES
+     ════════════════════════════════════════════════════════════ -->
+<section class="section features" id="features">
+  <div class="container">
+    <div class="features-header">
+      <p class="section-label reveal">What We Build</p>
+      <h2 class="section-title reveal reveal-delay-1">Gear That Lasts</h2>
+      <p class="section-subtitle reveal reveal-delay-2">No throwaway code. No planned obsolescence. Every system is built to endure seasons, storms, and scale.</p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3 class="feature-title">Layered Architecture</h3>
+        <p class="feature-desc">Like the best shell systems, our stack is modular. Swap any layer without disrupting the whole. Base layer stays warm; outer layer sheds complexity.</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0022 16z"/><path d="M12 22V12"/><path d="M22 7L12 12 2 7"/></svg>
+        </div>
+        <h3 class="feature-title">Ironclad Reliability</h3>
+        <p class="feature-desc">Tested in production the way gear is tested on granite. 99.99% uptime isn't a marketing number - it's the minimum acceptable standard.</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3 class="feature-title">Fair Trade Code</h3>
+        <p class="feature-desc">Transparent pricing. Open roadmaps. We pay our contributors fairly and pass cost savings to customers. No hidden extraction.</p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        </div>
+        <h3 class="feature-title">Activist Automation</h3>
+        <p class="feature-desc">AI agents that serve a purpose beyond profit. Voice systems for nonprofits. Automation that frees people to do meaningful work.</p>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="feature-title">Worn Wear Warranty</h3>
+        <p class="feature-desc">We fix what we build. Lifetime support isn't an upsell - it's a responsibility. If it breaks, we repair it. If we can't, we replace it.</p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h3 class="feature-title">1% For The Planet</h3>
+        <p class="feature-desc">One percent of all revenue funds open-source infrastructure and digital commons. Not a tax write-off. A commitment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     PURPOSE / PRINCIPLES
+     ════════════════════════════════════════════════════════════ -->
+<section class="section purpose" id="purpose">
+  <div class="container">
+    <div class="purpose-grid">
+      <div>
+        <p class="section-label reveal">Our Principles</p>
+        <h2 class="section-title reveal reveal-delay-1">Earth Is Our<br>Only Stakeholder</h2>
+        <p class="section-subtitle reveal reveal-delay-2">We build technology the way Yvon Chouinard forged pitons - with the least possible harm and the greatest possible durability. Growth is not the goal. Sufficiency is.</p>
+      </div>
+      <div class="purpose-principles">
+        <div class="principle reveal">
+          <span class="principle-num">01</span>
+          <div class="principle-text">
+            <h4>Reduce Before You Optimize</h4>
+            <p>The greenest line of code is the one you never write. We eliminate complexity before we try to manage it.</p>
+          </div>
+        </div>
+        <div class="principle reveal reveal-delay-1">
+          <span class="principle-num">02</span>
+          <div class="principle-text">
+            <h4>Repair What Exists</h4>
+            <p>Before building new systems, we improve what's already running. Maintenance is not a cost center - it's the product.</p>
+          </div>
+        </div>
+        <div class="principle reveal reveal-delay-2">
+          <span class="principle-num">03</span>
+          <div class="principle-text">
+            <h4>Transparent Supply Chain</h4>
+            <p>Every dependency is audited. Every data flow is documented. Our customers know exactly what their stack contains.</p>
+          </div>
+        </div>
+        <div class="principle reveal reveal-delay-3">
+          <span class="principle-num">04</span>
+          <div class="principle-text">
+            <h4>Let The Mountain Decide</h4>
+            <p>The best technology respects constraints. We don't force solutions. We listen to the problem and let it guide the architecture.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     STATS
+     ════════════════════════════════════════════════════════════ -->
+<section class="section stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-number">99<span>.9</span></div>
+        <div class="stat-label">Uptime %</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-number">0<span>.</span></div>
+        <div class="stat-label">Bloatware Shipped</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-number">1<span>%</span></div>
+        <div class="stat-label">Revenue to Planet</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-number"><span>&infin;</span></div>
+        <div class="stat-label">Repair Warranty</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     ACTIVISM / ENVIRONMENTAL COMMITMENT
+     ════════════════════════════════════════════════════════════ -->
+<section class="section activism" id="activism">
+  <div class="container">
+    <div class="activism-layout">
+      <div>
+        <p class="section-label reveal">Environmental Action</p>
+        <h2 class="section-title reveal reveal-delay-1">The Footprint<br>We Choose</h2>
+        <p class="section-subtitle reveal reveal-delay-2">Technology has an environmental cost. We measure it, reduce it, and offset what remains. Not because it's good marketing - because it's the right thing to do.</p>
+      </div>
+      <div class="activism-cards">
+        <div class="activism-card reveal">
+          <div class="activism-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c4-4 8-7.5 8-12a8 8 0 10-16 0c0 4.5 4 8 8 12z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <h4>Green Hosting</h4>
+            <p>All infrastructure runs on renewable energy. We choose data centers by their carbon footprint, not just their latency.</p>
+          </div>
+        </div>
+        <div class="activism-card reveal reveal-delay-1">
+          <div class="activism-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22l1-1h3l9-9"/><path d="M3 21v-3l9-9"/><circle cx="17" cy="7" r="4"/></svg>
+          </div>
+          <div>
+            <h4>Lean Deployments</h4>
+            <p>Every build is measured for size, memory, and compute cost. We treat server resources like wilderness - leave no trace.</p>
+          </div>
+        </div>
+        <div class="activism-card reveal reveal-delay-2">
+          <div class="activism-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div>
+            <h4>Open Source Commons</h4>
+            <p>Core tools are open-sourced. We believe shared infrastructure is stronger infrastructure. Private profit from public code isn't our model.</p>
+          </div>
+        </div>
+        <div class="activism-card reveal reveal-delay-3">
+          <div class="activism-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <h4>Local-First Philosophy</h4>
+            <p>Data stays close to the user. Less transit means less energy. Edge computing isn't just faster - it's more responsible.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     CTA
+     ════════════════════════════════════════════════════════════ -->
+<section class="cta-section">
+  <!-- Subtle mountain range at bottom -->
+  <svg class="cta-mountain-bg" viewBox="0 0 1440 200" preserveAspectRatio="none" fill="white" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 200 L0 140 L80 110 L160 130 L240 80 L320 110 L400 60 L480 90 L560 50 L620 80 L680 40 L720 20 L760 40 L820 30 L860 50 L900 80 L960 60 L1020 90 L1080 70 L1140 100 L1200 80 L1260 110 L1320 90 L1380 120 L1440 100 L1440 200Z"/>
+  </svg>
+
+  <div class="cta-content">
+    <p class="cta-label reveal">Ready to Build Responsibly</p>
+    <h2 class="cta-title reveal reveal-delay-1">The Best Product Is<br>the One That Lasts</h2>
+    <p class="cta-desc reveal reveal-delay-2">We build technology that serves people and respects the planet. If that sounds like what you need, let's talk. If not, we'd rather you didn't buy.</p>
+    <div class="reveal reveal-delay-3">
+      <a href="#" class="btn-primary">
+        Start a Conversation
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     FOOTER
+     ════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand-name">KPT</div>
+      <p class="footer-brand-desc">Purpose-driven technology for a finite planet. We build less, build better, and build to last.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Product</h5>
+      <a href="#">AI Agents</a>
+      <a href="#">Web Design</a>
+      <a href="#">Automation</a>
+      <a href="#">Consulting</a>
+    </div>
+    <div class="footer-col">
+      <h5>Principles</h5>
+      <a href="#">Our Mission</a>
+      <a href="#">Environmental</a>
+      <a href="#">Open Source</a>
+      <a href="#">Transparency</a>
+    </div>
+    <div class="footer-col">
+      <h5>Connect</h5>
+      <a href="#">Contact</a>
+      <a href="#">GitHub</a>
+      <a href="#">Journal</a>
+      <a href="/index.html">All Concepts</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">&copy; 2026 KPT. Earth is now our only shareholder.</span>
+    <span class="footer-env">1% for the planet</span>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════════════════════════
+     SCRIPTS
+     ════════════════════════════════════════════════════════════ -->
+<script>
+  // IntersectionObserver for scroll-reveal animations
+  document.addEventListener('DOMContentLoaded', () => {
+    const reveals = document.querySelectorAll('.reveal');
+    if (!reveals.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    reveals.forEach(el => observer.observe(el));
+  });
+</script>
+</body>
+</html>

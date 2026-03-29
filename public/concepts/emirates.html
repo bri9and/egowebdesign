@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Emirates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =============================================
+     RESET & CUSTOM PROPERTIES
+     ============================================= */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --red: #D71921;
+    --red-deep: #A8131A;
+    --red-glow: rgba(215, 25, 33, 0.15);
+    --red-bright: #E8323A;
+    --gold: #C8A951;
+    --gold-bright: #D4BC6A;
+    --gold-dim: rgba(200, 169, 81, 0.12);
+    --gold-glow: rgba(200, 169, 81, 0.06);
+    --sand: #F5ECD7;
+    --sand-soft: #EDE3CC;
+    --sand-dim: rgba(245, 236, 215, 0.08);
+    --white: #FFFFFF;
+    --white-soft: #F8F6F0;
+    --cream: #FAF7F0;
+    --charcoal: #1A1A1A;
+    --charcoal-deep: #0F0F0F;
+    --charcoal-soft: #2A2A2A;
+    --midnight: #0A0A14;
+
+    --font-display: 'Playfair Display', 'Georgia', serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+    --ease-luxury: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-soar: cubic-bezier(0.22, 0.68, 0, 1.05);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    background: var(--charcoal-deep);
+    color: var(--cream);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--gold);
+    color: var(--charcoal-deep);
+  }
+
+  /* =============================================
+     SCROLL ANIMATIONS
+     ============================================= */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s var(--ease-reveal), transform 0.9s var(--ease-reveal);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.9s var(--ease-reveal), transform 0.9s var(--ease-reveal);
+  }
+
+  .reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.9s var(--ease-reveal), transform 0.9s var(--ease-reveal);
+  }
+
+  .reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.9s var(--ease-reveal), transform 0.9s var(--ease-reveal);
+  }
+
+  .reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Staggered delays */
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+  .delay-3 { transition-delay: 0.3s; }
+  .delay-4 { transition-delay: 0.4s; }
+  .delay-5 { transition-delay: 0.5s; }
+  .delay-6 { transition-delay: 0.6s; }
+
+  /* =============================================
+     BACK LINK
+     ============================================= */
+  .back-link {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gold);
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid rgba(200, 169, 81, 0.3);
+    border-radius: 2px;
+    background: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: all 0.4s var(--ease-luxury);
+  }
+
+  .back-link:hover {
+    background: var(--gold);
+    color: var(--charcoal-deep);
+    border-color: var(--gold);
+  }
+
+  .back-link svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s var(--ease-luxury);
+  }
+
+  .back-link:hover svg {
+    transform: translateX(-3px);
+  }
+
+  /* =============================================
+     DESERT PARTICLE FIELD
+     ============================================= */
+  .desert-particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+    animation: float-particle linear infinite;
+  }
+
+  @keyframes float-particle {
+    0% {
+      opacity: 0;
+      transform: translateY(0) translateX(0);
+    }
+    15% {
+      opacity: 0.6;
+    }
+    85% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-100vh) translateX(40px);
+    }
+  }
+
+  /* =============================================
+     ARABESQUE DECORATIVE PATTERNS
+     ============================================= */
+  .arabesque {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+
+  .arabesque-line {
+    height: 1px;
+    width: 80px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .arabesque-diamond {
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  .arabesque-star {
+    position: relative;
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+  }
+
+  .arabesque-star::before,
+  .arabesque-star::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+  }
+
+  .arabesque-star::before {
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+
+  /* =============================================
+     HERO SECTION
+     ============================================= */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(215, 25, 33, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 100%, rgba(200, 169, 81, 0.08) 0%, transparent 50%),
+      linear-gradient(180deg, var(--charcoal-deep) 0%, var(--midnight) 50%, var(--charcoal-deep) 100%);
+    overflow: hidden;
+  }
+
+  /* Geometric calligraphy-inspired border at top */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--gold) 15%,
+      var(--red) 35%,
+      var(--gold) 50%,
+      var(--red) 65%,
+      var(--gold) 85%,
+      transparent 100%
+    );
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fade-in 1s 0.3s var(--ease-luxury) forwards;
+  }
+
+  .hero-eyebrow-line {
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+
+  .hero-eyebrow-line:last-child {
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  /* Arabic-inspired calligraphic frame around KPT */
+  .hero-logo-frame {
+    position: relative;
+    display: inline-block;
+    padding: 2rem 4rem;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: reveal-up 1.2s 0.5s var(--ease-reveal) forwards;
+  }
+
+  .hero-logo-frame::before,
+  .hero-logo-frame::after {
+    content: '';
+    position: absolute;
+    border: 1px solid rgba(200, 169, 81, 0.4);
+  }
+
+  .hero-logo-frame::before {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 2px;
+  }
+
+  .hero-logo-frame::after {
+    top: 6px;
+    left: 6px;
+    right: 6px;
+    bottom: 6px;
+    border-radius: 1px;
+    border-color: rgba(215, 25, 33, 0.3);
+  }
+
+  /* Corner ornaments */
+  .corner-ornament {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--gold);
+  }
+
+  .corner-ornament--tl { top: -4px; left: -4px; border-right: none; border-bottom: none; }
+  .corner-ornament--tr { top: -4px; right: -4px; border-left: none; border-bottom: none; }
+  .corner-ornament--bl { bottom: -4px; left: -4px; border-right: none; border-top: none; }
+  .corner-ornament--br { bottom: -4px; right: -4px; border-left: none; border-top: none; }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(5rem, 12vw, 9rem);
+    letter-spacing: 0.15em;
+    line-height: 1;
+    color: var(--white);
+    text-shadow:
+      0 0 60px rgba(215, 25, 33, 0.3),
+      0 0 120px rgba(200, 169, 81, 0.15);
+    position: relative;
+  }
+
+  .hero-title span {
+    display: inline-block;
+    background: linear-gradient(
+      170deg,
+      var(--white) 0%,
+      var(--sand) 30%,
+      var(--gold-bright) 50%,
+      var(--sand) 70%,
+      var(--white) 100%
+    );
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer-gold 6s ease-in-out infinite;
+  }
+
+  @keyframes shimmer-gold {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    color: var(--gold);
+    margin-bottom: 1rem;
+    letter-spacing: 0.06em;
+    opacity: 0;
+    animation: fade-in 1s 0.8s var(--ease-luxury) forwards;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+    color: rgba(250, 247, 240, 0.6);
+    max-width: 550px;
+    margin: 0 auto 3rem;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    animation: fade-in 1s 1s var(--ease-luxury) forwards;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fade-in 1s 1.2s var(--ease-luxury) forwards;
+  }
+
+  /* =============================================
+     BUTTONS
+     ============================================= */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 2.5rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.4s var(--ease-luxury);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary {
+    background: var(--red);
+    color: var(--white);
+    border-radius: 2px;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--red-bright) 0%, var(--red-deep) 100%);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-luxury);
+  }
+
+  .btn-primary:hover::before {
+    opacity: 1;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(215, 25, 33, 0.4);
+  }
+
+  .btn-primary span {
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--gold);
+    border: 1px solid rgba(200, 169, 81, 0.4);
+    border-radius: 2px;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(200, 169, 81, 0.1);
+    border-color: var(--gold);
+    transform: translateY(-2px);
+  }
+
+  .btn svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s var(--ease-luxury);
+  }
+
+  .btn:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* =============================================
+     SCROLL INDICATOR
+     ============================================= */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fade-in 1s 1.8s var(--ease-luxury) forwards;
+  }
+
+  .scroll-indicator span {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(200, 169, 81, 0.5);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(180deg, var(--gold), transparent);
+    animation: scroll-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scroll-pulse {
+    0%, 100% { opacity: 1; transform: scaleY(1); }
+    50% { opacity: 0.3; transform: scaleY(0.6); }
+  }
+
+  /* =============================================
+     SECTION STYLING
+     ============================================= */
+  section {
+    position: relative;
+    padding: 7rem 2rem;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4.5rem;
+  }
+
+  .section-eyebrow {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .section-subtitle {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 1.05rem;
+    color: rgba(250, 247, 240, 0.55);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* =============================================
+     PHILOSOPHY SECTION
+     ============================================= */
+  .philosophy {
+    background:
+      radial-gradient(ellipse 70% 50% at 20% 80%, rgba(200, 169, 81, 0.04) 0%, transparent 60%),
+      linear-gradient(180deg, var(--charcoal-deep) 0%, var(--midnight) 100%);
+  }
+
+  .philosophy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .philosophy-text h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.6rem;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+  }
+
+  .philosophy-text h3 em {
+    color: var(--red);
+    font-style: italic;
+  }
+
+  .philosophy-text p {
+    font-size: 1rem;
+    color: rgba(250, 247, 240, 0.6);
+    margin-bottom: 1.2rem;
+    line-height: 1.8;
+  }
+
+  .philosophy-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 350px;
+  }
+
+  /* Arabesque circular pattern */
+  .arabesque-circle {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    border: 1px solid rgba(200, 169, 81, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: slow-rotate 60s linear infinite;
+  }
+
+  .arabesque-circle::before {
+    content: '';
+    position: absolute;
+    inset: 15px;
+    border: 1px solid rgba(215, 25, 33, 0.2);
+    border-radius: 50%;
+  }
+
+  .arabesque-circle::after {
+    content: '';
+    position: absolute;
+    inset: 30px;
+    border: 1px solid rgba(200, 169, 81, 0.15);
+    border-radius: 50%;
+  }
+
+  @keyframes slow-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .arabesque-inner {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, rgba(215, 25, 33, 0.15), rgba(200, 169, 81, 0.1));
+    border: 1px solid rgba(200, 169, 81, 0.3);
+    transform: rotate(45deg);
+    animation: slow-rotate 60s linear infinite reverse;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .arabesque-inner-text {
+    transform: rotate(-45deg);
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    animation: slow-rotate 60s linear infinite;
+  }
+
+  /* Orbital dots */
+  .orbit-dot {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(200, 169, 81, 0.5);
+  }
+
+  .orbit-dot:nth-child(2) { top: 0; left: 50%; transform: translateX(-50%); }
+  .orbit-dot:nth-child(3) { bottom: 0; left: 50%; transform: translateX(-50%); }
+  .orbit-dot:nth-child(4) { left: 0; top: 50%; transform: translateY(-50%); }
+  .orbit-dot:nth-child(5) { right: 0; top: 50%; transform: translateY(-50%); }
+
+  /* =============================================
+     FEATURES SECTION
+     ============================================= */
+  .features {
+    background:
+      radial-gradient(ellipse 60% 40% at 80% 20%, rgba(215, 25, 33, 0.06) 0%, transparent 60%),
+      linear-gradient(180deg, var(--midnight) 0%, var(--charcoal-deep) 50%, var(--midnight) 100%);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .feature-card {
+    position: relative;
+    padding: 2.5rem 2rem;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.6), rgba(15, 15, 15, 0.8));
+    border: 1px solid rgba(200, 169, 81, 0.1);
+    border-radius: 3px;
+    transition: all 0.5s var(--ease-luxury);
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease-luxury);
+  }
+
+  .feature-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .feature-card:hover {
+    border-color: rgba(200, 169, 81, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(200, 169, 81, 0.2);
+    border-radius: 2px;
+    background: rgba(200, 169, 81, 0.05);
+    transition: all 0.4s var(--ease-luxury);
+  }
+
+  .feature-card:hover .feature-icon {
+    background: rgba(215, 25, 33, 0.1);
+    border-color: rgba(215, 25, 33, 0.3);
+  }
+
+  .feature-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.5;
+    transition: stroke 0.4s var(--ease-luxury);
+  }
+
+  .feature-card:hover .feature-icon svg {
+    stroke: var(--red-bright);
+  }
+
+  .feature-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.15rem;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+
+  .feature-desc {
+    font-size: 0.9rem;
+    color: rgba(250, 247, 240, 0.5);
+    line-height: 1.7;
+  }
+
+  /* =============================================
+     STATS SECTION — FIRST CLASS CABIN AESTHETIC
+     ============================================= */
+  .stats {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 50%, rgba(200, 169, 81, 0.05) 0%, transparent 60%),
+      var(--charcoal-deep);
+    padding: 6rem 2rem;
+  }
+
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    position: relative;
+  }
+
+  .stats-bar::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    right: 5%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200, 169, 81, 0.15), transparent);
+    z-index: 0;
+  }
+
+  .stat-item {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    padding: 2rem 1rem;
+    background: linear-gradient(180deg, rgba(26, 26, 26, 0.3), transparent);
+    border-radius: 3px;
+  }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold), var(--sand));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(250, 247, 240, 0.45);
+  }
+
+  .stat-divider {
+    display: none;
+  }
+
+  /* =============================================
+     EXPERIENCE SECTION — CABIN WINDOW CARDS
+     ============================================= */
+  .experience {
+    background:
+      radial-gradient(ellipse 50% 60% at 10% 50%, rgba(215, 25, 33, 0.04) 0%, transparent 50%),
+      linear-gradient(180deg, var(--midnight) 0%, var(--charcoal-deep) 100%);
+  }
+
+  .experience-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+
+  .experience-card {
+    position: relative;
+    padding: 3rem 2.5rem;
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.7), rgba(15, 15, 15, 0.9));
+    border: 1px solid rgba(200, 169, 81, 0.08);
+    border-radius: 4px;
+    transition: all 0.5s var(--ease-luxury);
+    overflow: hidden;
+  }
+
+  .experience-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--red), var(--gold));
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-luxury);
+  }
+
+  .experience-card:hover::after {
+    opacity: 1;
+  }
+
+  .experience-card:hover {
+    border-color: rgba(200, 169, 81, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .experience-number {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 3rem;
+    line-height: 1;
+    color: rgba(200, 169, 81, 0.12);
+    margin-bottom: 1rem;
+  }
+
+  .experience-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+
+  .experience-desc {
+    font-size: 0.9rem;
+    color: rgba(250, 247, 240, 0.5);
+    line-height: 1.8;
+  }
+
+  .experience-tag {
+    display: inline-block;
+    margin-top: 1.25rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--red);
+    padding: 0.4rem 0.8rem;
+    border: 1px solid rgba(215, 25, 33, 0.3);
+    border-radius: 2px;
+  }
+
+  /* =============================================
+     CTA SECTION — EMIRATES BOARDING PASS VIBE
+     ============================================= */
+  .cta {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 100%, rgba(215, 25, 33, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(200, 169, 81, 0.06) 0%, transparent 40%),
+      var(--midnight);
+    padding: 8rem 2rem;
+    text-align: center;
+  }
+
+  .cta-frame {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 4rem 3rem;
+    border: 1px solid rgba(200, 169, 81, 0.15);
+    border-radius: 3px;
+    position: relative;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.4), rgba(15, 15, 15, 0.6));
+  }
+
+  .cta-frame::before,
+  .cta-frame::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 30px;
+  }
+
+  .cta-frame::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid var(--gold);
+    border-left: 2px solid var(--gold);
+  }
+
+  .cta-frame::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid var(--gold);
+    border-right: 2px solid var(--gold);
+  }
+
+  .cta-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    color: var(--white);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .cta-title em {
+    color: var(--red);
+    font-style: italic;
+  }
+
+  .cta-subtitle {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 1rem;
+    color: rgba(250, 247, 240, 0.5);
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  /* =============================================
+     FOOTER
+     ============================================= */
+  .footer {
+    position: relative;
+    padding: 4rem 2rem 2rem;
+    background: var(--charcoal-deep);
+    border-top: 1px solid rgba(200, 169, 81, 0.08);
+  }
+
+  .footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--red) 20%,
+      var(--gold) 40%,
+      var(--red) 60%,
+      var(--gold) 80%,
+      transparent 100%
+    );
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(200, 169, 81, 0.06);
+  }
+
+  .footer-brand h3 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-brand p {
+    font-size: 0.85rem;
+    color: rgba(250, 247, 240, 0.4);
+    line-height: 1.7;
+  }
+
+  .footer-links h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-links ul {
+    list-style: none;
+  }
+
+  .footer-links li {
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-links a {
+    color: rgba(250, 247, 240, 0.4);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.3s var(--ease-luxury);
+    letter-spacing: 0.02em;
+  }
+
+  .footer-links a:hover {
+    color: var(--gold);
+  }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-bottom p {
+    font-size: 0.75rem;
+    color: rgba(250, 247, 240, 0.25);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-motto {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 0.8rem;
+    color: rgba(200, 169, 81, 0.35);
+    letter-spacing: 0.08em;
+  }
+
+  /* =============================================
+     ANIMATIONS
+     ============================================= */
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes reveal-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* =============================================
+     RESPONSIVE — 768px
+     ============================================= */
+  @media (max-width: 768px) {
+    .hero {
+      padding: 7rem 1.5rem 5rem;
+      min-height: 100svh;
+    }
+
+    .hero-logo-frame {
+      padding: 1.5rem 2.5rem;
+    }
+
+    .hero-cta-group {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn {
+      width: 100%;
+      max-width: 280px;
+      justify-content: center;
+    }
+
+    .philosophy-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .philosophy-visual {
+      min-height: 260px;
+      order: -1;
+    }
+
+    .arabesque-circle {
+      width: 220px;
+      height: 220px;
+    }
+
+    .arabesque-inner {
+      width: 80px;
+      height: 80px;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .stats-bar {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .experience-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .cta-frame {
+      padding: 3rem 1.5rem;
+    }
+
+    .footer-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .footer-bottom {
+      justify-content: center;
+      text-align: center;
+    }
+
+    .back-link {
+      top: 1rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+    }
+
+    section {
+      padding: 5rem 1.5rem;
+    }
+
+    .scroll-indicator {
+      display: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 12H5M12 19l-7-7 7-7"/>
+  </svg>
+  Collection
+</a>
+
+<!-- ============================================= -->
+<!-- HERO -->
+<!-- ============================================= -->
+<section class="hero">
+  <div class="desert-particles" id="particles"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-line"></span>
+      Ultra-Premium Performance
+      <span class="hero-eyebrow-line"></span>
+    </div>
+
+    <div class="hero-logo-frame">
+      <div class="corner-ornament corner-ornament--tl"></div>
+      <div class="corner-ornament corner-ornament--tr"></div>
+      <div class="corner-ornament corner-ornament--bl"></div>
+      <div class="corner-ornament corner-ornament--br"></div>
+      <h1 class="hero-title"><span>KPT</span></h1>
+    </div>
+
+    <p class="hero-subtitle">Fly Beyond Limits</p>
+    <p class="hero-tagline">Where timeless elegance meets uncompromising engineering. A system architected for those who accept nothing less than first class.</p>
+
+    <div class="hero-cta-group">
+      <a href="#features" class="btn btn-primary">
+        <span>Explore the Suite</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#experience" class="btn btn-secondary">
+        The Experience
+      </a>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Discover</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- PHILOSOPHY -->
+<!-- ============================================= -->
+<section class="philosophy">
+  <div class="container">
+    <div class="philosophy-grid">
+      <div class="philosophy-text reveal-left">
+        <div class="arabesque" style="justify-content: flex-start; margin-bottom: 2rem;">
+          <div class="arabesque-line"></div>
+          <div class="arabesque-diamond"></div>
+          <div class="arabesque-line"></div>
+        </div>
+        <h3>Crafted with the Precision of <em>Arabian Artisans</em></h3>
+        <p>Every detail considered. Every interface refined. KPT draws inspiration from a heritage where geometry, mathematics, and beauty converge into something extraordinary.</p>
+        <p>Like the arabesques adorning the grandest palaces, our architecture is built on patterns of infinite precision, scaled to perform at the highest altitudes.</p>
+      </div>
+      <div class="philosophy-visual reveal-scale delay-2">
+        <div class="arabesque-circle">
+          <div class="orbit-dot"></div>
+          <div class="orbit-dot"></div>
+          <div class="orbit-dot"></div>
+          <div class="orbit-dot"></div>
+          <div class="orbit-dot"></div>
+          <div class="arabesque-inner">
+            <span class="arabesque-inner-text">KPT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- FEATURES -->
+<!-- ============================================= -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow reveal">First Class Capabilities</p>
+      <h2 class="section-title reveal delay-1">The Private Suite</h2>
+      <div class="arabesque reveal delay-2">
+        <div class="arabesque-line"></div>
+        <div class="arabesque-star"></div>
+        <div class="arabesque-line"></div>
+      </div>
+      <p class="section-subtitle reveal delay-2">Six pillars of excellence, each engineered to deliver an unmatched experience at every altitude.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3 class="feature-title">Sovereign Architecture</h3>
+        <p class="feature-desc">Multi-layered infrastructure designed for absolute resilience, built to scale from ground level to cruising altitude without turbulence.</p>
+      </div>
+
+      <div class="feature-card reveal delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="feature-title">Fortress Security</h3>
+        <p class="feature-desc">End-to-end encryption, zero-trust protocols, and cryptographic verification protecting every transaction at the highest classification level.</p>
+      </div>
+
+      <div class="feature-card reveal delay-3">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3 class="feature-title">Supersonic Velocity</h3>
+        <p class="feature-desc">Sub-millisecond response times across global edge nodes. When performance is measured in moments, every microsecond is first class.</p>
+      </div>
+
+      <div class="feature-card reveal delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3 class="feature-title">Global Reach</h3>
+        <p class="feature-desc">Deployed across six continents with intelligent routing that mirrors the world's most connected airline network. Everywhere is a destination.</p>
+      </div>
+
+      <div class="feature-card reveal delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+        </div>
+        <h3 class="feature-title">Executive Analytics</h3>
+        <p class="feature-desc">Real-time intelligence dashboards with predictive modeling. See the horizon before you arrive, with clarity that turns data into decisive action.</p>
+      </div>
+
+      <div class="feature-card reveal delay-3">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 class="feature-title">Concierge Integration</h3>
+        <p class="feature-desc">White-glove API orchestration with dedicated support tiers. Every integration is a premium experience, personally attended from boarding to arrival.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- STATS -->
+<!-- ============================================= -->
+<section class="stats">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow reveal">By the Numbers</p>
+      <h2 class="section-title reveal delay-1">Performance at Altitude</h2>
+      <div class="arabesque reveal delay-2">
+        <div class="arabesque-line"></div>
+        <div class="arabesque-diamond"></div>
+        <div class="arabesque-line"></div>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-item reveal delay-1">
+        <div class="stat-number">99.99%</div>
+        <div class="stat-label">Uptime Guarantee</div>
+      </div>
+      <div class="stat-item reveal delay-2">
+        <div class="stat-number">&lt;8ms</div>
+        <div class="stat-label">Global Latency</div>
+      </div>
+      <div class="stat-item reveal delay-3">
+        <div class="stat-number">160+</div>
+        <div class="stat-label">Edge Destinations</div>
+      </div>
+      <div class="stat-item reveal delay-4">
+        <div class="stat-number">10M+</div>
+        <div class="stat-label">Requests per Second</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- EXPERIENCE -->
+<!-- ============================================= -->
+<section class="experience" id="experience">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow reveal">The Journey</p>
+      <h2 class="section-title reveal delay-1">An Experience Beyond Compare</h2>
+      <div class="arabesque reveal delay-2">
+        <div class="arabesque-line"></div>
+        <div class="arabesque-star"></div>
+        <div class="arabesque-line"></div>
+      </div>
+      <p class="section-subtitle reveal delay-2">From initial contact to full deployment, every phase is designed to feel effortless.</p>
+    </div>
+
+    <div class="experience-grid">
+      <div class="experience-card reveal delay-1">
+        <div class="experience-number">01</div>
+        <h3 class="experience-title">Private Consultation</h3>
+        <p class="experience-desc">Begin with a dedicated assessment of your infrastructure needs. Our architects map your requirements to a bespoke solution, tailored to your operational altitude.</p>
+        <span class="experience-tag">Discovery</span>
+      </div>
+
+      <div class="experience-card reveal delay-2">
+        <div class="experience-number">02</div>
+        <h3 class="experience-title">Bespoke Engineering</h3>
+        <p class="experience-desc">Custom-built configurations deployed across our global network. Every component hand-selected, every integration stress-tested to first-class tolerances.</p>
+        <span class="experience-tag">Build</span>
+      </div>
+
+      <div class="experience-card reveal delay-3">
+        <div class="experience-number">03</div>
+        <h3 class="experience-title">Seamless Boarding</h3>
+        <p class="experience-desc">Zero-downtime migration with dedicated concierge support. The transition is invisible to your users, imperceptible in your metrics, flawless in execution.</p>
+        <span class="experience-tag">Deploy</span>
+      </div>
+
+      <div class="experience-card reveal delay-4">
+        <div class="experience-number">04</div>
+        <h3 class="experience-title">Continuous Ascent</h3>
+        <p class="experience-desc">Ongoing optimization, proactive monitoring, and priority access to new capabilities. Your journey with KPT is one of perpetual refinement and elevation.</p>
+        <span class="experience-tag">Evolve</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- CTA -->
+<!-- ============================================= -->
+<section class="cta">
+  <div class="cta-frame reveal-scale">
+    <div class="arabesque" style="margin-bottom: 2rem;">
+      <div class="arabesque-line"></div>
+      <div class="arabesque-star"></div>
+      <div class="arabesque-line"></div>
+    </div>
+    <h2 class="cta-title">Ready for <em>Takeoff?</em></h2>
+    <p class="cta-subtitle">Elevate your infrastructure to first class. Join the select few who refuse to fly anything less.</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn btn-primary">
+        <span>Board Now</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#" class="btn btn-secondary">Request Private Demo</a>
+    </div>
+    <div class="arabesque" style="margin-top: 2rem;">
+      <div class="arabesque-line"></div>
+      <div class="arabesque-diamond"></div>
+      <div class="arabesque-line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================= -->
+<!-- FOOTER -->
+<!-- ============================================= -->
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-brand">
+      <h3>KPT</h3>
+      <p>Ultra-premium performance infrastructure, inspired by the world's finest airline. Crafted for those who measure excellence not in metrics, but in moments.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#features">The Private Suite</a></li>
+        <li><a href="#experience">The Experience</a></li>
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">Status</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Enterprise Sales</a></li>
+        <li><a href="#">Partnership Enquiries</a></li>
+        <li><a href="#">Press & Media</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 KPT. All rights reserved.</p>
+    <p class="footer-motto">Hello Tomorrow</p>
+  </div>
+</footer>
+
+<!-- ============================================= -->
+<!-- SCRIPTS -->
+<!-- ============================================= -->
+<script>
+  // Desert sand particles
+  (function() {
+    const container = document.getElementById('particles');
+    if (!container) return;
+    const count = 35;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      const size = Math.random() * 2.5 + 1;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.top = (Math.random() * 100 + 20) + '%';
+      p.style.animationDuration = (Math.random() * 12 + 8) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      p.style.opacity = 0;
+      container.appendChild(p);
+    }
+  })();
+
+  // IntersectionObserver for scroll animations
+  (function() {
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+    if (!('IntersectionObserver' in window)) {
+      revealElements.forEach(function(el) { el.classList.add('visible'); });
+      return;
+    }
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: '0px 0px -40px 0px'
+    });
+    revealElements.forEach(function(el) { observer.observe(el); });
+  })();
+</script>
+
+</body>
+</html>

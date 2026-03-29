@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — A Better Way to Build Software.</title>
+<meta name="description" content="KPT is a better way to build software. Keyboard-first, opinionated, and designed for teams who ship.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --purple: #5E6AD2;
+  --purple-light: #7B85E0;
+  --purple-dim: rgba(94, 106, 210, 0.12);
+  --purple-glow: rgba(94, 106, 210, 0.25);
+  --purple-glow-strong: rgba(94, 106, 210, 0.45);
+  --blue: #4EA8DE;
+  --pink: #D26EB0;
+  --dark: #0D0D14;
+  --dark-surface: #1A1A2E;
+  --dark-elevated: #222240;
+  --dark-card: #16162A;
+  --white: #F7F8F8;
+  --white-90: rgba(247, 248, 248, 0.9);
+  --white-70: rgba(247, 248, 248, 0.7);
+  --white-50: rgba(247, 248, 248, 0.5);
+  --white-30: rgba(247, 248, 248, 0.3);
+  --white-15: rgba(247, 248, 248, 0.15);
+  --white-10: rgba(247, 248, 248, 0.10);
+  --white-06: rgba(247, 248, 248, 0.06);
+  --white-03: rgba(247, 248, 248, 0.03);
+  --gray: #6C6F85;
+  --gray-light: #8E91A4;
+  --gradient-brand: linear-gradient(135deg, #5E6AD2 0%, #4EA8DE 50%, #D26EB0 100%);
+  --gradient-subtle: linear-gradient(135deg, rgba(94,106,210,0.15) 0%, rgba(78,168,222,0.08) 50%, rgba(210,110,176,0.1) 100%);
+  --gradient-text: linear-gradient(135deg, #5E6AD2 0%, #4EA8DE 40%, #D26EB0 100%);
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+  --max-w: 1100px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--dark);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Scroll Animations ────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ── Container ────────────────────────────────────────────── */
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+}
+
+/* ── Back Link ────────────────────────────────────────────── */
+.back-link {
+  position: fixed;
+  top: 20px;
+  left: 24px;
+  z-index: 1001;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: var(--gray);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: rgba(13, 13, 20, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--white-06);
+  transition: all 0.3s var(--ease);
+}
+.back-link:hover {
+  color: var(--purple-light);
+  border-color: var(--purple-glow);
+  background: rgba(13, 13, 20, 0.95);
+}
+.back-link svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.3s var(--ease);
+}
+.back-link:hover svg { transform: translateX(-2px); }
+
+/* ── Nav ──────────────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13, 13, 20, 0.6);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border-bottom: 1px solid var(--white-06);
+  transition: all 0.4s var(--ease);
+}
+.nav-inner {
+  max-width: var(--max-w);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nav-logo-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--gradient-brand);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--white-50);
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: all 0.25s var(--ease);
+  cursor: pointer;
+}
+.nav-link:hover {
+  color: var(--white);
+  background: var(--white-06);
+}
+.nav-cta {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white);
+  padding: 7px 16px;
+  border-radius: 6px;
+  background: var(--purple);
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+  margin-left: 8px;
+}
+.nav-cta:hover {
+  background: var(--purple-light);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px var(--purple-glow);
+}
+
+/* ── Hero ─────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 100px;
+  overflow: hidden;
+}
+
+/* Radial glow */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 900px;
+  background: radial-gradient(ellipse at center,
+    rgba(94, 106, 210, 0.15) 0%,
+    rgba(78, 168, 222, 0.06) 35%,
+    rgba(210, 110, 176, 0.04) 55%,
+    transparent 70%
+  );
+  pointer-events: none;
+  animation: heroGlow 8s ease-in-out infinite alternate;
+}
+
+/* Grid pattern */
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--white-03) 1px, transparent 1px),
+    linear-gradient(90deg, var(--white-03) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+  pointer-events: none;
+}
+
+@keyframes heroGlow {
+  0% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--purple-light);
+  letter-spacing: 0.5px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  border: 1px solid rgba(94, 106, 210, 0.2);
+  background: rgba(94, 106, 210, 0.06);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease-out) 0.2s forwards;
+}
+.hero-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--purple);
+  box-shadow: 0 0 8px var(--purple-glow-strong);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+.hero h1 {
+  font-size: clamp(48px, 7vw, 80px);
+  font-weight: 800;
+  letter-spacing: -2.5px;
+  line-height: 1.0;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease-out) 0.35s forwards;
+}
+
+.hero h1 .gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: clamp(17px, 2vw, 20px);
+  font-weight: 400;
+  color: var(--white-50);
+  line-height: 1.65;
+  max-width: 560px;
+  margin: 0 auto 40px;
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease-out) 0.5s forwards;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease-out) 0.65s forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--purple);
+  padding: 12px 28px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.5s var(--ease);
+}
+.btn-primary:hover::before { transform: translateX(100%); }
+.btn-primary:hover {
+  background: var(--purple-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px var(--purple-glow-strong);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white-70);
+  background: var(--white-06);
+  padding: 12px 28px;
+  border-radius: 8px;
+  border: 1px solid var(--white-10);
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+}
+.btn-secondary:hover {
+  color: var(--white);
+  background: var(--white-10);
+  border-color: var(--white-15);
+  transform: translateY(-2px);
+}
+
+.hero-shortcut {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--white-30);
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease-out) 0.8s forwards;
+}
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--white-50);
+  background: var(--white-06);
+  border: 1px solid var(--white-10);
+  border-radius: 5px;
+  padding: 2px 7px;
+  min-width: 22px;
+  line-height: 1.4;
+}
+
+/* ── Section Shared ───────────────────────────────────────── */
+.section {
+  padding: 120px 0;
+  position: relative;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--purple);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: clamp(32px, 4.5vw, 48px);
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.section-desc {
+  font-size: 17px;
+  color: var(--white-50);
+  max-width: 520px;
+  line-height: 1.65;
+}
+
+/* ── Divider ──────────────────────────────────────────────── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--white-10) 50%, transparent 100%);
+}
+
+/* ── Features ─────────────────────────────────────────────── */
+.features-header {
+  text-align: center;
+  margin-bottom: 72px;
+}
+.features-header .section-desc {
+  margin: 0 auto;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--white-06);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.feature-card {
+  background: var(--dark);
+  padding: 40px 32px;
+  position: relative;
+  transition: all 0.4s var(--ease);
+  cursor: default;
+}
+.feature-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-subtle);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+.feature-card:hover::before { opacity: 1; }
+.feature-card:hover {
+  background: var(--dark-card);
+}
+
+.feature-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--purple-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  position: relative;
+  transition: all 0.3s var(--ease);
+}
+.feature-card:hover .feature-icon {
+  background: rgba(94, 106, 210, 0.2);
+  box-shadow: 0 0 24px var(--purple-glow);
+}
+.feature-icon svg {
+  width: 20px;
+  height: 20px;
+  color: var(--purple);
+  transition: color 0.3s var(--ease);
+}
+.feature-card:hover .feature-icon svg { color: var(--purple-light); }
+
+.feature-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  margin-bottom: 8px;
+  position: relative;
+}
+.feature-desc {
+  font-size: 14px;
+  color: var(--white-50);
+  line-height: 1.6;
+  position: relative;
+}
+
+/* ── Workflow ─────────────────────────────────────────────── */
+.workflow {
+  background: var(--dark-surface);
+}
+.workflow-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.workflow-visual {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--dark);
+  border: 1px solid var(--white-06);
+  padding: 32px;
+}
+.workflow-visual::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 70% 30%, rgba(94,106,210,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.wf-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  transition: all 0.3s var(--ease);
+  position: relative;
+}
+.wf-item + .wf-item { margin-top: 4px; }
+.wf-item:hover { background: var(--white-03); }
+
+.wf-status {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wf-status.done { border-color: #4ADE80; background: rgba(74,222,128,0.15); }
+.wf-status.done::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ADE80; }
+.wf-status.progress { border-color: var(--purple); background: var(--purple-dim); }
+.wf-status.progress::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--purple); animation: pulse 2s ease-in-out infinite; }
+.wf-status.todo { border-color: var(--white-15); }
+
+.wf-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white-70);
+  flex: 1;
+}
+.wf-item:hover .wf-label { color: var(--white); }
+
+.wf-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--white-06);
+  color: var(--white-30);
+}
+.wf-tag.purple { background: var(--purple-dim); color: var(--purple-light); }
+
+/* ── Stats ────────────────────────────────────────────────── */
+.stats {
+  padding: 100px 0;
+  border-top: 1px solid var(--white-06);
+  border-bottom: 1px solid var(--white-06);
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 48px;
+  text-align: center;
+}
+.stat-value {
+  font-size: clamp(40px, 5vw, 56px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 8px;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white-30);
+  letter-spacing: -0.2px;
+}
+
+/* ── Keyboard Section ─────────────────────────────────────── */
+.keyboard-section {
+  background: var(--dark);
+}
+.keyboard-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.keyboard-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.shortcut-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-radius: 10px;
+  background: var(--dark-card);
+  border: 1px solid var(--white-06);
+  transition: all 0.3s var(--ease);
+}
+.shortcut-row:hover {
+  border-color: rgba(94, 106, 210, 0.2);
+  background: var(--dark-elevated);
+  transform: translateX(4px);
+}
+.shortcut-action {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white-70);
+}
+.shortcut-row:hover .shortcut-action { color: var(--white); }
+.shortcut-keys {
+  display: flex;
+  gap: 4px;
+}
+
+/* ── Testimonial / Quote ──────────────────────────────────── */
+.quote-section {
+  padding: 120px 0;
+  text-align: center;
+  position: relative;
+}
+.quote-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(ellipse at center, rgba(94,106,210,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.quote-icon {
+  font-size: 48px;
+  line-height: 1;
+  color: var(--purple-dim);
+  margin-bottom: 32px;
+  position: relative;
+}
+.quote-text {
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 500;
+  letter-spacing: -0.8px;
+  line-height: 1.4;
+  max-width: 700px;
+  margin: 0 auto 24px;
+  color: var(--white-90);
+  position: relative;
+}
+.quote-attr {
+  font-size: 14px;
+  color: var(--white-30);
+  position: relative;
+}
+.quote-attr strong {
+  color: var(--white-50);
+  font-weight: 600;
+}
+
+/* ── CTA ──────────────────────────────────────────────────── */
+.cta {
+  padding: 120px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1000px;
+  height: 500px;
+  background: radial-gradient(ellipse at center bottom,
+    rgba(94, 106, 210, 0.12) 0%,
+    rgba(78, 168, 222, 0.06) 30%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 1;
+}
+
+.cta h2 {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+
+.cta-desc {
+  font-size: 17px;
+  color: var(--white-50);
+  max-width: 460px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+.cta-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn-large {
+  padding: 16px 40px;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
+.footer {
+  padding: 60px 0 40px;
+  border-top: 1px solid var(--white-06);
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer-logo {
+  width: 24px;
+  height: 24px;
+  background: var(--gradient-brand);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+}
+.footer-copy {
+  font-size: 13px;
+  color: var(--white-30);
+}
+.footer-links {
+  display: flex;
+  gap: 28px;
+}
+.footer-link {
+  font-size: 13px;
+  color: var(--white-30);
+  transition: color 0.25s var(--ease);
+}
+.footer-link:hover { color: var(--white-70); }
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav-cta { display: none; }
+
+  .hero { padding: 100px 20px 80px; min-height: auto; }
+  .hero h1 { letter-spacing: -1.5px; }
+  .hero-actions { flex-direction: column; gap: 12px; }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-secondary { width: 100%; justify-content: center; }
+
+  .section { padding: 80px 0; }
+
+  .features-grid { grid-template-columns: 1fr; gap: 1px; }
+  .feature-card { padding: 28px 24px; }
+
+  .workflow-inner { grid-template-columns: 1fr; gap: 40px; }
+  .workflow-text { order: -1; }
+
+  .stats { padding: 60px 0; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+
+  .keyboard-inner { grid-template-columns: 1fr; gap: 40px; }
+  .keyboard-text { order: -1; }
+
+  .cta { padding: 80px 0; }
+  .cta-actions { flex-direction: column; }
+  .cta-actions .btn-primary,
+  .cta-actions .btn-secondary { width: 100%; justify-content: center; }
+
+  .footer-inner { flex-direction: column; gap: 24px; text-align: center; }
+}
+
+/* ── Selection ────────────────────────────────────────────── */
+::selection {
+  background: rgba(94, 106, 210, 0.3);
+  color: var(--white);
+}
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">
+  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 12L6 8l4-4"/>
+  </svg>
+  KPT
+</a>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">K</div>
+      KPT
+    </div>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#workflow" class="nav-link">Workflow</a>
+      <a href="#keyboard" class="nav-link">Keyboard</a>
+      <a href="#stats" class="nav-link">Metrics</a>
+    </div>
+    <button class="nav-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Get Started</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Introducing KPT v3.0</div>
+    <h1>
+      <span class="gradient-text">KPT</span> is a better way<br>to build software.
+    </h1>
+    <p class="hero-sub">
+      Keyboard-first. Opinionated. Designed for teams who move fast and ship with confidence. Purpose-built to streamline every step from plan to production.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">
+        Start Building
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </button>
+      <a href="#features" class="btn-secondary">See Features</a>
+    </div>
+    <div class="hero-shortcut">
+      Press <span class="kbd">&#8984;</span> <span class="kbd">K</span> to open command bar
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="features-header reveal">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">Built for the way<br>engineers think.</h2>
+      <p class="section-desc">Every interaction designed to keep you in flow. No bloat, no distractions — just the tools you need, exactly where you need them.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="14" height="14" rx="3"/><path d="M7 8h6M7 12h4"/></svg>
+        </div>
+        <div class="feature-title">Issue Tracking</div>
+        <div class="feature-desc">Create, manage, and close issues at the speed of thought. Designed to feel instant, not like a form.</div>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><path d="M10 7v3l2 2"/></svg>
+        </div>
+        <div class="feature-title">Cycles & Sprints</div>
+        <div class="feature-desc">Ship on a rhythm. Automated cycles keep your team focused on what matters this week.</div>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h12M4 10h12M4 14h8"/><circle cx="16" cy="14" r="2"/></svg>
+        </div>
+        <div class="feature-title">Roadmaps</div>
+        <div class="feature-desc">Connect work to goals. Visualize progress across projects and communicate direction clearly.</div>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v14l4-3 4 3V3z"/></svg>
+        </div>
+        <div class="feature-title">Views & Filters</div>
+        <div class="feature-desc">Custom views for every workflow. Filter by assignee, label, priority, or cycle — saved and shared.</div>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4l-4 4M5 14l4-4M9 8l2 2"/><path d="M4 4h3v3M16 16h-3v-3"/></svg>
+        </div>
+        <div class="feature-title">Git Integration</div>
+        <div class="feature-desc">Automatic issue linking from PRs, branches, and commits. Close issues by merging — no extra steps.</div>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2L2 7l8 5 8-5-8-5z"/><path d="M2 13l8 5 8-5"/><path d="M2 10l8 5 8-5"/></svg>
+        </div>
+        <div class="feature-title">API & Webhooks</div>
+        <div class="feature-desc">A complete GraphQL API and webhooks for building custom workflows, bots, and integrations.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Workflow -->
+<section class="section workflow" id="workflow">
+  <div class="container">
+    <div class="workflow-inner">
+      <div class="workflow-text">
+        <div class="section-label reveal">Workflow</div>
+        <h2 class="section-title reveal reveal-delay-1">Plan. Build.<br>Ship. Repeat.</h2>
+        <p class="section-desc reveal reveal-delay-2">
+          A streamlined pipeline from idea to deployment. Every stage is tracked, every transition is intentional. Move work forward with clarity.
+        </p>
+      </div>
+      <div class="workflow-visual reveal reveal-delay-3">
+        <div class="wf-item">
+          <div class="wf-status done"></div>
+          <span class="wf-label">Define project scope</span>
+          <span class="wf-tag">KPT-041</span>
+        </div>
+        <div class="wf-item">
+          <div class="wf-status done"></div>
+          <span class="wf-label">Design system architecture</span>
+          <span class="wf-tag">KPT-042</span>
+        </div>
+        <div class="wf-item">
+          <div class="wf-status done"></div>
+          <span class="wf-label">Implement core modules</span>
+          <span class="wf-tag">KPT-043</span>
+        </div>
+        <div class="wf-item">
+          <div class="wf-status progress"></div>
+          <span class="wf-label">Integration testing</span>
+          <span class="wf-tag purple">In Progress</span>
+        </div>
+        <div class="wf-item">
+          <div class="wf-status todo"></div>
+          <span class="wf-label">Performance audit</span>
+          <span class="wf-tag">KPT-045</span>
+        </div>
+        <div class="wf-item">
+          <div class="wf-status todo"></div>
+          <span class="wf-label">Production deployment</span>
+          <span class="wf-tag">KPT-046</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="section stats" id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="reveal">
+        <div class="stat-value">50ms</div>
+        <div class="stat-label">Average interaction time</div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="stat-value">3x</div>
+        <div class="stat-label">Faster than legacy tools</div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="stat-value">10k+</div>
+        <div class="stat-label">Issues shipped per week</div>
+      </div>
+      <div class="reveal reveal-delay-3">
+        <div class="stat-value">99.9%</div>
+        <div class="stat-label">Uptime guaranteed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Keyboard -->
+<section class="section keyboard-section" id="keyboard">
+  <div class="container">
+    <div class="keyboard-inner">
+      <div class="keyboard-visual reveal reveal-delay-2">
+        <div class="shortcut-row">
+          <span class="shortcut-action">Create new issue</span>
+          <div class="shortcut-keys"><span class="kbd">C</span></div>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-action">Command palette</span>
+          <div class="shortcut-keys"><span class="kbd">&#8984;</span><span class="kbd">K</span></div>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-action">Assign to me</span>
+          <div class="shortcut-keys"><span class="kbd">I</span></div>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-action">Set priority</span>
+          <div class="shortcut-keys"><span class="kbd">P</span></div>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-action">Change status</span>
+          <div class="shortcut-keys"><span class="kbd">S</span></div>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-action">Quick search</span>
+          <div class="shortcut-keys"><span class="kbd">/</span></div>
+        </div>
+        <div class="shortcut-row">
+          <span class="shortcut-action">Go to my issues</span>
+          <div class="shortcut-keys"><span class="kbd">G</span> <span class="kbd">M</span></div>
+        </div>
+      </div>
+      <div class="keyboard-text">
+        <div class="section-label reveal">Keyboard-first</div>
+        <h2 class="section-title reveal reveal-delay-1">Navigate at the<br>speed of thought.</h2>
+        <p class="section-desc reveal reveal-delay-2">
+          Every action is a keystroke away. No mouse required. Full keyboard navigation means you stay in flow, never breaking context to click through menus.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Quote -->
+<section class="quote-section">
+  <div class="container">
+    <div class="quote-icon reveal">&ldquo;</div>
+    <p class="quote-text reveal reveal-delay-1">
+      The best tools disappear. KPT doesn't make you think about project management — it just works, and you ship faster.
+    </p>
+    <p class="quote-attr reveal reveal-delay-2">
+      <strong>Engineering Lead</strong> &mdash; Series B Startup
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA -->
+<section class="section cta" id="cta">
+  <div class="container">
+    <div class="cta-content">
+      <div class="section-label reveal">Get Started</div>
+      <h2 class="reveal reveal-delay-1">
+        <span class="gradient-text">Build better.</span><br>Ship faster.
+      </h2>
+      <p class="cta-desc reveal reveal-delay-2">
+        Join thousands of teams building with KPT. Free for small teams, powerful enough for enterprise.
+      </p>
+      <div class="cta-actions reveal reveal-delay-3">
+        <button class="btn-primary btn-large">
+          Start for Free
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </button>
+        <button class="btn-secondary btn-large">Contact Sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <div class="footer-logo">K</div>
+        <span class="footer-copy">&copy; 2026 KPT. All rights reserved.</span>
+      </div>
+      <div class="footer-links">
+        <a href="#" class="footer-link">Docs</a>
+        <a href="#" class="footer-link">Changelog</a>
+        <a href="#" class="footer-link">Privacy</a>
+        <a href="#" class="footer-link">Terms</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- IntersectionObserver Scroll Animations -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Smooth nav background on scroll
+    const nav = document.querySelector('.nav');
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (window.scrollY > 80) {
+            nav.style.background = 'rgba(13, 13, 20, 0.92)';
+            nav.style.borderBottomColor = 'rgba(247, 248, 248, 0.08)';
+          } else {
+            nav.style.background = 'rgba(13, 13, 20, 0.6)';
+            nav.style.borderBottomColor = 'rgba(247, 248, 248, 0.06)';
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

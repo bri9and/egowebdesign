@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Apple</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --white: #FFFFFF;
+    --black: #1D1D1F;
+    --blue: #0071E3;
+    --blue-hover: #0077ED;
+    --gray-light: #F5F5F7;
+    --gray-medium: #86868B;
+    --gray-border: #D2D2D7;
+    --gray-footer: #F5F5F7;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --max-width: 980px;
+    --max-width-wide: 1200px;
+    --nav-height: 48px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--black);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.47;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid var(--gray-border);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-inner {
+    width: 100%;
+    max-width: var(--max-width);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+  }
+
+  .nav-logo {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: var(--black);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 12px;
+    color: var(--black);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+  }
+
+  .nav-links a:hover { opacity: 1; }
+
+  .nav-back {
+    font-size: 12px;
+    color: var(--blue);
+    text-decoration: none;
+    transition: opacity 0.3s;
+  }
+
+  .nav-back:hover { opacity: 0.7; }
+
+  /* ==============================
+     HERO
+     ============================== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+  }
+
+  .hero-headline {
+    font-size: clamp(64px, 12vw, 96px);
+    font-weight: 200;
+    letter-spacing: -3px;
+    line-height: 1.05;
+    color: var(--black);
+    margin-bottom: 24px;
+  }
+
+  .hero-sub {
+    font-size: clamp(20px, 3vw, 28px);
+    font-weight: 300;
+    color: var(--gray-medium);
+    max-width: 600px;
+    line-height: 1.4;
+    margin-bottom: 40px;
+  }
+
+  .link-cta {
+    font-size: 21px;
+    color: var(--blue);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: gap 0.3s;
+  }
+
+  .link-cta:hover { gap: 10px; }
+
+  .link-cta .arrow {
+    font-size: 24px;
+    transition: transform 0.3s;
+  }
+
+  .link-cta:hover .arrow { transform: translateX(2px); }
+
+  /* ==============================
+     SECTIONS — COMMON
+     ============================== */
+  section { padding: 120px 24px; }
+
+  .section-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gray-medium);
+    margin-bottom: 16px;
+  }
+
+  .section-headline {
+    font-size: clamp(40px, 6vw, 56px);
+    font-weight: 600;
+    letter-spacing: -1.5px;
+    line-height: 1.07;
+    color: var(--black);
+    margin-bottom: 16px;
+  }
+
+  .section-desc {
+    font-size: 21px;
+    font-weight: 300;
+    color: var(--gray-medium);
+    max-width: 600px;
+    line-height: 1.4;
+  }
+
+  /* ==============================
+     PRODUCTS
+     ============================== */
+  .products { background: var(--gray-light); }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+  }
+
+  .product-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 56px 48px;
+    text-align: center;
+    transition: box-shadow 0.4s, transform 0.4s;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  }
+
+  .product-card:hover {
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+    transform: translateY(-4px);
+  }
+
+  .product-icon {
+    font-size: 48px;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .product-name {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+
+  .product-desc {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--gray-medium);
+    line-height: 1.47;
+    margin-bottom: 24px;
+  }
+
+  .product-link {
+    font-size: 17px;
+    color: var(--blue);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: gap 0.3s;
+  }
+
+  .product-link:hover { gap: 8px; }
+
+  /* ==============================
+     FEATURES
+     ============================== */
+  .features { background: var(--white); }
+
+  .feature-block {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+    padding: 80px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  .feature-block:last-child { border-bottom: none; }
+  .feature-block.reverse { flex-direction: row-reverse; }
+
+  .feature-text { flex: 1; }
+
+  .feature-visual {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .feature-glyph {
+    width: 200px;
+    height: 200px;
+    border-radius: 40px;
+    background: var(--gray-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 72px;
+  }
+
+  .feature-headline {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 600;
+    letter-spacing: -1px;
+    line-height: 1.08;
+    color: var(--black);
+    margin-bottom: 16px;
+  }
+
+  .feature-desc {
+    font-size: 19px;
+    font-weight: 300;
+    color: var(--gray-medium);
+    line-height: 1.47;
+    max-width: 440px;
+  }
+
+  /* ==============================
+     STATS
+     ============================== */
+  .stats { background: var(--black); color: var(--white); }
+
+  .stats .section-headline { color: var(--white); }
+  .stats .section-desc { color: rgba(255, 255, 255, 0.56); }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    margin-top: 80px;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: clamp(56px, 8vw, 80px);
+    font-weight: 700;
+    letter-spacing: -3px;
+    line-height: 1;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* ==============================
+     CTA
+     ============================== */
+  .cta-section {
+    background: var(--white);
+    text-align: center;
+    padding: 160px 24px;
+  }
+
+  .cta-headline {
+    font-size: clamp(40px, 6vw, 56px);
+    font-weight: 600;
+    letter-spacing: -1.5px;
+    line-height: 1.07;
+    color: var(--black);
+    margin-bottom: 24px;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: var(--gray-light);
+    border-top: 1px solid var(--gray-border);
+    padding: 48px 24px;
+  }
+
+  .footer-inner {
+    max-width: var(--max-width-wide);
+    margin: 0 auto;
+  }
+
+  .footer-columns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--gray-border);
+  }
+
+  .footer-col h4 {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: 12px;
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col li { margin-bottom: 8px; }
+
+  .footer-col a {
+    font-size: 12px;
+    color: var(--gray-medium);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: var(--black); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    font-size: 12px;
+    color: var(--gray-medium);
+  }
+
+  .footer-legal {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-legal a {
+    font-size: 12px;
+    color: var(--gray-medium);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-legal a:hover { color: var(--black); }
+
+  /* ==============================
+     ANIMATIONS
+     ============================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+
+    .hero { min-height: 85vh; padding: 100px 24px 60px; }
+    .hero-headline { letter-spacing: -2px; }
+
+    section { padding: 80px 24px; }
+
+    .product-grid { grid-template-columns: 1fr; }
+    .product-card { padding: 40px 32px; }
+
+    .feature-block,
+    .feature-block.reverse {
+      flex-direction: column;
+      gap: 40px;
+      padding: 60px 0;
+    }
+
+    .feature-glyph { width: 160px; height: 160px; font-size: 56px; }
+
+    .stats-grid { grid-template-columns: 1fr; gap: 40px; }
+    .stat-number { font-size: 56px; }
+
+    .cta-section { padding: 100px 24px; }
+
+    .footer-columns { grid-template-columns: repeat(2, 1fr); }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    .footer-legal { flex-wrap: wrap; justify-content: center; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-headline { font-size: 52px; letter-spacing: -1.5px; }
+    .hero-sub { font-size: 18px; }
+    .section-headline { font-size: 32px; }
+    .feature-headline { font-size: 28px; }
+    .footer-columns { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ================================
+       NAVIGATION
+       ================================ -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">KPT</a>
+      <ul class="nav-links">
+        <li><a href="#products">Products</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#stats">Company</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="/index.html" class="nav-back">&larr; Back</a>
+    </div>
+  </nav>
+
+  <!-- ================================
+       HERO
+       ================================ -->
+  <section class="hero">
+    <h1 class="hero-headline reveal">KPT.</h1>
+    <p class="hero-sub reveal reveal-delay-1">Technology that speaks for itself.</p>
+    <a href="#products" class="link-cta reveal reveal-delay-2">
+      Explore what we build <span class="arrow">&rsaquo;</span>
+    </a>
+  </section>
+
+  <!-- ================================
+       PRODUCTS
+       ================================ -->
+  <section class="products" id="products">
+    <div class="section-inner">
+      <p class="section-label reveal">Products</p>
+      <h2 class="section-headline reveal reveal-delay-1">Two products.<br>One standard.</h2>
+      <p class="section-desc reveal reveal-delay-2">Built with precision. Designed without compromise.</p>
+
+      <div class="product-grid">
+        <div class="product-card reveal reveal-delay-2">
+          <span class="product-icon">&#9673;</span>
+          <h3 class="product-name">KPT Agents</h3>
+          <p class="product-desc">AI voice agents that handle calls, qualify leads, and book appointments around the clock. Your team, amplified.</p>
+          <a href="#features" class="product-link">Learn more <span>&rsaquo;</span></a>
+        </div>
+
+        <div class="product-card reveal reveal-delay-3">
+          <span class="product-icon">&#9634;</span>
+          <h3 class="product-name">KPT Designs</h3>
+          <p class="product-desc">Premium web design for businesses that refuse to blend in. Fast, responsive, conversion-focused.</p>
+          <a href="#features" class="product-link">Learn more <span>&rsaquo;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================
+       FEATURES
+       ================================ -->
+  <section class="features" id="features">
+    <div class="section-inner">
+      <p class="section-label reveal">Capabilities</p>
+
+      <div class="feature-block">
+        <div class="feature-text reveal">
+          <h3 class="feature-headline">Conversations<br>that convert.</h3>
+          <p class="feature-desc">KPT Agents understand context, handle objections, and close with natural human cadence. Every call is a performance.</p>
+        </div>
+        <div class="feature-visual reveal reveal-delay-2">
+          <div class="feature-glyph">&#9834;</div>
+        </div>
+      </div>
+
+      <div class="feature-block reverse">
+        <div class="feature-text reveal">
+          <h3 class="feature-headline">Design with<br>intention.</h3>
+          <p class="feature-desc">KPT Designs builds sites that load fast, look sharp, and guide visitors to action. No templates. No filler. Just craft.</p>
+        </div>
+        <div class="feature-visual reveal reveal-delay-2">
+          <div class="feature-glyph">&#9998;</div>
+        </div>
+      </div>
+
+      <div class="feature-block">
+        <div class="feature-text reveal">
+          <h3 class="feature-headline">Always on.<br>Never off-brand.</h3>
+          <p class="feature-desc">Voice agents work 24/7 with your tone, your rules, your personality. Indistinguishable from your best team member.</p>
+        </div>
+        <div class="feature-visual reveal reveal-delay-2">
+          <div class="feature-glyph">&#9201;</div>
+        </div>
+      </div>
+
+      <div class="feature-block reverse">
+        <div class="feature-text reveal">
+          <h3 class="feature-headline">Performance<br>is a feature.</h3>
+          <p class="feature-desc">Sub-second load times. Lighthouse scores in the high 90s. SEO that compounds. Every site ships production-ready.</p>
+        </div>
+        <div class="feature-visual reveal reveal-delay-2">
+          <div class="feature-glyph">&#9889;</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================
+       STATS
+       ================================ -->
+  <section class="stats" id="stats">
+    <div class="section-inner">
+      <p class="section-label reveal" style="color: rgba(255,255,255,0.4);">By the numbers</p>
+      <h2 class="section-headline reveal reveal-delay-1">Impact you can measure.</h2>
+
+      <div class="stats-grid">
+        <div class="reveal reveal-delay-1">
+          <div class="stat-number">50K+</div>
+          <div class="stat-label">Calls handled</div>
+        </div>
+        <div class="reveal reveal-delay-2">
+          <div class="stat-number">99.7%</div>
+          <div class="stat-label">Uptime</div>
+        </div>
+        <div class="reveal reveal-delay-3">
+          <div class="stat-number">3.2s</div>
+          <div class="stat-label">Avg response</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================
+       CTA
+       ================================ -->
+  <section class="cta-section" id="contact">
+    <h2 class="cta-headline reveal">Ready to work with KPT?</h2>
+    <a href="mailto:hello@kpt.com" class="link-cta reveal reveal-delay-1">
+      Get in touch <span class="arrow">&rsaquo;</span>
+    </a>
+  </section>
+
+  <!-- ================================
+       FOOTER
+       ================================ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-columns">
+        <div class="footer-col">
+          <h4>Products</h4>
+          <ul>
+            <li><a href="#products">KPT Agents</a></li>
+            <li><a href="#products">KPT Designs</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#stats">Company</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Agents</h4>
+          <ul>
+            <li><a href="#">Inbound Calls</a></li>
+            <li><a href="#">Outbound Calls</a></li>
+            <li><a href="#">Lead Qualification</a></li>
+            <li><a href="#">Appointment Booking</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Designs</h4>
+          <ul>
+            <li><a href="#">Landing Pages</a></li>
+            <li><a href="#">Business Sites</a></li>
+            <li><a href="#">E-Commerce</a></li>
+            <li><a href="#">Maintenance</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="mailto:hello@kpt.com">Contact</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Copyright &copy; 2026 KPT. All rights reserved.</span>
+        <div class="footer-legal">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Legal</a>
+          <a href="#">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================================
+       INTERSECTION OBSERVER
+       ================================ -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+      reveals.forEach(el => observer.observe(el));
+    });
+  </script>
+
+</body>
+</html>

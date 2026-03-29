@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Play Has No Limits.</title>
+<meta name="description" content="KPT. AI voice agents and premium web design. Futuristic performance. No limits. Play Has No Limits.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ps-blue: #003087;
+    --ps-blue-light: #0050D4;
+    --ps-blue-glow: rgba(0, 48, 135, 0.4);
+    --black: #000000;
+    --black-soft: #0A0A0A;
+    --black-card: #101014;
+    --white: #FFFFFF;
+    --white-dim: rgba(255, 255, 255, 0.7);
+    --white-muted: rgba(255, 255, 255, 0.4);
+    --tri-green: #00D080;
+    --circle-red: #EE3A43;
+    --cross-blue: #6C98CB;
+    --square-pink: #E56DB1;
+    --surface: #121218;
+    --border: rgba(255, 255, 255, 0.06);
+    --border-hover: rgba(255, 255, 255, 0.15);
+    --radius: 16px;
+    --radius-sm: 8px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ── Back Link ─────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    z-index: 1000;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white-muted);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .back-link:hover { color: var(--ps-blue-light); }
+  .back-link svg { width: 16px; height: 16px; }
+
+  /* ── Navigation ────────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-brand {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-brand span { color: var(--ps-blue-light); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--white-muted);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  /* ── PS Button Symbols ──────────────────────────────────────── */
+  .ps-symbols {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+  }
+  .ps-symbol {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 300;
+    border-radius: 50%;
+    border: 2px solid;
+    transition: all 0.4s ease;
+  }
+  .ps-symbol.triangle { color: var(--tri-green); border-color: var(--tri-green); }
+  .ps-symbol.circle { color: var(--circle-red); border-color: var(--circle-red); }
+  .ps-symbol.cross { color: var(--cross-blue); border-color: var(--cross-blue); }
+  .ps-symbol.square { color: var(--square-pink); border-color: var(--square-pink); }
+  .ps-symbol:hover {
+    transform: scale(1.15);
+    box-shadow: 0 0 20px currentColor;
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .ps-symbols-large .ps-symbol {
+    width: 64px;
+    height: 64px;
+    font-size: 28px;
+  }
+
+  /* ── Scroll Animations ──────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── Section Base ───────────────────────────────────────────── */
+  section {
+    padding: 120px 48px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--ps-blue-light);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 24px;
+  }
+
+  .section-subtitle {
+    font-size: 18px;
+    color: var(--white-dim);
+    max-width: 600px;
+    line-height: 1.7;
+  }
+
+  /* ── Hero ────────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 120px 24px;
+  }
+
+  /* PS5-style curved background shapes */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -20%;
+    width: 80%;
+    height: 160%;
+    background: radial-gradient(ellipse at center, var(--ps-blue-glow) 0%, transparent 60%);
+    pointer-events: none;
+    animation: heroGlow 8s ease-in-out infinite alternate;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--ps-blue-light), transparent);
+  }
+
+  @keyframes heroGlow {
+    0% { opacity: 0.3; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0.6; transform: translate(-5%, 5%) scale(1.1); }
+  }
+
+  /* Floating PS button particles */
+  .hero-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    font-size: 24px;
+    opacity: 0.06;
+    animation: particleFloat 20s linear infinite;
+  }
+  .particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; animation-duration: 18s; color: var(--tri-green); }
+  .particle:nth-child(2) { left: 25%; top: 60%; animation-delay: -4s; animation-duration: 22s; color: var(--circle-red); }
+  .particle:nth-child(3) { left: 50%; top: 15%; animation-delay: -8s; animation-duration: 20s; color: var(--cross-blue); }
+  .particle:nth-child(4) { left: 70%; top: 70%; animation-delay: -12s; animation-duration: 24s; color: var(--square-pink); }
+  .particle:nth-child(5) { left: 85%; top: 35%; animation-delay: -2s; animation-duration: 19s; color: var(--tri-green); }
+  .particle:nth-child(6) { left: 40%; top: 80%; animation-delay: -6s; animation-duration: 21s; color: var(--circle-red); }
+
+  @keyframes particleFloat {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.04; }
+    25% { opacity: 0.08; }
+    50% { transform: translateY(-200px) rotate(180deg); opacity: 0.04; }
+    75% { opacity: 0.08; }
+    100% { transform: translateY(-400px) rotate(360deg); opacity: 0.04; }
+  }
+
+  .hero-kpt {
+    font-size: clamp(80px, 15vw, 180px);
+    font-weight: 900;
+    letter-spacing: 20px;
+    line-height: 1;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(180deg, var(--white) 0%, rgba(255,255,255,0.6) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-symbols {
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-tagline {
+    font-size: clamp(16px, 2.5vw, 24px);
+    font-weight: 300;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: var(--white-muted);
+    max-width: 540px;
+    line-height: 1.8;
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Buttons ─────────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 40px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    border: none;
+    position: relative;
+    z-index: 1;
+  }
+  .btn-primary {
+    background: var(--ps-blue);
+    color: var(--white);
+    box-shadow: 0 4px 24px var(--ps-blue-glow);
+  }
+  .btn-primary:hover {
+    background: var(--ps-blue-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 40px var(--ps-blue-glow);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid var(--border-hover);
+  }
+  .btn-outline:hover {
+    border-color: var(--ps-blue-light);
+    color: var(--ps-blue-light);
+    transform: translateY(-2px);
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── DualSense Aesthetic Divider ────────────────────────────── */
+  .dualsense-divider {
+    width: 100%;
+    padding: 0 48px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .dualsense-divider-inner {
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--tri-green) 15%,
+      var(--circle-red) 38%,
+      var(--cross-blue) 62%,
+      var(--square-pink) 85%,
+      transparent 100%
+    );
+    border-radius: 1px;
+    opacity: 0.4;
+  }
+
+  /* ── Features Grid ──────────────────────────────────────────── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 64px;
+  }
+
+  .feature-card {
+    background: var(--black-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--card-accent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .feature-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+  .feature-card:hover::before { opacity: 1; }
+
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 24px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+  }
+
+  .feature-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+  .feature-card p {
+    font-size: 15px;
+    color: var(--white-muted);
+    line-height: 1.7;
+  }
+
+  /* Color-coded feature cards */
+  .feature-card.triangle { --card-accent: var(--tri-green); }
+  .feature-card.circle { --card-accent: var(--circle-red); }
+  .feature-card.cross { --card-accent: var(--cross-blue); }
+  .feature-card.square { --card-accent: var(--square-pink); }
+
+  .feature-card.triangle .feature-icon { color: var(--tri-green); border-color: rgba(0, 208, 128, 0.2); }
+  .feature-card.circle .feature-icon { color: var(--circle-red); border-color: rgba(238, 58, 67, 0.2); }
+  .feature-card.cross .feature-icon { color: var(--cross-blue); border-color: rgba(108, 152, 203, 0.2); }
+  .feature-card.square .feature-icon { color: var(--square-pink); border-color: rgba(229, 109, 177, 0.2); }
+
+  /* ── Stats Section ──────────────────────────────────────────── */
+  .stats-section {
+    text-align: center;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin-top: 64px;
+  }
+
+  .stat-card {
+    padding: 40px 24px;
+    background: var(--black-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: all 0.4s ease;
+  }
+  .stat-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+  }
+
+  .stat-number {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-card:nth-child(1) .stat-number { color: var(--tri-green); }
+  .stat-card:nth-child(2) .stat-number { color: var(--circle-red); }
+  .stat-card:nth-child(3) .stat-number { color: var(--cross-blue); }
+  .stat-card:nth-child(4) .stat-number { color: var(--square-pink); }
+
+  .stat-label {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white-muted);
+  }
+
+  /* ── Controller Section ─────────────────────────────────────── */
+  .controller-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .controller-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+  }
+
+  .controller-ring {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: controllerPulse 4s ease-in-out infinite;
+  }
+
+  .controller-ring::before {
+    content: '';
+    position: absolute;
+    inset: -40px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 48, 135, 0.15);
+  }
+  .controller-ring::after {
+    content: '';
+    position: absolute;
+    inset: -80px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 48, 135, 0.08);
+  }
+
+  @keyframes controllerPulse {
+    0%, 100% { box-shadow: 0 0 60px var(--ps-blue-glow); }
+    50% { box-shadow: 0 0 100px var(--ps-blue-glow), 0 0 200px rgba(0, 48, 135, 0.15); }
+  }
+
+  .controller-center {
+    font-size: 64px;
+    font-weight: 900;
+    letter-spacing: 8px;
+    color: var(--ps-blue-light);
+  }
+
+  /* Orbiting symbols around the controller ring */
+  .orbit-symbol {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    border-radius: 50%;
+    background: var(--black-card);
+    border: 1px solid var(--border);
+  }
+  .orbit-symbol.top { top: -20px; left: 50%; transform: translateX(-50%); color: var(--tri-green); }
+  .orbit-symbol.right { right: -20px; top: 50%; transform: translateY(-50%); color: var(--circle-red); }
+  .orbit-symbol.bottom { bottom: -20px; left: 50%; transform: translateX(-50%); color: var(--cross-blue); }
+  .orbit-symbol.left { left: -20px; top: 50%; transform: translateY(-50%); color: var(--square-pink); }
+
+  .controller-content .section-subtitle {
+    margin-bottom: 32px;
+  }
+
+  .controller-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .controller-features li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 15px;
+    color: var(--white-dim);
+  }
+  .controller-features .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .controller-features li:nth-child(1) .dot { background: var(--tri-green); }
+  .controller-features li:nth-child(2) .dot { background: var(--circle-red); }
+  .controller-features li:nth-child(3) .dot { background: var(--cross-blue); }
+  .controller-features li:nth-child(4) .dot { background: var(--square-pink); }
+
+  /* ── CTA Section ────────────────────────────────────────────── */
+  .cta-section {
+    text-align: center;
+    position: relative;
+    padding: 160px 48px;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, var(--ps-blue-glow) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  .cta-section .section-title {
+    margin-bottom: 24px;
+  }
+
+  .cta-section .section-subtitle {
+    margin: 0 auto 48px;
+    text-align: center;
+  }
+
+  .cta-symbols {
+    margin-bottom: 48px;
+  }
+
+  /* ── Footer ─────────────────────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-brand {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--white-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .footer-links a {
+    font-size: 13px;
+    color: var(--white-muted);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    letter-spacing: 0.5px;
+  }
+  .footer-links a:hover { color: var(--ps-blue-light); }
+
+  .footer-bottom {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-size: 12px;
+    color: var(--white-muted);
+    letter-spacing: 0.5px;
+  }
+
+  .footer-symbols {
+    display: flex;
+    gap: 12px;
+  }
+  .footer-symbol {
+    font-size: 14px;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+  }
+  .footer-symbol:hover { opacity: 0.7; }
+
+  /* ── PS5 Curves Background Element ──────────────────────────── */
+  .ps5-curve {
+    position: fixed;
+    right: -200px;
+    top: 0;
+    bottom: 0;
+    width: 400px;
+    background: linear-gradient(180deg, rgba(0, 48, 135, 0.03) 0%, transparent 50%, rgba(0, 48, 135, 0.03) 100%);
+    border-left: 1px solid rgba(0, 48, 135, 0.06);
+    border-radius: 200px 0 0 200px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Responsive: 768px ──────────────────────────────────────── */
+  @media (max-width: 768px) {
+    nav {
+      padding: 0 20px;
+      height: 56px;
+    }
+    .nav-links { display: none; }
+    .nav-brand { font-size: 15px; letter-spacing: 4px; }
+
+    section { padding: 80px 20px; }
+
+    .back-link { top: 16px; left: 16px; font-size: 11px; }
+
+    .hero { padding: 100px 20px; }
+    .hero-kpt { letter-spacing: 10px; margin-bottom: 24px; }
+    .hero-tagline { letter-spacing: 4px; font-size: 14px; margin-bottom: 32px; }
+    .hero-desc { font-size: 15px; margin-bottom: 36px; }
+    .hero-ctas { flex-direction: column; align-items: center; }
+    .btn { padding: 14px 32px; font-size: 13px; width: 100%; max-width: 280px; justify-content: center; }
+
+    .ps-symbols-large .ps-symbol { width: 52px; height: 52px; font-size: 22px; }
+
+    .features-grid { grid-template-columns: 1fr; gap: 16px; }
+    .feature-card { padding: 28px; }
+
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .stat-card { padding: 28px 16px; }
+    .stat-number { font-size: 36px; }
+
+    .controller-section {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    .controller-visual { order: -1; }
+    .controller-ring { width: 240px; height: 240px; }
+    .controller-ring::before { inset: -30px; }
+    .controller-ring::after { inset: -60px; }
+    .controller-center { font-size: 48px; }
+
+    .cta-section { padding: 100px 20px; }
+
+    footer { padding: 32px 20px; }
+    .footer-inner { flex-direction: column; gap: 24px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 20px; }
+    .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+
+    .ps5-curve { display: none; }
+
+    .dualsense-divider { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PS5 Curve Background -->
+<div class="ps5-curve"></div>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  Back
+</a>
+
+<!-- Navigation -->
+<nav>
+  <a href="#" class="nav-brand">K<span>P</span>T</a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#stats">Stats</a></li>
+    <li><a href="#control">Control</a></li>
+    <li><a href="#start">Start</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-particles">
+    <span class="particle">&#9651;</span>
+    <span class="particle">&#9675;</span>
+    <span class="particle">&#10005;</span>
+    <span class="particle">&#9633;</span>
+    <span class="particle">&#9651;</span>
+    <span class="particle">&#9675;</span>
+  </div>
+
+  <div class="hero-kpt reveal">KPT</div>
+
+  <div class="hero-symbols reveal reveal-delay-1">
+    <div class="ps-symbols ps-symbols-large">
+      <div class="ps-symbol triangle">&#9651;</div>
+      <div class="ps-symbol circle">&#9675;</div>
+      <div class="ps-symbol cross">&#10005;</div>
+      <div class="ps-symbol square">&#9633;</div>
+    </div>
+  </div>
+
+  <div class="hero-tagline reveal reveal-delay-2">Play Has No Limits.</div>
+
+  <p class="hero-desc reveal reveal-delay-3">
+    Next-generation digital experiences built with precision engineering.
+    AI voice agents and premium web design — performance without compromise.
+  </p>
+
+  <div class="hero-ctas reveal reveal-delay-4">
+    <a href="#features" class="btn btn-primary">Explore</a>
+    <a href="#start" class="btn btn-outline">Get Started</a>
+  </div>
+</section>
+
+<!-- Divider -->
+<div class="dualsense-divider">
+  <div class="dualsense-divider-inner"></div>
+</div>
+
+<!-- Features -->
+<section id="features">
+  <div class="reveal">
+    <div class="section-label">&#9651; Features</div>
+    <h2 class="section-title">Built for the<br>next generation.</h2>
+    <p class="section-subtitle">Every component engineered for peak performance, responsiveness, and immersive experiences.</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card triangle reveal reveal-delay-1">
+      <div class="feature-icon">&#9651;</div>
+      <h3>AI Voice Agents</h3>
+      <p>Intelligent conversational interfaces that understand context, adapt in real-time, and deliver human-quality interactions at machine speed.</p>
+    </div>
+    <div class="feature-card circle reveal reveal-delay-2">
+      <div class="feature-icon">&#9675;</div>
+      <h3>Premium Web Design</h3>
+      <p>Pixel-perfect interfaces with fluid animations, responsive layouts, and performance-first architecture that loads in milliseconds.</p>
+    </div>
+    <div class="feature-card cross reveal reveal-delay-3">
+      <div class="feature-icon">&#10005;</div>
+      <h3>Full-Stack Engineering</h3>
+      <p>End-to-end systems built on modern frameworks. From database to deployment, every layer optimized for reliability and scale.</p>
+    </div>
+    <div class="feature-card square reveal reveal-delay-4">
+      <div class="feature-icon">&#9633;</div>
+      <h3>Rapid Deployment</h3>
+      <p>From concept to production in days, not months. Automated pipelines, edge delivery, and zero-downtime deploys as standard.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section id="stats" class="stats-section">
+  <div class="reveal">
+    <div class="section-label">&#9675; Performance</div>
+    <h2 class="section-title">Numbers that<br>speak volumes.</h2>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card reveal reveal-delay-1">
+      <div class="stat-number">99.9%</div>
+      <div class="stat-label">Uptime</div>
+    </div>
+    <div class="stat-card reveal reveal-delay-2">
+      <div class="stat-number">&lt;50ms</div>
+      <div class="stat-label">Response</div>
+    </div>
+    <div class="stat-card reveal reveal-delay-3">
+      <div class="stat-number">4K+</div>
+      <div class="stat-label">Deployments</div>
+    </div>
+    <div class="stat-card reveal reveal-delay-4">
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Monitoring</div>
+    </div>
+  </div>
+</section>
+
+<!-- Divider -->
+<div class="dualsense-divider">
+  <div class="dualsense-divider-inner"></div>
+</div>
+
+<!-- Controller / Command Section -->
+<section id="control">
+  <div class="controller-section">
+    <div class="controller-visual reveal">
+      <div class="controller-ring">
+        <div class="controller-center">KPT</div>
+        <div class="orbit-symbol top">&#9651;</div>
+        <div class="orbit-symbol right">&#9675;</div>
+        <div class="orbit-symbol bottom">&#10005;</div>
+        <div class="orbit-symbol left">&#9633;</div>
+      </div>
+    </div>
+    <div class="controller-content">
+      <div class="reveal">
+        <div class="section-label">&#10005; Command Center</div>
+        <h2 class="section-title">Total control<br>at your fingertips.</h2>
+        <p class="section-subtitle">A unified system where every input maps to an action. Precise, responsive, zero lag.</p>
+      </div>
+      <ul class="controller-features reveal reveal-delay-1">
+        <li><span class="dot"></span>Real-time analytics and performance dashboards</li>
+        <li><span class="dot"></span>Automated scaling based on demand patterns</li>
+        <li><span class="dot"></span>One-click rollbacks and version management</li>
+        <li><span class="dot"></span>Custom integrations with your existing stack</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="start" class="cta-section">
+  <div class="cta-symbols reveal">
+    <div class="ps-symbols">
+      <div class="ps-symbol triangle">&#9651;</div>
+      <div class="ps-symbol circle">&#9675;</div>
+      <div class="ps-symbol cross">&#10005;</div>
+      <div class="ps-symbol square">&#9633;</div>
+    </div>
+  </div>
+
+  <div class="reveal reveal-delay-1">
+    <h2 class="section-title">Ready to start<br>your next level?</h2>
+  </div>
+  <div class="reveal reveal-delay-2">
+    <p class="section-subtitle" style="text-align:center;margin:0 auto 48px;">
+      No limits on what we can build together. Premium digital experiences engineered from the ground up.
+    </p>
+  </div>
+  <div class="reveal reveal-delay-3">
+    <a href="#" class="btn btn-primary">Press Start</a>
+  </div>
+</section>
+
+<!-- Divider -->
+<div class="dualsense-divider">
+  <div class="dualsense-divider-inner"></div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">KPT</div>
+    <ul class="footer-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#stats">Performance</a></li>
+      <li><a href="#control">Control</a></li>
+      <li><a href="#start">Start</a></li>
+      <li><a href="/index.html">All Concepts</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">Play Has No Limits. &mdash; KPT &copy; 2026</span>
+    <div class="footer-symbols">
+      <span class="footer-symbol" style="color:var(--tri-green)">&#9651;</span>
+      <span class="footer-symbol" style="color:var(--circle-red)">&#9675;</span>
+      <span class="footer-symbol" style="color:var(--cross-blue)">&#10005;</span>
+      <span class="footer-symbol" style="color:var(--square-pink)">&#9633;</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll Animation Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  });
+</script>
+
+</body>
+</html>

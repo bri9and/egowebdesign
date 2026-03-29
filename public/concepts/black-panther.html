@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Black Panther</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Righteous&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --void: #0A0020;
+    --void-light: #120030;
+    --surface: #130028;
+    --surface-raised: #1A0038;
+    --vibranium: #8B5CF6;
+    --vibranium-dim: rgba(139, 92, 246, 0.12);
+    --vibranium-glow: rgba(139, 92, 246, 0.45);
+    --kinetic: #3B82F6;
+    --kinetic-dim: rgba(59, 130, 246, 0.12);
+    --kinetic-glow: rgba(59, 130, 246, 0.4);
+    --gold: #DAA520;
+    --gold-dim: rgba(218, 165, 32, 0.12);
+    --gold-glow: rgba(218, 165, 32, 0.35);
+    --panther: #0A0A0A;
+    --text-primary: #EEEAF8;
+    --text-secondary: #9B8FBF;
+    --text-muted: #5E4F7A;
+    --border: rgba(139, 92, 246, 0.08);
+    --border-hover: rgba(139, 92, 246, 0.2);
+    --font-heading: 'Righteous', cursive;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --max-width: 1200px;
+    --nav-height: 72px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    line-height: 1.15;
+    font-weight: 400;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ==============================
+     BACK LINK
+     ============================== */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 24px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.25s;
+    position: relative;
+    z-index: 1001;
+  }
+  .back-link:hover { color: var(--vibranium); }
+  .back-link span { transition: transform 0.2s; display: inline-block; }
+  .back-link:hover span { transform: translateX(-3px); }
+
+  /* ==============================
+     FIXED NAV — DARK WITH ENERGY LINE
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: var(--nav-height);
+    background: rgba(10, 0, 32, 0.75);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.4s;
+  }
+  nav::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--vibranium), var(--kinetic), var(--vibranium), transparent);
+    opacity: 0.6;
+    animation: energyLine 4s ease-in-out infinite;
+  }
+  @keyframes energyLine {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.9; }
+  }
+  nav.scrolled {
+    box-shadow:
+      0 1px 0 rgba(139, 92, 246, 0.06),
+      0 0 60px rgba(139, 92, 246, 0.04),
+      0 0 100px rgba(59, 130, 246, 0.03);
+  }
+  .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+  .nav-logo {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    letter-spacing: 6px;
+    background: linear-gradient(135deg, var(--vibranium), var(--kinetic));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: color 0.25s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--vibranium), var(--kinetic));
+    transition: width 0.3s ease;
+    border-radius: 1px;
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .btn-launch {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 10px 26px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--vibranium), var(--kinetic));
+    color: #fff;
+    cursor: pointer;
+    transition: box-shadow 0.3s, transform 0.2s;
+  }
+  .btn-launch:hover {
+    box-shadow: 0 0 24px var(--vibranium-glow), 0 0 48px var(--kinetic-glow);
+    transform: translateY(-1px);
+  }
+
+  /* Mobile nav */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--vibranium);
+    border-radius: 2px;
+    transition: 0.25s;
+  }
+
+  /* ==============================
+     VIBRANIUM ENERGY PULSE ANIMATION
+     ============================== */
+  @keyframes vibraniumPulse {
+    0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0.7; }
+    100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+  }
+  @keyframes vibraniumPulseOuter {
+    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0.5; }
+    100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+  }
+  @keyframes heroFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes glowPulse {
+    0%, 100% { text-shadow: 0 0 20px var(--vibranium-glow), 0 0 60px rgba(139,92,246,0.15); }
+    50% { text-shadow: 0 0 40px var(--vibranium-glow), 0 0 100px rgba(139,92,246,0.25), 0 0 150px rgba(59,130,246,0.1); }
+  }
+  @keyframes kineticBorder {
+    0% { border-color: rgba(139, 92, 246, 0.3); }
+    50% { border-color: rgba(59, 130, 246, 0.5); }
+    100% { border-color: rgba(139, 92, 246, 0.3); }
+  }
+
+  /* ==============================
+     HERO SECTION
+     ============================== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding-top: var(--nav-height);
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(139,92,246,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 30% 70%, rgba(59,130,246,0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 30%, rgba(218,165,32,0.02) 0%, transparent 50%);
+  }
+  .hero-pulse-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    pointer-events: none;
+  }
+  .pulse-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    border: 2px solid var(--vibranium);
+    border-radius: 50%;
+    animation: vibraniumPulse 3s ease-out infinite;
+  }
+  .pulse-ring:nth-child(2) {
+    animation-delay: 0.6s;
+    border-color: rgba(139, 92, 246, 0.6);
+  }
+  .pulse-ring:nth-child(3) {
+    animation-delay: 1.2s;
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+  .pulse-ring:nth-child(4) {
+    animation-delay: 1.8s;
+    border-color: rgba(139, 92, 246, 0.35);
+    animation-name: vibraniumPulseOuter;
+    animation-duration: 4s;
+  }
+  .pulse-ring:nth-child(5) {
+    animation-delay: 2.4s;
+    border-color: rgba(59, 130, 246, 0.2);
+    animation-name: vibraniumPulseOuter;
+    animation-duration: 4s;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 0 24px;
+  }
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .hero-label::before,
+  .hero-label::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+  .hero-label::after {
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+  .hero h1 {
+    font-size: clamp(48px, 8vw, 96px);
+    letter-spacing: 3px;
+    margin-bottom: 24px;
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, var(--vibranium), var(--kinetic));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto 40px;
+    line-height: 1.8;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-vibranium {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--vibranium), var(--kinetic));
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-vibranium::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--kinetic), var(--vibranium));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .btn-vibranium:hover::before { opacity: 1; }
+  .btn-vibranium:hover {
+    box-shadow: 0 0 30px var(--vibranium-glow), 0 0 60px var(--kinetic-glow);
+    transform: translateY(-2px);
+  }
+  .btn-vibranium span { position: relative; z-index: 1; }
+
+  .btn-outline {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 14px 36px;
+    border: 1px solid var(--vibranium);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--vibranium);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-outline:hover {
+    background: var(--vibranium-dim);
+    border-color: var(--kinetic);
+    color: var(--text-primary);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
+  }
+
+  /* ==============================
+     SECTION SHARED
+     ============================== */
+  section {
+    padding: 120px 0;
+    position: relative;
+  }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: clamp(32px, 4vw, 48px);
+    margin-bottom: 20px;
+  }
+  .section-desc {
+    font-size: 16px;
+    max-width: 560px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+  .section-header .section-desc {
+    margin: 0 auto;
+  }
+
+  /* ==============================
+     REVEAL ANIMATION
+     ============================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ==============================
+     TRIBAL GEOMETRIC SVG PATTERNS
+     ============================== */
+  .tribal-pattern {
+    position: absolute;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  /* ==============================
+     PRODUCTS SECTION
+     ============================== */
+  #products { background: var(--void); }
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+  .product-card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 48px 40px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .product-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 17px;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--vibranium), var(--kinetic), var(--vibranium));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.3;
+    transition: opacity 0.4s;
+  }
+  .product-card::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--vibranium-glow), transparent 70%);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+  .product-card:hover::before { opacity: 0.7; }
+  .product-card:hover::after { transform: translate(-50%, -50%) scale(3); opacity: 0.08; }
+  .product-card:hover {
+    border-color: rgba(139, 92, 246, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.08), 0 0 80px rgba(59, 130, 246, 0.04);
+  }
+  .product-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+  .product-icon.agents {
+    background: linear-gradient(135deg, var(--vibranium-dim), rgba(139,92,246,0.2));
+    border: 1px solid rgba(139, 92, 246, 0.2);
+  }
+  .product-icon.designs {
+    background: linear-gradient(135deg, var(--kinetic-dim), rgba(59,130,246,0.2));
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+  .product-icon svg { width: 26px; height: 26px; }
+  .product-card h3 {
+    font-size: 26px;
+    margin-bottom: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .product-card p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+  .product-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .product-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .product-features li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--vibranium);
+    flex-shrink: 0;
+    box-shadow: 0 0 8px var(--vibranium-glow);
+  }
+
+  /* ==============================
+     WAKANDAN TECH GRID
+     ============================== */
+  #tech-grid {
+    background: linear-gradient(180deg, var(--void), var(--void-light), var(--void));
+  }
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .tech-card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 36px 28px;
+    overflow: hidden;
+    transition: all 0.35s;
+  }
+  .tech-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(139, 92, 246, 0.06);
+  }
+  .tech-card-pattern {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+  .tech-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--vibranium-dim);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .tech-card-icon svg { width: 22px; height: 22px; }
+  .tech-card h4 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .tech-card p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+
+  /* ==============================
+     STATS SECTION
+     ============================== */
+  #stats {
+    background: var(--panther);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  #stats::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(139,92,246,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 50%, rgba(59,130,246,0.04) 0%, transparent 50%);
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    position: relative;
+    z-index: 1;
+  }
+  .stat-item {
+    text-align: center;
+  }
+  .stat-number {
+    font-family: var(--font-heading);
+    font-size: clamp(36px, 4vw, 52px);
+    color: var(--gold);
+    margin-bottom: 8px;
+    text-shadow: 0 0 20px var(--gold-glow);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .stat-divider {
+    width: 32px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--vibranium), var(--kinetic));
+    margin: 12px auto 0;
+    border-radius: 1px;
+  }
+
+  /* ==============================
+     THE ANCESTORS (TESTIMONIALS)
+     ============================== */
+  #ancestors { background: var(--void); }
+  .ancestors-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .ancestor-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--vibranium);
+    border-radius: 14px;
+    padding: 36px 28px;
+    transition: all 0.35s;
+  }
+  .ancestor-card:hover {
+    border-color: var(--border-hover);
+    border-top-color: var(--kinetic);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(139, 92, 246, 0.06);
+  }
+  .ancestor-quote {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    font-style: italic;
+    position: relative;
+    padding-left: 20px;
+  }
+  .ancestor-quote::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 4px;
+    bottom: 4px;
+    width: 3px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--vibranium), var(--kinetic));
+  }
+  .ancestor-identity {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .ancestor-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--vibranium-dim), var(--kinetic-dim));
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 16px;
+    color: var(--vibranium);
+  }
+  .ancestor-name {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .ancestor-role {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  #cta {
+    background: var(--void);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  #cta::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .cta-title {
+    font-size: clamp(36px, 5vw, 56px);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  .cta-desc {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.8;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: var(--panther);
+    border-top: 1px solid var(--border);
+    padding: 48px 0;
+  }
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-logo {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    letter-spacing: 5px;
+    background: linear-gradient(135deg, var(--vibranium), var(--kinetic));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .footer-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  .footer-links a {
+    font-size: 13px;
+    color: var(--text-muted);
+    transition: color 0.25s;
+  }
+  .footer-links a:hover { color: var(--vibranium); }
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* ==============================
+     TRIBAL-GEOMETRIC DECORATIONS
+     ============================== */
+  .tribal-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 0 auto;
+    padding: 20px 0;
+  }
+  .tribal-divider .line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--vibranium));
+  }
+  .tribal-divider .line:last-child {
+    background: linear-gradient(90deg, var(--vibranium), transparent);
+  }
+  .tribal-divider .diamond {
+    width: 8px;
+    height: 8px;
+    background: var(--vibranium);
+    transform: rotate(45deg);
+    opacity: 0.6;
+  }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 1024px) {
+    .tech-grid { grid-template-columns: repeat(2, 1fr); }
+    .ancestors-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: var(--nav-height);
+      left: 0;
+      right: 0;
+      background: rgba(10, 0, 32, 0.95);
+      backdrop-filter: blur(24px);
+      padding: 24px;
+      gap: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-toggle { display: flex; }
+    .products-grid { grid-template-columns: 1fr; }
+    .tech-grid { grid-template-columns: 1fr; }
+    .ancestors-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .product-card { padding: 32px 24px; }
+    section { padding: 80px 0; }
+    .hero h1 { font-size: clamp(36px, 10vw, 64px); }
+    .footer-inner { flex-direction: column; gap: 20px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .hero-actions { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link"><span>&larr;</span> Back</a>
+
+<!-- Nav -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">KPT</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#tech-grid">Technology</a></li>
+      <li><a href="#stats">Impact</a></li>
+      <li><a href="#ancestors">Voices</a></li>
+    </ul>
+    <button class="btn-launch" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">
+      Enter Wakanda
+    </button>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ==============================
+     HERO — VIBRANIUM ENERGY PULSE
+     ============================== -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pulse-container">
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-label">Wakandan Technology Division</div>
+    <h1><span class="accent">Innovation</span> Forever.</h1>
+    <p class="hero-sub">
+      Where ancestral wisdom meets future technology. KPT harnesses the power of
+      vibranium-grade AI and design to build systems that protect, serve, and elevate.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-vibranium" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+        <span>Explore the Technology</span>
+      </button>
+      <button class="btn-outline" onclick="document.getElementById('ancestors').scrollIntoView({behavior:'smooth'})">
+        Hear the Ancestors
+      </button>
+    </div>
+  </div>
+
+  <!-- Tribal geometric decoration -->
+  <svg class="tribal-pattern" style="bottom:40px;left:40px;width:120px;height:120px;" viewBox="0 0 120 120" fill="none">
+    <path d="M60 10L110 60L60 110L10 60Z" stroke="#8B5CF6" stroke-width="1"/>
+    <path d="M60 25L95 60L60 95L25 60Z" stroke="#8B5CF6" stroke-width="0.5"/>
+    <path d="M60 40L80 60L60 80L40 60Z" stroke="#3B82F6" stroke-width="0.5"/>
+    <line x1="60" y1="10" x2="60" y2="110" stroke="#8B5CF6" stroke-width="0.3"/>
+    <line x1="10" y1="60" x2="110" y2="60" stroke="#8B5CF6" stroke-width="0.3"/>
+  </svg>
+  <svg class="tribal-pattern" style="top:120px;right:40px;width:100px;height:100px;" viewBox="0 0 100 100" fill="none">
+    <circle cx="50" cy="50" r="40" stroke="#8B5CF6" stroke-width="0.5"/>
+    <circle cx="50" cy="50" r="25" stroke="#3B82F6" stroke-width="0.5"/>
+    <circle cx="50" cy="50" r="10" stroke="#8B5CF6" stroke-width="1"/>
+    <line x1="50" y1="10" x2="50" y2="90" stroke="#8B5CF6" stroke-width="0.3"/>
+    <line x1="10" y1="50" x2="90" y2="50" stroke="#8B5CF6" stroke-width="0.3"/>
+    <line x1="21" y1="21" x2="79" y2="79" stroke="#3B82F6" stroke-width="0.3"/>
+    <line x1="79" y1="21" x2="21" y2="79" stroke="#3B82F6" stroke-width="0.3"/>
+  </svg>
+</section>
+
+<!-- ==============================
+     PRODUCTS
+     ============================== -->
+<section id="products">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">The Vibranium Suite</div>
+      <h2 class="section-title">Two Pillars of Power</h2>
+      <p class="section-desc">
+        Every great nation is built on technology and craft. KPT delivers both
+        through AI agents that speak and designs that command.
+      </p>
+    </div>
+
+    <div class="tribal-divider reveal">
+      <div class="line"></div>
+      <div class="diamond"></div>
+      <div class="line"></div>
+    </div>
+
+    <div class="products-grid">
+      <!-- KPT Agents -->
+      <div class="product-card reveal">
+        <div class="product-icon agents">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v4a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v1a7 7 0 0 1-14 0v-1"/>
+            <line x1="12" y1="18" x2="12" y2="22"/>
+            <line x1="8" y1="22" x2="16" y2="22"/>
+          </svg>
+        </div>
+        <h3>KPT Agents</h3>
+        <p>
+          AI voice agents with the intelligence of Shuri and the authority of T'Challa.
+          They answer, qualify, book, and convert — so your business never sleeps.
+        </p>
+        <ul class="product-features">
+          <li>24/7 voice intelligence — never miss a lead</li>
+          <li>Natural conversation with contextual memory</li>
+          <li>Appointment booking and CRM integration</li>
+          <li>Multilingual support across markets</li>
+          <li>Real-time analytics and call insights</li>
+        </ul>
+      </div>
+
+      <!-- KPT Designs -->
+      <div class="product-card reveal">
+        <div class="product-icon designs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <path d="M3 9h18"/>
+            <path d="M9 21V9"/>
+          </svg>
+        </div>
+        <h3>KPT Designs</h3>
+        <p>
+          Premium web design forged with vibranium-level precision. Sites that command
+          attention, convert visitors, and stand as monuments to your brand.
+        </p>
+        <ul class="product-features">
+          <li>Custom design systems built from scratch</li>
+          <li>Performance-first architecture and SEO</li>
+          <li>Mobile-responsive, accessibility-first</li>
+          <li>Conversion-optimized user journeys</li>
+          <li>Ongoing support and iteration</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     WAKANDAN TECH GRID
+     ============================== -->
+<section id="tech-grid">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">Wakandan Technology</div>
+      <h2 class="section-title">Built Different. Built Better.</h2>
+      <p class="section-desc">
+        The tools of a nation that never needed to be discovered. Technology that
+        serves the mission, not the other way around.
+      </p>
+    </div>
+
+    <div class="tech-grid">
+      <!-- Card 1 -->
+      <div class="tech-card reveal">
+        <svg class="tech-card-pattern" viewBox="0 0 80 80" fill="none">
+          <path d="M40 0L80 40L40 80L0 40Z" stroke="#8B5CF6" stroke-width="0.5"/>
+          <path d="M40 15L65 40L40 65L15 40Z" stroke="#8B5CF6" stroke-width="0.3"/>
+        </svg>
+        <div class="tech-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h4>Neural Stack</h4>
+        <p>Multi-layered AI architecture that processes language, intent, and emotion simultaneously.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="tech-card reveal">
+        <svg class="tech-card-pattern" viewBox="0 0 80 80" fill="none">
+          <circle cx="40" cy="40" r="35" stroke="#3B82F6" stroke-width="0.5"/>
+          <circle cx="40" cy="40" r="20" stroke="#3B82F6" stroke-width="0.3"/>
+          <line x1="40" y1="5" x2="40" y2="75" stroke="#3B82F6" stroke-width="0.3"/>
+          <line x1="5" y1="40" x2="75" y2="40" stroke="#3B82F6" stroke-width="0.3"/>
+        </svg>
+        <div class="tech-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+          </svg>
+        </div>
+        <h4>Kinetic Response</h4>
+        <p>Sub-second response times. Energy absorbed from every interaction powers the next one.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="tech-card reveal">
+        <svg class="tech-card-pattern" viewBox="0 0 80 80" fill="none">
+          <rect x="10" y="10" width="60" height="60" stroke="#8B5CF6" stroke-width="0.5"/>
+          <rect x="20" y="20" width="40" height="40" stroke="#8B5CF6" stroke-width="0.3"/>
+          <rect x="30" y="30" width="20" height="20" stroke="#3B82F6" stroke-width="0.3"/>
+        </svg>
+        <div class="tech-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="8" rx="2"/>
+            <rect x="2" y="14" width="20" height="8" rx="2"/>
+            <circle cx="6" cy="6" r="1.5" fill="#8B5CF6"/>
+            <circle cx="6" cy="18" r="1.5" fill="#8B5CF6"/>
+          </svg>
+        </div>
+        <h4>Vibranium Hosting</h4>
+        <p>Edge-deployed infrastructure. Your site is served from the closest node, always at full speed.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="tech-card reveal">
+        <svg class="tech-card-pattern" viewBox="0 0 80 80" fill="none">
+          <polygon points="40,5 75,25 75,55 40,75 5,55 5,25" stroke="#8B5CF6" stroke-width="0.5"/>
+          <polygon points="40,18 62,30 62,50 40,62 18,50 18,30" stroke="#3B82F6" stroke-width="0.3"/>
+        </svg>
+        <div class="tech-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h4>Shield Protocol</h4>
+        <p>Enterprise-grade security. Every endpoint protected. Every data stream encrypted. No exceptions.</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="tech-card reveal">
+        <svg class="tech-card-pattern" viewBox="0 0 80 80" fill="none">
+          <path d="M10 40 L40 10 L70 40 L40 70 Z" stroke="#8B5CF6" stroke-width="0.5"/>
+          <path d="M25 40 L40 25 L55 40 L40 55 Z" stroke="#3B82F6" stroke-width="0.5"/>
+          <circle cx="40" cy="40" r="5" stroke="#8B5CF6" stroke-width="0.5"/>
+        </svg>
+        <div class="tech-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+            <line x1="12" y1="22.08" x2="12" y2="12"/>
+          </svg>
+        </div>
+        <h4>Heart-Shaped Herb</h4>
+        <p>Custom training data unique to your industry. The AI absorbs your domain and speaks your language.</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="tech-card reveal">
+        <svg class="tech-card-pattern" viewBox="0 0 80 80" fill="none">
+          <path d="M40 5 L55 20 L75 20 L60 35 L65 55 L40 42 L15 55 L20 35 L5 20 L25 20 Z" stroke="#DAA520" stroke-width="0.5"/>
+        </svg>
+        <div class="tech-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 20V10"/>
+            <path d="M12 20V4"/>
+            <path d="M6 20v-6"/>
+          </svg>
+        </div>
+        <h4>War Room Analytics</h4>
+        <p>Real-time dashboards with every metric that matters. See the battlefield. Control the outcome.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     STATS
+     ============================== -->
+<section id="stats">
+  <div class="container">
+    <div class="stats-grid reveal">
+      <div class="stat-item">
+        <div class="stat-number">99.9%</div>
+        <div class="stat-label">Uptime</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">0.3s</div>
+        <div class="stat-label">Response Time</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">47%</div>
+        <div class="stat-label">More Conversions</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Always Active</div>
+        <div class="stat-divider"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     THE ANCESTORS (TESTIMONIALS)
+     ============================== -->
+<section id="ancestors">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">The Ancestors Speak</div>
+      <h2 class="section-title">Voices of the Council</h2>
+      <p class="section-desc">
+        Those who have walked the path before. Their words carry the weight of experience
+        and the proof of results.
+      </p>
+    </div>
+
+    <div class="tribal-divider reveal">
+      <div class="line"></div>
+      <div class="diamond"></div>
+      <div class="line"></div>
+    </div>
+
+    <div class="ancestors-grid">
+      <div class="ancestor-card reveal">
+        <p class="ancestor-quote">
+          KPT's voice agent handles our after-hours calls with more professionalism than
+          most humans. We went from losing 30% of leads to capturing nearly all of them.
+        </p>
+        <div class="ancestor-identity">
+          <div class="ancestor-avatar">M</div>
+          <div>
+            <div class="ancestor-name">Marcus Williams</div>
+            <div class="ancestor-role">CEO, Apex Dental Group</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ancestor-card reveal">
+        <p class="ancestor-quote">
+          The website KPT built us doesn't just look incredible — it actually converts.
+          Our booking rate tripled in the first month. This team understands business.
+        </p>
+        <div class="ancestor-identity">
+          <div class="ancestor-avatar">S</div>
+          <div>
+            <div class="ancestor-name">Sarah Chen</div>
+            <div class="ancestor-role">Owner, Jade Garden Restaurant</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ancestor-card reveal">
+        <p class="ancestor-quote">
+          I was skeptical about AI answering our phones. Within a week I was a believer.
+          The agent sounds natural, books appointments, and our no-show rate dropped 40%.
+        </p>
+        <div class="ancestor-identity">
+          <div class="ancestor-avatar">D</div>
+          <div>
+            <div class="ancestor-name">David Okafor</div>
+            <div class="ancestor-role">Director, Summit Physical Therapy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     CTA
+     ============================== -->
+<section id="cta">
+  <div class="container reveal">
+    <div class="cta-eyebrow">The World Is Watching</div>
+    <h2 class="cta-title">Ready to Build<br>Something Legendary?</h2>
+    <p class="cta-desc">
+      The technology exists. The design is ready. The only question is
+      whether you're ready to step into the future.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-vibranium" onclick="window.location.href='mailto:hello@kpt.com'">
+        <span>Start the Mission</span>
+      </button>
+      <button class="btn-outline" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+        Review the Technology
+      </button>
+    </div>
+
+    <div class="tribal-divider" style="margin-top:60px;">
+      <div class="line"></div>
+      <div class="diamond"></div>
+      <div class="line"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     FOOTER
+     ============================== -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">KPT</div>
+      <ul class="footer-links">
+        <li><a href="#products">Products</a></li>
+        <li><a href="#tech-grid">Technology</a></li>
+        <li><a href="#ancestors">Voices</a></li>
+        <li><a href="#cta">Contact</a></li>
+      </ul>
+      <div class="footer-copy">&copy; 2026 KPT. Innovation Forever.</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ==============================
+     SCRIPTS
+     ============================== -->
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+
+  // Close mobile nav on link click
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+    });
+  });
+
+  // IntersectionObserver for reveal animations
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -60px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // Stagger sibling reveals
+        const parent = entry.target.parentElement;
+        const siblings = Array.from(parent.querySelectorAll('.reveal'));
+        const index = siblings.indexOf(entry.target);
+        const delay = index * 100;
+
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, delay);
+
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

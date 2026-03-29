@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Financial Infrastructure for the Internet</title>
+<meta name="description" content="KPT provides payment APIs and financial tools for developers. Accept payments, send payouts, and manage business online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --purple: #635BFF;
+    --purple-light: #7A73FF;
+    --purple-dim: rgba(99, 91, 255, 0.12);
+    --purple-glow: rgba(99, 91, 255, 0.35);
+    --cyan: #80E9FF;
+    --cyan-dim: rgba(128, 233, 255, 0.10);
+    --cyan-glow: rgba(128, 233, 255, 0.25);
+    --blue: #0073E6;
+    --blue-light: #339DFF;
+    --green: #33D69F;
+    --green-dim: rgba(51, 214, 159, 0.12);
+    --orange: #FF7B51;
+    --pink: #FF49DB;
+    --dark: #0A2540;
+    --dark-deep: #061B2E;
+    --dark-surface: #0F2F4A;
+    --dark-card: #0D2948;
+    --white: #FFFFFF;
+    --ice: #ADBDCC;
+    --gray: #6B7C93;
+    --gray-dim: #425466;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(99, 91, 255, 0.4);
+    --code-bg: #0B1D30;
+    --code-line: rgba(255, 255, 255, 0.04);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark-deep);
+    color: var(--ice);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  code, .mono {
+    font-family: 'Fira Code', monospace;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Layout ───────────────────────────────────────────────── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .section {
+    padding: 100px 0;
+    position: relative;
+  }
+
+  /* ── Back Link ────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--gray);
+    letter-spacing: 0.5px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: rgba(6, 27, 46, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    transition: all 0.25s ease;
+  }
+  .back-link:hover {
+    color: var(--purple);
+    border-color: var(--border-hover);
+    background: rgba(6, 27, 46, 0.95);
+  }
+  .back-link span { margin-right: 6px; }
+
+  /* ── Scroll Animations ────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ── Navigation ───────────────────────────────────────────── */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 16px 0;
+    background: transparent;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    transition: all 0.35s ease;
+    border-bottom: 1px solid transparent;
+  }
+  .nav.scrolled {
+    background: rgba(6, 27, 46, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom-color: var(--border);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .nav-logo {
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, var(--purple), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray);
+    letter-spacing: 0.3px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover {
+    color: var(--white);
+  }
+  .nav-cta {
+    background: var(--purple) !important;
+    color: var(--white) !important;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    transition: all 0.25s !important;
+    box-shadow: 0 2px 8px rgba(99, 91, 255, 0.3);
+  }
+  .nav-cta:hover {
+    background: var(--purple-light) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(99, 91, 255, 0.45);
+  }
+
+  /* ── Gradient Mesh Background ─────────────────────────────── */
+  .mesh-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .mesh-bg::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: -20%;
+    width: 80%;
+    height: 120%;
+    background: radial-gradient(ellipse at center, rgba(99, 91, 255, 0.25) 0%, transparent 65%);
+    animation: meshFloat1 12s ease-in-out infinite;
+  }
+  .mesh-bg::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    right: -15%;
+    width: 70%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, rgba(128, 233, 255, 0.15) 0%, transparent 60%);
+    animation: meshFloat2 15s ease-in-out infinite;
+  }
+  .mesh-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+  }
+  .mesh-orb-1 {
+    width: 500px;
+    height: 500px;
+    top: 10%;
+    right: 15%;
+    background: radial-gradient(circle, rgba(99, 91, 255, 0.4) 0%, rgba(0, 115, 230, 0.1) 60%, transparent 80%);
+    animation: meshFloat3 18s ease-in-out infinite;
+  }
+  .mesh-orb-2 {
+    width: 400px;
+    height: 400px;
+    bottom: 5%;
+    left: 10%;
+    background: radial-gradient(circle, rgba(128, 233, 255, 0.3) 0%, rgba(99, 91, 255, 0.1) 60%, transparent 80%);
+    animation: meshFloat1 20s ease-in-out infinite reverse;
+  }
+  .mesh-orb-3 {
+    width: 300px;
+    height: 300px;
+    top: 50%;
+    left: 40%;
+    background: radial-gradient(circle, rgba(255, 73, 219, 0.2) 0%, transparent 70%);
+    animation: meshFloat2 14s ease-in-out infinite;
+  }
+
+  @keyframes meshFloat1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -20px) scale(1.05); }
+    66% { transform: translate(-15px, 15px) scale(0.97); }
+  }
+  @keyframes meshFloat2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-25px, 20px) scale(1.08); }
+  }
+  @keyframes meshFloat3 {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(20px, -30px); }
+    50% { transform: translate(-10px, 15px); }
+    75% { transform: translate(15px, 10px); }
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--purple-dim);
+    border: 1px solid rgba(99, 91, 255, 0.2);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--purple-light);
+    letter-spacing: 0.5px;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+  .hero-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--purple);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+  .hero h1 {
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+  .hero h1 .gradient-text {
+    background: linear-gradient(135deg, var(--purple) 0%, var(--cyan) 50%, var(--purple-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease-in-out infinite;
+  }
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  .hero p {
+    font-size: 20px;
+    line-height: 1.7;
+    color: var(--ice);
+    max-width: 560px;
+    margin-bottom: 40px;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--purple);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 24px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    box-shadow: 0 4px 16px rgba(99, 91, 255, 0.35);
+    text-decoration: none;
+  }
+  .btn-primary:hover {
+    background: var(--purple-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(99, 91, 255, 0.45);
+  }
+  .btn-primary .arrow {
+    transition: transform 0.2s;
+  }
+  .btn-primary:hover .arrow {
+    transform: translateX(3px);
+  }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--ice);
+    font-weight: 500;
+    font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+  }
+  .btn-secondary:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--white);
+  }
+
+  /* ── Hero Code Card ───────────────────────────────────────── */
+  .hero-visual {
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    width: 480px;
+  }
+  .code-window {
+    background: var(--code-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(99, 91, 255, 0.08);
+  }
+  .code-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border);
+  }
+  .code-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .code-dot.red { background: #FF5F57; }
+  .code-dot.yellow { background: #FEBC2E; }
+  .code-dot.green { background: #28C840; }
+  .code-header-title {
+    margin-left: 8px;
+    font-size: 11px;
+    color: var(--gray-dim);
+    font-family: 'Fira Code', monospace;
+  }
+  .code-body {
+    padding: 20px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+  .code-line {
+    display: flex;
+    gap: 0;
+  }
+  .code-line-num {
+    color: rgba(255, 255, 255, 0.15);
+    width: 36px;
+    text-align: right;
+    padding-right: 16px;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .code-line-content {
+    white-space: pre;
+  }
+  .hl-keyword { color: var(--purple-light); }
+  .hl-method { color: var(--cyan); }
+  .hl-string { color: var(--green); }
+  .hl-number { color: var(--orange); }
+  .hl-property { color: var(--ice); }
+  .hl-comment { color: var(--gray-dim); font-style: italic; }
+  .hl-const { color: #FF49DB; }
+  .hl-param { color: #FFD93D; }
+  .hl-bracket { color: var(--gray); }
+
+  /* ── Trusted By ───────────────────────────────────────────── */
+  .trusted {
+    padding: 60px 0 40px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(10, 37, 64, 0.3);
+  }
+  .trusted-label {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-dim);
+    margin-bottom: 32px;
+  }
+  .trusted-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .trusted-logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gray-dim);
+    letter-spacing: 2px;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+  .trusted-logo:hover {
+    opacity: 0.8;
+  }
+
+  /* ── Features Grid ────────────────────────────────────────── */
+  .features-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--purple-light);
+    margin-bottom: 16px;
+  }
+  .section-label .line {
+    width: 24px;
+    height: 1px;
+    background: var(--purple);
+  }
+  .features-header h2 {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -1px;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .features-header p {
+    font-size: 17px;
+    color: var(--ice);
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .feature-card {
+    background: linear-gradient(145deg, rgba(15, 47, 74, 0.5), rgba(6, 27, 46, 0.5));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px 28px;
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--purple), var(--cyan), transparent);
+    opacity: 0;
+    transition: opacity 0.35s;
+  }
+  .feature-card:hover {
+    border-color: rgba(99, 91, 255, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+  .feature-card:hover::before {
+    opacity: 1;
+  }
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  .feature-icon.purple { background: var(--purple-dim); }
+  .feature-icon.cyan { background: var(--cyan-dim); }
+  .feature-icon.green { background: var(--green-dim); }
+  .feature-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+  .feature-card p {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.65;
+  }
+
+  /* ── Code Showcase ────────────────────────────────────────── */
+  .showcase {
+    background: linear-gradient(180deg, var(--dark-deep), rgba(10, 37, 64, 0.4), var(--dark-deep));
+  }
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .showcase-text h2 {
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -1px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .showcase-text p {
+    font-size: 16px;
+    color: var(--ice);
+    margin-bottom: 24px;
+    line-height: 1.7;
+  }
+  .showcase-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .showcase-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--ice);
+  }
+  .showcase-list .check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--green-dim);
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ── Stats ────────────────────────────────────────────────── */
+  .stats {
+    background: linear-gradient(135deg, rgba(99, 91, 255, 0.06), rgba(128, 233, 255, 0.04));
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    text-align: center;
+  }
+  .stat-item {
+    padding: 20px;
+  }
+  .stat-number {
+    font-size: 52px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--white), var(--ice));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-number .accent {
+    background: linear-gradient(135deg, var(--purple), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    font-size: 13px;
+    color: var(--gray);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── API Preview ──────────────────────────────────────────── */
+  .api-tabs {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 0;
+  }
+  .api-tab {
+    padding: 10px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Fira Code', monospace;
+    color: var(--gray-dim);
+    background: rgba(11, 29, 48, 0.6);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .api-tab.active {
+    color: var(--cyan);
+    background: var(--code-bg);
+    border-color: rgba(99, 91, 255, 0.2);
+  }
+  .api-code-window {
+    border-radius: 0 12px 12px 12px;
+  }
+
+  /* ── Integrations ─────────────────────────────────────────── */
+  .integrations-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 48px;
+  }
+  .integration-card {
+    background: rgba(15, 47, 74, 0.3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .integration-card:hover {
+    border-color: rgba(99, 91, 255, 0.25);
+    transform: translateY(-2px);
+    background: rgba(15, 47, 74, 0.5);
+  }
+  .integration-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  .integration-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .integration-card p {
+    font-size: 12px;
+    color: var(--gray);
+  }
+
+  /* ── CTA ───────────────────────────────────────────────────── */
+  .cta {
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(99, 91, 255, 0.1) 0%, rgba(128, 233, 255, 0.05) 50%, rgba(99, 91, 255, 0.08) 100%);
+    border-radius: 24px;
+  }
+  .cta-inner {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(145deg, rgba(15, 47, 74, 0.6), rgba(6, 27, 46, 0.4));
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 80px 40px;
+  }
+  .cta-inner h2 {
+    font-size: 44px;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+  .cta-inner p {
+    font-size: 17px;
+    color: var(--ice);
+    max-width: 480px;
+    margin: 0 auto 36px;
+    line-height: 1.6;
+  }
+  .cta-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .cta-code {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--ice);
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 20px;
+  }
+  .cta-code .prompt {
+    color: var(--purple-light);
+  }
+
+  /* ── Footer ────────────────────────────────────────────────── */
+  .footer {
+    padding: 60px 0 40px;
+    border-top: 1px solid var(--border);
+    background: rgba(6, 27, 46, 0.5);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+  .footer-brand .logo {
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 4px;
+    background: linear-gradient(135deg, var(--purple), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+  .footer-brand p {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.6;
+    max-width: 280px;
+  }
+  .footer-col h4 {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .footer-col a {
+    display: block;
+    font-size: 13px;
+    color: var(--gray);
+    padding: 5px 0;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover {
+    color: var(--purple-light);
+  }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--gray-dim);
+  }
+  .footer-bottom-links {
+    display: flex;
+    gap: 20px;
+  }
+  .footer-bottom-links a {
+    color: var(--gray-dim);
+    transition: color 0.2s;
+  }
+  .footer-bottom-links a:hover {
+    color: var(--ice);
+  }
+
+  /* ── Responsive ────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hero { min-height: auto; padding: 140px 0 80px; }
+    .hero h1 { font-size: 38px; letter-spacing: -1px; }
+    .hero p { font-size: 16px; }
+    .hero-visual { display: none; }
+    .hero-actions { flex-direction: column; align-items: flex-start; }
+    .features-grid { grid-template-columns: 1fr; }
+    .showcase-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .stat-number { font-size: 36px; }
+    .integrations-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    .cta-inner { padding: 48px 24px; }
+    .cta-inner h2 { font-size: 30px; }
+    .section { padding: 64px 0; }
+    .features-header h2 { font-size: 30px; }
+    .showcase-text h2 { font-size: 28px; }
+    .api-code-window { border-radius: 0 0 12px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link"><span>&larr;</span> KPT</a>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">KPT</div>
+    <div class="nav-links">
+      <a href="#features">Products</a>
+      <a href="#developers">Developers</a>
+      <a href="#integrations">Integrations</a>
+      <a href="#" class="nav-cta">Start now</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="mesh-bg">
+    <div class="mesh-orb mesh-orb-1"></div>
+    <div class="mesh-orb mesh-orb-2"></div>
+    <div class="mesh-orb mesh-orb-3"></div>
+  </div>
+  <div class="container" style="position: relative; z-index: 1;">
+    <div class="hero-content reveal">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Developer Preview
+      </div>
+      <h1>Financial<br>infrastructure<br>for the <span class="gradient-text">internet</span></h1>
+      <p>Millions of companies use KPT to accept payments, send payouts, and manage their businesses online. Build your payment stack with APIs designed for developers.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">Start now <span class="arrow">&rarr;</span></a>
+        <a href="#developers" class="btn-secondary">Read the docs</a>
+      </div>
+    </div>
+    <div class="hero-visual reveal reveal-delay-2">
+      <div class="code-window">
+        <div class="code-header">
+          <div class="code-dot red"></div>
+          <div class="code-dot yellow"></div>
+          <div class="code-dot green"></div>
+          <span class="code-header-title">payment.js</span>
+        </div>
+        <div class="code-body">
+          <div class="code-line"><span class="code-line-num">1</span><span class="code-line-content"><span class="hl-comment">// Create a payment intent</span></span></div>
+          <div class="code-line"><span class="code-line-num">2</span><span class="code-line-content"><span class="hl-keyword">const</span> <span class="hl-const">payment</span> <span class="hl-bracket">=</span> <span class="hl-keyword">await</span> kpt<span class="hl-bracket">.</span><span class="hl-method">paymentIntents</span><span class="hl-bracket">.</span><span class="hl-method">create</span><span class="hl-bracket">({</span></span></div>
+          <div class="code-line"><span class="code-line-num">3</span><span class="code-line-content">  <span class="hl-property">amount</span><span class="hl-bracket">:</span> <span class="hl-number">2000</span><span class="hl-bracket">,</span></span></div>
+          <div class="code-line"><span class="code-line-num">4</span><span class="code-line-content">  <span class="hl-property">currency</span><span class="hl-bracket">:</span> <span class="hl-string">'usd'</span><span class="hl-bracket">,</span></span></div>
+          <div class="code-line"><span class="code-line-num">5</span><span class="code-line-content">  <span class="hl-property">payment_method_types</span><span class="hl-bracket">:</span> <span class="hl-bracket">[</span><span class="hl-string">'card'</span><span class="hl-bracket">],</span></span></div>
+          <div class="code-line"><span class="code-line-num">6</span><span class="code-line-content">  <span class="hl-property">metadata</span><span class="hl-bracket">:</span> <span class="hl-bracket">{</span></span></div>
+          <div class="code-line"><span class="code-line-num">7</span><span class="code-line-content">    <span class="hl-property">order_id</span><span class="hl-bracket">:</span> <span class="hl-string">'ord_1K7xH2'</span></span></div>
+          <div class="code-line"><span class="code-line-num">8</span><span class="code-line-content">  <span class="hl-bracket">}</span></span></div>
+          <div class="code-line"><span class="code-line-num">9</span><span class="code-line-content"><span class="hl-bracket">});</span></span></div>
+          <div class="code-line"><span class="code-line-num">10</span><span class="code-line-content"></span></div>
+          <div class="code-line"><span class="code-line-num">11</span><span class="code-line-content"><span class="hl-comment">// Returns: pi_3MtwBw...</span></span></div>
+          <div class="code-line"><span class="code-line-num">12</span><span class="code-line-content"><span class="hl-keyword">console</span><span class="hl-bracket">.</span><span class="hl-method">log</span><span class="hl-bracket">(</span><span class="hl-const">payment</span><span class="hl-bracket">.</span><span class="hl-property">id</span><span class="hl-bracket">);</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trusted By -->
+<div class="trusted reveal">
+  <div class="container">
+    <div class="trusted-label">Trusted by innovators everywhere</div>
+    <div class="trusted-logos">
+      <span class="trusted-logo">SHOPIFY</span>
+      <span class="trusted-logo">NOTION</span>
+      <span class="trusted-logo">FIGMA</span>
+      <span class="trusted-logo">SLACK</span>
+      <span class="trusted-logo">LYFT</span>
+      <span class="trusted-logo">POSTMATES</span>
+    </div>
+  </div>
+</div>
+
+<!-- Features -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="features-header reveal">
+      <div class="section-label"><span class="line"></span> Products <span class="line"></span></div>
+      <h2>A complete payments platform,<br>built for developers</h2>
+      <p>Everything you need to accept payments, manage subscriptions, send payouts, and run your financial operations.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon purple">&#9889;</div>
+        <h3>Payments</h3>
+        <p>Accept payments from anywhere in the world with a single integration. Cards, wallets, bank debits, and 135+ payment methods.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon cyan">&#8635;</div>
+        <h3>Subscriptions</h3>
+        <p>Build and scale recurring revenue models. Smart retries, proration, metered billing, and revenue recovery built in.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon green">&#10148;</div>
+        <h3>Connect</h3>
+        <p>Pay out sellers and service providers worldwide. Route payments, split funds, and manage complex marketplace flows.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon cyan">&#9670;</div>
+        <h3>Radar</h3>
+        <p>Machine learning fraud protection trained on billions of data points. Adaptive rules engine blocks fraud without blocking revenue.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon purple">&#9776;</div>
+        <h3>Billing</h3>
+        <p>Automated invoicing, tax calculation, and revenue recognition. From startup pricing to enterprise contracts.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon green">&#128274;</div>
+        <h3>Identity</h3>
+        <p>Verify users programmatically. ID document verification, selfie checks, and risk signals in a single API call.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Code Showcase / Developers -->
+<section class="section showcase" id="developers">
+  <div class="container">
+    <div class="showcase-grid">
+      <div class="showcase-text reveal">
+        <div class="section-label"><span class="line"></span> For Developers</div>
+        <h2>Built by developers,<br>for developers</h2>
+        <p>KPT's APIs are designed to be intuitive and consistent. From your first line of code to billions in transactions, we make payments simple.</p>
+        <ul class="showcase-list">
+          <li><span class="check">&#10003;</span> RESTful APIs with predictable resource-oriented URLs</li>
+          <li><span class="check">&#10003;</span> Client libraries in 8 languages, maintained by us</li>
+          <li><span class="check">&#10003;</span> Detailed logs and real-time webhooks for every event</li>
+          <li><span class="check">&#10003;</span> Test mode with realistic data — no sandbox signup</li>
+        </ul>
+        <a href="#" class="btn-primary">Explore docs <span class="arrow">&rarr;</span></a>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <div class="api-tabs">
+          <div class="api-tab active">Node.js</div>
+          <div class="api-tab">Python</div>
+          <div class="api-tab">cURL</div>
+        </div>
+        <div class="code-window api-code-window">
+          <div class="code-header">
+            <div class="code-dot red"></div>
+            <div class="code-dot yellow"></div>
+            <div class="code-dot green"></div>
+            <span class="code-header-title">checkout.js</span>
+          </div>
+          <div class="code-body">
+            <div class="code-line"><span class="code-line-num">1</span><span class="code-line-content"><span class="hl-keyword">import</span> KPT <span class="hl-keyword">from</span> <span class="hl-string">'kpt'</span><span class="hl-bracket">;</span></span></div>
+            <div class="code-line"><span class="code-line-num">2</span><span class="code-line-content"></span></div>
+            <div class="code-line"><span class="code-line-num">3</span><span class="code-line-content"><span class="hl-keyword">const</span> <span class="hl-const">kpt</span> <span class="hl-bracket">=</span> <span class="hl-keyword">new</span> <span class="hl-method">KPT</span><span class="hl-bracket">(</span><span class="hl-const">process</span><span class="hl-bracket">.</span><span class="hl-property">env</span><span class="hl-bracket">.</span><span class="hl-property">KPT_SECRET_KEY</span><span class="hl-bracket">);</span></span></div>
+            <div class="code-line"><span class="code-line-num">4</span><span class="code-line-content"></span></div>
+            <div class="code-line"><span class="code-line-num">5</span><span class="code-line-content"><span class="hl-keyword">const</span> <span class="hl-const">session</span> <span class="hl-bracket">=</span> <span class="hl-keyword">await</span> kpt<span class="hl-bracket">.</span><span class="hl-method">checkout</span><span class="hl-bracket">.</span><span class="hl-method">sessions</span><span class="hl-bracket">.</span><span class="hl-method">create</span><span class="hl-bracket">({</span></span></div>
+            <div class="code-line"><span class="code-line-num">6</span><span class="code-line-content">  <span class="hl-property">line_items</span><span class="hl-bracket">:</span> <span class="hl-bracket">[{</span></span></div>
+            <div class="code-line"><span class="code-line-num">7</span><span class="code-line-content">    <span class="hl-property">price</span><span class="hl-bracket">:</span> <span class="hl-string">'price_1Nk8GQ'</span><span class="hl-bracket">,</span></span></div>
+            <div class="code-line"><span class="code-line-num">8</span><span class="code-line-content">    <span class="hl-property">quantity</span><span class="hl-bracket">:</span> <span class="hl-number">1</span></span></div>
+            <div class="code-line"><span class="code-line-num">9</span><span class="code-line-content">  <span class="hl-bracket">}],</span></span></div>
+            <div class="code-line"><span class="code-line-num">10</span><span class="code-line-content">  <span class="hl-property">mode</span><span class="hl-bracket">:</span> <span class="hl-string">'payment'</span><span class="hl-bracket">,</span></span></div>
+            <div class="code-line"><span class="code-line-num">11</span><span class="code-line-content">  <span class="hl-property">success_url</span><span class="hl-bracket">:</span> <span class="hl-string">'https://kpt.dev/success'</span><span class="hl-bracket">,</span></span></div>
+            <div class="code-line"><span class="code-line-num">12</span><span class="code-line-content">  <span class="hl-property">cancel_url</span><span class="hl-bracket">:</span> <span class="hl-string">'https://kpt.dev/cancel'</span></span></div>
+            <div class="code-line"><span class="code-line-num">13</span><span class="code-line-content"><span class="hl-bracket">});</span></span></div>
+            <div class="code-line"><span class="code-line-num">14</span><span class="code-line-content"></span></div>
+            <div class="code-line"><span class="code-line-num">15</span><span class="code-line-content"><span class="hl-comment">// Redirect to hosted checkout</span></span></div>
+            <div class="code-line"><span class="code-line-num">16</span><span class="code-line-content"><span class="hl-method">redirect</span><span class="hl-bracket">(</span><span class="hl-const">session</span><span class="hl-bracket">.</span><span class="hl-property">url</span><span class="hl-bracket">);</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="section stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-number">99.<span class="accent">99</span>%</div>
+        <div class="stat-label">Uptime SLA</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-number"><span class="accent">135</span>+</div>
+        <div class="stat-label">Currencies supported</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-number"><span class="accent">47</span>ms</div>
+        <div class="stat-label">Median API response</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-number"><span class="accent">$1</span>T+</div>
+        <div class="stat-label">Total volume processed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Integrations -->
+<section class="section" id="integrations">
+  <div class="container">
+    <div class="features-header reveal">
+      <div class="section-label"><span class="line"></span> Integrations <span class="line"></span></div>
+      <h2>Connects to your<br>entire stack</h2>
+      <p>Pre-built integrations for every platform. From e-commerce to ERP, KPT fits seamlessly into your workflow.</p>
+    </div>
+    <div class="integrations-grid">
+      <div class="integration-card reveal reveal-delay-1">
+        <div class="integration-icon">&#9881;</div>
+        <h4>React</h4>
+        <p>Drop-in components</p>
+      </div>
+      <div class="integration-card reveal reveal-delay-2">
+        <div class="integration-icon">&#9883;</div>
+        <h4>Next.js</h4>
+        <p>Server-side ready</p>
+      </div>
+      <div class="integration-card reveal reveal-delay-3">
+        <div class="integration-icon">&#128640;</div>
+        <h4>Vercel</h4>
+        <p>One-click deploy</p>
+      </div>
+      <div class="integration-card reveal reveal-delay-4">
+        <div class="integration-icon">&#9729;</div>
+        <h4>AWS</h4>
+        <p>Lambda & serverless</p>
+      </div>
+      <div class="integration-card reveal reveal-delay-1">
+        <div class="integration-icon">&#128230;</div>
+        <h4>Shopify</h4>
+        <p>Custom storefront</p>
+      </div>
+      <div class="integration-card reveal reveal-delay-2">
+        <div class="integration-icon">&#128202;</div>
+        <h4>Salesforce</h4>
+        <p>Sync & automate</p>
+      </div>
+      <div class="integration-card reveal reveal-delay-3">
+        <div class="integration-icon">&#128172;</div>
+        <h4>Slack</h4>
+        <p>Payment alerts</p>
+      </div>
+      <div class="integration-card reveal reveal-delay-4">
+        <div class="integration-icon">&#128279;</div>
+        <h4>Webhooks</h4>
+        <p>Real-time events</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta">
+  <div class="container">
+    <div class="cta-inner reveal">
+      <h2>Start building with<br><span class="gradient-text" style="background: linear-gradient(135deg, var(--purple) 0%, var(--cyan) 50%, var(--purple-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">KPT</span> today</h2>
+      <p>Create an account and start accepting payments in minutes. No setup fees, no monthly fees, no hidden costs.</p>
+      <div class="cta-actions">
+        <a href="#" class="btn-primary">Create free account <span class="arrow">&rarr;</span></a>
+        <div class="cta-code">
+          <span class="prompt">$</span> npm install kpt
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">KPT</div>
+        <p>Financial infrastructure that powers the internet economy. From startups to Fortune 500s.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <a href="#">Payments</a>
+        <a href="#">Billing</a>
+        <a href="#">Connect</a>
+        <a href="#">Radar</a>
+        <a href="#">Identity</a>
+      </div>
+      <div class="footer-col">
+        <h4>Developers</h4>
+        <a href="#">Documentation</a>
+        <a href="#">API Reference</a>
+        <a href="#">SDKs</a>
+        <a href="#">Webhooks</a>
+        <a href="#">Status</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Customers</a>
+        <a href="#">Partners</a>
+        <a href="#">Blog</a>
+        <a href="#">Careers</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 KPT, Inc.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Scroll Animations (IntersectionObserver) ──────────────
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+  reveals.forEach(el => observer.observe(el));
+
+  // ── Nav scroll effect ─────────────────────────────────────
+  const nav = document.getElementById('nav');
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y > 60) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+    lastScroll = y;
+  }, { passive: true });
+
+  // ── API tab switching ─────────────────────────────────────
+  document.querySelectorAll('.api-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.api-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

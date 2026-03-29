@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Mad Max: Fury Road</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Teko:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #D94E1F;
+    --orange-dim: rgba(217, 78, 31, 0.15);
+    --orange-glow: rgba(217, 78, 31, 0.5);
+    --teal: #0FA3B1;
+    --teal-dim: rgba(15, 163, 177, 0.15);
+    --teal-glow: rgba(15, 163, 177, 0.5);
+    --sand: #E8A900;
+    --smoke: #6B7280;
+    --war-black: #1A0800;
+    --war-dark: #0F0500;
+    --surface: #1C0E06;
+    --surface-raised: #261409;
+    --text-primary: #F0E6DC;
+    --text-secondary: #A89080;
+    --text-muted: #6B5B50;
+    --border: rgba(217, 78, 31, 0.12);
+    --border-hover: rgba(217, 78, 31, 0.3);
+    --font-heading: 'Teko', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --max-width: 1200px;
+    --nav-height: 72px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--war-dark);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ==============================
+     DUST STORM BACKGROUND EFFECT
+     ============================== */
+  @keyframes dustDrift {
+    0% { transform: translateX(-10%) translateY(0) scale(1); opacity: 0.3; }
+    25% { opacity: 0.5; }
+    50% { transform: translateX(5%) translateY(-5%) scale(1.1); opacity: 0.35; }
+    75% { opacity: 0.45; }
+    100% { transform: translateX(-10%) translateY(0) scale(1); opacity: 0.3; }
+  }
+
+  @keyframes dustDrift2 {
+    0% { transform: translateX(10%) translateY(3%) scale(1.05); opacity: 0.2; }
+    50% { transform: translateX(-8%) translateY(-3%) scale(0.95); opacity: 0.4; }
+    100% { transform: translateX(10%) translateY(3%) scale(1.05); opacity: 0.2; }
+  }
+
+  @keyframes dustDrift3 {
+    0% { transform: translateX(0) translateY(5%) rotate(0deg); opacity: 0.15; }
+    33% { transform: translateX(-5%) translateY(-2%) rotate(1deg); opacity: 0.3; }
+    66% { transform: translateX(3%) translateY(2%) rotate(-0.5deg); opacity: 0.2; }
+    100% { transform: translateX(0) translateY(5%) rotate(0deg); opacity: 0.15; }
+  }
+
+  @keyframes particleFloat {
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.6; }
+    50% { transform: translateY(-40vh) translateX(20px); }
+  }
+
+  @keyframes grainShift {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-2%, -2%); }
+    20% { transform: translate(1%, 3%); }
+    30% { transform: translate(-3%, 1%); }
+    40% { transform: translate(3%, -1%); }
+    50% { transform: translate(-1%, 2%); }
+    60% { transform: translate(2%, -3%); }
+    70% { transform: translate(-2%, 1%); }
+    80% { transform: translate(1%, -2%); }
+    90% { transform: translate(3%, 2%); }
+  }
+
+  .dust-overlay {
+    position: fixed;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .dust-layer {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(217, 78, 31, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(232, 169, 0, 0.06) 0%, transparent 45%),
+                radial-gradient(ellipse at 50% 70%, rgba(107, 82, 60, 0.07) 0%, transparent 55%);
+    animation: dustDrift 18s ease-in-out infinite;
+  }
+
+  .dust-layer-2 {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 60% 60%, rgba(217, 78, 31, 0.06) 0%, transparent 40%),
+                radial-gradient(ellipse at 20% 40%, rgba(232, 169, 0, 0.05) 0%, transparent 50%);
+    animation: dustDrift2 24s ease-in-out infinite;
+  }
+
+  .dust-layer-3 {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 40% 30%, rgba(139, 80, 30, 0.05) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, rgba(217, 78, 31, 0.04) 0%, transparent 40%);
+    animation: dustDrift3 30s ease-in-out infinite;
+  }
+
+  /* Film grain texture */
+  .grain-overlay {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    animation: grainShift 0.5s steps(10) infinite;
+  }
+
+  /* ==============================
+     BACK LINK
+     ============================== */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 24px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.25s;
+    position: relative;
+    z-index: 1001;
+  }
+  .back-link:hover { color: var(--orange); }
+  .back-link span { transition: transform 0.2s; display: inline-block; }
+  .back-link:hover span { transform: translateX(-3px); }
+
+  /* ==============================
+     FIXED NAV — INDUSTRIAL RIVETED
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: var(--nav-height);
+    background: rgba(15, 5, 0, 0.85);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-bottom: 2px solid var(--border);
+    box-shadow:
+      0 2px 0 rgba(217, 78, 31, 0.08),
+      0 0 40px rgba(217, 78, 31, 0.03),
+      inset 0 -1px 0 rgba(232, 169, 0, 0.04);
+    transition: box-shadow 0.4s, border-color 0.4s;
+  }
+  nav.scrolled {
+    border-bottom-color: rgba(217, 78, 31, 0.25);
+    box-shadow:
+      0 2px 0 rgba(217, 78, 31, 0.15),
+      0 0 60px rgba(217, 78, 31, 0.06);
+  }
+
+  .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .nav-logo {
+    font-family: var(--font-heading);
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: var(--orange);
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .nav-divider {
+    width: 2px;
+    height: 28px;
+    background: linear-gradient(180deg, transparent, var(--orange), transparent);
+    opacity: 0.4;
+  }
+
+  .nav-tagline {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Rivet decorations on nav */
+  .nav-rivets {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .rivet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #5A4030, #2A1810);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 1px 2px rgba(0,0,0,0.5);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .nav-links a {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color 0.3s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--orange);
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ==============================
+     HERO — DUST STORM
+     ============================== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: calc(var(--nav-height) + 80px) 24px 80px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 60%, rgba(217, 78, 31, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 30% 40%, rgba(232, 169, 0, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 70%, rgba(15, 163, 177, 0.04) 0%, transparent 40%);
+    animation: dustDrift 15s ease-in-out infinite;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(to top, var(--war-dark), transparent);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 24px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-title {
+    font-family: var(--font-heading);
+    font-size: clamp(80px, 15vw, 180px);
+    font-weight: 700;
+    letter-spacing: 8px;
+    color: var(--text-primary);
+    line-height: 0.9;
+    margin-bottom: 24px;
+    opacity: 0;
+    transform: translateY(30px);
+    text-shadow:
+      0 0 60px rgba(217, 78, 31, 0.3),
+      0 0 120px rgba(217, 78, 31, 0.15);
+  }
+
+  .hero-title .orange { color: var(--orange); }
+
+  .hero-subtitle {
+    font-family: var(--font-heading);
+    font-size: clamp(24px, 4vw, 42px);
+    font-weight: 400;
+    letter-spacing: 12px;
+    color: var(--smoke);
+    margin-bottom: 40px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 48px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* Particles */
+  .particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--sand);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleFloat linear infinite;
+  }
+
+  .particle:nth-child(1) { left: 10%; bottom: 0; animation-duration: 8s; animation-delay: 0s; }
+  .particle:nth-child(2) { left: 25%; bottom: 0; animation-duration: 11s; animation-delay: 1.5s; width: 3px; height: 3px; }
+  .particle:nth-child(3) { left: 40%; bottom: 0; animation-duration: 7s; animation-delay: 3s; }
+  .particle:nth-child(4) { left: 55%; bottom: 0; animation-duration: 13s; animation-delay: 0.5s; background: var(--orange); }
+  .particle:nth-child(5) { left: 70%; bottom: 0; animation-duration: 9s; animation-delay: 2s; width: 3px; height: 3px; }
+  .particle:nth-child(6) { left: 85%; bottom: 0; animation-duration: 10s; animation-delay: 4s; }
+  .particle:nth-child(7) { left: 15%; bottom: 0; animation-duration: 14s; animation-delay: 1s; background: var(--orange); }
+  .particle:nth-child(8) { left: 60%; bottom: 0; animation-duration: 8.5s; animation-delay: 3.5s; }
+  .particle:nth-child(9) { left: 35%; bottom: 0; animation-duration: 12s; animation-delay: 2.5s; width: 3px; height: 3px; background: var(--orange); }
+  .particle:nth-child(10) { left: 80%; bottom: 0; animation-duration: 9.5s; animation-delay: 0.8s; }
+  .particle:nth-child(11) { left: 48%; bottom: 0; animation-duration: 10.5s; animation-delay: 5s; }
+  .particle:nth-child(12) { left: 92%; bottom: 0; animation-duration: 7.5s; animation-delay: 1.8s; background: var(--orange); }
+
+  /* ==============================
+     BUTTONS
+     ============================== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary {
+    background: var(--orange);
+    color: var(--war-black);
+    box-shadow: 0 0 30px rgba(217, 78, 31, 0.3), inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+  .btn-primary:hover {
+    background: #E55A2B;
+    box-shadow: 0 0 50px rgba(217, 78, 31, 0.5), inset 0 1px 0 rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--teal);
+    border: 2px solid var(--teal);
+  }
+  .btn-secondary:hover {
+    background: var(--teal-dim);
+    box-shadow: 0 0 30px var(--teal-glow);
+    transform: translateY(-2px);
+  }
+
+  /* ==============================
+     SECTION SHARED
+     ============================== */
+  section {
+    position: relative;
+    z-index: 2;
+    padding: 120px 0;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 700;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+  }
+
+  .section-desc {
+    font-size: 17px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    max-width: 580px;
+  }
+
+  /* Reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ==============================
+     PRODUCTS — WAR RIG CARDS
+     ============================== */
+  .products {
+    background: linear-gradient(180deg, var(--war-dark), var(--war-black) 50%, var(--war-dark));
+  }
+
+  .products-header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+
+  .products-header .section-desc {
+    margin: 0 auto;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .war-rig-card {
+    position: relative;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    padding: 48px 40px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+  }
+
+  /* Bolted corner decoration */
+  .war-rig-card::before,
+  .war-rig-card::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #5A4030, #2A1810);
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.12), 0 1px 3px rgba(0,0,0,0.6);
+  }
+  .war-rig-card::before { top: 16px; left: 16px; }
+  .war-rig-card::after { top: 16px; right: 16px; }
+
+  .bolt-bottom-left,
+  .bolt-bottom-right {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #5A4030, #2A1810);
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.12), 0 1px 3px rgba(0,0,0,0.6);
+  }
+  .bolt-bottom-left { bottom: 16px; left: 16px; }
+  .bolt-bottom-right { bottom: 16px; right: 16px; }
+
+  /* Industrial texture line */
+  .card-stripe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+
+  .war-rig-card--orange .card-stripe { background: var(--orange); }
+  .war-rig-card--teal .card-stripe { background: var(--teal); }
+
+  .war-rig-card--orange { border-color: rgba(217, 78, 31, 0.2); }
+  .war-rig-card--teal { border-color: rgba(15, 163, 177, 0.2); }
+
+  .war-rig-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-hover);
+  }
+  .war-rig-card--orange:hover {
+    border-color: rgba(217, 78, 31, 0.4);
+    box-shadow: 0 20px 60px rgba(217, 78, 31, 0.12), 0 0 80px rgba(217, 78, 31, 0.06);
+  }
+  .war-rig-card--teal:hover {
+    border-color: rgba(15, 163, 177, 0.4);
+    box-shadow: 0 20px 60px rgba(15, 163, 177, 0.12), 0 0 80px rgba(15, 163, 177, 0.06);
+  }
+
+  .card-icon {
+    font-size: 48px;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .card-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    display: inline-block;
+    margin-bottom: 20px;
+  }
+
+  .war-rig-card--orange .card-tag {
+    color: var(--orange);
+    background: var(--orange-dim);
+    border: 1px solid rgba(217, 78, 31, 0.2);
+  }
+  .war-rig-card--teal .card-tag {
+    color: var(--teal);
+    background: var(--teal-dim);
+    border: 1px solid rgba(15, 163, 177, 0.2);
+  }
+
+  .card-title {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+  }
+
+  .card-desc {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+  }
+
+  .card-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .card-features li {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .card-features li::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    font-weight: 700;
+  }
+
+  .war-rig-card--orange .card-features li::before { color: var(--orange); }
+  .war-rig-card--teal .card-features li::before { color: var(--teal); }
+
+  /* ==============================
+     WAR PAINT STATS
+     ============================== */
+  .stats {
+    background: var(--war-black);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 64px 24px;
+    position: relative;
+    border-right: 1px solid var(--border);
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-number {
+    font-family: var(--font-heading);
+    font-size: clamp(56px, 8vw, 96px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .stat-item:nth-child(odd) .stat-number { color: var(--orange); }
+  .stat-item:nth-child(even) .stat-number { color: var(--teal); }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .stat-unit {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--smoke);
+    vertical-align: super;
+  }
+
+  /* ==============================
+     FURY ROAD PROCESS — CONVOY TIMELINE
+     ============================== */
+  .process {
+    background: linear-gradient(180deg, var(--war-dark), var(--war-black));
+    overflow: hidden;
+  }
+
+  .process-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .process-header .section-desc {
+    margin: 0 auto;
+  }
+
+  .convoy {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* Route line */
+  .convoy::before {
+    content: '';
+    position: absolute;
+    top: 36px;
+    left: 80px;
+    right: 80px;
+    height: 3px;
+    background: linear-gradient(90deg,
+      var(--orange) 0%, var(--orange) 25%,
+      var(--teal) 25%, var(--teal) 50%,
+      var(--orange) 50%, var(--orange) 75%,
+      var(--teal) 75%, var(--teal) 100%
+    );
+    opacity: 0.3;
+  }
+
+  /* Dashed overlay on route */
+  .convoy::after {
+    content: '';
+    position: absolute;
+    top: 36px;
+    left: 80px;
+    right: 80px;
+    height: 3px;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 8px,
+      var(--war-black) 8px,
+      var(--war-black) 16px
+    );
+  }
+
+  .convoy-stop {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stop-marker {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 28px;
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 700;
+    position: relative;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .convoy-stop:hover .stop-marker {
+    transform: scale(1.1);
+  }
+
+  .convoy-stop:nth-child(odd) .stop-marker {
+    background: var(--orange-dim);
+    border: 2px solid var(--orange);
+    color: var(--orange);
+    box-shadow: 0 0 30px rgba(217, 78, 31, 0.2);
+  }
+  .convoy-stop:nth-child(odd):hover .stop-marker {
+    box-shadow: 0 0 50px rgba(217, 78, 31, 0.4);
+  }
+
+  .convoy-stop:nth-child(even) .stop-marker {
+    background: var(--teal-dim);
+    border: 2px solid var(--teal);
+    color: var(--teal);
+    box-shadow: 0 0 30px rgba(15, 163, 177, 0.2);
+  }
+  .convoy-stop:nth-child(even):hover .stop-marker {
+    box-shadow: 0 0 50px rgba(15, 163, 177, 0.4);
+  }
+
+  .stop-number {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .stop-title {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+
+  .stop-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-muted);
+    max-width: 200px;
+    margin: 0 auto;
+  }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  .cta-section {
+    background: var(--war-black);
+    text-align: center;
+    padding: 140px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(217, 78, 31, 0.1) 0%, transparent 60%),
+      radial-gradient(ellipse at 30% 70%, rgba(15, 163, 177, 0.06) 0%, transparent 50%);
+    animation: dustDrift2 20s ease-in-out infinite;
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .cta-title {
+    font-size: clamp(48px, 8vw, 100px);
+    font-weight: 700;
+    letter-spacing: 6px;
+    margin-bottom: 24px;
+    text-shadow: 0 0 60px rgba(217, 78, 31, 0.25);
+  }
+
+  .cta-title .orange { color: var(--orange); }
+  .cta-title .teal { color: var(--teal); }
+
+  .cta-subtitle {
+    font-family: var(--font-heading);
+    font-size: clamp(20px, 3vw, 30px);
+    font-weight: 400;
+    letter-spacing: 8px;
+    color: var(--smoke);
+    margin-bottom: 48px;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    position: relative;
+    z-index: 2;
+    border-top: 2px solid var(--border);
+    background: var(--war-dark);
+    padding: 48px 24px;
+  }
+
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: var(--orange);
+  }
+
+  .footer-sep {
+    width: 1px;
+    height: 20px;
+    background: var(--border);
+  }
+
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 28px;
+  }
+
+  .footer-links a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color 0.3s;
+  }
+
+  .footer-links a:hover { color: var(--orange); }
+
+  /* Industrial bottom bar */
+  .footer-bar {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    max-width: var(--max-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-bar-segment {
+    height: 3px;
+    border-radius: 1px;
+  }
+
+  .footer-bar-segment:nth-child(1) { width: 40px; background: var(--orange); }
+  .footer-bar-segment:nth-child(2) { width: 60px; background: var(--teal); opacity: 0.5; }
+  .footer-bar-segment:nth-child(3) { width: 20px; background: var(--sand); opacity: 0.3; }
+  .footer-bar-segment:nth-child(4) { width: 80px; background: var(--orange); opacity: 0.2; }
+  .footer-bar-segment:nth-child(5) { width: 30px; background: var(--teal); opacity: 0.4; }
+
+  /* ==============================
+     MOBILE MENU
+     ============================== */
+  .mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1002;
+  }
+
+  .mobile-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-secondary);
+    margin: 5px 0;
+    transition: all 0.3s;
+  }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 900px) {
+    .products-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-item { padding: 40px 16px; }
+    .stat-item:nth-child(2) { border-right: none; }
+    .stat-item:nth-child(1),
+    .stat-item:nth-child(2) { border-bottom: 1px solid var(--border); }
+
+    .convoy {
+      flex-direction: column;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .convoy::before,
+    .convoy::after {
+      top: 36px;
+      left: 50%;
+      right: auto;
+      width: 3px;
+      height: calc(100% - 72px);
+      background: linear-gradient(180deg,
+        var(--orange) 0%, var(--orange) 25%,
+        var(--teal) 25%, var(--teal) 50%,
+        var(--orange) 50%, var(--orange) 75%,
+        var(--teal) 75%, var(--teal) 100%
+      );
+    }
+
+    .convoy::after {
+      background: repeating-linear-gradient(
+        180deg,
+        transparent 0,
+        transparent 8px,
+        var(--war-black) 8px,
+        var(--war-black) 16px
+      );
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-rivets { display: none; }
+    .mobile-toggle { display: block; }
+
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: var(--nav-height);
+      left: 0;
+      right: 0;
+      background: rgba(15, 5, 0, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 32px 24px;
+      gap: 24px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    section { padding: 80px 0; }
+
+    .war-rig-card { padding: 36px 28px; }
+
+    .footer-inner {
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+    .stat-item:last-child { border-bottom: none; }
+
+    .hero-title { letter-spacing: 3px; }
+
+    .cta-title { letter-spacing: 3px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Dust storm background layers -->
+<div class="dust-overlay" aria-hidden="true">
+  <div class="dust-layer"></div>
+  <div class="dust-layer-2"></div>
+  <div class="dust-layer-3"></div>
+</div>
+<div class="grain-overlay" aria-hidden="true"></div>
+
+<!-- Back link -->
+<a href="/index.html" class="back-link"><span>&larr;</span> Back</a>
+
+<!-- ==============================
+     NAV
+     ============================== -->
+<nav id="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <div class="nav-logo">KPT</div>
+      <div class="nav-divider"></div>
+      <div class="nav-tagline">Fury Road</div>
+    </div>
+    <div class="nav-rivets">
+      <div class="rivet"></div>
+      <div class="rivet"></div>
+      <div class="rivet"></div>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="#products">Arsenal</a>
+      <a href="#stats">War Paint</a>
+      <a href="#process">Fury Road</a>
+      <a href="#cta">Deploy</a>
+    </div>
+    <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ==============================
+     HERO — DUST STORM
+     ============================== -->
+<section class="hero" id="hero">
+  <div class="particles" aria-hidden="true">
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-label">KPT // CHROME AND FIRE</div>
+    <h1 class="hero-title">WITNESS <span class="orange">US.</span></h1>
+    <p class="hero-subtitle">SHINY AND CHROME</p>
+    <p class="hero-desc">
+      We build war machines. AI voice agents that never sleep and web designs
+      forged in fire. No half measures. No mercy. Your competitors won't know
+      what hit them.
+    </p>
+    <div class="hero-cta-group">
+      <a href="#products" class="btn btn-primary">Enter the Wasteland</a>
+      <a href="#process" class="btn btn-secondary">The Fury Road</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     PRODUCTS — WAR RIG CARDS
+     ============================== -->
+<section class="products" id="products">
+  <div class="container">
+    <div class="products-header reveal">
+      <div class="section-label">// War Rigs</div>
+      <h2 class="section-title">THE ARSENAL</h2>
+      <p class="section-desc">
+        Two engines of destruction. One tears through conversations at
+        machine speed. The other forges digital empires pixel by pixel.
+      </p>
+    </div>
+
+    <div class="products-grid">
+      <!-- KPT Agents -->
+      <div class="war-rig-card war-rig-card--orange reveal">
+        <div class="card-stripe"></div>
+        <div class="bolt-bottom-left"></div>
+        <div class="bolt-bottom-right"></div>
+        <span class="card-icon">&#x1F525;</span>
+        <div class="card-tag">War Rig Alpha</div>
+        <h3 class="card-title">KPT AGENTS</h3>
+        <p class="card-desc">
+          AI voice agents that ride eternal. They answer calls, qualify leads,
+          and book appointments while your competitors sleep in the dust.
+          Witnessed and verified.
+        </p>
+        <ul class="card-features">
+          <li>24/7 autonomous voice operations</li>
+          <li>Real-time lead qualification engine</li>
+          <li>Calendar integration & booking</li>
+          <li>Multi-language war capability</li>
+          <li>CRM sync & analytics command</li>
+        </ul>
+      </div>
+
+      <!-- KPT Designs -->
+      <div class="war-rig-card war-rig-card--teal reveal">
+        <div class="card-stripe"></div>
+        <div class="bolt-bottom-left"></div>
+        <div class="bolt-bottom-right"></div>
+        <span class="card-icon">&#x2699;&#xFE0F;</span>
+        <div class="card-tag">War Rig Beta</div>
+        <h3 class="card-title">KPT DESIGNS</h3>
+        <p class="card-desc">
+          Premium web design forged in the wasteland. Sites built to survive
+          anything — fast, brutal, beautiful. Chrome-plated digital
+          fortresses that convert.
+        </p>
+        <ul class="card-features">
+          <li>Performance-first architecture</li>
+          <li>Conversion-optimized layouts</li>
+          <li>Mobile warfare responsive</li>
+          <li>SEO armored & battle-tested</li>
+          <li>Custom design — no templates</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     WAR PAINT STATS
+     ============================== -->
+<section class="stats" id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-number" data-target="99.8" data-suffix="%">0</div>
+        <div class="stat-label">Uptime Record</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number" data-target="500" data-suffix="+">0</div>
+        <div class="stat-label">Calls Handled Daily</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number" data-target="3" data-suffix="x">0</div>
+        <div class="stat-label">Faster Than Human</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number" data-target="47" data-suffix="ms">0</div>
+        <div class="stat-label">Response Latency</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     FURY ROAD PROCESS
+     ============================== -->
+<section class="process" id="process">
+  <div class="container">
+    <div class="process-header reveal">
+      <div class="section-label">// Convoy Route</div>
+      <h2 class="section-title">THE FURY ROAD</h2>
+      <p class="section-desc">
+        Four stops between you and domination. Each one brings you closer
+        to the green place. No detours. No surrender.
+      </p>
+    </div>
+
+    <div class="convoy reveal">
+      <div class="convoy-stop">
+        <div class="stop-marker">01</div>
+        <div class="stop-number">Phase I</div>
+        <h3 class="stop-title">SCOUT</h3>
+        <p class="stop-desc">
+          Recon your terrain. We map your market, audit your enemies,
+          find the weak spots.
+        </p>
+      </div>
+
+      <div class="convoy-stop">
+        <div class="stop-marker">02</div>
+        <div class="stop-number">Phase II</div>
+        <h3 class="stop-title">BUILD</h3>
+        <p class="stop-desc">
+          Forge the war rig. Custom agents and sites welded together
+          with precision engineering.
+        </p>
+      </div>
+
+      <div class="convoy-stop">
+        <div class="stop-marker">03</div>
+        <div class="stop-number">Phase III</div>
+        <h3 class="stop-title">DEPLOY</h3>
+        <p class="stop-desc">
+          Hit the road. Launch your agents, go live with your site.
+          Full throttle from day one.
+        </p>
+      </div>
+
+      <div class="convoy-stop">
+        <div class="stop-marker">04</div>
+        <div class="stop-number">Phase IV</div>
+        <h3 class="stop-title">DOMINATE</h3>
+        <p class="stop-desc">
+          Own the wasteland. Optimize, scale, and crush everything
+          in your path. Witnessed.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     CTA
+     ============================== -->
+<section class="cta-section" id="cta">
+  <div class="cta-content reveal">
+    <div class="section-label">// What a Lovely Day</div>
+    <h2 class="cta-title">OH WHAT A <span class="orange">LOVELY</span> <span class="teal">DAY.</span></h2>
+    <p class="cta-subtitle">RIDE WITH US OR GET LEFT IN THE DUST</p>
+    <a href="#hero" class="btn btn-primary">RIDE ETERNAL</a>
+  </div>
+</section>
+
+<!-- ==============================
+     FOOTER
+     ============================== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">KPT</div>
+      <div class="footer-sep"></div>
+      <div class="footer-copy">&copy; 2026 KPT Technologies</div>
+    </div>
+    <div class="footer-links">
+      <a href="#products">Arsenal</a>
+      <a href="#stats">War Paint</a>
+      <a href="#process">Fury Road</a>
+    </div>
+  </div>
+  <div class="footer-bar">
+    <div class="footer-bar-segment"></div>
+    <div class="footer-bar-segment"></div>
+    <div class="footer-bar-segment"></div>
+    <div class="footer-bar-segment"></div>
+    <div class="footer-bar-segment"></div>
+  </div>
+</footer>
+
+<!-- ==============================
+     SCRIPTS
+     ============================== -->
+<script>
+(function() {
+  'use strict';
+
+  // ---- Nav scroll effect ----
+  const nav = document.getElementById('nav');
+  let lastScroll = 0;
+
+  function handleScroll() {
+    const scrollY = window.scrollY;
+    if (scrollY > 60) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+    lastScroll = scrollY;
+  }
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+
+  // ---- Mobile menu toggle ----
+  const mobileToggle = document.getElementById('mobileToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  mobileToggle.addEventListener('click', function() {
+    navLinks.classList.toggle('open');
+  });
+
+  // Close menu on link click
+  navLinks.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      navLinks.classList.remove('open');
+    });
+  });
+
+  // ---- Hero staggered entrance ----
+  function animateHero() {
+    const elements = [
+      { el: document.querySelector('.hero-label'), delay: 200 },
+      { el: document.querySelector('.hero-title'), delay: 400 },
+      { el: document.querySelector('.hero-subtitle'), delay: 600 },
+      { el: document.querySelector('.hero-desc'), delay: 800 },
+      { el: document.querySelector('.hero-cta-group'), delay: 1000 }
+    ];
+
+    elements.forEach(function(item) {
+      if (!item.el) return;
+      setTimeout(function() {
+        item.el.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+        item.el.style.opacity = '1';
+        item.el.style.transform = 'translateY(0)';
+      }, item.delay);
+    });
+  }
+
+  // ---- IntersectionObserver for reveals ----
+  const revealElements = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    var revealObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach(function(el) {
+      revealObserver.observe(el);
+    });
+  } else {
+    // Fallback: show all
+    revealElements.forEach(function(el) {
+      el.classList.add('visible');
+    });
+  }
+
+  // ---- Stat counter animation ----
+  var statNumbers = document.querySelectorAll('.stat-number[data-target]');
+  var statAnimated = new Set();
+
+  if ('IntersectionObserver' in window) {
+    var statObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && !statAnimated.has(entry.target)) {
+          statAnimated.add(entry.target);
+          animateCounter(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    statNumbers.forEach(function(el) {
+      statObserver.observe(el);
+    });
+  }
+
+  function animateCounter(el) {
+    var target = parseFloat(el.getAttribute('data-target'));
+    var suffix = el.getAttribute('data-suffix') || '';
+    var duration = 2000;
+    var startTime = null;
+    var isFloat = target % 1 !== 0;
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var progress = Math.min((timestamp - startTime) / duration, 1);
+      // Ease out cubic
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var current = eased * target;
+
+      if (isFloat) {
+        el.textContent = current.toFixed(1) + suffix;
+      } else {
+        el.textContent = Math.floor(current) + suffix;
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        if (isFloat) {
+          el.textContent = target.toFixed(1) + suffix;
+        } else {
+          el.textContent = target + suffix;
+        }
+      }
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  // ---- Smooth scroll for anchor links ----
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      var targetEl = document.querySelector(targetId);
+      if (targetEl) {
+        e.preventDefault();
+        var offset = nav.offsetHeight;
+        var targetPosition = targetEl.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // ---- Init ----
+  window.addEventListener('load', function() {
+    animateHero();
+  });
+
+})();
+</script>
+
+</body>
+</html>

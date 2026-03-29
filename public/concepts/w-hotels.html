@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Whatever/Whenever</title>
+<meta name="description" content="KPT. AI voice agents and premium web design. Nightlife energy meets bold technology. Whatever you want. Whenever you want it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Oswald:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --w-purple: #6B2D8B;
+    --w-purple-deep: #4A1D62;
+    --w-purple-light: #8B4DAB;
+    --w-purple-glow: rgba(107, 45, 139, 0.4);
+    --w-purple-dim: rgba(107, 45, 139, 0.12);
+    --electric-blue: #00C8FF;
+    --electric-blue-glow: rgba(0, 200, 255, 0.35);
+    --electric-blue-dim: rgba(0, 200, 255, 0.1);
+    --hot-pink: #FF0080;
+    --hot-pink-glow: rgba(255, 0, 128, 0.35);
+    --hot-pink-dim: rgba(255, 0, 128, 0.1);
+    --black: #000000;
+    --black-rich: #0A0A0A;
+    --black-card: #111111;
+    --black-surface: #161616;
+    --white: #FFFFFF;
+    --white-off: #F0F0F0;
+    --gray-100: #E0E0E0;
+    --gray-300: #A0A0A0;
+    --gray-500: #666666;
+    --gray-700: #333333;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(107, 45, 139, 0.5);
+    --neon-text-shadow: 0 0 10px var(--electric-blue-glow), 0 0 40px var(--electric-blue-dim);
+    --neon-pink-shadow: 0 0 10px var(--hot-pink-glow), 0 0 40px var(--hot-pink-dim);
+    --neon-purple-shadow: 0 0 10px var(--w-purple-glow), 0 0 40px var(--w-purple-dim);
+
+    --font-display: 'Oswald', 'Impact', sans-serif;
+    --font-body: 'Montserrat', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--hot-pink);
+    color: var(--white);
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  /* ── Layout ────────────────────────────────────────────────── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .section { padding: 120px 0; }
+
+  /* ── Scroll Animations ─────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ── Back Link ─────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-300);
+    padding: 10px 16px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+  }
+  .back-link:hover {
+    color: var(--electric-blue);
+    border-color: var(--electric-blue);
+    text-shadow: var(--neon-text-shadow);
+  }
+
+  /* ── Nav ────────────────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+    height: 72px;
+    display: flex;
+    align-items: center;
+    padding: 0 48px;
+  }
+
+  .nav-inner {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+
+  .nav-logo span {
+    color: var(--hot-pink);
+    text-shadow: var(--neon-pink-shadow);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-300);
+    transition: color 0.3s ease;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--hot-pink), var(--electric-blue));
+    transition: width 0.3s var(--ease-out);
+  }
+
+  .nav-links a:hover {
+    color: var(--white);
+  }
+
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  /* ── Hero ───────────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--black);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* Ambient glow orbs */
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--w-purple-glow) 0%, transparent 70%);
+    animation: float-orb 8s ease-in-out infinite;
+  }
+
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    left: -10%;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--hot-pink-glow) 0%, transparent 70%);
+    animation: float-orb 10s ease-in-out infinite reverse;
+  }
+
+  .hero-orb-blue {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--electric-blue-dim) 0%, transparent 70%);
+    animation: pulse-orb 6s ease-in-out infinite;
+  }
+
+  @keyframes float-orb {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -40px) scale(1.1); }
+  }
+
+  @keyframes pulse-orb {
+    0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.15); }
+  }
+
+  /* Grid overlay */
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(107, 45, 139, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(107, 45, 139, 0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 24px;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--electric-blue);
+    margin-bottom: 32px;
+    text-shadow: var(--neon-text-shadow);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(100px, 18vw, 220px);
+    font-weight: 700;
+    letter-spacing: 16px;
+    line-height: 0.9;
+    text-transform: uppercase;
+    color: var(--white);
+    position: relative;
+    margin-bottom: 24px;
+  }
+
+  .hero-title .neon-letter {
+    display: inline-block;
+    position: relative;
+  }
+
+  .hero-title .neon-letter.pink {
+    color: var(--hot-pink);
+    text-shadow: var(--neon-pink-shadow);
+    animation: neon-flicker-pink 4s ease-in-out infinite;
+  }
+
+  .hero-title .neon-letter.blue {
+    color: var(--electric-blue);
+    text-shadow: var(--neon-text-shadow);
+    animation: neon-flicker-blue 5s ease-in-out infinite;
+  }
+
+  .hero-title .neon-letter.purple {
+    color: var(--w-purple-light);
+    text-shadow: var(--neon-purple-shadow);
+    animation: neon-flicker-purple 6s ease-in-out infinite;
+  }
+
+  @keyframes neon-flicker-pink {
+    0%, 100% { text-shadow: 0 0 10px var(--hot-pink-glow), 0 0 40px var(--hot-pink-dim); }
+    50% { text-shadow: 0 0 20px var(--hot-pink-glow), 0 0 60px var(--hot-pink-glow), 0 0 100px var(--hot-pink-dim); }
+  }
+
+  @keyframes neon-flicker-blue {
+    0%, 100% { text-shadow: 0 0 10px var(--electric-blue-glow), 0 0 40px var(--electric-blue-dim); }
+    50% { text-shadow: 0 0 20px var(--electric-blue-glow), 0 0 60px var(--electric-blue-glow), 0 0 100px var(--electric-blue-dim); }
+  }
+
+  @keyframes neon-flicker-purple {
+    0%, 100% { text-shadow: 0 0 10px var(--w-purple-glow), 0 0 40px var(--w-purple-dim); }
+    50% { text-shadow: 0 0 20px var(--w-purple-glow), 0 0 60px var(--w-purple-glow), 0 0 100px var(--w-purple-dim); }
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-body);
+    font-size: clamp(16px, 2vw, 22px);
+    font-weight: 300;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--gray-300);
+    margin-bottom: 16px;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-body);
+    font-size: clamp(14px, 1.5vw, 18px);
+    font-weight: 400;
+    color: var(--gray-500);
+    max-width: 500px;
+    margin: 0 auto 48px;
+    line-height: 1.8;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Buttons ────────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 18px 40px;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all 0.4s var(--ease-out);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary {
+    background: var(--hot-pink);
+    color: var(--white);
+    box-shadow: 0 0 30px var(--hot-pink-dim);
+  }
+
+  .btn-primary:hover {
+    background: #FF1A8C;
+    box-shadow: 0 0 50px var(--hot-pink-glow);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--electric-blue);
+    border: 1px solid var(--electric-blue);
+    box-shadow: 0 0 20px var(--electric-blue-dim);
+  }
+
+  .btn-outline:hover {
+    background: var(--electric-blue);
+    color: var(--black);
+    box-shadow: 0 0 40px var(--electric-blue-glow);
+    transform: translateY(-2px);
+  }
+
+  /* ── Scroll indicator ──────────────────────────────────────── */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .scroll-indicator span {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--w-purple), transparent);
+    animation: scroll-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scroll-pulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  /* ── Whatever/Whenever Bar ─────────────────────────────────── */
+  .concierge-bar {
+    background: linear-gradient(135deg, var(--w-purple-deep) 0%, var(--w-purple) 50%, var(--w-purple-deep) 100%);
+    padding: 60px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .concierge-bar::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 100px,
+      rgba(255, 255, 255, 0.02) 100px,
+      rgba(255, 255, 255, 0.02) 101px
+    );
+  }
+
+  .concierge-inner {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .concierge-label {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 700;
+    letter-spacing: 10px;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .concierge-label .slash {
+    color: var(--hot-pink);
+    text-shadow: var(--neon-pink-shadow);
+    margin: 0 4px;
+  }
+
+  .concierge-desc {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  /* ── Features ──────────────────────────────────────────────── */
+  .features {
+    background: var(--black-rich);
+    padding: 140px 0;
+    position: relative;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--electric-blue);
+    margin-bottom: 20px;
+    text-shadow: var(--neon-text-shadow);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 1.1;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .feature-card {
+    background: var(--black-card);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s var(--ease-out);
+    border: 1px solid var(--border);
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--hot-pink), var(--w-purple), var(--electric-blue));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .feature-card:hover {
+    background: var(--black-surface);
+    border-color: var(--w-purple-glow);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(107, 45, 139, 0.15);
+  }
+
+  .feature-card:hover::before {
+    opacity: 1;
+  }
+
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    font-size: 28px;
+    background: var(--w-purple-dim);
+    border: 1px solid rgba(107, 45, 139, 0.2);
+    color: var(--w-purple-light);
+  }
+
+  .feature-card:nth-child(2) .feature-icon {
+    background: var(--hot-pink-dim);
+    border-color: rgba(255, 0, 128, 0.2);
+    color: var(--hot-pink);
+  }
+
+  .feature-card:nth-child(3) .feature-icon {
+    background: var(--electric-blue-dim);
+    border-color: rgba(0, 200, 255, 0.2);
+    color: var(--electric-blue);
+  }
+
+  .feature-card:nth-child(4) .feature-icon {
+    background: var(--electric-blue-dim);
+    border-color: rgba(0, 200, 255, 0.2);
+    color: var(--electric-blue);
+  }
+
+  .feature-card:nth-child(5) .feature-icon {
+    background: var(--hot-pink-dim);
+    border-color: rgba(255, 0, 128, 0.2);
+    color: var(--hot-pink);
+  }
+
+  .feature-card:nth-child(6) .feature-icon {
+    background: var(--w-purple-dim);
+    border-color: rgba(107, 45, 139, 0.2);
+    color: var(--w-purple-light);
+  }
+
+  .feature-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 14px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--gray-300);
+    line-height: 1.8;
+  }
+
+  /* ── Stats ─────────────────────────────────────────────────── */
+  .stats {
+    background: var(--black);
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--w-purple-dim) 0%, transparent 40%, transparent 60%, var(--hot-pink-dim) 100%);
+    pointer-events: none;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 48px 24px;
+    position: relative;
+  }
+
+  .stat-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--w-purple-glow), transparent);
+  }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 6vw, 72px);
+    font-weight: 700;
+    letter-spacing: 4px;
+    line-height: 1;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--electric-blue) 0%, var(--hot-pink) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+
+  /* ── DJ / Nightlife Section ────────────────────────────────── */
+  .nightlife {
+    background: var(--black-rich);
+    padding: 140px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nightlife-bg-element {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+  }
+
+  .nightlife-bg-element.one {
+    top: -100px;
+    right: -100px;
+    background: var(--w-purple);
+    opacity: 0.15;
+  }
+
+  .nightlife-bg-element.two {
+    bottom: -100px;
+    left: -100px;
+    background: var(--hot-pink);
+    opacity: 0.1;
+  }
+
+  .nightlife-content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .nightlife-text h2 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+
+  .nightlife-text h2 .accent {
+    color: var(--hot-pink);
+    text-shadow: var(--neon-pink-shadow);
+  }
+
+  .nightlife-text p {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--gray-300);
+    line-height: 1.9;
+    margin-bottom: 36px;
+  }
+
+  .nightlife-visual {
+    position: relative;
+  }
+
+  .eq-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    height: 280px;
+    padding: 40px;
+    background: var(--black-card);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .eq-bars::before {
+    content: 'NOW PLAYING';
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--gray-500);
+  }
+
+  .eq-bars::after {
+    content: 'KPT LIVE';
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--hot-pink);
+    text-shadow: var(--neon-pink-shadow);
+  }
+
+  .eq-bar {
+    width: 8px;
+    border-radius: 2px 2px 0 0;
+    animation: eq-bounce 1.2s ease-in-out infinite;
+  }
+
+  .eq-bar:nth-child(odd) {
+    background: linear-gradient(to top, var(--w-purple), var(--hot-pink));
+  }
+
+  .eq-bar:nth-child(even) {
+    background: linear-gradient(to top, var(--w-purple-deep), var(--electric-blue));
+  }
+
+  .eq-bar:nth-child(1) { height: 40%; animation-delay: 0s; }
+  .eq-bar:nth-child(2) { height: 65%; animation-delay: 0.1s; }
+  .eq-bar:nth-child(3) { height: 45%; animation-delay: 0.2s; }
+  .eq-bar:nth-child(4) { height: 80%; animation-delay: 0.05s; }
+  .eq-bar:nth-child(5) { height: 55%; animation-delay: 0.15s; }
+  .eq-bar:nth-child(6) { height: 90%; animation-delay: 0.25s; }
+  .eq-bar:nth-child(7) { height: 50%; animation-delay: 0.08s; }
+  .eq-bar:nth-child(8) { height: 70%; animation-delay: 0.18s; }
+  .eq-bar:nth-child(9) { height: 35%; animation-delay: 0.12s; }
+  .eq-bar:nth-child(10) { height: 85%; animation-delay: 0.22s; }
+  .eq-bar:nth-child(11) { height: 60%; animation-delay: 0.03s; }
+  .eq-bar:nth-child(12) { height: 75%; animation-delay: 0.13s; }
+  .eq-bar:nth-child(13) { height: 45%; animation-delay: 0.07s; }
+  .eq-bar:nth-child(14) { height: 95%; animation-delay: 0.17s; }
+  .eq-bar:nth-child(15) { height: 50%; animation-delay: 0.11s; }
+  .eq-bar:nth-child(16) { height: 70%; animation-delay: 0.21s; }
+  .eq-bar:nth-child(17) { height: 40%; animation-delay: 0.06s; }
+  .eq-bar:nth-child(18) { height: 60%; animation-delay: 0.16s; }
+  .eq-bar:nth-child(19) { height: 80%; animation-delay: 0.09s; }
+  .eq-bar:nth-child(20) { height: 55%; animation-delay: 0.19s; }
+
+  @keyframes eq-bounce {
+    0%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(0.4); }
+  }
+
+  .nightlife-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .nightlife-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    color: var(--gray-300);
+    transition: all 0.3s ease;
+  }
+
+  .nightlife-tag:hover {
+    border-color: var(--w-purple);
+    color: var(--w-purple-light);
+    background: var(--w-purple-dim);
+  }
+
+  /* ── CTA Section ───────────────────────────────────────────── */
+  .cta {
+    position: relative;
+    padding: 140px 0;
+    background: var(--black);
+    overflow: hidden;
+  }
+
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, var(--w-purple-dim) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 50%, var(--hot-pink-dim) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, var(--electric-blue-dim) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .cta-content h2 {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 7vw, 96px);
+    font-weight: 700;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+
+  .cta-content h2 .gradient-text {
+    background: linear-gradient(135deg, var(--electric-blue) 0%, var(--hot-pink) 50%, var(--w-purple-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cta-content p {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--gray-300);
+    max-width: 560px;
+    margin: 0 auto 48px;
+    line-height: 1.8;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Footer ────────────────────────────────────────────────── */
+  footer {
+    background: var(--black-rich);
+    border-top: 1px solid var(--border);
+    padding: 60px 0 40px;
+  }
+
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 60px;
+  }
+
+  .footer-brand .footer-logo {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .footer-brand .footer-logo span {
+    color: var(--hot-pink);
+  }
+
+  .footer-brand p {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray-500);
+    line-height: 1.8;
+    max-width: 300px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+  }
+
+  .footer-col ul li {
+    margin-bottom: 12px;
+  }
+
+  .footer-col ul a {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--gray-500);
+    transition: color 0.3s ease;
+  }
+
+  .footer-col ul a:hover {
+    color: var(--electric-blue);
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-bottom p {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gray-500);
+    letter-spacing: 2px;
+  }
+
+  .footer-bottom p .pink { color: var(--hot-pink); }
+
+  .footer-socials {
+    display: flex;
+    gap: 16px;
+  }
+
+  .footer-socials a {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    color: var(--gray-500);
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+
+  .footer-socials a:hover {
+    border-color: var(--w-purple);
+    color: var(--w-purple-light);
+    background: var(--w-purple-dim);
+  }
+
+  /* ── Responsive ────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    nav {
+      padding: 0 20px;
+      height: 60px;
+    }
+
+    .nav-links { display: none; }
+
+    .back-link {
+      top: 14px;
+      left: auto;
+      right: 14px;
+      font-size: 10px;
+      padding: 8px 12px;
+    }
+
+    .nav-logo {
+      font-size: 22px;
+      letter-spacing: 4px;
+    }
+
+    .section { padding: 80px 0; }
+
+    .hero {
+      min-height: 100svh;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 4px;
+    }
+
+    .hero-title {
+      letter-spacing: 8px;
+    }
+
+    .hero-subtitle {
+      letter-spacing: 4px;
+      font-size: 14px;
+    }
+
+    .hero-tagline {
+      font-size: 14px;
+      padding: 0 16px;
+    }
+
+    .hero-cta-group {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn {
+      width: 100%;
+      max-width: 300px;
+      justify-content: center;
+      padding: 16px 32px;
+    }
+
+    .concierge-bar { padding: 40px 0; }
+
+    .concierge-label {
+      letter-spacing: 4px;
+    }
+
+    .concierge-desc {
+      font-size: 12px;
+      letter-spacing: 2px;
+    }
+
+    .features { padding: 100px 0; }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 1px;
+    }
+
+    .feature-card {
+      padding: 36px 28px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-item:nth-child(2)::after { display: none; }
+
+    .stat-item {
+      padding: 32px 16px;
+    }
+
+    .stat-number {
+      font-size: 48px;
+    }
+
+    .nightlife { padding: 100px 0; }
+
+    .nightlife-content {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .eq-bars {
+      height: 200px;
+    }
+
+    .cta { padding: 100px 0; }
+
+    .cta-content p {
+      font-size: 16px;
+    }
+
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link" aria-label="Back to gallery">&larr; Back</a>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">KP<span>T</span></div>
+    <ul class="nav-links">
+      <li><a href="#features">Experiences</a></li>
+      <li><a href="#nightlife">Nightlife</a></li>
+      <li><a href="#stats">Impact</a></li>
+      <li><a href="#cta">Check In</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-orb-blue"></div>
+  </div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow reveal">Whatever / Whenever</p>
+    <h1 class="hero-title reveal reveal-delay-1">
+      <span class="neon-letter pink">K</span><span class="neon-letter blue">P</span><span class="neon-letter purple">T</span>
+    </h1>
+    <p class="hero-subtitle reveal reveal-delay-2">Where Bold Meets Digital</p>
+    <p class="hero-tagline reveal reveal-delay-3">
+      Nightclub energy. Hotel luxury. Technology that never sleeps.
+      Your digital concierge is on the scene.
+    </p>
+    <div class="hero-cta-group reveal reveal-delay-4">
+      <a href="#cta" class="btn btn-primary">Check In Now</a>
+      <a href="#features" class="btn btn-outline">Explore the Scene</a>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- Whatever/Whenever Bar -->
+<section class="concierge-bar">
+  <div class="container">
+    <div class="concierge-inner reveal">
+      <p class="concierge-label">Whatever<span class="slash">/</span>Whenever</p>
+      <p class="concierge-desc">Your wish is our command. No request too bold.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features section" id="features">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow reveal">The Experience</p>
+      <h2 class="section-title reveal reveal-delay-1">Curated for the Bold</h2>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3 class="feature-title">Voice Agents</h3>
+        <p class="feature-desc">AI concierge that never clocks out. Natural conversation, instant response, 24/7 presence for your guests and clients.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3 class="feature-title">Web Design</h3>
+        <p class="feature-desc">Bold, immersive digital experiences that command attention. Nightlife energy translated into pixels. No wallflowers.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3 class="feature-title">Speed to Scene</h3>
+        <p class="feature-desc">From concept to launch at the speed of nightlife. No waiting lists. Your brand hits the floor before dawn.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3 class="feature-title">Global Reach</h3>
+        <p class="feature-desc">From Barcelona to Bali, your presence travels. Multi-locale, multi-language. The world is your lobby.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-4">
+        <div class="feature-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="7.5 4.21 12 6.81 16.5 4.21"/><polyline points="7.5 19.79 7.5 14.6 3 12"/><polyline points="21 12 16.5 14.6 16.5 19.79"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </div>
+        <h3 class="feature-title">VIP Integration</h3>
+        <p class="feature-desc">Seamless connections with your existing stack. CRM, booking, payments. Everything syncs behind the velvet rope.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-5">
+        <div class="feature-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="feature-title">Always Secure</h3>
+        <p class="feature-desc">Enterprise-grade security with a velvet touch. Your data stays in the penthouse. End-to-end encrypted, always.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats section" id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-number">99.9%</div>
+        <div class="stat-label">Uptime Guarantee</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Concierge Active</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-number">&lt;2s</div>
+        <div class="stat-label">Response Time</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-number">50+</div>
+        <div class="stat-label">Brands Served</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Nightlife / DJ Section -->
+<section class="nightlife section" id="nightlife">
+  <div class="nightlife-bg-element one"></div>
+  <div class="nightlife-bg-element two"></div>
+  <div class="container">
+    <div class="nightlife-content">
+      <div class="nightlife-text">
+        <p class="section-eyebrow reveal">The Vibe</p>
+        <h2 class="reveal reveal-delay-1">Set the <span class="accent">Tone</span> for Your Brand</h2>
+        <p class="reveal reveal-delay-2">
+          Like the best DJ sets, great technology reads the room. We build digital experiences
+          that adapt, respond, and keep your audience coming back for more. No filler tracks.
+          Every interaction is a headliner.
+        </p>
+        <div class="nightlife-tags reveal reveal-delay-3">
+          <span class="nightlife-tag">AI Agents</span>
+          <span class="nightlife-tag">Voice UI</span>
+          <span class="nightlife-tag">Web Design</span>
+          <span class="nightlife-tag">Automation</span>
+          <span class="nightlife-tag">Branding</span>
+          <span class="nightlife-tag">SEO</span>
+        </div>
+      </div>
+      <div class="nightlife-visual reveal reveal-delay-2">
+        <div class="eq-bars">
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="cta">
+  <div class="cta-bg"></div>
+  <div class="container">
+    <div class="cta-content">
+      <p class="section-eyebrow reveal">Ready?</p>
+      <h2 class="reveal reveal-delay-1"><span class="gradient-text">Check In</span></h2>
+      <p class="reveal reveal-delay-2">
+        Your digital transformation starts at the front desk.
+        Bold brands don't wait in line.
+      </p>
+      <div class="cta-actions reveal reveal-delay-3">
+        <a href="#" class="btn btn-primary">Get Started</a>
+        <a href="#" class="btn btn-outline">Book a Tour</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">KP<span>T</span></div>
+        <p>AI voice agents and premium web design. Nightlife energy meets bold technology. Whatever you want. Whenever you want it.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Voice Agents</a></li>
+          <li><a href="#">Web Design</a></li>
+          <li><a href="#">Automation</a></li>
+          <li><a href="#">Branding</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 KPT. Built with <span class="pink">&hearts;</span> and neon.</p>
+      <div class="footer-socials">
+        <a href="#" aria-label="Twitter">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="#" aria-label="LinkedIn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // IntersectionObserver for scroll animations
+  document.addEventListener('DOMContentLoaded', function() {
+    const reveals = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    reveals.forEach(function(el) {
+      observer.observe(el);
+    });
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

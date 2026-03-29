@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Build with Voice. Design with Precision.</title>
+<meta name="description" content="KPT powers AI voice agents and premium web experiences for businesses that demand more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --charcoal: #1A1D23;
+    --teal: #00D4AA;
+    --teal-dim: rgba(0, 212, 170, 0.15);
+    --teal-glow: rgba(0, 212, 170, 0.25);
+    --ice: #F0F4F8;
+    --gray: #6B7280;
+    --surface: #22262E;
+    --surface-light: #2A2F38;
+    --border: rgba(255, 255, 255, 0.06);
+    --border-hover: rgba(0, 212, 170, 0.3);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--charcoal);
+    color: var(--ice);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    line-height: 1.15;
+  }
+
+  .label, .mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  /* ── Layout ───────────────────────────────────────────────── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .section {
+    padding: 100px 0;
+  }
+
+  /* ── Back Link ────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--gray);
+    letter-spacing: 0.5px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: rgba(26, 29, 35, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    transition: all 0.25s ease;
+  }
+  .back-link:hover {
+    color: var(--teal);
+    border-color: var(--border-hover);
+  }
+
+  /* ── Nav ──────────────────────────────────────────────────── */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0 24px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(26, 29, 35, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.3s ease;
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    flex-shrink: 0;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray);
+    transition: color 0.2s ease;
+    letter-spacing: 0.2px;
+  }
+  .nav-links a:hover { color: var(--ice); }
+
+  .nav-cta {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--charcoal);
+    background: var(--teal);
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    letter-spacing: 0.2px;
+  }
+  .nav-cta:hover {
+    background: #00e8bb;
+    box-shadow: 0 0 24px var(--teal-glow);
+    transform: translateY(-1px);
+  }
+
+  .nav-mobile-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .nav-mobile-toggle span {
+    width: 22px;
+    height: 2px;
+    background: var(--ice);
+    border-radius: 1px;
+    transition: all 0.25s ease;
+  }
+
+  /* ── Hero ─────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, var(--teal-dim) 0%, transparent 70%);
+    animation: pulseGlow 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.4; transform: translate(-50%, -55%) scale(1); }
+    50% { opacity: 0.7; transform: translate(-50%, -55%) scale(1.08); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--teal);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 212, 170, 0.2);
+    background: rgba(0, 212, 170, 0.05);
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    animation: blink 2s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    margin-bottom: 24px;
+    color: var(--ice);
+  }
+  .hero h1 .accent { color: var(--teal); }
+
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--gray);
+    max-width: 600px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--charcoal);
+    background: var(--teal);
+    padding: 14px 32px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .btn-primary:hover {
+    background: #00e8bb;
+    box-shadow: 0 0 32px var(--teal-glow);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ice);
+    background: transparent;
+    padding: 14px 32px;
+    border-radius: 10px;
+    border: 1px solid rgba(240, 244, 248, 0.15);
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .btn-outline:hover {
+    border-color: rgba(240, 244, 248, 0.35);
+    background: rgba(255, 255, 255, 0.04);
+    transform: translateY(-2px);
+  }
+
+  /* ── Product Cards ───────────────────────────────────────── */
+  .products {
+    padding: 80px 0 100px;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--teal);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 64px;
+    letter-spacing: -0.5px;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .product-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: linear-gradient(135deg, transparent, rgba(0, 212, 170, 0.3), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .product-card:hover::before { opacity: 1; }
+
+  .product-card:hover {
+    background: var(--surface-light);
+    transform: translateY(-4px);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3), 0 0 40px var(--teal-dim);
+  }
+
+  .product-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--teal-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+
+  .product-card h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+
+  .product-card p {
+    font-size: 16px;
+    color: var(--gray);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .product-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .product-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: rgba(240, 244, 248, 0.7);
+  }
+  .product-features li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--teal);
+    flex-shrink: 0;
+  }
+
+  .product-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--teal);
+    margin-top: 28px;
+    transition: gap 0.25s ease;
+  }
+  .product-link:hover { gap: 10px; }
+
+  /* ── Stats ────────────────────────────────────────────────── */
+  .stats {
+    padding: 60px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+  }
+
+  .stat-item {}
+
+  .stat-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 600;
+    color: var(--ice);
+    letter-spacing: -1px;
+    margin-bottom: 6px;
+  }
+  .stat-number .teal { color: var(--teal); }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--gray);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Palette Section ─────────────────────────────────────── */
+  .palette-section {
+    padding: 100px 0;
+  }
+
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-top: 48px;
+  }
+
+  .swatch {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    transition: all 0.3s ease;
+  }
+  .swatch:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .swatch-color {
+    height: 120px;
+    position: relative;
+  }
+
+  .swatch-info {
+    padding: 16px 18px;
+  }
+
+  .swatch-name {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--ice);
+  }
+
+  .swatch-hex {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--gray);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Typography Section ──────────────────────────────────── */
+  .type-section {
+    padding: 100px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .type-showcase {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    margin-top: 48px;
+  }
+
+  .type-group {
+    padding: 40px;
+    border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .type-group-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--teal);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .type-group-meta {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .type-sample-dm-hero {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    color: var(--ice);
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .type-sample-dm-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: rgba(240, 244, 248, 0.7);
+    margin-bottom: 12px;
+  }
+
+  .type-sample-dm-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--gray);
+  }
+
+  .type-sample-inter-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(240, 244, 248, 0.85);
+    line-height: 1.75;
+    max-width: 640px;
+    margin-bottom: 16px;
+  }
+
+  .type-sample-inter-small {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+
+  .type-sample-mono-lg {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--teal);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .type-sample-mono-md {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(240, 244, 248, 0.6);
+    margin-bottom: 12px;
+  }
+
+  .type-sample-mono-sm {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--gray);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Footer ──────────────────────────────────────────────── */
+  .footer {
+    padding: 48px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .footer-copy {
+    font-size: 13px;
+    color: var(--gray);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    color: var(--gray);
+    transition: color 0.2s ease;
+  }
+  .footer-links a:hover { color: var(--ice); }
+
+  /* ── Animations ──────────────────────────────────────────── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .fade-in-delay-1 { transition-delay: 0.1s; }
+  .fade-in-delay-2 { transition-delay: 0.2s; }
+  .fade-in-delay-3 { transition-delay: 0.3s; }
+  .fade-in-delay-4 { transition-delay: 0.4s; }
+
+  /* ── Grid Background (subtle) ────────────────────────────── */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 50% 60% at 50% 40%, black, transparent);
+    -webkit-mask-image: radial-gradient(ellipse 50% 60% at 50% 40%, black, transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Responsive ──────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-mobile-toggle { display: flex; }
+    .nav-cta { display: none; }
+
+    .nav.mobile-open .nav-links {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 72px;
+      left: 0;
+      right: 0;
+      background: rgba(26, 29, 35, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 24px;
+      gap: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav.mobile-open .nav-cta {
+      display: inline-block;
+      position: absolute;
+      top: 72px;
+      right: 24px;
+      margin-top: 140px;
+    }
+
+    .back-link {
+      position: relative;
+      top: auto;
+      left: auto;
+      display: inline-block;
+      margin: 84px 24px 0;
+    }
+
+    .hero { min-height: auto; padding: 60px 24px 80px; }
+    .section { padding: 64px 0; }
+    .product-card { padding: 32px 24px; }
+    .type-group { padding: 28px 24px; }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+    .swatches { grid-template-columns: 1fr 1fr; }
+    .hero-ctas { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back to concepts -->
+<a href="index.html" class="back-link">← Back to concepts</a>
+
+<!-- ── Nav ─────────────────────────────────────────────────── -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" aria-label="KPT Home">
+      <svg width="80" height="28" viewBox="0 0 80 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- K -->
+        <line x1="4" y1="5" x2="4" y2="23" stroke="#00D4AA" stroke-width="2" stroke-linecap="round"/>
+        <line x1="4" y1="14" x2="16" y2="5" stroke="#00D4AA" stroke-width="2" stroke-linecap="round"/>
+        <line x1="4" y1="14" x2="16" y2="23" stroke="#00D4AA" stroke-width="2" stroke-linecap="round"/>
+        <!-- Connection K→P -->
+        <line x1="16" y1="14" x2="24" y2="14" stroke="#00D4AA" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3" opacity="0.5"/>
+        <!-- P -->
+        <line x1="24" y1="5" x2="24" y2="23" stroke="#00D4AA" stroke-width="2" stroke-linecap="round"/>
+        <path d="M24 5 H34 C38 5 38 14 34 14 H24" stroke="#00D4AA" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Connection P→T -->
+        <line x1="38" y1="9.5" x2="46" y2="9.5" stroke="#00D4AA" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3" opacity="0.5"/>
+        <!-- T -->
+        <line x1="46" y1="5" x2="62" y2="5" stroke="#00D4AA" stroke-width="2" stroke-linecap="round"/>
+        <line x1="54" y1="5" x2="54" y2="23" stroke="#00D4AA" stroke-width="2" stroke-linecap="round"/>
+        <!-- Signal node dots -->
+        <circle cx="4" cy="5" r="2" fill="#00D4AA" opacity="0.6"/>
+        <circle cx="54" cy="23" r="2" fill="#00D4AA" opacity="0.6"/>
+      </svg>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#agents">Agents</a></li>
+      <li><a href="#designs">Designs</a></li>
+      <li><a href="#stats">Pricing</a></li>
+      <li><a href="#footer">Contact</a></li>
+    </ul>
+
+    <a href="#" class="nav-cta">Get Started</a>
+
+    <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── Hero ────────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge fade-in">Signal Platform</div>
+    <h1 class="fade-in fade-in-delay-1">Build with <span class="accent">Voice</span>.<br>Design with <span class="accent">Precision</span>.</h1>
+    <p class="hero-sub fade-in fade-in-delay-2">KPT powers AI voice agents and premium web experiences for businesses that demand more.</p>
+    <div class="hero-ctas fade-in fade-in-delay-3">
+      <a href="#agents" class="btn-primary">KPT Agents →</a>
+      <a href="#designs" class="btn-outline">KPT Designs →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Products ────────────────────────────────────────────── -->
+<section class="products section" id="agents">
+  <div class="container">
+    <p class="section-label fade-in">Products</p>
+    <h2 class="section-title fade-in fade-in-delay-1">Two products. One platform.</h2>
+    <div class="product-grid">
+
+      <!-- Agents Card -->
+      <div class="product-card fade-in fade-in-delay-2">
+        <div class="product-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 14 Q5 8, 8 14 Q11 20, 14 14 Q17 8, 20 14 Q23 20, 26 14" stroke="#00D4AA" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>KPT Agents</h3>
+        <p>AI-powered voice agents that handle calls, book appointments, and close deals 24/7.</p>
+        <ul class="product-features">
+          <li>Natural language call handling</li>
+          <li>Appointment booking & CRM sync</li>
+          <li>Custom voice & personality tuning</li>
+          <li>Real-time analytics dashboard</li>
+        </ul>
+        <a href="#" class="product-link">Learn more →</a>
+      </div>
+
+      <!-- Designs Card -->
+      <div class="product-card fade-in fade-in-delay-3" id="designs">
+        <div class="product-icon">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="4" width="24" height="18" rx="3" stroke="#00D4AA" stroke-width="2" fill="none"/>
+            <line x1="2" y1="10" x2="26" y2="10" stroke="#00D4AA" stroke-width="1.5" opacity="0.5"/>
+            <circle cx="6" cy="7" r="1" fill="#00D4AA" opacity="0.6"/>
+            <circle cx="10" cy="7" r="1" fill="#00D4AA" opacity="0.6"/>
+            <circle cx="14" cy="7" r="1" fill="#00D4AA" opacity="0.6"/>
+            <line x1="6" y1="14" x2="16" y2="14" stroke="#00D4AA" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+            <line x1="6" y1="17.5" x2="12" y2="17.5" stroke="#00D4AA" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+          </svg>
+        </div>
+        <h3>KPT Designs</h3>
+        <p>Handcrafted websites that convert visitors into customers.</p>
+        <ul class="product-features">
+          <li>Custom Next.js & React builds</li>
+          <li>Conversion-optimized layouts</li>
+          <li>SEO & performance hardened</li>
+          <li>Ongoing support & iteration</li>
+        </ul>
+        <a href="#" class="product-link">Learn more →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats ───────────────────────────────────────────────── -->
+<section class="stats" id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item fade-in">
+        <div class="stat-number"><span class="teal">50K</span>+</div>
+        <div class="stat-label">Calls Handled</div>
+      </div>
+      <div class="stat-item fade-in fade-in-delay-1">
+        <div class="stat-number"><span class="teal">200</span>+</div>
+        <div class="stat-label">Sites Launched</div>
+      </div>
+      <div class="stat-item fade-in fade-in-delay-2">
+        <div class="stat-number"><span class="teal">99.9</span>%</div>
+        <div class="stat-label">Uptime</div>
+      </div>
+      <div class="stat-item fade-in fade-in-delay-3">
+        <div class="stat-number"><span class="teal">24/7</span></div>
+        <div class="stat-label">AI Coverage</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Color Palette ───────────────────────────────────────── -->
+<section class="palette-section section">
+  <div class="container">
+    <p class="section-label fade-in">Brand System</p>
+    <h2 class="section-title fade-in fade-in-delay-1">Color Palette</h2>
+    <div class="swatches">
+      <div class="swatch fade-in">
+        <div class="swatch-color" style="background: #1A1D23;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Charcoal</div>
+          <div class="swatch-hex">#1A1D23</div>
+        </div>
+      </div>
+      <div class="swatch fade-in fade-in-delay-1">
+        <div class="swatch-color" style="background: #00D4AA;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Electric Teal</div>
+          <div class="swatch-hex">#00D4AA</div>
+        </div>
+      </div>
+      <div class="swatch fade-in fade-in-delay-2">
+        <div class="swatch-color" style="background: #F0F4F8;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Ice White</div>
+          <div class="swatch-hex">#F0F4F8</div>
+        </div>
+      </div>
+      <div class="swatch fade-in fade-in-delay-3">
+        <div class="swatch-color" style="background: #6B7280;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Warm Gray</div>
+          <div class="swatch-hex">#6B7280</div>
+        </div>
+      </div>
+      <div class="swatch fade-in fade-in-delay-4">
+        <div class="swatch-color" style="background: #22262E;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Dark Surface</div>
+          <div class="swatch-hex">#22262E</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Typography ──────────────────────────────────────────── -->
+<section class="type-section section">
+  <div class="container">
+    <p class="section-label fade-in">Brand System</p>
+    <h2 class="section-title fade-in fade-in-delay-1">Typography</h2>
+    <div class="type-showcase">
+
+      <!-- DM Sans -->
+      <div class="type-group fade-in">
+        <div class="type-group-label">Headlines</div>
+        <div class="type-group-meta">DM Sans &middot; Bold 800 / Semibold 600 / Regular 400</div>
+        <div class="type-sample-dm-hero">Build with Voice.</div>
+        <div class="type-sample-dm-sub">Two products. One platform.</div>
+        <div class="type-sample-dm-body">Premium infrastructure for modern businesses.</div>
+      </div>
+
+      <!-- Inter -->
+      <div class="type-group fade-in fade-in-delay-1">
+        <div class="type-group-label">Body Text</div>
+        <div class="type-group-meta">Inter &middot; Regular 400 / Medium 500</div>
+        <div class="type-sample-inter-body">KPT powers AI voice agents and premium web experiences for businesses that demand more. Our platform combines cutting-edge voice AI with handcrafted design to deliver measurable results.</div>
+        <div class="type-sample-inter-small">Optimized for readability across all screen sizes. Clean vertical rhythm. Comfortable line height for extended reading.</div>
+      </div>
+
+      <!-- JetBrains Mono -->
+      <div class="type-group fade-in fade-in-delay-2">
+        <div class="type-group-label">Labels &amp; Code</div>
+        <div class="type-group-meta">JetBrains Mono &middot; Semibold 600 / Medium 500 / Regular 400</div>
+        <div class="type-sample-mono-lg">SIGNAL PLATFORM</div>
+        <div class="type-sample-mono-md">const agent = new KPT.Agent({ voice: "natural" });</div>
+        <div class="type-sample-mono-sm">v2.4.0 &middot; MIT LICENSE &middot; PRODUCTION READY</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────── -->
+<footer class="footer" id="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-copy">&copy; 2026 KPT. All rights reserved.</div>
+      <ul class="footer-links">
+        <li><a href="#">Agents</a></li>
+        <li><a href="#">Designs</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Privacy</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<!-- ── Scripts ─────────────────────────────────────────────── -->
+<script>
+  // Intersection Observer for fade-in animations
+  (function() {
+    var els = document.querySelectorAll('.fade-in');
+    if (!('IntersectionObserver' in window)) {
+      // Fallback: show everything
+      els.forEach(function(el) { el.classList.add('visible'); });
+      return;
+    }
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function(el) { observer.observe(el); });
+  })();
+
+  // Mobile menu toggle
+  (function() {
+    var toggle = document.getElementById('mobileToggle');
+    var nav = document.getElementById('nav');
+    if (toggle && nav) {
+      toggle.addEventListener('click', function() {
+        nav.classList.toggle('mobile-open');
+      });
+    }
+  })();
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Close mobile menu if open
+        document.getElementById('nav').classList.remove('mobile-open');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

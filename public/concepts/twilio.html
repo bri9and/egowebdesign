@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Build Communications That Scale</title>
+<meta name="description" content="KPT communication APIs for developers. SMS, Voice, Video, Email — all from a single platform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --red: #F22F46;
+    --red-dim: rgba(242, 47, 70, 0.12);
+    --red-glow: rgba(242, 47, 70, 0.3);
+    --red-hover: #FF4D63;
+    --navy: #121C2D;
+    --navy-deep: #0B1220;
+    --navy-light: #1A2840;
+    --code-green: #2ECC71;
+    --code-green-dim: rgba(46, 204, 113, 0.12);
+    --code-blue: #6BB5FF;
+    --code-yellow: #FFD93D;
+    --code-purple: #C084FC;
+    --code-orange: #FB923C;
+    --white: #FFFFFF;
+    --ice: #E8ECF1;
+    --gray: #8892A4;
+    --gray-dim: #5A6577;
+    --surface: #182336;
+    --surface-light: #1E2D44;
+    --surface-code: #0D1B2A;
+    --border: rgba(255, 255, 255, 0.07);
+    --border-hover: rgba(242, 47, 70, 0.35);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy-deep);
+    color: var(--ice);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  code, .mono {
+    font-family: 'Fira Code', monospace;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Layout ───────────────────────────────────────────────── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .section {
+    padding: 100px 0;
+  }
+
+  /* ── Back Link ────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--gray);
+    letter-spacing: 0.5px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: rgba(11, 18, 32, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    transition: all 0.25s ease;
+  }
+  .back-link:hover {
+    color: var(--red);
+    border-color: var(--border-hover);
+    background: rgba(11, 18, 32, 0.95);
+  }
+  .back-link span { margin-right: 6px; }
+
+  /* ── Scroll Animations ─────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── Navigation ────────────────────────────────────────────── */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 16px 0;
+    background: rgba(11, 18, 32, 0.0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    transition: all 0.35s ease;
+    border-bottom: 1px solid transparent;
+  }
+  .nav.scrolled {
+    background: rgba(11, 18, 32, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom-color: var(--border);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .nav-logo {
+    font-family: 'Inter', system-ui;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: var(--red);
+  }
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray);
+    letter-spacing: 0.3px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover {
+    color: var(--white);
+  }
+  .nav-cta {
+    background: var(--red) !important;
+    color: var(--white) !important;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    transition: background 0.2s, transform 0.2s !important;
+  }
+  .nav-cta:hover {
+    background: var(--red-hover) !important;
+    transform: translateY(-1px);
+  }
+
+  /* ── Hero ───────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 120px 0 80px;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(242, 47, 70, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 80% at 80% 50%, rgba(46, 204, 113, 0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero-grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    color: var(--code-green);
+    background: var(--code-green-dim);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(46, 204, 113, 0.2);
+    margin-bottom: 24px;
+  }
+  .hero-badge .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--code-green);
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  .hero h1 {
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+  }
+  .hero h1 .red { color: var(--red); }
+  .hero-sub {
+    font-size: 18px;
+    color: var(--gray);
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 36px;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: var(--red);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .btn-primary:hover {
+    background: var(--red-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(242, 47, 70, 0.3);
+  }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    background: transparent;
+    color: var(--ice);
+    font-weight: 500;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .btn-secondary:hover {
+    border-color: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.04);
+    transform: translateY(-2px);
+  }
+
+  /* ── Hero Code Block ────────────────────────────────────────── */
+  .hero-code {
+    background: var(--surface-code);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 80px rgba(242, 47, 70, 0.06);
+  }
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+  }
+  .code-dots {
+    display: flex;
+    gap: 6px;
+  }
+  .code-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+  .code-dots span:nth-child(1) { background: #FF5F57; }
+  .code-dots span:nth-child(2) { background: #FFBD2E; }
+  .code-dots span:nth-child(3) { background: #28CA41; }
+  .code-file {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--gray-dim);
+  }
+  .code-body {
+    padding: 20px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+  .code-body .kw { color: var(--code-purple); }
+  .code-body .fn { color: var(--code-blue); }
+  .code-body .str { color: var(--code-green); }
+  .code-body .cm { color: var(--gray-dim); font-style: italic; }
+  .code-body .op { color: var(--gray); }
+  .code-body .num { color: var(--code-orange); }
+  .code-body .prop { color: var(--code-blue); }
+  .code-body .var { color: var(--ice); }
+  .code-body .line {
+    display: block;
+    padding-left: 40px;
+    position: relative;
+    min-height: 1.8em;
+  }
+  .code-body .line::before {
+    content: attr(data-ln);
+    position: absolute;
+    left: 0;
+    color: rgba(255,255,255,0.15);
+    font-size: 11px;
+    width: 28px;
+    text-align: right;
+    user-select: none;
+  }
+  .code-body .line.highlight {
+    background: var(--red-dim);
+    margin: 0 -20px;
+    padding-left: 60px;
+    padding-right: 20px;
+    border-left: 2px solid var(--red);
+  }
+
+  /* ── Trusted By ─────────────────────────────────────────────── */
+  .trusted {
+    padding: 60px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .trusted-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-dim);
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .trusted-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+  .trusted-logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .trusted-logo:hover {
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* ── Channel Cards Section ──────────────────────────────────── */
+  .channels {
+    padding: 100px 0;
+  }
+  .section-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    font-size: 17px;
+    color: var(--gray);
+    max-width: 560px;
+    margin-bottom: 60px;
+    line-height: 1.7;
+  }
+  .channel-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .channel-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 24px;
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .channel-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--red);
+    transform: scaleX(0);
+    transition: transform 0.35s ease;
+    transform-origin: left;
+  }
+  .channel-card:hover::before {
+    transform: scaleX(1);
+  }
+  .channel-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+  }
+  .channel-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--red-dim);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 22px;
+    transition: background 0.3s;
+  }
+  .channel-card:hover .channel-icon {
+    background: rgba(242, 47, 70, 0.2);
+  }
+  .channel-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .channel-card p {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .channel-endpoint {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--code-green);
+    background: var(--code-green-dim);
+    padding: 6px 10px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  /* ── Code Examples Section ──────────────────────────────────── */
+  .code-examples {
+    padding: 100px 0;
+    background: var(--navy);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .code-examples .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .code-examples .section-title {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .code-examples .section-desc {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+  .examples-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .example-card {
+    background: var(--surface-code);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  .example-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+  .example-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid var(--border);
+  }
+  .example-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ice);
+  }
+  .example-lang {
+    font-family: 'Fira Code', monospace;
+    font-size: 10px;
+    color: var(--gray-dim);
+    background: rgba(255,255,255,0.05);
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .example-body {
+    padding: 20px;
+    font-family: 'Fira Code', monospace;
+    font-size: 12.5px;
+    line-height: 1.75;
+    overflow-x: auto;
+  }
+  .example-body .line {
+    display: block;
+    padding-left: 36px;
+    position: relative;
+    min-height: 1.75em;
+  }
+  .example-body .line::before {
+    content: attr(data-ln);
+    position: absolute;
+    left: 0;
+    color: rgba(255,255,255,0.12);
+    font-size: 11px;
+    width: 24px;
+    text-align: right;
+    user-select: none;
+  }
+
+  /* ── Stats Section ──────────────────────────────────────────── */
+  .stats {
+    padding: 80px 0;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .stat-card {
+    text-align: center;
+    padding: 40px 20px;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+  }
+  .stat-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+  .stat-number {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--red);
+    letter-spacing: -2px;
+    margin-bottom: 4px;
+  }
+  .stat-suffix {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--red);
+  }
+  .stat-label {
+    font-size: 14px;
+    color: var(--gray);
+    font-weight: 500;
+  }
+  .stat-detail {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--gray-dim);
+    margin-top: 8px;
+  }
+
+  /* ── Developer Experience Section ───────────────────────────── */
+  .dx-section {
+    padding: 100px 0;
+    background: var(--navy);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .dx-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .dx-features {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .dx-feature {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .dx-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    background: var(--red-dim);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--red);
+    font-family: 'Fira Code', monospace;
+    font-weight: 600;
+  }
+  .dx-feature h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .dx-feature p {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* ── Terminal Block ─────────────────────────────────────────── */
+  .terminal {
+    background: #0A0E18;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  }
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid var(--border);
+  }
+  .terminal-header .code-dots span {
+    width: 8px;
+    height: 8px;
+  }
+  .terminal-title {
+    font-family: 'Fira Code', monospace;
+    font-size: 11px;
+    color: var(--gray-dim);
+    margin-left: 8px;
+  }
+  .terminal-body {
+    padding: 20px;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.9;
+  }
+  .terminal-body .prompt {
+    color: var(--code-green);
+  }
+  .terminal-body .cmd {
+    color: var(--ice);
+  }
+  .terminal-body .output {
+    color: var(--gray);
+  }
+  .terminal-body .success {
+    color: var(--code-green);
+  }
+  .terminal-body .warn {
+    color: var(--code-yellow);
+  }
+  .terminal-body .t-line {
+    display: block;
+    min-height: 1.9em;
+  }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--red);
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+    margin-left: 4px;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  /* ── CTA Section ────────────────────────────────────────────── */
+  .cta-section {
+    padding: 120px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 50%, rgba(242, 47, 70, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-content {
+    position: relative;
+    z-index: 1;
+  }
+  .cta-tagline {
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    color: var(--red);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .cta-title {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    margin-bottom: 20px;
+    line-height: 1.1;
+  }
+  .cta-desc {
+    font-size: 18px;
+    color: var(--gray);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+  .cta-code {
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    color: var(--gray);
+    background: var(--surface);
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cta-code .prompt-char {
+    color: var(--red);
+    font-weight: 600;
+  }
+  .cta-code .copy-hint {
+    font-size: 11px;
+    color: var(--gray-dim);
+    padding-left: 12px;
+    border-left: 1px solid var(--border);
+  }
+
+  /* ── Footer ─────────────────────────────────────────────────── */
+  .footer {
+    padding: 60px 0 40px;
+    border-top: 1px solid var(--border);
+    background: var(--navy-deep);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 48px;
+  }
+  .footer-brand .footer-logo {
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 4px;
+    color: var(--red);
+    margin-bottom: 12px;
+  }
+  .footer-brand p {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.6;
+    max-width: 280px;
+  }
+  .footer-col h5 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ice);
+    margin-bottom: 16px;
+  }
+  .footer-col a {
+    display: block;
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 10px;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover {
+    color: var(--red);
+  }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-copy {
+    font-size: 13px;
+    color: var(--gray-dim);
+  }
+  .footer-legal {
+    display: flex;
+    gap: 24px;
+  }
+  .footer-legal a {
+    font-size: 13px;
+    color: var(--gray-dim);
+    transition: color 0.2s;
+  }
+  .footer-legal a:hover {
+    color: var(--gray);
+  }
+
+  /* ── Responsive ─────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+
+    .hero { padding: 100px 0 60px; min-height: auto; }
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    .hero h1 { font-size: 38px; letter-spacing: -1px; }
+    .hero-sub { font-size: 16px; }
+    .hero-actions { flex-direction: column; align-items: flex-start; }
+
+    .channel-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .section-title { font-size: 30px; }
+
+    .examples-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .stat-number { font-size: 36px; }
+
+    .dx-grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .cta-title { font-size: 34px; }
+    .cta-buttons { flex-direction: column; align-items: center; }
+    .cta-code { font-size: 12px; }
+
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .section { padding: 60px 0; }
+    .channels, .code-examples, .dx-section { padding: 60px 0; }
+    .cta-section { padding: 80px 0; }
+  }
+
+  @media (max-width: 480px) {
+    .channel-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .trusted-logos { gap: 24px; }
+    .trusted-logo { font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link"><span>&larr;</span> gallery</a>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">KPT</div>
+    <div class="nav-links">
+      <a href="#channels">Products</a>
+      <a href="#code">Docs</a>
+      <a href="#dx">Developers</a>
+      <a href="#stats">Scale</a>
+      <a href="#cta" class="nav-cta">Get API Key</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge reveal">
+          <span class="dot"></span>
+          API v4.2 — Now Generally Available
+        </div>
+        <h1 class="reveal reveal-delay-1">
+          Build <span class="red">communications</span> that scale
+        </h1>
+        <p class="hero-sub reveal reveal-delay-2">
+          KPT gives developers the building blocks to embed messaging, voice, video, and email into any application. Ship in hours, not months.
+        </p>
+        <div class="hero-actions reveal reveal-delay-3">
+          <a href="#cta" class="btn-primary">
+            Start Building Free
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#code" class="btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M5 4l-3 4 3 4M11 4l3 4-3 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            View API Docs
+          </a>
+        </div>
+      </div>
+      <div class="hero-code reveal reveal-delay-2">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <div class="code-file">send-sms.js</div>
+        </div>
+        <div class="code-body">
+          <span class="line" data-ln="1"><span class="kw">import</span> <span class="var">KPT</span> <span class="kw">from</span> <span class="str">'@kpt/sdk'</span><span class="op">;</span></span>
+          <span class="line" data-ln="2"></span>
+          <span class="line" data-ln="3"><span class="kw">const</span> <span class="var">client</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">KPT</span><span class="op">(</span><span class="var">process</span><span class="op">.</span><span class="prop">env</span><span class="op">.</span><span class="var">KPT_API_KEY</span><span class="op">);</span></span>
+          <span class="line" data-ln="4"></span>
+          <span class="line highlight" data-ln="5"><span class="kw">const</span> <span class="var">message</span> <span class="op">=</span> <span class="kw">await</span> <span class="var">client</span><span class="op">.</span><span class="fn">messages</span><span class="op">.</span><span class="fn">create</span><span class="op">({</span></span>
+          <span class="line highlight" data-ln="6">  <span class="prop">to</span><span class="op">:</span>   <span class="str">'+1 555 867 5309'</span><span class="op">,</span></span>
+          <span class="line highlight" data-ln="7">  <span class="prop">from</span><span class="op">:</span> <span class="str">'+1 555 KPT API'</span><span class="op">,</span></span>
+          <span class="line highlight" data-ln="8">  <span class="prop">body</span><span class="op">:</span> <span class="str">'Your order has shipped!'</span></span>
+          <span class="line highlight" data-ln="9"><span class="op">});</span></span>
+          <span class="line" data-ln="10"></span>
+          <span class="line" data-ln="11"><span class="var">console</span><span class="op">.</span><span class="fn">log</span><span class="op">(</span><span class="var">message</span><span class="op">.</span><span class="prop">sid</span><span class="op">);</span></span>
+          <span class="line" data-ln="12"><span class="cm">// => "SM2f4b1e2a..."</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trusted By -->
+<section class="trusted">
+  <div class="container">
+    <div class="trusted-label reveal">Trusted by developers at</div>
+    <div class="trusted-logos reveal reveal-delay-1">
+      <span class="trusted-logo">Stripe</span>
+      <span class="trusted-logo">Vercel</span>
+      <span class="trusted-logo">Linear</span>
+      <span class="trusted-logo">Notion</span>
+      <span class="trusted-logo">Supabase</span>
+      <span class="trusted-logo">Railway</span>
+    </div>
+  </div>
+</section>
+
+<!-- Communication Channels -->
+<section class="channels" id="channels">
+  <div class="container">
+    <div class="section-label reveal">Communication Primitives</div>
+    <h2 class="section-title reveal reveal-delay-1">Every channel.<br>One API.</h2>
+    <p class="section-desc reveal reveal-delay-2">
+      Unified endpoints for every communication channel your users expect. Consistent SDKs, predictable pricing, real-time delivery.
+    </p>
+    <div class="channel-grid">
+      <div class="channel-card reveal">
+        <div class="channel-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="#F22F46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>SMS</h3>
+        <p>Programmable messaging to 200+ countries. Delivery receipts, media support, smart routing.</p>
+        <span class="channel-endpoint">POST /v1/messages</span>
+      </div>
+      <div class="channel-card reveal reveal-delay-1">
+        <div class="channel-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" stroke="#F22F46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Voice</h3>
+        <p>Embed calls directly into your app. IVR, recording, transcription, conference bridges.</p>
+        <span class="channel-endpoint">POST /v1/calls</span>
+      </div>
+      <div class="channel-card reveal reveal-delay-2">
+        <div class="channel-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polygon points="23 7 16 12 23 17" stroke="#F22F46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2" stroke="#F22F46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Video</h3>
+        <p>WebRTC-powered rooms with up to 50 participants. Screen share, recording, live streaming.</p>
+        <span class="channel-endpoint">POST /v1/rooms</span>
+      </div>
+      <div class="channel-card reveal reveal-delay-3">
+        <div class="channel-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="#F22F46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke="#F22F46" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h3>Email</h3>
+        <p>Transactional email with deliverability built in. Templates, analytics, suppression lists.</p>
+        <span class="channel-endpoint">POST /v1/email/send</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Code Examples -->
+<section class="code-examples" id="code">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label reveal">Developer Experience</div>
+      <h2 class="section-title reveal reveal-delay-1">Ship in any language</h2>
+      <p class="section-desc reveal reveal-delay-2">
+        Idiomatic SDKs in every major language. Copy, paste, deploy.
+      </p>
+    </div>
+    <div class="examples-grid">
+      <div class="example-card reveal">
+        <div class="example-header">
+          <span class="example-title">Make a voice call</span>
+          <span class="example-lang">Python</span>
+        </div>
+        <div class="example-body">
+          <span class="line" data-ln="1"><span class="kw">from</span> <span class="var">kpt</span> <span class="kw">import</span> <span class="fn">Client</span></span>
+          <span class="line" data-ln="2"></span>
+          <span class="line" data-ln="3"><span class="var">client</span> <span class="op">=</span> <span class="fn">Client</span><span class="op">(</span><span class="var">api_key</span><span class="op">)</span></span>
+          <span class="line" data-ln="4"></span>
+          <span class="line" data-ln="5"><span class="var">call</span> <span class="op">=</span> <span class="var">client</span><span class="op">.</span><span class="prop">calls</span><span class="op">.</span><span class="fn">create</span><span class="op">(</span></span>
+          <span class="line" data-ln="6">  <span class="prop">to</span><span class="op">=</span><span class="str">"+15558675309"</span><span class="op">,</span></span>
+          <span class="line" data-ln="7">  <span class="prop">from_</span><span class="op">=</span><span class="str">"+15551234567"</span><span class="op">,</span></span>
+          <span class="line" data-ln="8">  <span class="prop">twiml</span><span class="op">=</span><span class="str">"&lt;Say&gt;Hello from KPT!&lt;/Say&gt;"</span></span>
+          <span class="line" data-ln="9"><span class="op">)</span></span>
+          <span class="line" data-ln="10"></span>
+          <span class="line" data-ln="11"><span class="fn">print</span><span class="op">(</span><span class="var">call</span><span class="op">.</span><span class="prop">sid</span><span class="op">)</span></span>
+        </div>
+      </div>
+      <div class="example-card reveal reveal-delay-1">
+        <div class="example-header">
+          <span class="example-title">Create a video room</span>
+          <span class="example-lang">cURL</span>
+        </div>
+        <div class="example-body">
+          <span class="line" data-ln="1"><span class="fn">curl</span> <span class="str">-X POST</span> <span class="op">\</span></span>
+          <span class="line" data-ln="2">  <span class="str">https://api.kpt.dev/v1/rooms</span> <span class="op">\</span></span>
+          <span class="line" data-ln="3">  <span class="op">-H</span> <span class="str">"Authorization: Bearer $KPT_KEY"</span> <span class="op">\</span></span>
+          <span class="line" data-ln="4">  <span class="op">-d</span> <span class="str">'{</span></span>
+          <span class="line" data-ln="5">    <span class="prop">"name"</span><span class="op">:</span> <span class="str">"standup-room"</span><span class="op">,</span></span>
+          <span class="line" data-ln="6">    <span class="prop">"type"</span><span class="op">:</span> <span class="str">"group"</span><span class="op">,</span></span>
+          <span class="line" data-ln="7">    <span class="prop">"max_participants"</span><span class="op">:</span> <span class="num">10</span><span class="op">,</span></span>
+          <span class="line" data-ln="8">    <span class="prop">"record"</span><span class="op">:</span> <span class="kw">true</span></span>
+          <span class="line" data-ln="9">  <span class="str">}'</span></span>
+        </div>
+      </div>
+      <div class="example-card reveal reveal-delay-2">
+        <div class="example-header">
+          <span class="example-title">Send transactional email</span>
+          <span class="example-lang">Go</span>
+        </div>
+        <div class="example-body">
+          <span class="line" data-ln="1"><span class="var">client</span> <span class="op">:=</span> <span class="var">kpt</span><span class="op">.</span><span class="fn">NewClient</span><span class="op">(</span><span class="var">apiKey</span><span class="op">)</span></span>
+          <span class="line" data-ln="2"></span>
+          <span class="line" data-ln="3"><span class="var">resp</span><span class="op">,</span> <span class="var">err</span> <span class="op">:=</span> <span class="var">client</span><span class="op">.</span><span class="prop">Email</span><span class="op">.</span><span class="fn">Send</span><span class="op">(</span><span class="op">&</span><span class="var">kpt</span><span class="op">.</span><span class="fn">EmailParams</span><span class="op">{</span></span>
+          <span class="line" data-ln="4">  <span class="prop">To</span><span class="op">:</span>      <span class="str">"dev@example.com"</span><span class="op">,</span></span>
+          <span class="line" data-ln="5">  <span class="prop">From</span><span class="op">:</span>    <span class="str">"noreply@kpt.dev"</span><span class="op">,</span></span>
+          <span class="line" data-ln="6">  <span class="prop">Subject</span><span class="op">:</span> <span class="str">"Your API key is ready"</span><span class="op">,</span></span>
+          <span class="line" data-ln="7">  <span class="prop">Template</span><span class="op">:</span> <span class="str">"welcome-dev"</span><span class="op">,</span></span>
+          <span class="line" data-ln="8"><span class="op">})</span></span>
+        </div>
+      </div>
+      <div class="example-card reveal reveal-delay-3">
+        <div class="example-header">
+          <span class="example-title">Handle inbound webhook</span>
+          <span class="example-lang">TypeScript</span>
+        </div>
+        <div class="example-body">
+          <span class="line" data-ln="1"><span class="kw">import</span> <span class="op">{</span> <span class="fn">verifyWebhook</span> <span class="op">}</span> <span class="kw">from</span> <span class="str">'@kpt/sdk'</span><span class="op">;</span></span>
+          <span class="line" data-ln="2"></span>
+          <span class="line" data-ln="3"><span class="kw">export</span> <span class="kw">async function</span> <span class="fn">POST</span><span class="op">(</span><span class="var">req</span><span class="op">)</span> <span class="op">{</span></span>
+          <span class="line" data-ln="4">  <span class="kw">const</span> <span class="var">event</span> <span class="op">=</span> <span class="fn">verifyWebhook</span><span class="op">(</span><span class="var">req</span><span class="op">);</span></span>
+          <span class="line" data-ln="5"></span>
+          <span class="line" data-ln="6">  <span class="kw">if</span> <span class="op">(</span><span class="var">event</span><span class="op">.</span><span class="prop">type</span> <span class="op">===</span> <span class="str">'message.received'</span><span class="op">)</span> <span class="op">{</span></span>
+          <span class="line" data-ln="7">    <span class="kw">await</span> <span class="fn">handleInbound</span><span class="op">(</span><span class="var">event</span><span class="op">.</span><span class="prop">data</span><span class="op">);</span></span>
+          <span class="line" data-ln="8">  <span class="op">}</span></span>
+          <span class="line" data-ln="9"><span class="op">}</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats" id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="stat-number">18<span class="stat-suffix">B</span></div>
+        <div class="stat-label">Messages sent per year</div>
+        <div class="stat-detail">99.999% delivery SLA</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-1">
+        <div class="stat-number">200<span class="stat-suffix">+</span></div>
+        <div class="stat-label">Countries supported</div>
+        <div class="stat-detail">Local numbers available</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2">
+        <div class="stat-number">&lt;40<span class="stat-suffix">ms</span></div>
+        <div class="stat-label">Median API latency</div>
+        <div class="stat-detail">p99 under 120ms</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3">
+        <div class="stat-number">10<span class="stat-suffix">M</span></div>
+        <div class="stat-label">Developer accounts</div>
+        <div class="stat-detail">Active monthly builders</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Developer Experience -->
+<section class="dx-section" id="dx">
+  <div class="container">
+    <div class="dx-grid">
+      <div class="dx-content">
+        <div class="section-label reveal">Ask Your Developer</div>
+        <h2 class="section-title reveal reveal-delay-1">Built for builders</h2>
+        <p class="section-desc reveal reveal-delay-2">
+          Every API decision optimized for developer velocity. From first curl to production in minutes.
+        </p>
+        <div class="dx-features">
+          <div class="dx-feature reveal">
+            <div class="dx-icon">{}</div>
+            <div>
+              <h4>RESTful by default</h4>
+              <p>Consistent resource-based URLs, predictable HTTP verbs, JSON everywhere. No surprises.</p>
+            </div>
+          </div>
+          <div class="dx-feature reveal reveal-delay-1">
+            <div class="dx-icon">#!</div>
+            <div>
+              <h4>7 SDKs, zero config</h4>
+              <p>JavaScript, Python, Go, Ruby, Java, PHP, C#. Install, authenticate, ship.</p>
+            </div>
+          </div>
+          <div class="dx-feature reveal reveal-delay-2">
+            <div class="dx-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M1 9h16M9 1v16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <h4>Webhooks + streaming</h4>
+              <p>Real-time delivery events, status callbacks, and server-sent events for live updates.</p>
+            </div>
+          </div>
+          <div class="dx-feature reveal reveal-delay-3">
+            <div class="dx-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6 9l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <h4>Built-in compliance</h4>
+              <p>SOC 2 Type II, GDPR, HIPAA eligible. Audit logs and encryption at rest included.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="terminal reveal reveal-delay-1">
+        <div class="terminal-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="terminal-title">~/.kpt/terminal</span>
+        </div>
+        <div class="terminal-body">
+          <span class="t-line"><span class="prompt">$</span> <span class="cmd">npm install @kpt/sdk</span></span>
+          <span class="t-line"><span class="output">added 1 package in 0.8s</span></span>
+          <span class="t-line"></span>
+          <span class="t-line"><span class="prompt">$</span> <span class="cmd">kpt init --project my-app</span></span>
+          <span class="t-line"><span class="success">&#10003;</span> <span class="output">Project created</span></span>
+          <span class="t-line"><span class="success">&#10003;</span> <span class="output">API key generated</span></span>
+          <span class="t-line"><span class="success">&#10003;</span> <span class="output">.env.local configured</span></span>
+          <span class="t-line"></span>
+          <span class="t-line"><span class="prompt">$</span> <span class="cmd">kpt send --to +15558675309 \</span></span>
+          <span class="t-line">  <span class="cmd">--body "Hello from KPT"</span></span>
+          <span class="t-line"></span>
+          <span class="t-line"><span class="success">&#10003;</span> <span class="output">Message sent</span></span>
+          <span class="t-line"><span class="output">  sid: </span><span class="warn">SM7f2b4e1a3c...</span></span>
+          <span class="t-line"><span class="output">  status: </span><span class="success">delivered</span></span>
+          <span class="t-line"><span class="output">  latency: </span><span class="warn">32ms</span></span>
+          <span class="t-line"></span>
+          <span class="t-line"><span class="prompt">$</span> <span class="cursor"></span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-bg"></div>
+  <div class="container">
+    <div class="cta-content">
+      <div class="cta-tagline reveal">Ready to Build?</div>
+      <h2 class="cta-title reveal reveal-delay-1">
+        Start shipping<br>communications today
+      </h2>
+      <p class="cta-desc reveal reveal-delay-2">
+        Free tier includes 1,000 messages, 100 voice minutes, and 500 emails per month. No credit card required.
+      </p>
+      <div class="cta-buttons reveal reveal-delay-3">
+        <a href="#" class="btn-primary">
+          Create Free Account
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#" class="btn-secondary">Read the Docs</a>
+      </div>
+      <div class="cta-code reveal reveal-delay-4">
+        <span class="prompt-char">$</span>
+        <span>npx create-kpt-app@latest</span>
+        <span class="copy-hint">copy</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">KPT</div>
+        <p>Communication APIs for developers who build things that matter.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <a href="#">Messaging API</a>
+        <a href="#">Voice API</a>
+        <a href="#">Video API</a>
+        <a href="#">Email API</a>
+        <a href="#">Verify</a>
+      </div>
+      <div class="footer-col">
+        <h5>Developers</h5>
+        <a href="#">Documentation</a>
+        <a href="#">API Reference</a>
+        <a href="#">SDKs</a>
+        <a href="#">Status Page</a>
+        <a href="#">Changelog</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="#">About</a>
+        <a href="#">Blog</a>
+        <a href="#">Careers</a>
+        <a href="#">Security</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 KPT. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Scroll-triggered reveal animations ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Nav scroll effect ──
+  const nav = document.getElementById('nav');
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    if (scrollY > 60) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+    lastScroll = scrollY;
+  }, { passive: true });
+
+  // ── Smooth scroll for anchor links ──
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>

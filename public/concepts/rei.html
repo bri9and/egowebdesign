@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — A Life Outdoors Is a Life Well Built</title>
+<meta name="description" content="KPT. AI voice agents and premium web design. Gear up. Build smart. Explore further.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --forest: #1A3C34;
+    --forest-deep: #0F2A23;
+    --forest-dark: #0B1E18;
+    --pine: #2D5A4E;
+    --sage: #5B8A72;
+    --moss: #8CB09B;
+    --dawn-orange: #E87C3C;
+    --amber: #D4924A;
+    --earth: #8B6F47;
+    --stone: #A89279;
+    --sand: #D4C5A9;
+    --cream: #F5F0E8;
+    --white: #FFFFFF;
+    --off-white: #FAFAF7;
+    --charcoal: #2C2C2C;
+    --night: #1A1A1A;
+    --topo-line: rgba(93, 138, 114, 0.12);
+    --border: rgba(26, 60, 52, 0.15);
+    --border-light: rgba(255, 255, 255, 0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--off-white);
+    color: var(--charcoal);
+    font-family: 'Source Sans 3', 'Source Sans Pro', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ── Typography ────────────────────────────────────────────── */
+  .font-serif { font-family: 'Playfair Display', Georgia, serif; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── Back Link ─────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 24px;
+    z-index: 1000;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .back-link:hover { color: var(--dawn-orange); }
+  .back-link svg { width: 14px; height: 14px; }
+
+  /* ── Topographic Pattern (SVG background) ──────────────────── */
+  .topo-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cpath d='M0 300 Q150 250 300 300 T600 300' fill='none' stroke='%235B8A72' stroke-width='1'/%3E%3Cpath d='M0 320 Q150 270 300 320 T600 320' fill='none' stroke='%235B8A72' stroke-width='0.8'/%3E%3Cpath d='M0 280 Q150 230 300 280 T600 280' fill='none' stroke='%235B8A72' stroke-width='0.8'/%3E%3Cpath d='M0 340 Q150 290 300 340 T600 340' fill='none' stroke='%235B8A72' stroke-width='0.6'/%3E%3Cpath d='M0 260 Q150 210 300 260 T600 260' fill='none' stroke='%235B8A72' stroke-width='0.6'/%3E%3Cpath d='M0 360 Q180 310 300 360 T600 360' fill='none' stroke='%235B8A72' stroke-width='0.5'/%3E%3Cpath d='M0 240 Q180 190 300 240 T600 240' fill='none' stroke='%235B8A72' stroke-width='0.5'/%3E%3Cpath d='M0 380 Q200 340 300 380 T600 380' fill='none' stroke='%235B8A72' stroke-width='0.4'/%3E%3Cpath d='M0 220 Q200 180 300 220 T600 220' fill='none' stroke='%235B8A72' stroke-width='0.4'/%3E%3Cpath d='M0 200 Q220 160 300 200 T600 200' fill='none' stroke='%235B8A72' stroke-width='0.3'/%3E%3Cpath d='M0 400 Q220 360 300 400 T600 400' fill='none' stroke='%235B8A72' stroke-width='0.3'/%3E%3C/svg%3E");
+    background-size: 600px 600px;
+    pointer-events: none;
+  }
+
+  /* ── Scroll Animations ──────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── Hero ────────────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    background: linear-gradient(175deg, var(--forest-dark) 0%, var(--forest) 40%, var(--pine) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    overflow: hidden;
+  }
+
+  /* Mountain silhouettes */
+  .mountains {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 45%;
+    pointer-events: none;
+  }
+  .mountain-layer {
+    position: absolute;
+    bottom: 0;
+    left: -5%;
+    right: -5%;
+  }
+  .mountain-layer svg { width: 110%; display: block; }
+  .mountain-back { opacity: 0.3; }
+  .mountain-mid { opacity: 0.5; }
+  .mountain-front { opacity: 0.7; }
+
+  /* Stars */
+  .stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    pointer-events: none;
+  }
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: twinkle 3s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+  }
+
+  .hero-content { position: relative; z-index: 10; max-width: 900px; }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 40px;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .hero-badge .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--dawn-orange);
+    border-radius: 50%;
+  }
+
+  .hero-logo {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(100px, 18vw, 200px);
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: 0.06em;
+    line-height: 0.85;
+    margin-bottom: 24px;
+    text-shadow: 0 4px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  .hero-tagline {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.05em;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .hero-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--dawn-orange);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 40px;
+    background: var(--dawn-orange);
+    color: var(--white);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .hero-cta:hover {
+    background: #D06A2E;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(232, 124, 60, 0.3);
+  }
+  .hero-cta svg { width: 16px; height: 16px; }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: float 2s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+  }
+
+  /* ── Section Common ──────────────────────────────────────────── */
+  section { position: relative; }
+
+  .section-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 64px;
+  }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--dawn-orange);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .section-desc {
+    font-size: 18px;
+    font-weight: 300;
+    color: #666;
+    line-height: 1.7;
+  }
+
+  /* ── Gear Section (Services) ─────────────────────────────────── */
+  .gear-section {
+    padding: 120px 24px;
+    background: var(--off-white);
+  }
+
+  .gear-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .gear-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+  .gear-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--forest);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .gear-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(26, 60, 52, 0.1);
+    border-color: var(--forest);
+  }
+  .gear-card:hover::before { transform: scaleX(1); }
+
+  .gear-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--forest);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    transition: background 0.3s ease;
+  }
+  .gear-card:hover .gear-icon { background: var(--dawn-orange); }
+  .gear-icon svg { width: 28px; height: 28px; color: var(--white); }
+
+  .gear-card h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--forest-deep);
+    margin-bottom: 12px;
+  }
+  .gear-card p {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .gear-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--sage);
+    padding: 4px 12px;
+    border: 1px solid rgba(93, 138, 114, 0.3);
+    display: inline-block;
+  }
+
+  /* ── Trail Cards (Adventure Features) ───────────────────────── */
+  .trail-section {
+    padding: 120px 24px;
+    background: var(--forest);
+    color: var(--white);
+    overflow: hidden;
+  }
+  .trail-section .section-title { color: var(--white); }
+  .trail-section .section-desc { color: var(--moss); }
+  .trail-section .section-label { color: var(--dawn-orange); }
+
+  .trail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .trail-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+  .trail-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--dawn-orange);
+    transform: translateY(-2px);
+  }
+
+  .trail-number {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 64px;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.04);
+    position: absolute;
+    top: 12px;
+    right: 24px;
+    line-height: 1;
+  }
+
+  .trail-difficulty {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+  .trail-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .trail-dot.green { background: #4CAF50; }
+  .trail-dot.blue { background: #2196F3; }
+  .trail-dot.black { background: var(--charcoal); border: 1px solid rgba(255,255,255,0.3); }
+  .trail-dot.orange { background: var(--dawn-orange); }
+  .trail-difficulty span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .trail-card h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .trail-card p {
+    font-size: 15px;
+    color: var(--moss);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .trail-stats {
+    display: flex;
+    gap: 24px;
+  }
+  .trail-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .trail-stat-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dawn-orange);
+  }
+  .trail-stat-label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.35);
+  }
+
+  /* ── Co-op Membership ──────────────────────────────────────── */
+  .coop-section {
+    padding: 120px 24px;
+    background: var(--cream);
+    position: relative;
+  }
+
+  .coop-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .coop-visual {
+    position: relative;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .coop-circle {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    border: 2px solid var(--forest);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .coop-circle::before {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    border: 1px dashed rgba(26, 60, 52, 0.2);
+  }
+  .coop-circle::after {
+    content: '';
+    position: absolute;
+    inset: -44px;
+    border-radius: 50%;
+    border: 1px dashed rgba(26, 60, 52, 0.1);
+  }
+
+  .coop-inner {
+    text-align: center;
+  }
+  .coop-inner .coop-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 8px;
+  }
+  .coop-inner .coop-number {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 72px;
+    font-weight: 900;
+    color: var(--forest);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .coop-inner .coop-unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dawn-orange);
+  }
+
+  /* Orbit dots */
+  .orbit-dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--dawn-orange);
+    border-radius: 50%;
+    animation: orbit 12s linear infinite;
+  }
+  .orbit-dot:nth-child(2) { animation-delay: -4s; width: 8px; height: 8px; background: var(--sage); }
+  .orbit-dot:nth-child(3) { animation-delay: -8s; width: 6px; height: 6px; background: var(--earth); }
+  @keyframes orbit {
+    0% { transform: rotate(0deg) translateX(180px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(180px) rotate(-360deg); }
+  }
+
+  .coop-content {}
+  .coop-content h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(32px, 4vw, 46px);
+    font-weight: 700;
+    color: var(--forest-deep);
+    margin-bottom: 24px;
+    line-height: 1.2;
+  }
+  .coop-content p {
+    font-size: 17px;
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+
+  .coop-perks {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .coop-perks li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    font-size: 15px;
+    color: var(--charcoal);
+    line-height: 1.6;
+  }
+  .perk-icon {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    background: var(--forest);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .perk-icon svg { width: 14px; height: 14px; color: var(--white); }
+
+  .coop-price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .coop-price .amount {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--forest);
+  }
+  .coop-price .period {
+    font-size: 14px;
+    color: #999;
+    letter-spacing: 1px;
+  }
+
+  .coop-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 40px;
+    background: var(--forest);
+    color: var(--white);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .coop-btn:hover {
+    background: var(--forest-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(26, 60, 52, 0.2);
+  }
+
+  /* ── Stats Section ──────────────────────────────────────────── */
+  .stats-section {
+    padding: 100px 24px;
+    background: var(--forest-deep);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .stat-item {}
+  .stat-value {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-value .accent { color: var(--dawn-orange); }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--moss);
+  }
+
+  /* Dividers between stats */
+  .stat-divider {
+    width: 1px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    align-self: center;
+  }
+
+  /* ── Campfire CTA ──────────────────────────────────────────── */
+  .cta-section {
+    padding: 160px 24px;
+    background: linear-gradient(175deg, var(--forest-dark) 0%, var(--forest) 60%, var(--pine) 100%);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .campfire-glow {
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(232, 124, 60, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .cta-content .section-label {
+    color: var(--dawn-orange);
+    margin-bottom: 24px;
+  }
+  .cta-content h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+  .cta-content p {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--moss);
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 48px;
+    background: var(--dawn-orange);
+    color: var(--white);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .cta-primary:hover {
+    background: #D06A2E;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(232, 124, 60, 0.3);
+  }
+  .cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 48px;
+    background: transparent;
+    color: var(--white);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .cta-secondary:hover {
+    border-color: var(--white);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* ── Footer ─────────────────────────────────────────────────── */
+  footer {
+    background: var(--night);
+    padding: 80px 24px 40px;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 64px;
+  }
+
+  .footer-brand {}
+  .footer-brand .logo {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: 0.04em;
+    margin-bottom: 16px;
+  }
+  .footer-brand p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.4);
+    max-width: 280px;
+  }
+
+  .footer-col h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--dawn-orange);
+    margin-bottom: 20px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 12px; }
+  .footer-col a {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .footer-col a:hover { color: var(--white); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-bottom p {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: 0.5px;
+  }
+  .footer-bottom .eco {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--sage);
+    letter-spacing: 1px;
+  }
+  .footer-bottom .eco svg { width: 14px; height: 14px; }
+
+  /* ── Topographic Divider ────────────────────────────────────── */
+  .topo-divider {
+    height: 80px;
+    background: var(--off-white);
+    position: relative;
+    overflow: hidden;
+  }
+  .topo-divider::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 19px, var(--topo-line) 19px, var(--topo-line) 20px),
+      repeating-linear-gradient(90deg, transparent, transparent 19px, var(--topo-line) 19px, var(--topo-line) 20px);
+    opacity: 0.5;
+  }
+
+  /* ── Editorial Ribbon ──────────────────────────────────────── */
+  .ribbon {
+    padding: 64px 24px;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .ribbon-track {
+    display: flex;
+    gap: 64px;
+    animation: scroll-ribbon 30s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+  @keyframes scroll-ribbon {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .ribbon-item {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--forest);
+    opacity: 0.15;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-shrink: 0;
+  }
+  .ribbon-item .separator {
+    width: 6px;
+    height: 6px;
+    background: var(--dawn-orange);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+
+  /* ── Responsive ─────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .gear-grid { grid-template-columns: 1fr; gap: 16px; }
+    .trail-grid { grid-template-columns: 1fr; gap: 20px; }
+    .coop-container {
+      grid-template-columns: 1fr;
+      gap: 48px;
+      text-align: center;
+    }
+    .coop-visual { display: none; }
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+    .stat-divider { display: none; }
+    .footer-top {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+    .hero { padding: 100px 20px 80px; min-height: 100svh; }
+    .gear-card { padding: 32px 24px; }
+    .trail-card { padding: 32px 24px; }
+    .cta-buttons { flex-direction: column; align-items: center; }
+    .back-link { top: 16px; left: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  Gallery
+</a>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- HERO                                                          -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <!-- Stars -->
+  <div class="stars" id="stars"></div>
+
+  <!-- Topographic lines -->
+  <div class="topo-pattern"></div>
+
+  <!-- Mountain Silhouettes -->
+  <div class="mountains">
+    <!-- Back range -->
+    <div class="mountain-layer mountain-back" style="bottom: 20%;">
+      <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style="height: 200px;">
+        <path d="M0,320 L0,200 Q120,80 240,160 Q360,60 480,140 Q540,40 660,100 Q780,20 900,120 Q1020,40 1140,100 Q1260,30 1380,140 L1440,120 L1440,320 Z" fill="#0F2A23"/>
+      </svg>
+    </div>
+    <!-- Mid range -->
+    <div class="mountain-layer mountain-mid" style="bottom: 10%;">
+      <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style="height: 220px;">
+        <path d="M0,320 L0,220 Q100,120 200,180 Q300,80 420,150 Q500,50 620,130 Q720,40 840,110 Q960,30 1080,120 Q1180,60 1300,140 L1440,100 L1440,320 Z" fill="#142E27"/>
+      </svg>
+    </div>
+    <!-- Front range -->
+    <div class="mountain-layer mountain-front" style="bottom: 0;">
+      <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style="height: 180px;">
+        <path d="M0,320 L0,260 Q80,180 180,220 Q280,140 400,200 Q480,120 600,180 Q700,100 820,170 Q920,110 1040,160 Q1140,100 1260,180 Q1360,140 1440,180 L1440,320 Z" fill="#1A3C34"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="hero-content">
+    <div class="hero-badge reveal">
+      <span class="dot"></span>
+      Co-op Member Since 2024
+    </div>
+    <div class="hero-logo reveal reveal-delay-1">KPT</div>
+    <p class="hero-tagline reveal reveal-delay-2">A life outdoors is a life well built</p>
+    <p class="hero-sub reveal reveal-delay-3">AI Agents &bull; Web Design &bull; Digital Expeditions</p>
+    <a href="#gear" class="hero-cta reveal reveal-delay-4">
+      Explore the Trail
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="hero-scroll">
+    <span>Descend</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SCROLLING RIBBON                                              -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="ribbon">
+  <div class="ribbon-track">
+    <span class="ribbon-item">Voice Agents <span class="separator"></span></span>
+    <span class="ribbon-item">Web Design <span class="separator"></span></span>
+    <span class="ribbon-item">AI Automation <span class="separator"></span></span>
+    <span class="ribbon-item">Digital Strategy <span class="separator"></span></span>
+    <span class="ribbon-item">Brand Identity <span class="separator"></span></span>
+    <span class="ribbon-item">Trail Tested <span class="separator"></span></span>
+    <span class="ribbon-item">Summit Ready <span class="separator"></span></span>
+    <span class="ribbon-item">Built to Last <span class="separator"></span></span>
+    <!-- Duplicate for seamless loop -->
+    <span class="ribbon-item">Voice Agents <span class="separator"></span></span>
+    <span class="ribbon-item">Web Design <span class="separator"></span></span>
+    <span class="ribbon-item">AI Automation <span class="separator"></span></span>
+    <span class="ribbon-item">Digital Strategy <span class="separator"></span></span>
+    <span class="ribbon-item">Brand Identity <span class="separator"></span></span>
+    <span class="ribbon-item">Trail Tested <span class="separator"></span></span>
+    <span class="ribbon-item">Summit Ready <span class="separator"></span></span>
+    <span class="ribbon-item">Built to Last <span class="separator"></span></span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- GEAR SECTION (Services)                                       -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="gear-section" id="gear">
+  <div class="section-header reveal">
+    <p class="section-label">Essential Gear</p>
+    <h2 class="section-title">Built for Every Terrain</h2>
+    <p class="section-desc">Every expedition needs the right equipment. Our services are field-tested, trail-hardened, and built for the long haul.</p>
+  </div>
+
+  <div class="gear-grid">
+    <!-- Card 1 -->
+    <div class="gear-card reveal">
+      <div class="gear-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a3 3 0 0 0-3 3v4a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+      </div>
+      <h3>AI Voice Agents</h3>
+      <p>Intelligent voice systems that handle calls, qualify leads, and book appointments. Like having a basecamp coordinator who never sleeps.</p>
+      <span class="gear-tag">Summit Series</span>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="gear-card reveal reveal-delay-1">
+      <div class="gear-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h3>Web Design</h3>
+      <p>Premium websites engineered for speed, beauty, and conversion. Built like a well-crafted trail -- every step intentional, every view rewarding.</p>
+      <span class="gear-tag">All-Terrain</span>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="gear-card reveal reveal-delay-2">
+      <div class="gear-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>AI Automation</h3>
+      <p>Workflow systems that handle the grunt work so you can focus on the summit. Automated processes, intelligent routing, zero wasted effort.</p>
+      <span class="gear-tag">Expedition Class</span>
+    </div>
+  </div>
+</section>
+
+<!-- Topographic Divider -->
+<div class="topo-divider"></div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- TRAIL SECTION (Features)                                      -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="trail-section">
+  <div class="topo-pattern"></div>
+
+  <div class="section-header reveal">
+    <p class="section-label">Trail Guide</p>
+    <h2 class="section-title">Four Paths to the Peak</h2>
+    <p class="section-desc">Choose your route. Every trail leads to the same destination -- a business that runs itself while you explore what matters.</p>
+  </div>
+
+  <div class="trail-grid">
+    <!-- Trail 1 -->
+    <div class="trail-card reveal">
+      <span class="trail-number">01</span>
+      <div class="trail-difficulty">
+        <span class="trail-dot green"></span>
+        <span>Beginner Friendly</span>
+      </div>
+      <h3>Discovery Hike</h3>
+      <p>Start with a free consultation. We map your terrain, identify pain points, and chart the optimal route to your goals.</p>
+      <div class="trail-stats">
+        <div class="trail-stat">
+          <span class="trail-stat-value">30min</span>
+          <span class="trail-stat-label">Duration</span>
+        </div>
+        <div class="trail-stat">
+          <span class="trail-stat-value">Free</span>
+          <span class="trail-stat-label">Investment</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trail 2 -->
+    <div class="trail-card reveal reveal-delay-1">
+      <span class="trail-number">02</span>
+      <div class="trail-difficulty">
+        <span class="trail-dot blue"></span>
+        <span>Intermediate</span>
+      </div>
+      <h3>Base Camp Setup</h3>
+      <p>We establish your digital presence -- website, brand identity, and core systems. A solid foundation for the ascent ahead.</p>
+      <div class="trail-stats">
+        <div class="trail-stat">
+          <span class="trail-stat-value">2-4wk</span>
+          <span class="trail-stat-label">Timeline</span>
+        </div>
+        <div class="trail-stat">
+          <span class="trail-stat-value">Custom</span>
+          <span class="trail-stat-label">Pricing</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trail 3 -->
+    <div class="trail-card reveal reveal-delay-2">
+      <span class="trail-number">03</span>
+      <div class="trail-difficulty">
+        <span class="trail-dot black"></span>
+        <span>Advanced</span>
+      </div>
+      <h3>Summit Push</h3>
+      <p>AI voice agents, automation workflows, and intelligent systems deployed. Full operational capability for your business.</p>
+      <div class="trail-stats">
+        <div class="trail-stat">
+          <span class="trail-stat-value">4-8wk</span>
+          <span class="trail-stat-label">Timeline</span>
+        </div>
+        <div class="trail-stat">
+          <span class="trail-stat-value">24/7</span>
+          <span class="trail-stat-label">Uptime</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trail 4 -->
+    <div class="trail-card reveal reveal-delay-3">
+      <span class="trail-number">04</span>
+      <div class="trail-difficulty">
+        <span class="trail-dot orange"></span>
+        <span>Expert</span>
+      </div>
+      <h3>Ongoing Expedition</h3>
+      <p>Continuous optimization, monitoring, and evolution. Your systems get smarter, faster, and more capable every month.</p>
+      <div class="trail-stats">
+        <div class="trail-stat">
+          <span class="trail-stat-value">&infin;</span>
+          <span class="trail-stat-label">Duration</span>
+        </div>
+        <div class="trail-stat">
+          <span class="trail-stat-value">Monthly</span>
+          <span class="trail-stat-label">Retainer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- CO-OP MEMBERSHIP                                              -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="coop-section">
+  <div class="topo-pattern"></div>
+
+  <div class="coop-container">
+    <div class="coop-visual reveal">
+      <div class="coop-circle">
+        <div class="orbit-dot"></div>
+        <div class="orbit-dot"></div>
+        <div class="orbit-dot"></div>
+        <div class="coop-inner">
+          <p class="coop-label">Active Members</p>
+          <p class="coop-number">47</p>
+          <p class="coop-unit">& Growing</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="coop-content reveal reveal-delay-1">
+      <p class="section-label">The Co-op</p>
+      <h2>Shared Ownership.<br>Shared Success.</h2>
+      <p>Like any great co-op, membership means you are invested in the outcome. Our clients are not customers -- they are co-owners of a shared mission to build better businesses through technology.</p>
+
+      <ul class="coop-perks">
+        <li>
+          <span class="perk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Priority access to new AI capabilities as they launch
+        </li>
+        <li>
+          <span class="perk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Member-exclusive rates on all services
+        </li>
+        <li>
+          <span class="perk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Quarterly strategy sessions with our team
+        </li>
+        <li>
+          <span class="perk-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Annual dividend on platform improvements
+        </li>
+      </ul>
+
+      <div class="coop-price">
+        <span class="amount">$0</span>
+        <span class="period">lifetime membership</span>
+      </div>
+
+      <a href="#" class="coop-btn">
+        Join the Co-op
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- STATS                                                         -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="stats-section">
+  <div class="topo-pattern"></div>
+
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <p class="stat-value">99<span class="accent">%</span></p>
+      <p class="stat-label">Uptime Guarantee</p>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <p class="stat-value">47</p>
+      <p class="stat-label">Co-op Members</p>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <p class="stat-value">12<span class="accent">K</span></p>
+      <p class="stat-label">AI Calls Handled</p>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <p class="stat-value">&lt;2<span class="accent">s</span></p>
+      <p class="stat-label">Avg Response Time</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- CAMPFIRE CTA                                                  -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="topo-pattern"></div>
+  <div class="campfire-glow"></div>
+
+  <div class="cta-content">
+    <p class="section-label reveal">Begin Your Expedition</p>
+    <h2 class="reveal reveal-delay-1">The Trail Starts Here</h2>
+    <p class="reveal reveal-delay-2">Every great adventure begins with a single step. Let us map your route, pack your gear, and guide you to the summit. No commitment required -- just curiosity.</p>
+    <div class="cta-buttons reveal reveal-delay-3">
+      <a href="#" class="cta-primary">
+        Start the Trek
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#" class="cta-secondary">
+        View Trail Map
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- FOOTER                                                        -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo">KPT</div>
+        <p>AI voice agents and premium web design for businesses that refuse to stand still. Built with purpose. Tested in the wild.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">AI Voice Agents</a></li>
+          <li><a href="#">Web Design</a></li>
+          <li><a href="#">Automation</a></li>
+          <li><a href="#">Strategy</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Trails</h4>
+        <ul>
+          <li><a href="#">Discovery Hike</a></li>
+          <li><a href="#">Base Camp</a></li>
+          <li><a href="#">Summit Push</a></li>
+          <li><a href="#">Expedition</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="#">Join Co-op</a></li>
+          <li><a href="#">Member Stories</a></li>
+          <li><a href="#">Trail Reports</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2024 KPT. All rights reserved. Built with purpose in Pittsburgh, PA.</p>
+      <div class="eco">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10z"/></svg>
+        1% for the Planet
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SCRIPTS                                                       -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<script>
+  // ── IntersectionObserver for scroll reveals ──────────────────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -60px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Generate Stars ────────────────────────────────────────────
+  const starsContainer = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 3 + 's';
+    star.style.animationDuration = (2 + Math.random() * 3) + 's';
+    const size = Math.random() * 2 + 1;
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    starsContainer.appendChild(star);
+  }
+
+  // ── Parallax on mountains (subtle) ────────────────────────────
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        const heroHeight = document.querySelector('.hero').offsetHeight;
+        if (scrollY < heroHeight) {
+          const layers = document.querySelectorAll('.mountain-layer');
+          layers[0].style.transform = 'translateY(' + (scrollY * 0.08) + 'px)';
+          layers[1].style.transform = 'translateY(' + (scrollY * 0.05) + 'px)';
+          layers[2].style.transform = 'translateY(' + (scrollY * 0.02) + 'px)';
+          // Stars parallax
+          starsContainer.style.transform = 'translateY(' + (scrollY * 0.15) + 'px)';
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+</script>
+
+</body>
+</html>

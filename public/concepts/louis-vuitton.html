@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Louis Vuitton</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Inter:wght@200;300;400;500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* =============================================
+     RESET & CUSTOM PROPERTIES
+     ============================================= */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --brown: #5C4033;
+    --brown-deep: #3A2518;
+    --brown-light: #7A5C4F;
+    --gold: #C4A462;
+    --gold-bright: #D4B872;
+    --gold-dim: rgba(196, 164, 98, 0.12);
+    --gold-glow: rgba(196, 164, 98, 0.06);
+    --cream: #F5F0E8;
+    --cream-dark: #E8E0D4;
+    --cream-warm: #F9F5EE;
+    --black: #1A1A1A;
+    --black-deep: #0A0A0A;
+    --chocolate: #2C1810;
+    --chocolate-mid: #3D2418;
+    --white-soft: rgba(245, 240, 232, 0.55);
+    --white-muted: rgba(245, 240, 232, 0.3);
+
+    --font-display: 'Playfair Display', 'Georgia', serif;
+    --font-body: 'Cormorant Garamond', 'Georgia', serif;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+    --ease-luxury: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    background: var(--black-deep);
+    color: var(--cream);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--gold);
+    color: var(--black-deep);
+  }
+
+  img { display: block; max-width: 100%; }
+
+  /* =============================================
+     LV-STYLE MONOGRAM PATTERN (CSS-only)
+     ============================================= */
+  .monogram-pattern {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .monogram-pattern::before {
+    content: '';
+    position: absolute;
+    inset: -60%;
+    width: 220%;
+    height: 220%;
+    background-image:
+      /* Quatrefoil / flower motif */
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cdefs%3E%3Cstyle%3E.m%7Bfill:none;stroke:%23C4A462;stroke-width:0.35;opacity:0.07%7D .t%7Bfont-family:Playfair Display,Georgia,serif;font-size:10px;font-weight:700;fill:%23C4A462;opacity:0.06;text-anchor:middle%7D%3C/style%3E%3C/defs%3E%3C!-- Diamond frame --%3E%3Crect x='25' y='25' width='50' height='50' rx='2' class='m' transform='rotate(45 50 50)'/%3E%3C!-- Inner circle --%3E%3Ccircle cx='50' cy='50' r='14' class='m'/%3E%3C!-- Quatrefoil petals --%3E%3Ccircle cx='50' cy='36' r='7' class='m'/%3E%3Ccircle cx='50' cy='64' r='7' class='m'/%3E%3Ccircle cx='36' cy='50' r='7' class='m'/%3E%3Ccircle cx='64' cy='50' r='7' class='m'/%3E%3C!-- KPT monogram --%3E%3Ctext x='50' y='54' class='t'%3EKPT%3C/text%3E%3C!-- Corner dots --%3E%3Ccircle cx='50' cy='3' r='1.5' fill='%23C4A462' opacity='0.04'/%3E%3Ccircle cx='50' cy='97' r='1.5' fill='%23C4A462' opacity='0.04'/%3E%3Ccircle cx='3' cy='50' r='1.5' fill='%23C4A462' opacity='0.04'/%3E%3Ccircle cx='97' cy='50' r='1.5' fill='%23C4A462' opacity='0.04'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 100px 100px;
+    transform: rotate(-12deg);
+    animation: patternDrift 180s linear infinite;
+  }
+
+  @keyframes patternDrift {
+    0% { transform: rotate(-12deg) translate(0, 0); }
+    100% { transform: rotate(-12deg) translate(-100px, -100px); }
+  }
+
+  /* Denser monogram variant for accent sections */
+  .monogram-dense {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .monogram-dense::before {
+    content: '';
+    position: absolute;
+    inset: -30%;
+    width: 160%;
+    height: 160%;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Crect x='10' y='10' width='40' height='40' rx='1' fill='none' stroke='%23C4A462' stroke-width='0.25' opacity='0.05' transform='rotate(45 30 30)'/%3E%3Ccircle cx='30' cy='30' r='8' fill='none' stroke='%23C4A462' stroke-width='0.25' opacity='0.04'/%3E%3Ctext x='30' y='33' text-anchor='middle' font-family='Playfair Display,Georgia,serif' font-size='7' font-weight='700' fill='%23C4A462' opacity='0.04'%3EK%3C/text%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 60px 60px;
+  }
+
+  /* =============================================
+     NAVIGATION
+     ============================================= */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(10, 10, 10, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    border-bottom: 1px solid rgba(196, 164, 98, 0);
+    transition: all 0.8s var(--ease-luxury);
+    padding: 0;
+  }
+
+  nav.scrolled {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom-color: rgba(196, 164, 98, 0.08);
+  }
+
+  .nav-inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 28px 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: padding 0.6s var(--ease-luxury);
+  }
+
+  nav.scrolled .nav-inner {
+    padding: 18px 64px;
+  }
+
+  .nav-back {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--white-soft);
+    text-decoration: none;
+    transition: color 0.4s var(--ease-luxury);
+    min-width: 120px;
+  }
+
+  .nav-back:hover { color: var(--gold); }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 16px;
+    text-transform: uppercase;
+    color: var(--cream);
+    text-decoration: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: letter-spacing 0.6s var(--ease-luxury);
+  }
+
+  nav.scrolled .nav-logo {
+    letter-spacing: 12px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 44px;
+    list-style: none;
+    min-width: 120px;
+    justify-content: flex-end;
+  }
+
+  .nav-links a {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--white-soft);
+    text-decoration: none;
+    transition: color 0.4s var(--ease-luxury);
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 0;
+    height: 0.5px;
+    background: var(--gold);
+    transition: width 0.5s var(--ease-luxury);
+  }
+
+  .nav-links a:hover { color: var(--cream); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* =============================================
+     HERO — FULL BLEED EDITORIAL
+     ============================================= */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 40px 100px;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(92, 64, 51, 0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 50% 60%, rgba(196, 164, 98, 0.04) 0%, transparent 70%),
+      linear-gradient(180deg, var(--black-deep) 0%, #1A1008 35%, #1A1008 65%, var(--black-deep) 100%);
+    overflow: hidden;
+  }
+
+  /* Gold border accent lines */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--gold));
+    opacity: 0;
+    animation: lineReveal 1.5s var(--ease-reveal) 0.2s forwards;
+  }
+
+  @keyframes lineReveal {
+    to { opacity: 0.4; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1000px;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 56px;
+    opacity: 0;
+    transform: translateY(24px);
+    animation: heroFadeUp 1.2s var(--ease-reveal) 0.5s forwards;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(80px, 12vw, 180px);
+    font-weight: 400;
+    letter-spacing: clamp(12px, 3vw, 40px);
+    line-height: 0.9;
+    color: var(--cream);
+    margin-bottom: 0;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: heroFadeUp 1.4s var(--ease-reveal) 0.8s forwards;
+    text-transform: uppercase;
+  }
+
+  .hero-bar {
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+    margin: 48px auto;
+    opacity: 0;
+    transform: scaleX(0);
+    animation: barReveal 1s var(--ease-reveal) 1.4s forwards;
+  }
+
+  @keyframes barReveal {
+    to { opacity: 1; transform: scaleX(1); }
+  }
+
+  .hero-tagline {
+    font-family: var(--font-display);
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 4px;
+    color: var(--white-soft);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroFadeUp 1s var(--ease-reveal) 1.6s forwards;
+  }
+
+  .hero-sub {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--white-muted);
+    margin-top: 24px;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: heroFadeUp 1s var(--ease-reveal) 1.9s forwards;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    opacity: 0;
+    animation: heroFadeUp 1s var(--ease-reveal) 2.4s forwards;
+  }
+
+  .hero-scroll span {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.6;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.6; transform: scaleY(1); }
+    50% { opacity: 0.15; transform: scaleY(0.5); }
+  }
+
+  @keyframes heroFadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* =============================================
+     REVEAL ANIMATIONS
+     ============================================= */
+  .reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s var(--ease-reveal), transform 1s var(--ease-reveal);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-fade {
+    opacity: 0;
+    transition: opacity 1.2s var(--ease-reveal);
+  }
+
+  .reveal-fade.visible {
+    opacity: 1;
+  }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-60px);
+    transition: opacity 1s var(--ease-reveal), transform 1s var(--ease-reveal);
+  }
+
+  .reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(60px);
+    transition: opacity 1s var(--ease-reveal), transform 1s var(--ease-reveal);
+  }
+
+  .reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .d1 { transition-delay: 0.1s; }
+  .d2 { transition-delay: 0.2s; }
+  .d3 { transition-delay: 0.3s; }
+  .d4 { transition-delay: 0.4s; }
+  .d5 { transition-delay: 0.5s; }
+  .d6 { transition-delay: 0.6s; }
+
+  /* =============================================
+     SECTION UTILITIES
+     ============================================= */
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-wide {
+    max-width: 1440px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 300;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+  }
+
+  .section-heading {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 72px);
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.1;
+    letter-spacing: 2px;
+  }
+
+  .section-heading em {
+    font-style: italic;
+    color: var(--gold-bright);
+  }
+
+  .gold-rule {
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .gold-rule-center {
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .body-text {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--white-soft);
+    line-height: 1.9;
+    letter-spacing: 0.3px;
+  }
+
+  .caption-text {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white-muted);
+  }
+
+  /* =============================================
+     EDITORIAL INTRO — SPLIT LAYOUT
+     ============================================= */
+  .editorial {
+    position: relative;
+    padding: 180px 64px;
+    background: var(--black-deep);
+    overflow: hidden;
+  }
+
+  .editorial-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 120px;
+    align-items: center;
+  }
+
+  .editorial-left {
+    padding-right: 40px;
+  }
+
+  .editorial-left .section-label {
+    margin-bottom: 24px;
+  }
+
+  .editorial-left .section-heading {
+    margin-bottom: 32px;
+  }
+
+  .editorial-left .gold-rule {
+    margin-bottom: 40px;
+  }
+
+  .editorial-left .body-text {
+    margin-bottom: 48px;
+    max-width: 480px;
+  }
+
+  .editorial-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-style: italic;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-decoration: none;
+    transition: gap 0.5s var(--ease-luxury);
+    border-bottom: 0.5px solid rgba(196, 164, 98, 0.3);
+    padding-bottom: 4px;
+  }
+
+  .editorial-cta:hover { gap: 28px; }
+
+  .editorial-cta svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.5s var(--ease-luxury);
+  }
+
+  .editorial-cta:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* Visual panel — image placeholder with monogram overlay */
+  .editorial-visual {
+    position: relative;
+    aspect-ratio: 3/4;
+    background:
+      linear-gradient(135deg, var(--chocolate) 0%, var(--brown-deep) 50%, var(--chocolate-mid) 100%);
+    overflow: hidden;
+    border: 1px solid rgba(196, 164, 98, 0.08);
+  }
+
+  .editorial-visual::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 20px,
+        rgba(196, 164, 98, 0.015) 20px,
+        rgba(196, 164, 98, 0.015) 21px
+      );
+  }
+
+  .editorial-visual::after {
+    content: 'KPT';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-display);
+    font-size: 80px;
+    font-weight: 700;
+    letter-spacing: 20px;
+    color: var(--gold);
+    opacity: 0.06;
+  }
+
+  .visual-label {
+    position: absolute;
+    bottom: 32px;
+    left: 32px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.5;
+  }
+
+  /* =============================================
+     COLLECTIONS — FULL BLEED CARDS
+     ============================================= */
+  .collections {
+    position: relative;
+    padding: 0;
+    background: var(--black-deep);
+  }
+
+  .collections-header {
+    text-align: center;
+    padding: 160px 40px 100px;
+  }
+
+  .collections-header .section-label {
+    margin-bottom: 20px;
+  }
+
+  .collections-header .section-heading {
+    margin-bottom: 24px;
+  }
+
+  .collections-header .body-text {
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .collection-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+  }
+
+  .collection-visual {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .collection-visual-a {
+    background:
+      radial-gradient(ellipse at 30% 50%, rgba(92, 64, 51, 0.25) 0%, transparent 70%),
+      linear-gradient(135deg, #1A1008 0%, var(--chocolate) 50%, #1A0E06 100%);
+  }
+
+  .collection-visual-b {
+    background:
+      radial-gradient(ellipse at 70% 50%, rgba(196, 164, 98, 0.08) 0%, transparent 70%),
+      linear-gradient(225deg, #1A1008 0%, #0D0806 50%, var(--chocolate) 100%);
+  }
+
+  .collection-visual .monogram-dense { opacity: 0.7; }
+
+  .collection-emblem {
+    font-family: var(--font-display);
+    font-size: clamp(100px, 15vw, 200px);
+    font-weight: 700;
+    letter-spacing: 16px;
+    color: var(--gold);
+    opacity: 0.07;
+    position: relative;
+    z-index: 1;
+    user-select: none;
+  }
+
+  .collection-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 80px;
+    position: relative;
+  }
+
+  .collection-info .section-label {
+    margin-bottom: 20px;
+  }
+
+  .collection-number {
+    font-family: var(--font-display);
+    font-size: 64px;
+    font-weight: 300;
+    color: var(--gold);
+    opacity: 0.12;
+    position: absolute;
+    top: 60px;
+    right: 60px;
+    line-height: 1;
+  }
+
+  .collection-name {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.15;
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+  }
+
+  .collection-desc {
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--white-soft);
+    line-height: 1.9;
+    max-width: 440px;
+    margin-bottom: 48px;
+  }
+
+  .collection-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-style: italic;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.5s var(--ease-luxury);
+    position: relative;
+  }
+
+  .collection-link::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 0.5px;
+    background: var(--gold);
+    opacity: 0.3;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease-luxury);
+  }
+
+  .collection-link:hover::before { transform: scaleX(1); }
+  .collection-link:hover { gap: 24px; }
+
+  .collection-link .arrow {
+    display: inline-block;
+    transition: transform 0.5s var(--ease-luxury);
+  }
+
+  .collection-link:hover .arrow {
+    transform: translateX(6px);
+  }
+
+  /* =============================================
+     SAVOIR-FAIRE — CRAFT SECTION
+     ============================================= */
+  .savoir-faire {
+    position: relative;
+    padding: 180px 64px;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 50%, rgba(44, 24, 16, 0.5) 0%, transparent 100%),
+      var(--black-deep);
+    overflow: hidden;
+  }
+
+  .sf-header {
+    text-align: center;
+    margin-bottom: 120px;
+  }
+
+  .sf-header .section-label { margin-bottom: 20px; }
+  .sf-header .section-heading { margin-bottom: 24px; }
+  .sf-header .gold-rule-center { margin-bottom: 32px; }
+  .sf-header .body-text {
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  .sf-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .sf-card {
+    position: relative;
+    padding: 72px 48px;
+    background: rgba(44, 24, 16, 0.2);
+    border: 1px solid rgba(196, 164, 98, 0.04);
+    text-align: center;
+    transition: all 0.7s var(--ease-luxury);
+    overflow: hidden;
+  }
+
+  .sf-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(196, 164, 98, 0.03) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.7s var(--ease-luxury);
+  }
+
+  .sf-card:hover::before { opacity: 1; }
+
+  .sf-card:hover {
+    border-color: rgba(196, 164, 98, 0.12);
+    background: rgba(44, 24, 16, 0.4);
+  }
+
+  .sf-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    transition: width 0.6s var(--ease-luxury);
+  }
+
+  .sf-card:hover::after { width: 50%; }
+
+  .sf-icon {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 300;
+    color: var(--gold);
+    margin-bottom: 28px;
+    display: block;
+    opacity: 0.65;
+  }
+
+  .sf-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: block;
+    opacity: 0.7;
+  }
+
+  .sf-card h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--cream);
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+
+  .sf-card p {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--white-soft);
+    line-height: 1.8;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  /* =============================================
+     STATS — GOLD ON DARK
+     ============================================= */
+  .stats {
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .stats-band {
+    background:
+      linear-gradient(90deg, var(--chocolate) 0%, var(--brown-deep) 50%, var(--chocolate) 100%);
+    border-top: 1px solid rgba(196, 164, 98, 0.08);
+    border-bottom: 1px solid rgba(196, 164, 98, 0.08);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .stat-cell {
+    text-align: center;
+    padding: 80px 24px;
+    position: relative;
+  }
+
+  .stat-cell:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background: rgba(196, 164, 98, 0.1);
+  }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(44px, 5vw, 72px);
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--white-muted);
+    line-height: 1.5;
+  }
+
+  .stat-sub {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--white-muted);
+    margin-top: 8px;
+    opacity: 0.5;
+  }
+
+  /* =============================================
+     EDITORIAL QUOTE — FULL WIDTH
+     ============================================= */
+  .quote-section {
+    position: relative;
+    padding: 200px 64px;
+    text-align: center;
+    background: var(--black-deep);
+    overflow: hidden;
+  }
+
+  .quote-section .monogram-pattern {
+    opacity: 0.5;
+  }
+
+  .quote-mark {
+    font-family: var(--font-display);
+    font-size: 120px;
+    font-weight: 300;
+    color: var(--gold);
+    opacity: 0.15;
+    line-height: 0.5;
+    display: block;
+    margin-bottom: 40px;
+  }
+
+  .quote-text {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.4;
+    max-width: 900px;
+    margin: 0 auto 40px;
+    letter-spacing: 1px;
+  }
+
+  .quote-attr {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.6;
+  }
+
+  /* =============================================
+     HERITAGE — VERTICAL TIMELINE
+     ============================================= */
+  .heritage {
+    position: relative;
+    padding: 180px 64px;
+    background: var(--black-deep);
+    overflow: hidden;
+  }
+
+  .heritage-header {
+    text-align: center;
+    margin-bottom: 120px;
+  }
+
+  .heritage-header .section-label { margin-bottom: 20px; }
+  .heritage-header .section-heading { margin-bottom: 24px; }
+  .heritage-header .gold-rule-center { margin-bottom: 32px; }
+  .heritage-header .body-text {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .timeline {
+    position: relative;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(196, 164, 98, 0.2), rgba(196, 164, 98, 0.2), transparent);
+  }
+
+  .tl-item {
+    display: flex;
+    margin-bottom: 100px;
+    position: relative;
+  }
+
+  .tl-item:last-child { margin-bottom: 0; }
+
+  .tl-item:nth-child(odd) {
+    text-align: right;
+    padding-right: calc(50% + 48px);
+  }
+
+  .tl-item:nth-child(even) {
+    flex-direction: row-reverse;
+    text-align: left;
+    padding-left: calc(50% + 48px);
+  }
+
+  .tl-dot {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 11px;
+    height: 11px;
+    border: 1px solid var(--gold);
+    background: var(--black-deep);
+    border-radius: 50%;
+    z-index: 2;
+    top: 8px;
+    transition: background 0.4s var(--ease-luxury);
+  }
+
+  .tl-item:hover .tl-dot {
+    background: var(--gold);
+  }
+
+  .tl-year {
+    font-family: var(--font-display);
+    font-size: 42px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+  }
+
+  .tl-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--cream);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+
+  .tl-desc {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--white-soft);
+    line-height: 1.8;
+  }
+
+  /* =============================================
+     CTA — INVITATION
+     ============================================= */
+  .invitation {
+    position: relative;
+    padding: 200px 64px;
+    text-align: center;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 50%, rgba(92, 64, 51, 0.2) 0%, transparent 80%),
+      linear-gradient(180deg, var(--black-deep) 0%, #1A1008 40%, #1A1008 60%, var(--black-deep) 100%);
+    overflow: hidden;
+  }
+
+  .invitation-content {
+    position: relative;
+    z-index: 2;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .invitation .section-label { margin-bottom: 28px; }
+
+  .invitation h2 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--cream);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+
+  .invitation-sub {
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--white-soft);
+    margin-bottom: 64px;
+    line-height: 1.8;
+  }
+
+  .invitation-form {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .invitation-input {
+    flex: 1;
+    padding: 20px 28px;
+    background: transparent;
+    border: 1px solid rgba(196, 164, 98, 0.2);
+    border-right: none;
+    color: var(--cream);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    outline: none;
+    transition: border-color 0.4s var(--ease-luxury);
+  }
+
+  .invitation-input::placeholder {
+    color: rgba(196, 164, 98, 0.3);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .invitation-input:focus {
+    border-color: rgba(196, 164, 98, 0.5);
+  }
+
+  .invitation-btn {
+    padding: 20px 44px;
+    background: var(--gold);
+    border: 1px solid var(--gold);
+    color: var(--black-deep);
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s var(--ease-luxury);
+    white-space: nowrap;
+  }
+
+  .invitation-btn:hover {
+    background: var(--gold-bright);
+    border-color: var(--gold-bright);
+  }
+
+  .invitation-note {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white-muted);
+    margin-top: 24px;
+    opacity: 0.5;
+  }
+
+  /* =============================================
+     FOOTER — LUXURY MINIMALISM
+     ============================================= */
+  footer {
+    position: relative;
+    background: var(--black-deep);
+    border-top: 1px solid rgba(196, 164, 98, 0.06);
+    overflow: hidden;
+  }
+
+  .footer-top {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 80px 64px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: start;
+    gap: 64px;
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 14px;
+    text-transform: uppercase;
+    color: var(--cream);
+  }
+
+  .footer-tagline {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--white-muted);
+    letter-spacing: 2px;
+  }
+
+  .footer-nav {
+    text-align: center;
+  }
+
+  .footer-nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .footer-nav a {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white-muted);
+    text-decoration: none;
+    transition: color 0.4s var(--ease-luxury);
+  }
+
+  .footer-nav a:hover { color: var(--gold); }
+
+  .footer-legal {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .footer-legal span {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--white-muted);
+    opacity: 0.5;
+    text-transform: uppercase;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(196, 164, 98, 0.04);
+    padding: 32px 64px;
+    text-align: center;
+  }
+
+  .footer-bottom p {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(196, 164, 98, 0.15);
+  }
+
+  /* =============================================
+     RESPONSIVE — TABLET
+     ============================================= */
+  @media (max-width: 1024px) {
+    .nav-inner { padding: 22px 32px; }
+    nav.scrolled .nav-inner { padding: 16px 32px; }
+    .nav-links { gap: 28px; }
+
+    .editorial { padding: 120px 40px; }
+    .editorial-grid { gap: 80px; }
+
+    .collection-row { min-height: 60vh; }
+    .collection-info { padding: 60px 48px; }
+
+    .sf-grid { grid-template-columns: 1fr 1fr; gap: 2px; }
+
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-cell:nth-child(2)::after { display: none; }
+    .stat-cell { padding: 60px 24px; }
+
+    .heritage { padding: 120px 40px; }
+    .savoir-faire { padding: 120px 40px; }
+    .quote-section { padding: 140px 40px; }
+    .invitation { padding: 140px 40px; }
+
+    .footer-top { padding: 60px 40px; }
+  }
+
+  /* =============================================
+     RESPONSIVE — MOBILE
+     ============================================= */
+  @media (max-width: 768px) {
+    .nav-inner { padding: 16px 24px; }
+    nav.scrolled .nav-inner { padding: 14px 24px; }
+    .nav-links { display: none; }
+    .nav-logo {
+      font-size: 16px;
+      letter-spacing: 10px;
+      position: relative;
+      left: auto;
+      transform: none;
+    }
+    nav.scrolled .nav-logo { letter-spacing: 8px; }
+
+    .hero { padding: 120px 24px 80px; min-height: 100svh; }
+    .hero::before { height: 50px; }
+
+    .editorial { padding: 100px 24px; }
+    .editorial-grid {
+      grid-template-columns: 1fr;
+      gap: 60px;
+    }
+    .editorial-left { padding-right: 0; }
+    .editorial-visual { aspect-ratio: 4/3; }
+
+    .collections-header { padding: 100px 24px 60px; }
+    .collection-row {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .collection-visual {
+      aspect-ratio: 16/9;
+    }
+    .collection-info { padding: 48px 24px 72px; }
+    .collection-number { top: 32px; right: 24px; font-size: 48px; }
+
+    .savoir-faire { padding: 100px 24px; }
+    .sf-header { margin-bottom: 80px; }
+    .sf-grid { grid-template-columns: 1fr; }
+    .sf-card { padding: 56px 32px; }
+
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .stat-cell::after { display: none; }
+    .stat-cell { padding: 48px 16px; }
+
+    .quote-section { padding: 120px 24px; }
+    .quote-mark { font-size: 80px; margin-bottom: 24px; }
+
+    .heritage { padding: 100px 24px; }
+    .heritage-header { margin-bottom: 80px; }
+    .timeline::before { left: 0; }
+    .tl-item:nth-child(odd),
+    .tl-item:nth-child(even) {
+      text-align: left;
+      padding: 0 0 0 40px;
+      flex-direction: row;
+    }
+    .tl-dot { left: 0; }
+    .tl-year { font-size: 32px; }
+
+    .invitation { padding: 120px 24px; }
+    .invitation-form {
+      flex-direction: column;
+    }
+    .invitation-input {
+      border-right: 1px solid rgba(196, 164, 98, 0.2);
+      border-bottom: none;
+    }
+    .invitation-btn { width: 100%; }
+
+    .footer-top {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 40px;
+      padding: 48px 24px;
+    }
+    .footer-legal { text-align: center; }
+    .footer-bottom { padding: 24px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-title {
+      letter-spacing: 8px;
+    }
+    .hero-tagline {
+      letter-spacing: 2px;
+    }
+    .stat-number { font-size: 36px; }
+    .collection-emblem { font-size: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ======================== NAV ======================== -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">&larr; Gallery</a>
+    <a href="#" class="nav-logo">KPT</a>
+    <ul class="nav-links">
+      <li><a href="#collections">Collections</a></li>
+      <li><a href="#savoir-faire">Savoir-Faire</a></li>
+      <li><a href="#heritage">Heritage</a></li>
+      <li><a href="#invitation">Maison</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ======================== HERO ======================== -->
+<section class="hero" id="hero">
+  <div class="monogram-pattern"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Maison KPT &mdash; Est. 2024</p>
+    <h1 class="hero-title">KPT</h1>
+    <div class="hero-bar"></div>
+    <p class="hero-tagline">The Art of Technology</p>
+    <p class="hero-sub">Bespoke Intelligence &middot; Crafted with Precision</p>
+  </div>
+  <div class="hero-scroll">
+    <span>Explore</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ======================== EDITORIAL INTRO ======================== -->
+<section class="editorial" id="editorial">
+  <div class="section-wide">
+    <div class="editorial-grid">
+      <div class="editorial-left">
+        <span class="section-label reveal d1">The Maison</span>
+        <h2 class="section-heading reveal d2">Where craft<br>meets <em>code.</em></h2>
+        <div class="gold-rule reveal d3"></div>
+        <p class="body-text reveal d4">
+          In the tradition of the great ateliers, every creation begins with an
+          unwavering commitment to excellence. KPT was founded on a singular
+          conviction: that technology, like the finest leather, deserves to be
+          shaped by artisan hands.
+        </p>
+        <a href="#collections" class="editorial-cta reveal d5">
+          Discover the Collections
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <line x1="3" y1="10" x2="17" y2="10"/>
+            <polyline points="12,5 17,10 12,15"/>
+          </svg>
+        </a>
+      </div>
+      <div class="editorial-visual reveal-right d3">
+        <div class="monogram-dense"></div>
+        <span class="visual-label">Collection 2026</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== COLLECTIONS ======================== -->
+<section class="collections" id="collections">
+  <div class="collections-header">
+    <span class="section-label reveal">Les Collections</span>
+    <h2 class="section-heading reveal d1">Two ateliers.<br>One vision.</h2>
+    <div class="gold-rule-center reveal d2" style="margin: 28px auto 32px;"></div>
+    <p class="body-text reveal d3" style="text-align:center;">
+      Technology elevated to an art form, where every detail<br>
+      is considered and every interaction is an experience.
+    </p>
+  </div>
+
+  <!-- Collection I -->
+  <div class="collection-row">
+    <div class="collection-visual collection-visual-a reveal-fade">
+      <div class="monogram-dense"></div>
+      <span class="collection-emblem">I</span>
+    </div>
+    <div class="collection-info">
+      <span class="collection-number">01</span>
+      <span class="section-label reveal d1">Voice Collection</span>
+      <h3 class="collection-name reveal d2">KPT Agents</h3>
+      <div class="gold-rule reveal d3" style="margin-bottom: 28px;"></div>
+      <p class="collection-desc reveal d4">
+        AI voice agents handcrafted for the discerning enterprise.
+        Each agent is bespoke&mdash;trained, refined, and deployed with the
+        meticulous attention of a master artisan. No two are alike.
+      </p>
+      <a href="#invitation" class="collection-link reveal d5">
+        Enquire <span class="arrow">&rarr;</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Collection II -->
+  <div class="collection-row">
+    <div class="collection-info" style="order: 1;">
+      <span class="collection-number">02</span>
+      <span class="section-label reveal d1">Design Atelier</span>
+      <h3 class="collection-name reveal d2">KPT Designs</h3>
+      <div class="gold-rule reveal d3" style="margin-bottom: 28px;"></div>
+      <p class="collection-desc reveal d4">
+        Premium web experiences for those who refuse the ordinary.
+        Every pixel placed with intention, every interaction choreographed
+        with the elegance of haute couture.
+      </p>
+      <a href="#invitation" class="collection-link reveal d5">
+        Commission <span class="arrow">&rarr;</span>
+      </a>
+    </div>
+    <div class="collection-visual collection-visual-b reveal-fade" style="order: 2;">
+      <div class="monogram-dense"></div>
+      <span class="collection-emblem">II</span>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== QUOTE ======================== -->
+<section class="quote-section">
+  <div class="monogram-pattern"></div>
+  <div class="section-inner" style="position:relative;z-index:2;">
+    <span class="quote-mark reveal">&ldquo;</span>
+    <blockquote class="quote-text reveal d2">
+      The finest technology, like the finest craft, is invisible&mdash;it simply feels right.
+    </blockquote>
+    <span class="quote-attr reveal d4">Philosophy of the Maison</span>
+  </div>
+</section>
+
+<!-- ======================== SAVOIR-FAIRE ======================== -->
+<section class="savoir-faire" id="savoir-faire">
+  <div class="monogram-pattern" style="opacity: 0.4;"></div>
+  <div class="section-inner">
+    <div class="sf-header">
+      <span class="section-label reveal">Savoir-Faire</span>
+      <h2 class="section-heading reveal d1">The Craft</h2>
+      <div class="gold-rule-center reveal d2"></div>
+      <p class="body-text reveal d3">
+        Six pillars define the KPT atelier. Each principle is held
+        with the reverence of a century-old tradition.
+      </p>
+    </div>
+
+    <div class="sf-grid">
+      <div class="sf-card reveal d1">
+        <span class="sf-icon">&diams;</span>
+        <span class="sf-label">Handcrafted</span>
+        <h3>Bespoke Intelligence</h3>
+        <p>Each AI agent is individually trained and refined, never mass-produced. Custom voice, personality, and knowledge.</p>
+      </div>
+
+      <div class="sf-card reveal d2">
+        <span class="sf-icon">&sect;</span>
+        <span class="sf-label">Process</span>
+        <h3>Design Excellence</h3>
+        <p>A rigorous creative atelier process. Strategy, wireframe, prototype, refine&mdash;each phase perfected before the next.</p>
+      </div>
+
+      <div class="sf-card reveal d3">
+        <span class="sf-icon">&infin;</span>
+        <span class="sf-label">Enduring</span>
+        <h3>Built to Last</h3>
+        <p>Like the finest trunk, our technology is engineered for permanence. Clean architecture, timeless design.</p>
+      </div>
+
+      <div class="sf-card reveal d1">
+        <span class="sf-icon">&loz;</span>
+        <span class="sf-label">Service</span>
+        <h3>White Glove</h3>
+        <p>Dedicated artisans guide every engagement. From consultation to refinement&mdash;an experience befitting our clientele.</p>
+      </div>
+
+      <div class="sf-card reveal d2">
+        <span class="sf-icon">&Omega;</span>
+        <span class="sf-label">Innovation</span>
+        <h3>Avant-Garde</h3>
+        <p>We pioneer at the intersection of AI and design. Proprietary techniques and creative vision that defines tomorrow.</p>
+      </div>
+
+      <div class="sf-card reveal d3">
+        <span class="sf-icon">&spades;</span>
+        <span class="sf-label">Exclusive</span>
+        <h3>Limited Commissions</h3>
+        <p>We accept only a curated number of engagements per season, ensuring every client receives our complete mastery.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== STATS ======================== -->
+<section class="stats" id="stats">
+  <div class="stats-band">
+    <div class="monogram-dense"></div>
+    <div class="stats-grid">
+      <div class="stat-cell reveal">
+        <div class="stat-number" data-target="147">0</div>
+        <div class="stat-label">Agents Deployed</div>
+        <div class="stat-sub">and counting</div>
+      </div>
+      <div class="stat-cell reveal d1">
+        <div class="stat-number" data-target="99.8" data-decimal="true">0</div>
+        <div class="stat-label">Uptime Percent</div>
+        <div class="stat-sub">guaranteed</div>
+      </div>
+      <div class="stat-cell reveal d2">
+        <div class="stat-number" data-target="42">0</div>
+        <div class="stat-label">Design Commissions</div>
+        <div class="stat-sub">delivered</div>
+      </div>
+      <div class="stat-cell reveal d3">
+        <div class="stat-number" data-prefix="<" data-target="3" data-suffix="s">0</div>
+        <div class="stat-label">Response Latency</div>
+        <div class="stat-sub">every time</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== HERITAGE ======================== -->
+<section class="heritage" id="heritage">
+  <div class="section-inner">
+    <div class="heritage-header">
+      <span class="section-label reveal">Notre Histoire</span>
+      <h2 class="section-heading reveal d1">A Legacy of<br><em>Excellence</em></h2>
+      <div class="gold-rule-center reveal d2"></div>
+      <p class="body-text reveal d3">
+        Every great maison has a story. Ours is written in code,<br>
+        spoken through voices, and rendered in pixels.
+      </p>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-dot"></div>
+        <div>
+          <div class="tl-year">2024</div>
+          <div class="tl-title">The Founding</div>
+          <div class="tl-desc">KPT is established with a singular vision: to bring luxury craftsmanship to the world of technology. The first atelier opens its doors.</div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal d1">
+        <div class="tl-dot"></div>
+        <div>
+          <div class="tl-year">2024</div>
+          <div class="tl-title">Voice Atelier</div>
+          <div class="tl-desc">KPT Agents launches&mdash;bespoke AI voice agents that converse with the warmth and precision of a personal concierge.</div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal d2">
+        <div class="tl-dot"></div>
+        <div>
+          <div class="tl-year">2025</div>
+          <div class="tl-title">Design Maison</div>
+          <div class="tl-desc">KPT Designs emerges as the premium web design house. Our first collection of sites garners industry recognition.</div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal d3">
+        <div class="tl-dot"></div>
+        <div>
+          <div class="tl-year">2025</div>
+          <div class="tl-title">The Expansion</div>
+          <div class="tl-desc">Enterprise partnerships flourish. KPT becomes the trusted maison for organizations that demand excellence without compromise.</div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal d4">
+        <div class="tl-dot"></div>
+        <div>
+          <div class="tl-year">2026</div>
+          <div class="tl-title">L'Avenir</div>
+          <div class="tl-desc">The journey continues. New collections, new capabilities, and an unwavering commitment to the art of technology.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== CTA ======================== -->
+<section class="invitation" id="invitation">
+  <div class="monogram-pattern"></div>
+  <div class="invitation-content">
+    <span class="section-label reveal">Private Consultation</span>
+    <h2 class="reveal d1">Begin your journey.</h2>
+    <p class="invitation-sub reveal d2">
+      Reserve your place in our next collection.<br>
+      A dedicated artisan will be in touch within 24 hours.
+    </p>
+    <form class="invitation-form reveal d3" onsubmit="event.preventDefault();">
+      <input type="email" class="invitation-input" placeholder="Your email address" aria-label="Email address">
+      <button type="submit" class="invitation-btn">Request</button>
+    </form>
+    <p class="invitation-note reveal d4">By invitation &middot; Limited availability</p>
+  </div>
+</section>
+
+<!-- ======================== FOOTER ======================== -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">KPT</div>
+      <div class="footer-tagline">The Art of Technology</div>
+    </div>
+
+    <nav class="footer-nav">
+      <ul>
+        <li><a href="#collections">Collections</a></li>
+        <li><a href="#savoir-faire">Savoir-Faire</a></li>
+        <li><a href="#heritage">Heritage</a></li>
+        <li><a href="#invitation">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer-legal">
+      <span>MMXXVI</span>
+      <span>All rights reserved</span>
+      <span>Maison KPT</span>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>KPT Agents &middot; KPT Designs &middot; Maison KPT &middot; Est. 2024</p>
+  </div>
+</footer>
+
+<!-- ======================== JAVASCRIPT ======================== -->
+<script>
+(function() {
+  'use strict';
+
+  /* ---- Navigation scroll state ---- */
+  var nav = document.getElementById('nav');
+
+  function handleScroll() {
+    if (window.scrollY > 60) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  }
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll();
+
+  /* ---- IntersectionObserver: reveal on scroll ---- */
+  var revealSelectors = '.reveal, .reveal-fade, .reveal-left, .reveal-right';
+  var revealEls = document.querySelectorAll(revealSelectors);
+
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -80px 0px'
+  });
+
+  revealEls.forEach(function(el) {
+    revealObserver.observe(el);
+  });
+
+  /* ---- Smooth anchor scrolling ---- */
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      var target = document.querySelector(targetId);
+      if (target) {
+        e.preventDefault();
+        var navH = nav.offsetHeight;
+        var pos = target.getBoundingClientRect().top + window.scrollY - navH;
+        window.scrollTo({ top: pos, behavior: 'smooth' });
+      }
+    });
+  });
+
+  /* ---- Stat counter animation ---- */
+  var statsAnimated = false;
+  var statsSection = document.getElementById('stats');
+
+  var statsObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting && !statsAnimated) {
+        statsAnimated = true;
+        animateCounters();
+        statsObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.25 });
+
+  if (statsSection) {
+    statsObserver.observe(statsSection);
+  }
+
+  function animateCounters() {
+    var counters = document.querySelectorAll('.stat-number[data-target]');
+    counters.forEach(function(el) {
+      var target = parseFloat(el.getAttribute('data-target'));
+      var isDecimal = el.hasAttribute('data-decimal');
+      var prefix = el.getAttribute('data-prefix') || '';
+      var suffix = el.getAttribute('data-suffix') || '';
+      var duration = 2000;
+      var startTime = null;
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var elapsed = timestamp - startTime;
+        var progress = Math.min(elapsed / duration, 1);
+        /* Ease out cubic */
+        var eased = 1 - Math.pow(1 - progress, 3);
+        var current = target * eased;
+
+        if (isDecimal) {
+          el.textContent = prefix + current.toFixed(1) + suffix;
+        } else {
+          el.textContent = prefix + Math.round(current) + suffix;
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* ---- Subtle parallax on monogram backgrounds ---- */
+  var monograms = document.querySelectorAll('.monogram-pattern');
+
+  function parallaxMonograms() {
+    var scrollY = window.scrollY;
+    monograms.forEach(function(m) {
+      var parent = m.parentElement;
+      if (!parent) return;
+      var rect = parent.getBoundingClientRect();
+      if (rect.bottom > -200 && rect.top < window.innerHeight + 200) {
+        var offset = (rect.top / window.innerHeight) * -15;
+        m.style.transform = 'translateY(' + offset + 'px)';
+      }
+    });
+  }
+
+  window.addEventListener('scroll', parallaxMonograms, { passive: true });
+
+})();
+</script>
+</body>
+</html>

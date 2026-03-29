@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Develop. Preview. Ship.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* ── Custom Properties ──────────────────────────────────── */
+:root {
+  --black: #000000;
+  --white: #FFFFFF;
+  --gray-50: #FAFAFA;
+  --gray-100: #EDEDED;
+  --gray-200: #D4D4D4;
+  --gray-300: #A3A3A3;
+  --gray-400: #888888;
+  --gray-500: #666666;
+  --gray-600: #444444;
+  --gray-700: #333333;
+  --gray-800: #1A1A1A;
+  --gray-900: #111111;
+  --blue: #0070F3;
+  --blue-light: #3291FF;
+  --blue-dark: #0761D1;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --max-width: 1200px;
+  --transition: 150ms ease;
+}
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Back Link ──────────────────────────────────────────── */
+.back-link {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-400);
+  transition: color var(--transition);
+  letter-spacing: -0.01em;
+}
+.back-link:hover { color: var(--white); }
+.back-link svg { transition: transform var(--transition); }
+.back-link:hover svg { transform: translateX(-3px); }
+
+/* ── Navigation ─────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 0 24px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--max-width);
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+}
+.nav-logo svg { width: 20px; height: 18px; }
+.nav-links { display: flex; align-items: center; gap: 32px; }
+.nav-links a {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--gray-400);
+  transition: color var(--transition);
+}
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  padding: 6px 16px;
+  border-radius: 6px;
+  background: var(--white);
+  color: var(--black);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background var(--transition), box-shadow var(--transition);
+}
+.nav-cta:hover {
+  background: var(--gray-200);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* ── Hero ───────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(0, 112, 243, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Triangle motif behind hero */
+.hero-triangle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  width: 0;
+  height: 0;
+  border-left: 200px solid transparent;
+  border-right: 200px solid transparent;
+  border-bottom: 346px solid rgba(255, 255, 255, 0.015);
+  pointer-events: none;
+  filter: blur(1px);
+}
+.hero-triangle-stroke {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-300);
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
+}
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 8px var(--blue);
+}
+
+.hero-title {
+  font-size: clamp(72px, 12vw, 140px);
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 0.9;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 32px;
+  background: linear-gradient(180deg, var(--white) 0%, var(--gray-400) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: clamp(16px, 2.5vw, 20px);
+  font-weight: 400;
+  color: var(--gray-400);
+  max-width: 560px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 48px;
+}
+
+.hero-tagline {
+  font-size: clamp(14px, 2vw, 16px);
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 48px;
+  background: linear-gradient(90deg, var(--gray-500), var(--white), var(--gray-500));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-primary:hover {
+  background: var(--gray-200);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+}
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: 500;
+  border: 1px solid var(--gray-700);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-secondary:hover {
+  border-color: var(--gray-500);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ── Scroll Indicator ───────────────────────────────────── */
+.scroll-indicator {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--gray-600);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: scrollBounce 2s ease infinite;
+}
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ── Grid Lines Background ──────────────────────────────── */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, transparent 70%);
+}
+
+/* ── Divider ────────────────────────────────────────────── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+}
+
+/* ── Section ────────────────────────────────────────────── */
+.section {
+  padding: 120px 24px;
+  position: relative;
+}
+.section-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+.section-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 16px;
+}
+.section-heading {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  background: linear-gradient(180deg, var(--white) 30%, var(--gray-500) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.section-desc {
+  font-size: 17px;
+  color: var(--gray-400);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+/* ── Features Grid ──────────────────────────────────────── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 64px;
+}
+.feature-card {
+  padding: 48px 40px;
+  background: var(--black);
+  transition: background var(--transition);
+}
+.feature-card:hover { background: var(--gray-900); }
+.feature-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  background: rgba(255, 255, 255, 0.03);
+}
+.feature-icon svg { width: 20px; height: 20px; color: var(--gray-300); }
+.feature-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+  color: var(--white);
+}
+.feature-desc {
+  font-size: 14px;
+  color: var(--gray-400);
+  line-height: 1.6;
+}
+
+/* ── Develop Preview Ship ───────────────────────────────── */
+.dps {
+  padding: 120px 24px;
+  position: relative;
+  overflow: hidden;
+}
+.dps-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+.dps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin-top: 64px;
+}
+.dps-card {
+  position: relative;
+  padding: 48px 36px 40px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+  transition: border-color var(--transition), transform var(--transition);
+}
+.dps-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+.dps-number {
+  font-size: 64px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 24px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.03));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.dps-card-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+.dps-card-desc {
+  font-size: 15px;
+  color: var(--gray-400);
+  line-height: 1.6;
+}
+.dps-card:nth-child(1) .dps-card-title { color: var(--blue-light); }
+.dps-card:nth-child(2) .dps-card-title { color: var(--white); }
+.dps-card:nth-child(3) .dps-card-title {
+  background: linear-gradient(90deg, #7928CA, #FF0080);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Stats ──────────────────────────────────────────────── */
+.stats {
+  padding: 100px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.stats-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 48px;
+  text-align: center;
+}
+.stat-value {
+  font-size: clamp(40px, 6vw, 56px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 8px;
+  background: linear-gradient(180deg, var(--white) 0%, var(--gray-500) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-label {
+  font-size: 14px;
+  color: var(--gray-500);
+  font-weight: 400;
+}
+
+/* ── Code Block ─────────────────────────────────────────── */
+.code-section {
+  padding: 120px 24px;
+  position: relative;
+}
+.code-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+.code-block {
+  margin-top: 48px;
+  background: var(--gray-900);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: left;
+}
+.code-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.code-dot { width: 12px; height: 12px; border-radius: 50%; }
+.code-dot:nth-child(1) { background: #FF5F57; }
+.code-dot:nth-child(2) { background: #FEBC2E; }
+.code-dot:nth-child(3) { background: #28C840; }
+.code-body {
+  padding: 24px;
+  font-family: 'SF Mono', 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--gray-300);
+}
+.code-body .keyword { color: #FF7B72; }
+.code-body .string { color: #A5D6FF; }
+.code-body .func { color: #D2A8FF; }
+.code-body .comment { color: var(--gray-600); }
+.code-body .const { color: #79C0FF; }
+
+/* ── CTA ────────────────────────────────────────────────── */
+.cta {
+  padding: 160px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0, 112, 243, 0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-heading {
+  font-size: clamp(40px, 6vw, 64px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+.cta-heading .gradient {
+  background: linear-gradient(90deg, var(--blue-light), #7928CA, #FF0080);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cta-desc {
+  font-size: 17px;
+  color: var(--gray-400);
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
+}
+.cta-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+.footer {
+  padding: 64px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.footer-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+}
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+}
+.footer-logo svg { width: 20px; height: 18px; }
+.footer-tagline {
+  font-size: 13px;
+  color: var(--gray-500);
+}
+.footer-cols {
+  display: flex;
+  gap: 80px;
+}
+.footer-col h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+.footer-col a {
+  display: block;
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-bottom: 10px;
+  transition: color var(--transition);
+}
+.footer-col a:hover { color: var(--white); }
+.footer-bottom {
+  max-width: var(--max-width);
+  margin: 48px auto 0;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--gray-600);
+}
+
+/* ── Scroll Animations ──────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.35s; }
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hero { padding: 100px 20px 60px; }
+  .hero-triangle { border-left-width: 120px; border-right-width: 120px; border-bottom-width: 208px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .feature-card { padding: 36px 28px; }
+  .dps-grid { grid-template-columns: 1fr; gap: 20px; }
+  .dps-card { padding: 36px 28px 32px; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .hero-actions { flex-direction: column; width: 100%; max-width: 320px; }
+  .btn-primary, .btn-secondary { justify-content: center; }
+  .cta-actions { flex-direction: column; align-items: center; }
+  .footer-inner { flex-direction: column; gap: 48px; }
+  .footer-cols { gap: 40px; flex-wrap: wrap; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .section { padding: 80px 20px; }
+  .dps { padding: 80px 20px; }
+  .code-section { padding: 80px 20px; }
+  .cta { padding: 100px 20px; }
+  .back-link { top: 16px; left: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 12L6 8l4-4"/>
+  </svg>
+  All Concepts
+</a>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 76 65" fill="currentColor"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+      KPT
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#workflow">Workflow</a>
+      <a href="#stats">Analytics</a>
+      <a href="#deploy">Deploy</a>
+    </div>
+    <a href="#cta" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="grid-bg"></div>
+  <div class="hero-triangle"></div>
+  <svg class="hero-triangle-stroke" width="400" height="346" viewBox="0 0 400 346" fill="none">
+    <path d="M200 0L400 346H0L200 0Z" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+  </svg>
+
+  <div class="hero-badge reveal">
+    <span class="hero-badge-dot"></span>
+    Now with Edge Intelligence
+  </div>
+
+  <h1 class="hero-title reveal reveal-delay-1">KPT</h1>
+
+  <p class="hero-tagline reveal reveal-delay-2">Develop. Preview. Ship.</p>
+
+  <p class="hero-subtitle reveal reveal-delay-2">
+    The platform for orchestrating intelligence at the edge.
+    Build faster, deploy globally, iterate with confidence.
+  </p>
+
+  <div class="hero-actions reveal reveal-delay-3">
+    <button class="btn-primary" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">
+      Start Deploying
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l4 4-4 4"/></svg>
+    </button>
+    <button class="btn-secondary" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+      Learn More
+    </button>
+  </div>
+
+  <div class="scroll-indicator">
+    <svg width="16" height="24" viewBox="0 0 16 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="14" height="22" rx="7"/><line x1="8" y1="6" x2="8" y2="10"/></svg>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Features -->
+<section class="section" id="features">
+  <div class="section-inner">
+    <p class="section-label reveal">Platform</p>
+    <h2 class="section-heading reveal reveal-delay-1">Built for what<br>comes next.</h2>
+    <p class="section-desc reveal reveal-delay-2">
+      An orchestration framework designed for speed, reliability, and developer experience. Every decision optimized for the edge.
+    </p>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        </div>
+        <h3 class="feature-title">Edge-First Architecture</h3>
+        <p class="feature-desc">Deploy intelligence to 300+ edge locations. Sub-50ms response times, globally.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3 class="feature-title">Instant Deployments</h3>
+        <p class="feature-desc">Push to deploy in under a second. Zero-downtime rollouts with automatic rollbacks.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="feature-title">Secure by Default</h3>
+        <p class="feature-desc">End-to-end encryption, automatic TLS, and DDoS protection on every deployment.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <h3 class="feature-title">Framework Agnostic</h3>
+        <p class="feature-desc">Works with every framework. React, Next.js, Svelte, Vue, Astro — bring your own stack.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3 class="feature-title">Real-Time Analytics</h3>
+        <p class="feature-desc">Observe every request, every function, every edge node. Performance data in milliseconds.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 class="feature-title">Team Collaboration</h3>
+        <p class="feature-desc">Preview deployments for every pull request. Comment, review, and ship together.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Develop. Preview. Ship. -->
+<section class="dps" id="workflow">
+  <div class="dps-inner">
+    <p class="section-label reveal">Workflow</p>
+    <h2 class="section-heading reveal reveal-delay-1">The way it<br>should work.</h2>
+    <p class="section-desc reveal reveal-delay-2">
+      Three steps. That's it. From local to global in the time it takes to push a commit.
+    </p>
+
+    <div class="dps-grid">
+      <div class="dps-card reveal">
+        <div class="dps-number">01</div>
+        <h3 class="dps-card-title">Develop</h3>
+        <p class="dps-card-desc">Start locally with instant hot reload. Your framework, your tools, your rules. Zero config required.</p>
+      </div>
+      <div class="dps-card reveal reveal-delay-1">
+        <div class="dps-number">02</div>
+        <h3 class="dps-card-title">Preview</h3>
+        <p class="dps-card-desc">Every push generates a live preview URL. Share with your team, get feedback, iterate fast.</p>
+      </div>
+      <div class="dps-card reveal reveal-delay-2">
+        <div class="dps-number">03</div>
+        <h3 class="dps-card-title">Ship</h3>
+        <p class="dps-card-desc">Merge to main and deploy to the edge. Automatic, instant, global. No pipeline to configure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- Stats -->
+<section class="stats" id="stats">
+  <div class="stats-inner">
+    <div class="reveal">
+      <div class="stat-value">300+</div>
+      <div class="stat-label">Edge Locations</div>
+    </div>
+    <div class="reveal reveal-delay-1">
+      <div class="stat-value">&lt;50ms</div>
+      <div class="stat-label">Global Latency</div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="stat-value">99.99%</div>
+      <div class="stat-label">Uptime SLA</div>
+    </div>
+    <div class="reveal reveal-delay-3">
+      <div class="stat-value">10M+</div>
+      <div class="stat-label">Deployments</div>
+    </div>
+  </div>
+</section>
+
+<!-- Code Block -->
+<section class="code-section" id="deploy">
+  <div class="code-inner">
+    <p class="section-label reveal">Deploy</p>
+    <h2 class="section-heading reveal reveal-delay-1" style="text-align:center">Ship in seconds.</h2>
+    <p class="section-desc reveal reveal-delay-2" style="margin:0 auto;text-align:center">
+      One command. Global deployment. Every time.
+    </p>
+
+    <div class="code-block reveal reveal-delay-3">
+      <div class="code-header">
+        <span class="code-dot"></span>
+        <span class="code-dot"></span>
+        <span class="code-dot"></span>
+      </div>
+      <div class="code-body">
+        <span class="comment">&#35; Install the CLI</span><br>
+        <span class="const">npm</span> i -g <span class="string">kpt</span><br><br>
+        <span class="comment">&#35; Initialize your project</span><br>
+        <span class="const">kpt</span> init<br><br>
+        <span class="comment">&#35; Deploy to the edge</span><br>
+        <span class="const">kpt</span> deploy <span class="string">--prod</span><br><br>
+        <span class="comment">&#35; &#9650; Deployed to https://kpt.dev/your-project</span><br>
+        <span class="comment">&#35;   Ready in 1.2s</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA -->
+<section class="cta" id="cta">
+  <h2 class="cta-heading reveal">
+    Start building<br><span class="gradient">with KPT today.</span>
+  </h2>
+  <p class="cta-desc reveal reveal-delay-1">
+    Free for personal projects. Scale when you're ready.
+  </p>
+  <div class="cta-actions reveal reveal-delay-2">
+    <button class="btn-primary">
+      Start Deploying
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4l4 4-4 4"/></svg>
+    </button>
+    <button class="btn-secondary">
+      View Documentation
+    </button>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <svg viewBox="0 0 76 65" fill="currentColor"><path d="M37.5274 0L75.0548 65H0L37.5274 0Z"/></svg>
+        KPT
+      </div>
+      <p class="footer-tagline">Develop. Preview. Ship.</p>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#">Previews</a>
+        <a href="#">Edge Network</a>
+        <a href="#">Analytics</a>
+        <a href="#">CLI</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="#">Documentation</a>
+        <a href="#">Guides</a>
+        <a href="#">Templates</a>
+        <a href="#">Changelog</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Blog</a>
+        <a href="#">Careers</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 KPT. All rights reserved.</span>
+    <span>Designed with precision.</span>
+  </div>
+</footer>
+
+<!-- Scroll Animation Script -->
+<script>
+(function() {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+  );
+
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+})();
+</script>
+
+</body>
+</html>

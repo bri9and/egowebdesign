@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Rolls-Royce</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* =============================================
+     RESET & CUSTOM PROPERTIES
+     ============================================= */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --midnight: #1A0033;
+    --midnight-deep: #0D001A;
+    --midnight-soft: #2A0050;
+    --silver: #C0C0C0;
+    --silver-bright: #D8D8D8;
+    --silver-dim: rgba(192, 192, 192, 0.12);
+    --silver-glow: rgba(192, 192, 192, 0.06);
+    --gold: #B8860B;
+    --gold-bright: #D4A017;
+    --gold-dim: rgba(184, 134, 11, 0.12);
+    --chrome: #E8E8E8;
+    --black: #080008;
+    --black-deep: #050005;
+    --purple-glow: rgba(80, 0, 160, 0.15);
+    --purple-soft: rgba(120, 40, 200, 0.08);
+
+    --font-display: 'Playfair Display', 'Georgia', serif;
+    --font-body: 'Cormorant', 'Georgia', serif;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+    --ease-luxury: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-regal: cubic-bezier(0.22, 0.68, 0, 1.1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    background: var(--black-deep);
+    color: var(--chrome);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--gold);
+    color: var(--black-deep);
+  }
+
+  /* =============================================
+     STARLIGHT HEADLINER EFFECT
+     ============================================= */
+  .starfield {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: #FFFFFF;
+  }
+
+  .star--sm {
+    width: 1px;
+    height: 1px;
+    box-shadow: 0 0 2px 0.5px rgba(255, 255, 255, 0.4);
+  }
+
+  .star--md {
+    width: 1.5px;
+    height: 1.5px;
+    box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.5);
+  }
+
+  .star--lg {
+    width: 2px;
+    height: 2px;
+    box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.6), 0 0 12px 4px rgba(192, 192, 192, 0.15);
+  }
+
+  .star--gold {
+    background: var(--gold-bright);
+    box-shadow: 0 0 6px 2px rgba(184, 134, 11, 0.5), 0 0 14px 4px rgba(184, 134, 11, 0.15);
+  }
+
+  @keyframes twinkle1 {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes twinkle2 {
+    0%, 100% { opacity: 0.4; }
+    30% { opacity: 0.1; }
+    70% { opacity: 1; }
+  }
+
+  @keyframes twinkle3 {
+    0%, 100% { opacity: 0.6; }
+    40% { opacity: 0.15; }
+    80% { opacity: 0.9; }
+  }
+
+  /* =============================================
+     PANTHEON GRILLE MOTIF
+     ============================================= */
+  .grille-pattern {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.035;
+  }
+
+  .grille-pattern::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 18px,
+      var(--silver) 18px,
+      var(--silver) 19px
+    );
+  }
+
+  .grille-pattern::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(192, 192, 192, 0.06) 30%,
+      rgba(192, 192, 192, 0.12) 50%,
+      rgba(192, 192, 192, 0.06) 70%,
+      transparent 100%
+    );
+  }
+
+  /* =============================================
+     NAV
+     ============================================= */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(5, 0, 5, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    border-bottom: 1px solid rgba(192, 192, 192, 0);
+    transition: all 0.8s var(--ease-luxury);
+  }
+
+  nav.scrolled {
+    background: rgba(5, 0, 5, 0.95);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom-color: rgba(192, 192, 192, 0.06);
+  }
+
+  .nav-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-back {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(192, 192, 192, 0.5);
+    transition: color 0.4s var(--ease-luxury);
+  }
+
+  .nav-back:hover { color: var(--gold); }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 10px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--silver-bright);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+  }
+
+  .nav-links a {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: rgba(192, 192, 192, 0.5);
+    transition: color 0.4s var(--ease-luxury);
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 0.5px;
+    background: var(--gold);
+    transition: width 0.5s var(--ease-luxury);
+  }
+
+  .nav-links a:hover { color: var(--silver-bright); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* =============================================
+     HERO — SPIRIT OF ECSTASY
+     ============================================= */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 140px 40px 100px;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(26, 0, 51, 0.8) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 50% 50%, rgba(80, 0, 160, 0.12) 0%, transparent 60%),
+      var(--black-deep);
+    overflow: hidden;
+  }
+
+  /* Spirit of Ecstasy silhouette — CSS art */
+  .ecstasy {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    width: 300px;
+    height: 400px;
+    opacity: 0.03;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .ecstasy::before {
+    content: '';
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 200px;
+    background: linear-gradient(to top, var(--silver), transparent);
+  }
+
+  .ecstasy::after {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-15deg);
+    width: 120px;
+    height: 180px;
+    border-radius: 50% 50% 30% 30%;
+    border-top: 2px solid var(--silver);
+    border-right: 2px solid var(--silver);
+    border-left: 1px solid rgba(192, 192, 192, 0.3);
+    border-bottom: none;
+  }
+
+  .hero-line {
+    display: block;
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--silver));
+    opacity: 0;
+    animation: lineReveal 1.5s var(--ease-reveal) 0.2s forwards;
+    margin: 0 auto 48px;
+  }
+
+  @keyframes lineReveal {
+    from { opacity: 0; height: 0; }
+    to { opacity: 0.4; height: 80px; }
+  }
+
+  .hero-kpt {
+    font-family: var(--font-display);
+    font-size: clamp(80px, 14vw, 200px);
+    font-weight: 400;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: transparent;
+    background: linear-gradient(
+      180deg,
+      var(--silver-bright) 0%,
+      var(--silver) 30%,
+      var(--gold) 60%,
+      var(--silver) 80%,
+      rgba(192, 192, 192, 0.4) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    animation: kptReveal 2s var(--ease-reveal) 0.5s forwards;
+    text-shadow: none;
+    line-height: 1;
+    padding-right: 0.4em; /* compensate letter-spacing */
+  }
+
+  @keyframes kptReveal {
+    from { opacity: 0; transform: translateY(40px); letter-spacing: 0.8em; }
+    to { opacity: 1; transform: translateY(0); letter-spacing: 0.4em; }
+  }
+
+  .hero-tagline {
+    font-family: var(--font-body);
+    font-size: clamp(16px, 2.5vw, 28px);
+    font-weight: 300;
+    font-style: italic;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: rgba(192, 192, 192, 0.5);
+    margin-top: 32px;
+    opacity: 0;
+    animation: fadeUp 1.5s var(--ease-reveal) 1.2s forwards;
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-divider {
+    display: block;
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+    margin: 48px auto;
+    opacity: 0;
+    animation: fadeUp 1.2s var(--ease-reveal) 1.8s forwards;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(192, 192, 192, 0.3);
+    opacity: 0;
+    animation: fadeUp 1.2s var(--ease-reveal) 2.2s forwards;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeUp 1.2s var(--ease-reveal) 2.8s forwards;
+    z-index: 1;
+  }
+
+  .hero-scroll span {
+    font-family: var(--font-sans);
+    font-size: 8px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(192, 192, 192, 0.25);
+  }
+
+  .hero-scroll::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--silver), transparent);
+    animation: scrollPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.2; transform: scaleY(0.6); }
+    50% { opacity: 0.6; transform: scaleY(1); }
+  }
+
+  /* =============================================
+     SCROLL REVEAL ANIMATION
+     ============================================= */
+  .reveal {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 1.2s var(--ease-reveal), transform 1.2s var(--ease-reveal);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.15s; }
+  .reveal-delay-2 { transition-delay: 0.3s; }
+  .reveal-delay-3 { transition-delay: 0.45s; }
+  .reveal-delay-4 { transition-delay: 0.6s; }
+
+  /* =============================================
+     SECTION COMMON
+     ============================================= */
+  .section-label {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(192, 192, 192, 0.3);
+    margin-bottom: 16px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+    vertical-align: middle;
+    margin-right: 16px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--silver-bright);
+    margin-bottom: 24px;
+    letter-spacing: 2px;
+  }
+
+  .section-desc {
+    font-family: var(--font-body);
+    font-size: clamp(16px, 1.5vw, 20px);
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(192, 192, 192, 0.5);
+    max-width: 600px;
+  }
+
+  .gold-rule {
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+    margin: 40px 0;
+  }
+
+  .gold-rule-center {
+    width: 48px;
+    height: 1px;
+    background: var(--gold);
+    margin: 40px auto;
+  }
+
+  /* =============================================
+     PHILOSOPHY SECTION
+     ============================================= */
+  .philosophy {
+    position: relative;
+    padding: 180px 64px;
+    background: var(--black-deep);
+    overflow: hidden;
+  }
+
+  .philosophy-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 120px;
+    align-items: center;
+  }
+
+  .philosophy-visual {
+    position: relative;
+    aspect-ratio: 3/4;
+    background:
+      linear-gradient(135deg, var(--midnight-deep) 0%, var(--midnight) 50%, var(--midnight-soft) 100%);
+    overflow: hidden;
+    border: 1px solid rgba(192, 192, 192, 0.06);
+  }
+
+  .philosophy-visual .grille-inner {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      transparent 22px,
+      rgba(192, 192, 192, 0.04) 22px,
+      rgba(192, 192, 192, 0.04) 23px
+    );
+  }
+
+  .philosophy-visual .grille-glow {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 50% 70% at 50% 30%, rgba(184, 134, 11, 0.1) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 50% 70%, rgba(192, 192, 192, 0.05) 0%, transparent 60%);
+  }
+
+  .philosophy-visual .grille-label {
+    position: absolute;
+    bottom: 32px;
+    left: 32px;
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(192, 192, 192, 0.25);
+  }
+
+  /* =============================================
+     BESPOKE FEATURES
+     ============================================= */
+  .features {
+    position: relative;
+    padding: 180px 64px;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 50%, rgba(26, 0, 51, 0.4) 0%, transparent 100%),
+      var(--black-deep);
+    overflow: hidden;
+  }
+
+  .features-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 80px;
+  }
+
+  .feature-card {
+    position: relative;
+    padding: 64px 40px;
+    background: rgba(26, 0, 51, 0.15);
+    border: 1px solid rgba(192, 192, 192, 0.04);
+    text-align: center;
+    transition: all 0.7s var(--ease-luxury);
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(184, 134, 11, 0.03) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.7s var(--ease-luxury);
+  }
+
+  .feature-card:hover {
+    border-color: rgba(184, 134, 11, 0.15);
+    background: rgba(26, 0, 51, 0.3);
+    transform: translateY(-4px);
+  }
+
+  .feature-card:hover::before { opacity: 1; }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 32px;
+    position: relative;
+  }
+
+  /* Spirit of Ecstasy icon */
+  .icon-ecstasy::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1.5px;
+    height: 32px;
+    background: linear-gradient(to top, var(--gold), var(--silver));
+  }
+
+  .icon-ecstasy::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-10deg);
+    width: 24px;
+    height: 16px;
+    border-top: 1.5px solid var(--gold);
+    border-right: 1.5px solid var(--gold);
+    border-radius: 0 80% 0 0;
+  }
+
+  /* Star icon */
+  .icon-star {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon-star::before {
+    content: '';
+    width: 3px;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow:
+      0 0 12px 4px rgba(184, 134, 11, 0.4),
+      0 0 24px 8px rgba(184, 134, 11, 0.15),
+      12px -8px 0 0 rgba(192, 192, 192, 0.3),
+      -10px -12px 0 0 rgba(192, 192, 192, 0.2),
+      14px 6px 0 0 rgba(192, 192, 192, 0.15),
+      -8px 10px 0 0 rgba(192, 192, 192, 0.25),
+      -16px -2px 0 0 rgba(192, 192, 192, 0.1);
+  }
+
+  /* Grille icon */
+  .icon-grille {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+  }
+
+  .icon-grille span {
+    display: block;
+    width: 1.5px;
+    height: 36px;
+    background: linear-gradient(to bottom, transparent, var(--silver), var(--gold), var(--silver), transparent);
+    opacity: 0.6;
+  }
+
+  .icon-grille span:nth-child(1) { height: 24px; opacity: 0.3; }
+  .icon-grille span:nth-child(2) { height: 30px; opacity: 0.4; }
+  .icon-grille span:nth-child(3) { height: 36px; opacity: 0.6; }
+  .icon-grille span:nth-child(4) { height: 36px; opacity: 0.6; }
+  .icon-grille span:nth-child(5) { height: 30px; opacity: 0.4; }
+  .icon-grille span:nth-child(6) { height: 24px; opacity: 0.3; }
+
+  .feature-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--silver-bright);
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+    position: relative;
+  }
+
+  .feature-desc {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(192, 192, 192, 0.45);
+    position: relative;
+  }
+
+  .feature-line {
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 24px;
+    transition: width 0.8s var(--ease-luxury);
+  }
+
+  .feature-card:hover .feature-line {
+    width: 48px;
+  }
+
+  /* =============================================
+     COLLECTION SHOWCASE
+     ============================================= */
+  .collection {
+    position: relative;
+    padding: 0;
+    background: var(--black-deep);
+  }
+
+  .collection-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+  }
+
+  .collection-visual {
+    position: relative;
+    min-height: 500px;
+    overflow: hidden;
+  }
+
+  .collection-visual-a {
+    background:
+      radial-gradient(ellipse at 30% 50%, rgba(26, 0, 51, 0.6) 0%, transparent 70%),
+      linear-gradient(135deg, #0D001A 0%, var(--midnight) 50%, #0D000F 100%);
+  }
+
+  .collection-visual-b {
+    background:
+      radial-gradient(ellipse at 70% 50%, rgba(184, 134, 11, 0.06) 0%, transparent 70%),
+      linear-gradient(225deg, #0D001A 0%, #08000F 50%, var(--midnight) 100%);
+  }
+
+  .collection-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 80px;
+  }
+
+  .collection-number {
+    font-family: var(--font-display);
+    font-size: 72px;
+    font-weight: 400;
+    color: rgba(184, 134, 11, 0.12);
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .collection-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3vw, 42px);
+    font-weight: 400;
+    color: var(--silver-bright);
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    line-height: 1.2;
+  }
+
+  .collection-text {
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.9;
+    color: rgba(192, 192, 192, 0.45);
+    max-width: 480px;
+  }
+
+  /* =============================================
+     STARLIGHT STATS CONSTELLATION
+     ============================================= */
+  .stats {
+    position: relative;
+    padding: 160px 64px;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 50%, rgba(26, 0, 51, 0.5) 0%, transparent 80%),
+      var(--black-deep);
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .stats-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .constellation-line {
+    position: absolute;
+    background: rgba(192, 192, 192, 0.06);
+    z-index: 0;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
+    margin-top: 80px;
+  }
+
+  .stat-item {
+    position: relative;
+    padding: 40px 24px;
+  }
+
+  .stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 8px 3px rgba(184, 134, 11, 0.3), 0 0 20px 6px rgba(184, 134, 11, 0.1);
+  }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(42px, 5vw, 64px);
+    font-weight: 400;
+    color: transparent;
+    background: linear-gradient(180deg, var(--silver-bright) 0%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .stat-label {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(192, 192, 192, 0.35);
+  }
+
+  .stat-divider {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 50%;
+    width: 1px;
+    background: rgba(192, 192, 192, 0.06);
+  }
+
+  .stat-item:last-child .stat-divider { display: none; }
+
+  /* =============================================
+     BESPOKE / CRAFTSMANSHIP SECTION
+     ============================================= */
+  .craftsmanship {
+    position: relative;
+    padding: 200px 64px;
+    text-align: center;
+    background: var(--black-deep);
+    overflow: hidden;
+  }
+
+  .craft-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .craft-quote {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 3.5vw, 44px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--silver-bright);
+    letter-spacing: 1px;
+  }
+
+  .craft-quote::before {
+    content: '\201C';
+    display: block;
+    font-size: 80px;
+    line-height: 1;
+    color: var(--gold);
+    opacity: 0.3;
+    margin-bottom: 16px;
+    font-style: normal;
+  }
+
+  .craft-attribution {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(192, 192, 192, 0.3);
+    margin-top: 40px;
+  }
+
+  /* =============================================
+     CTA
+     ============================================= */
+  .cta {
+    position: relative;
+    padding: 200px 64px;
+    text-align: center;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 50%, rgba(26, 0, 51, 0.5) 0%, transparent 80%),
+      linear-gradient(180deg, var(--black-deep) 0%, var(--midnight-deep) 40%, var(--midnight-deep) 60%, var(--black-deep) 100%);
+    overflow: hidden;
+  }
+
+  .cta-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-form {
+    display: flex;
+    max-width: 500px;
+    margin: 48px auto 0;
+    border: 1px solid rgba(192, 192, 192, 0.15);
+    overflow: hidden;
+  }
+
+  .cta-input {
+    flex: 1;
+    padding: 20px 28px;
+    background: transparent;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--silver-bright);
+    letter-spacing: 1px;
+    outline: none;
+  }
+
+  .cta-input::placeholder {
+    color: rgba(192, 192, 192, 0.25);
+    font-style: italic;
+  }
+
+  .cta-btn {
+    padding: 20px 44px;
+    background: var(--gold);
+    border: 1px solid var(--gold);
+    color: var(--black-deep);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s var(--ease-luxury);
+  }
+
+  .cta-btn:hover {
+    background: var(--gold-bright);
+    border-color: var(--gold-bright);
+  }
+
+  .cta-note {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(192, 192, 192, 0.2);
+    margin-top: 20px;
+  }
+
+  /* =============================================
+     FOOTER
+     ============================================= */
+  footer {
+    position: relative;
+    background: var(--black-deep);
+    border-top: 1px solid rgba(192, 192, 192, 0.04);
+    overflow: hidden;
+  }
+
+  .footer-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 80px 64px 48px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 64px;
+    margin-bottom: 80px;
+  }
+
+  .footer-brand {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 8px;
+    color: var(--silver-bright);
+    margin-bottom: 16px;
+  }
+
+  .footer-tagline {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(192, 192, 192, 0.3);
+    letter-spacing: 2px;
+  }
+
+  .footer-col-title {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(192, 192, 192, 0.35);
+    margin-bottom: 24px;
+  }
+
+  .footer-col a {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(192, 192, 192, 0.4);
+    text-decoration: none;
+    margin-bottom: 12px;
+    transition: color 0.4s var(--ease-luxury);
+    letter-spacing: 1px;
+  }
+
+  .footer-col a:hover { color: var(--gold); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 32px;
+    border-top: 1px solid rgba(192, 192, 192, 0.04);
+  }
+
+  .footer-copy {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(192, 192, 192, 0.2);
+  }
+
+  .footer-rr {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(192, 192, 192, 0.15);
+  }
+
+  /* =============================================
+     RESPONSIVE
+     ============================================= */
+  @media (max-width: 1024px) {
+    .philosophy-inner { grid-template-columns: 1fr; gap: 64px; }
+    .features-grid { grid-template-columns: 1fr 1fr; }
+    .collection-row { grid-template-columns: 1fr; }
+    .collection-visual { min-height: 350px; }
+    .collection-content { padding: 60px 48px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  }
+
+  @media (max-width: 768px) {
+    .nav-inner { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .nav-logo { font-size: 14px; letter-spacing: 8px; }
+
+    .hero { padding: 120px 24px 80px; }
+
+    .philosophy { padding: 100px 24px; }
+    .philosophy-visual { aspect-ratio: 4/3; }
+
+    .features { padding: 100px 24px; }
+    .features-grid { grid-template-columns: 1fr; gap: 24px; }
+    .feature-card { padding: 48px 32px; }
+
+    .collection-content { padding: 48px 24px; }
+    .collection-number { font-size: 48px; }
+
+    .stats { padding: 100px 24px; }
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .stat-divider { display: none; }
+
+    .craftsmanship { padding: 120px 24px; }
+    .cta { padding: 120px 24px; }
+    .cta-form { flex-direction: column; }
+    .cta-input { text-align: center; }
+    .cta-btn { padding: 20px; }
+
+    .footer-inner { padding: 48px 24px 32px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  }
+
+  /* =============================================
+     CHROME SHIMMER ANIMATION
+     ============================================= */
+  @keyframes chromeShimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .chrome-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--silver) 0%,
+      var(--silver-bright) 25%,
+      #FFFFFF 50%,
+      var(--silver-bright) 75%,
+      var(--silver) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: chromeShimmer 8s linear infinite;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==========================================
+     NAVIGATION
+     ========================================== -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">&larr; Gallery</a>
+    <a href="#" class="nav-logo">KPT</a>
+    <ul class="nav-links">
+      <li><a href="#philosophy">Philosophy</a></li>
+      <li><a href="#features">Bespoke</a></li>
+      <li><a href="#collection">Collection</a></li>
+      <li><a href="#stats">Eminence</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ==========================================
+     HERO — STARLIGHT HEADLINER
+     ========================================== -->
+<section class="hero" id="hero">
+  <div class="starfield" id="hero-stars"></div>
+  <div class="grille-pattern"></div>
+  <div class="ecstasy"></div>
+
+  <span class="hero-line"></span>
+
+  <h1 class="hero-kpt">KPT</h1>
+
+  <p class="hero-tagline">Effortless, Everywhere</p>
+
+  <span class="hero-divider"></span>
+
+  <p class="hero-subtitle">The pinnacle of technological refinement</p>
+
+  <div class="hero-scroll">
+    <span>Discover</span>
+  </div>
+</section>
+
+<!-- ==========================================
+     PHILOSOPHY
+     ========================================== -->
+<section class="philosophy" id="philosophy">
+  <div class="philosophy-inner">
+    <div class="philosophy-visual reveal">
+      <div class="starfield" id="philosophy-stars"></div>
+      <div class="grille-inner"></div>
+      <div class="grille-glow"></div>
+      <span class="grille-label">Pantheon</span>
+    </div>
+    <div>
+      <div class="section-label reveal">Philosophy</div>
+      <h2 class="section-title reveal reveal-delay-1">Strive for<br>Perfection</h2>
+      <div class="gold-rule reveal reveal-delay-2"></div>
+      <p class="section-desc reveal reveal-delay-2">
+        In the tradition of the world's most illustrious marque, KPT is conceived not merely as technology, but as an expression of absolute mastery. Every interaction has been considered. Every detail, refined until it disappears into pure experience.
+      </p>
+      <p class="section-desc reveal reveal-delay-3" style="margin-top: 24px;">
+        We do not follow convention. We establish it. Then we surpass it.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     BESPOKE FEATURES
+     ========================================== -->
+<section class="features" id="features">
+  <div class="starfield" id="features-stars"></div>
+  <div class="features-inner">
+    <div class="section-label reveal" style="text-align: center;">Bespoke</div>
+    <h2 class="section-title reveal reveal-delay-1" style="text-align: center;">Commissioned to<br>Your Exacting Standards</h2>
+    <div class="gold-rule-center reveal reveal-delay-2"></div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon icon-ecstasy"></div>
+        <div class="feature-line"></div>
+        <h3 class="feature-title">Spirit</h3>
+        <p class="feature-desc">The guiding intelligence that anticipates need before it arises. Silently orchestrating, never intruding. Technology that serves with the discretion of a personal concierge.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon icon-star"></div>
+        <div class="feature-line"></div>
+        <h3 class="feature-title">Starlight</h3>
+        <p class="feature-desc">A constellation of capabilities, each one placed with deliberate intention. Like the fiber-optic headliner above, every point of light exists to illuminate your path.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon icon-grille">
+          <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="feature-line"></div>
+        <h3 class="feature-title">Presence</h3>
+        <p class="feature-desc">Commanding authority through understated power. The Pantheon grille commands the road; KPT commands the digital landscape with the same unyielding confidence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     COLLECTION SHOWCASE
+     ========================================== -->
+<section class="collection" id="collection">
+  <div class="collection-row">
+    <div class="collection-visual collection-visual-a reveal">
+      <div class="starfield" id="collection-stars-a"></div>
+      <div class="grille-pattern" style="opacity: 0.02;"></div>
+    </div>
+    <div class="collection-content">
+      <span class="collection-number reveal">01</span>
+      <h3 class="collection-title reveal reveal-delay-1">The Whisper Architecture</h3>
+      <div class="gold-rule reveal reveal-delay-2"></div>
+      <p class="collection-text reveal reveal-delay-2">
+        Power need not announce itself. KPT's processing engine operates at a whisper — consuming minimal resources while delivering maximum capability. The most powerful engines are the ones you never hear.
+      </p>
+    </div>
+  </div>
+
+  <div class="collection-row">
+    <div class="collection-content">
+      <span class="collection-number reveal">02</span>
+      <h3 class="collection-title reveal reveal-delay-1">Gallery of Experiences</h3>
+      <div class="gold-rule reveal reveal-delay-2"></div>
+      <p class="collection-text reveal reveal-delay-2">
+        Each interface is a curated gallery. Every screen, a composition. We reject the notion that utility must compromise beauty. In the tradition of bespoke coachbuilding, every surface is finished to museum standard.
+      </p>
+    </div>
+    <div class="collection-visual collection-visual-b reveal">
+      <div class="starfield" id="collection-stars-b"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     STARLIGHT STATS
+     ========================================== -->
+<section class="stats" id="stats">
+  <div class="starfield" id="stats-stars"></div>
+  <div class="stats-inner">
+    <div class="section-label reveal">Eminence</div>
+    <h2 class="section-title reveal reveal-delay-1">By the Numbers</h2>
+    <div class="gold-rule-center reveal reveal-delay-2"></div>
+
+    <div class="stats-grid">
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-number chrome-shimmer">10ms</div>
+        <div class="stat-label">Response Latency</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-number chrome-shimmer">99.99</div>
+        <div class="stat-label">Percent Uptime</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-number chrome-shimmer">1,847</div>
+        <div class="stat-label">Hours of Refinement</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item reveal reveal-delay-4">
+        <div class="stat-number chrome-shimmer">&infin;</div>
+        <div class="stat-label">Bespoke Configurations</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     CRAFTSMANSHIP QUOTE
+     ========================================== -->
+<section class="craftsmanship">
+  <div class="starfield" id="craft-stars"></div>
+  <div class="craft-inner">
+    <div class="reveal">
+      <blockquote class="craft-quote">
+        Take the best that exists and make it better. When it does not exist, design it.
+      </blockquote>
+      <div class="gold-rule-center"></div>
+      <p class="craft-attribution">Sir Henry Royce &mdash; Adapted for the Digital Age</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================
+     CTA
+     ========================================== -->
+<section class="cta">
+  <div class="starfield" id="cta-stars"></div>
+  <div class="cta-inner">
+    <div class="section-label reveal" style="text-align: center;">Commission</div>
+    <h2 class="section-title reveal reveal-delay-1" style="text-align: center;">Request Your<br>Private Consultation</h2>
+    <p class="section-desc reveal reveal-delay-2" style="text-align: center; margin: 0 auto;">
+      The privilege of bespoke begins with a single expression of intent. Register your interest and a personal liaison will be in contact.
+    </p>
+    <form class="cta-form reveal reveal-delay-3" onsubmit="return false;">
+      <input type="email" class="cta-input" placeholder="Your email address">
+      <button type="submit" class="cta-btn">Register</button>
+    </form>
+    <p class="cta-note reveal reveal-delay-4">By invitation &mdash; availability is limited</p>
+  </div>
+</section>
+
+<!-- ==========================================
+     FOOTER
+     ========================================== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">KPT</div>
+        <p class="footer-tagline">Effortless, Everywhere</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Marque</div>
+        <a href="#philosophy">Philosophy</a>
+        <a href="#features">Bespoke</a>
+        <a href="#collection">Collection</a>
+        <a href="#stats">Eminence</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Atelier</div>
+        <a href="#">Craftsmanship</a>
+        <a href="#">Heritage</a>
+        <a href="#">Commission</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Private Office</div>
+        <a href="#">Consultation</a>
+        <a href="#">Partnerships</a>
+        <a href="#">Press</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 KPT. All rights reserved.</span>
+      <span class="footer-rr">Inspired by Rolls-Royce</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+<script>
+(function() {
+  'use strict';
+
+  /* ---- Generate Starfield ---- */
+  function createStars(containerId, count, includeGold) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+
+    var sizes = ['sm', 'md', 'lg'];
+    var animations = ['twinkle1', 'twinkle2', 'twinkle3'];
+
+    for (var i = 0; i < count; i++) {
+      var star = document.createElement('div');
+      var sizeIdx = Math.random() < 0.6 ? 0 : (Math.random() < 0.7 ? 1 : 2);
+      var isGold = includeGold && Math.random() < 0.08;
+
+      star.className = 'star star--' + sizes[sizeIdx] + (isGold ? ' star--gold' : '');
+      star.style.left = (Math.random() * 100) + '%';
+      star.style.top = (Math.random() * 100) + '%';
+      star.style.animationName = animations[Math.floor(Math.random() * 3)];
+      star.style.animationDuration = (2 + Math.random() * 6) + 's';
+      star.style.animationDelay = (Math.random() * 5) + 's';
+      star.style.animationIterationCount = 'infinite';
+      star.style.animationTimingFunction = 'ease-in-out';
+
+      container.appendChild(star);
+    }
+  }
+
+  /* Generate stars for each section */
+  createStars('hero-stars', 200, true);
+  createStars('philosophy-stars', 60, true);
+  createStars('features-stars', 80, false);
+  createStars('collection-stars-a', 50, true);
+  createStars('collection-stars-b', 50, true);
+  createStars('stats-stars', 100, true);
+  createStars('craft-stars', 60, false);
+  createStars('cta-stars', 80, true);
+
+  /* ---- Scroll Reveal (IntersectionObserver) ---- */
+  var reveals = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: '0px 0px -60px 0px'
+    });
+
+    reveals.forEach(function(el) {
+      observer.observe(el);
+    });
+  } else {
+    /* Fallback: show everything */
+    reveals.forEach(function(el) {
+      el.classList.add('visible');
+    });
+  }
+
+  /* ---- Nav scroll effect ---- */
+  var nav = document.getElementById('nav');
+  var lastScroll = 0;
+
+  window.addEventListener('scroll', function() {
+    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollY > 80) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+
+    lastScroll = scrollY;
+  }, { passive: true });
+
+  /* ---- Smooth scroll for nav links ---- */
+  var anchors = document.querySelectorAll('a[href^="#"]');
+  anchors.forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      var target = document.querySelector(targetId);
+      if (target) {
+        e.preventDefault();
+        var offset = target.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      }
+    });
+  });
+
+  /* ---- Constellation lines between stats (drawn on resize) ---- */
+  function drawConstellationLines() {
+    var statsSection = document.querySelector('.stats');
+    if (!statsSection) return;
+
+    /* Remove existing lines */
+    var existing = statsSection.querySelectorAll('.constellation-line');
+    existing.forEach(function(el) { el.remove(); });
+
+    var items = statsSection.querySelectorAll('.stat-item');
+    if (items.length < 2) return;
+
+    var sRect = statsSection.getBoundingClientRect();
+
+    for (var i = 0; i < items.length - 1; i++) {
+      var a = items[i].getBoundingClientRect();
+      var b = items[i + 1].getBoundingClientRect();
+
+      var ax = a.left + a.width / 2 - sRect.left;
+      var ay = a.top - sRect.top;
+      var bx = b.left + b.width / 2 - sRect.left;
+      var by = b.top - sRect.top;
+
+      var length = Math.sqrt(Math.pow(bx - ax, 2) + Math.pow(by - ay, 2));
+      var angle = Math.atan2(by - ay, bx - ax) * (180 / Math.PI);
+
+      var line = document.createElement('div');
+      line.className = 'constellation-line';
+      line.style.width = length + 'px';
+      line.style.height = '1px';
+      line.style.left = ax + 'px';
+      line.style.top = ay + 'px';
+      line.style.transform = 'rotate(' + angle + 'deg)';
+      line.style.transformOrigin = '0 0';
+
+      statsSection.appendChild(line);
+    }
+  }
+
+  /* Draw on load and resize */
+  window.addEventListener('load', function() {
+    setTimeout(drawConstellationLines, 500);
+  });
+  window.addEventListener('resize', drawConstellationLines);
+
+  /* ---- Parallax starfields on scroll ---- */
+  var starfields = document.querySelectorAll('.starfield');
+
+  window.addEventListener('scroll', function() {
+    var scrollY = window.pageYOffset;
+
+    starfields.forEach(function(sf) {
+      var parent = sf.parentElement;
+      if (!parent) return;
+      var rect = parent.getBoundingClientRect();
+      if (rect.bottom > -200 && rect.top < window.innerHeight + 200) {
+        var offset = (rect.top / window.innerHeight) * 15;
+        sf.style.transform = 'translateY(' + offset + 'px)';
+      }
+    });
+  }, { passive: true });
+
+})();
+</script>
+
+</body>
+</html>

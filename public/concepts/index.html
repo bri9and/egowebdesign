@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT Brand Concepts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0a0f; color: #e2e8f0; font-family: 'Josefin Sans', system-ui, sans-serif; min-height: 100vh; padding: 40px 20px; }
+  .top-bar { display: flex; align-items: flex-start; justify-content: space-between; max-width: 1400px; margin: 0 auto 32px; }
+  .top-logo img { height: 32px; }
+  .updates { font-size: 6pt; color: #475569; text-align: right; line-height: 1.6; font-family: 'SF Mono', 'JetBrains Mono', monospace; max-width: 220px; }
+  .updates .updates-title { font-size: 6pt; letter-spacing: 2px; text-transform: uppercase; color: #64748b; margin-bottom: 4px; }
+  .updates span { color: #334155; }
+  h1 { font-size: 14px; letter-spacing: 4px; text-transform: uppercase; color: #64748b; margin-bottom: 12px; text-align: center; }
+  .count { font-size: 11px; color: #334155; text-align: center; margin-bottom: 48px; letter-spacing: 2px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; max-width: 1400px; width: 100%; margin: 0 auto; }
+  a.card { display: block; text-decoration: none; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; transition: all 0.3s ease; }
+  a.card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+  .card-preview { height: 140px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .card-icon { font-size: 48px; position: absolute; opacity: 0.15; }
+  .card-info { padding: 16px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .card-info h2 { font-size: 15px; font-weight: 600; color: #f1f5f9; margin-bottom: 4px; }
+  .card-info p { font-size: 12px; color: #64748b; line-height: 1.4; }
+  .card-info .tags { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .card-info .tag { font-size: 9px; text-transform: uppercase; letter-spacing: 1px; padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); color: #94a3b8; }
+  .section-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #475569; margin: 40px auto 16px; max-width: 1400px; padding-left: 4px; }
+
+  /* Original Concepts */
+  .c-signal { background: #1A1D23; }
+  .c-signal .kpt { font-family: system-ui; font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #00D4AA; }
+  .c-obsidian { background: #0C0F17; }
+  .c-obsidian .kpt { font-size: 42px; font-weight: 800; letter-spacing: 6px; color: #F5A623; font-family: system-ui; }
+  .c-matrix { background: #0D0208; }
+  .c-matrix .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #00FF41; font-family: 'Courier New', monospace; text-shadow: 0 0 10px #00FF41, 0 0 20px #008F11; }
+  .c-forge { background: #1F2328; }
+  .c-forge .kpt { font-size: 42px; font-weight: 800; letter-spacing: 10px; color: #2563EB; font-family: system-ui; }
+  .c-aurora { background: #0A0F1E; }
+  .c-aurora .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; background: linear-gradient(135deg, #00F0FF, #FF6B6B); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: system-ui; }
+
+  /* Movie Concepts */
+  .c-blade-runner { background: linear-gradient(135deg, #0A1628, #1A0A14); }
+  .c-blade-runner .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #D4A574; font-family: system-ui; text-shadow: 0 0 20px rgba(0,180,200,0.3); }
+  .c-tron { background: #000000; }
+  .c-tron .kpt { font-size: 42px; font-weight: 700; letter-spacing: 10px; color: #00A3E0; font-family: system-ui; text-shadow: 0 0 15px #00A3E0, 0 0 30px rgba(0,163,224,0.3); }
+  .c-drive { background: #0A0A0A; }
+  .c-drive .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #FF1493; font-family: system-ui; text-shadow: 0 0 15px #FF1493, 0 0 30px rgba(255,20,147,0.3); }
+  .c-inception { background: linear-gradient(135deg, #1A1A2E, #16213E); }
+  .c-inception .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #4A90E2; font-family: system-ui; }
+  .c-batman { background: #080808; }
+  .c-batman .kpt { font-size: 42px; font-weight: 800; letter-spacing: 6px; color: #8B0000; font-family: system-ui; text-shadow: 0 0 10px rgba(139,0,0,0.5); }
+  .c-dune { background: linear-gradient(135deg, #1A1409, #0D0A05); }
+  .c-dune .kpt { font-size: 42px; font-weight: 700; letter-spacing: 10px; color: #E9CB8E; font-family: system-ui; }
+  .c-interstellar { background: linear-gradient(135deg, #020210, #0A0A1A); }
+  .c-interstellar .kpt { font-size: 42px; font-weight: 300; letter-spacing: 12px; color: #C0C8D8; font-family: system-ui; text-shadow: 0 0 20px rgba(180,160,120,0.2); }
+  .c-mad-max { background: linear-gradient(135deg, #1A0800, #0A0500); }
+  .c-mad-max .kpt { font-size: 42px; font-weight: 800; letter-spacing: 6px; color: #D94E1F; font-family: system-ui; text-shadow: 0 0 10px rgba(217,78,31,0.4); }
+  .c-black-panther { background: linear-gradient(135deg, #0A0020, #1A0040); }
+  .c-black-panther .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #8B5CF6; font-family: system-ui; text-shadow: 0 0 15px rgba(139,92,246,0.4); }
+  .c-avatar { background: linear-gradient(135deg, #001A0A, #000A14); }
+  .c-avatar .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #00CED1; font-family: system-ui; text-shadow: 0 0 15px rgba(0,206,209,0.4); }
+  .c-oppenheimer { background: #0A0A0A; }
+  .c-oppenheimer .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #D4D4D4; font-family: 'Georgia', serif; }
+  .c-barbie { background: linear-gradient(135deg, #2D0A1A, #1A0510); }
+  .c-barbie .kpt { font-size: 42px; font-weight: 800; letter-spacing: 6px; color: #EC4399; font-family: system-ui; text-shadow: 0 0 15px rgba(236,67,153,0.4); }
+  .c-grand-budapest { background: linear-gradient(135deg, #2A1028, #1A0820); }
+  .c-grand-budapest .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #FF69B4; font-family: 'Georgia', serif; }
+  .c-spider-verse { background: #0A0A14; }
+  .c-spider-verse .kpt { font-size: 42px; font-weight: 800; letter-spacing: 6px; background: linear-gradient(135deg, #FF3366, #3366FF, #FFCC00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: system-ui; }
+  .c-john-wick { background: #0A0808; }
+  .c-john-wick .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #DAA520; font-family: system-ui; text-shadow: 0 0 10px rgba(218,165,32,0.3); }
+  .c-fortnite { background: linear-gradient(135deg, #1A0A2E, #2A1050); }
+  .c-fortnite .kpt { font-size: 42px; font-weight: 800; letter-spacing: 6px; color: #FFD700; font-family: system-ui; text-shadow: 0 0 15px rgba(255,215,0,0.4), 0 0 30px rgba(123,47,190,0.3); }
+  .c-fantastic-mr-fox { background: linear-gradient(135deg, #F5E6C8, #E8D5A8); }
+  .c-fantastic-mr-fox .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #D4870E; font-family: 'Georgia', serif; }
+  .c-braveheart { background: linear-gradient(135deg, #1B3A5C, #2D5A27); }
+  .c-braveheart .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #A8B2BD; font-family: 'Georgia', serif; text-shadow: 0 0 10px rgba(27,58,92,0.5); }
+  .c-gladiator { background: linear-gradient(135deg, #1A1A1A, #2A1A0A); }
+  .c-gladiator .kpt { font-size: 42px; font-weight: 700; letter-spacing: 10px; color: #C9A84C; font-family: 'Georgia', serif; text-shadow: 0 0 10px rgba(201,168,76,0.3); }
+  .c-alien { background: #0D0D0D; }
+  .c-alien .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #39FF14; font-family: 'Courier New', monospace; text-shadow: 0 0 10px #39FF14, 0 0 20px rgba(57,255,20,0.3); }
+  .c-spaceballs { background: linear-gradient(135deg, #0A0A14, #1A0A2E); }
+  .c-spaceballs .kpt { font-size: 42px; font-weight: 800; letter-spacing: 6px; color: #FFD700; font-family: system-ui; text-shadow: 0 0 15px rgba(255,215,0,0.5), 0 2px 0 #7B2FBE; }
+  .c-star-wars { background: #0A0A0F; }
+  .c-star-wars .kpt { font-size: 42px; font-weight: 700; letter-spacing: 10px; color: #FFD54F; font-family: system-ui; }
+  .c-goonies { background: linear-gradient(135deg, #1A1410, #2A1A0A); }
+  .c-goonies .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #DAA520; font-family: 'Georgia', serif; text-shadow: 0 0 10px rgba(218,165,32,0.3); }
+  .c-incredibles { background: #0D0D0D; }
+  .c-incredibles .kpt { font-size: 42px; font-weight: 800; letter-spacing: 6px; color: #CC0000; font-family: system-ui; text-shadow: 0 0 10px rgba(204,0,0,0.4); }
+  .c-star-trek { background: linear-gradient(135deg, #1A1A2E, #0D0D1A); }
+  .c-star-trek .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #FFB300; font-family: system-ui; }
+  .c-rundown { background: linear-gradient(135deg, #0A1A0A, #1B3A1B); }
+  .c-rundown .kpt { font-size: 42px; font-weight: 800; letter-spacing: 6px; color: #FFB300; font-family: system-ui; text-shadow: 0 0 10px rgba(30,94,32,0.4); }
+  .c-21-jump-street { background: linear-gradient(135deg, #0A1A3A, #1A2A4A); }
+  .c-21-jump-street .kpt { font-size: 42px; font-weight: 800; letter-spacing: 6px; color: #FFB300; font-family: system-ui; text-shadow: 0 0 10px rgba(21,101,192,0.4); }
+
+  /* Company Concepts */
+  .c-apple { background: #FFFFFF; }
+  .c-apple .kpt { font-size: 42px; font-weight: 200; letter-spacing: -1px; color: #1D1D1F; font-family: system-ui; }
+  .c-apple-music { background: linear-gradient(135deg, #FC5C7D, #E4002B, #A855F7); }
+  .c-apple-music .kpt { font-size: 42px; font-weight: 700; letter-spacing: 4px; color: #FFFFFF; font-family: system-ui; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+  .c-google { background: #FFFFFF; }
+  .c-google .kpt { font-size: 42px; font-weight: 700; letter-spacing: 2px; color: #4285F4; font-family: system-ui; }
+  .c-nike { background: #111111; }
+  .c-nike .kpt { font-size: 42px; font-weight: 800; letter-spacing: 4px; color: #FFFFFF; font-family: system-ui; text-transform: uppercase; }
+  .c-tesla { background: #000000; }
+  .c-tesla .kpt { font-size: 42px; font-weight: 300; letter-spacing: 12px; color: #E82127; font-family: system-ui; }
+  .c-coca-cola { background: #F40009; }
+  .c-coca-cola .kpt { font-size: 42px; font-weight: 700; letter-spacing: 2px; color: #FFFFFF; font-family: 'Georgia', serif; }
+  .c-amazon { background: #232F3E; }
+  .c-amazon .kpt { font-size: 42px; font-weight: 700; letter-spacing: 4px; color: #FF9900; font-family: system-ui; }
+  .c-microsoft { background: linear-gradient(135deg, #F3F3F3, #E8E8E8); }
+  .c-microsoft .kpt { font-size: 42px; font-weight: 600; letter-spacing: 2px; color: #333333; font-family: system-ui; }
+  .c-samsung { background: #000000; }
+  .c-samsung .kpt { font-size: 42px; font-weight: 700; letter-spacing: 6px; color: #1428A0; font-family: system-ui; text-shadow: 0 0 15px rgba(20,40,160,0.5); }
+  .c-louis-vuitton { background: #2C1A0E; }
+  .c-louis-vuitton .kpt { font-size: 42px; font-weight: 700; letter-spacing: 10px; color: #C4A462; font-family: 'Georgia', serif; }
+  .c-disney { background: linear-gradient(135deg, #0A1A3A, #001440); }
+  .c-disney .kpt { font-size: 42px; font-weight: 700; letter-spacing: 6px; color: #FFD700; font-family: system-ui; text-shadow: 0 0 15px rgba(255,215,0,0.4); }
+  .c-whatsapp { background: #111B21; }
+  .c-whatsapp .kpt { font-size: 42px; font-weight: 800; letter-spacing: 6px; color: #25D366; font-family: system-ui; text-shadow: 0 0 15px rgba(37,211,102,0.4); }
+  .c-robinhood { background: #1E2124; }
+  .c-robinhood .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #00C805; font-family: system-ui; text-shadow: 0 0 15px rgba(0,200,5,0.4); }
+
+  /* Car Concepts */
+  .c-ferrari { background: linear-gradient(135deg, #DC0000, #8B0000); }
+  .c-ferrari .kpt { font-size: 42px; font-weight: 800; letter-spacing: 4px; color: #FFDC00; font-family: system-ui; text-shadow: 0 0 10px rgba(255,220,0,0.3); }
+  .c-lamborghini { background: #0A0A0A; }
+  .c-lamborghini .kpt { font-size: 42px; font-weight: 800; letter-spacing: 4px; color: #DDB321; font-family: system-ui; text-shadow: 0 0 10px rgba(221,179,33,0.4); }
+  .c-porsche { background: #0A0A0A; }
+  .c-porsche .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #D5001C; font-family: system-ui; }
+  .c-bmw { background: linear-gradient(135deg, #1C69D4, #0A2A5E); }
+  .c-bmw .kpt { font-size: 42px; font-weight: 700; letter-spacing: 6px; color: #FFFFFF; font-family: system-ui; }
+  .c-mercedes { background: linear-gradient(135deg, #1A1A1A, #0D0D0D); }
+  .c-mercedes .kpt { font-size: 42px; font-weight: 300; letter-spacing: 10px; color: #C0C0C0; font-family: 'Georgia', serif; text-shadow: 0 0 15px rgba(192,192,192,0.3); }
+  .c-ford { background: #003478; }
+  .c-ford .kpt { font-size: 42px; font-weight: 800; letter-spacing: 4px; color: #FFFFFF; font-family: system-ui; }
+  .c-aston-martin { background: #004225; }
+  .c-aston-martin .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #C4A462; font-family: 'Georgia', serif; }
+  .c-rolls-royce { background: linear-gradient(135deg, #1A0033, #0D001A); }
+  .c-rolls-royce .kpt { font-size: 42px; font-weight: 300; letter-spacing: 12px; color: #C0C0C0; font-family: 'Georgia', serif; text-shadow: 0 0 15px rgba(192,192,192,0.2); }
+  .c-bugatti { background: linear-gradient(135deg, #003399, #001A4D); }
+  .c-bugatti .kpt { font-size: 42px; font-weight: 700; letter-spacing: 8px; color: #FFFFFF; font-family: 'Georgia', serif; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+  .c-mclaren { background: #0A0A0A; }
+  .c-mclaren .kpt { font-size: 42px; font-weight: 700; letter-spacing: 6px; color: #FF8000; font-family: system-ui; text-shadow: 0 0 15px rgba(255,128,0,0.4); }
+
+  /* Retail Concepts */
+  .c-target { background: #CC0000; }
+  .c-target .kpt { font-size: 42px; font-weight: 800; letter-spacing: 4px; color: #FFFFFF; font-family: system-ui; }
+  .c-walmart { background: #0071DC; }
+  .c-walmart .kpt { font-size: 42px; font-weight: 700; letter-spacing: 4px; color: #FFC220; font-family: system-ui; }
+  .c-ikea { background: #003399; }
+  .c-ikea .kpt { font-size: 42px; font-weight: 800; letter-spacing: 4px; color: #FFDA1A; font-family: system-ui; }
+  .c-costco { background: #005DAA; }
+  .c-costco .kpt { font-size: 42px; font-weight: 800; letter-spacing: 4px; color: #E31837; font-family: system-ui; }
+  .c-whole-foods { background: #00674B; }
+  .c-whole-foods .kpt { font-size: 42px; font-weight: 700; letter-spacing: 6px; color: #F5F0E0; font-family: 'Georgia', serif; }
+  .c-nordstrom { background: #0A0A0A; }
+  .c-nordstrom .kpt { font-size: 42px; font-weight: 300; letter-spacing: 10px; color: #C4A882; font-family: 'Georgia', serif; }
+  .c-home-depot { background: #F96302; }
+  .c-home-depot .kpt { font-size: 42px; font-weight: 800; letter-spacing: 4px; color: #FFFFFF; font-family: system-ui; }
+  .c-sephora { background: #0A0A0A; }
+  .c-sephora .kpt { font-size: 42px; font-weight: 700; letter-spacing: 6px; color: #FFFFFF; font-family: system-ui; }
+  .c-trader-joes { background: linear-gradient(135deg, #FFF8E7, #F5E6C8); }
+  .c-trader-joes .kpt { font-size: 42px; font-weight: 700; letter-spacing: 4px; color: #D32F2F; font-family: 'Georgia', serif; }
+  .c-rei { background: #1A3C34; }
+  .c-rei .kpt { font-size: 42px; font-weight: 800; letter-spacing: 6px; color: #FFFFFF; font-family: system-ui; }
+
+  /* Communication Concepts */
+  .c-slack { background: #4A154B; }
+  .c-slack .kpt { font-size: 42px; font-weight: 800; letter-spacing: 4px; color: #FFFFFF; font-family: system-ui; }
+  .c-zoom { background: #2D8CFF; }
+  .c-zoom .kpt { font-size: 42px; font-weight: 700; letter-spacing: 6px; color: #FFFFFF; font-family: system-ui; }
+  .c-discord { background: #23272A; }
+  .c-discord .kpt { font-size: 42px; font-weight: 800; letter-spacing: 4px; color: #5865F2; font-family: system-ui; text-shadow: 0 0 15px rgba(88,101,242,0.4); }
+  .c-whatsapp { background: #075E54; }
+  .c-whatsapp .kpt { font-size: 42px; font-weight: 700; letter-spacing: 6px; color: #25D366; font-family: system-ui; text-shadow: 0 0 10px rgba(37,211,102,0.3); }
+  .c-twilio { background: #121C2D; }
+  .c-twilio .kpt { font-size: 42px; font-weight: 700; letter-spacing: 6px; color: #F22F46; font-family: system-ui; text-shadow: 0 0 10px rgba(242,47,70,0.3); }
+
+  .footer { margin-top: 48px; font-size: 11px; color: #334155; letter-spacing: 2px; text-transform: uppercase; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="top-logo"><img src="kpt-logo-mclaren-4.png" alt="KPT"></div>
+    <div class="updates">
+      <div class="updates-title">Updates</div>
+      github <span>03.28</span><br>
+      figma <span>03.28</span><br>
+      airbnb <span>03.28</span><br>
+      linkedin <span>03.28</span><br>
+      marriott <span>03.28</span><br>
+      reddit <span>03.28</span><br>
+      w-hotels <span>03.28</span><br>
+      x-twitter <span>03.28</span><br>
+      notion <span>03.28</span><br>
+      linear <span>03.28</span>
+    </div>
+  </div>
+  <h1>KPT Brand Concepts</h1>
+  <p class="count">71 concepts — 5 original + 27 film + 14 company + 10 car + 10 retail + 5 communication</p>
+
+  <div class="section-label">Original Concepts</div>
+  <div class="grid">
+    <a href="/concepts/signal.html" class="card">
+      <div class="card-preview c-signal"><span class="card-icon">📡</span></div>
+      <div class="card-info">
+        <h2>Signal</h2>
+        <p>Electric Teal + Charcoal. Premium infrastructure feel.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Broad Appeal</span></div>
+      </div>
+    </a>
+    <a href="/concepts/obsidian.html" class="card">
+      <div class="card-preview c-obsidian"><span class="card-icon">🪨</span></div>
+      <div class="card-info">
+        <h2>Obsidian</h2>
+        <p>Deep Ink + Amber Gold. Dark luxury. Anthropic meets Linear.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Premium</span></div>
+      </div>
+    </a>
+    <a href="/concepts/matrix.html" class="card">
+      <div class="card-preview c-matrix"><span class="card-icon">💊</span></div>
+      <div class="card-info">
+        <h2>Matrix</h2>
+        <p>True Black + Matrix Green. Digital rain. Terminal aesthetic.</p>
+        <div class="tags"><span class="tag">High Risk</span><span class="tag">Iconic</span></div>
+      </div>
+    </a>
+    <a href="/concepts/forge.html" class="card">
+      <div class="card-preview c-forge"><span class="card-icon">⚒️</span></div>
+      <div class="card-info">
+        <h2>Forge</h2>
+        <p>Graphite + Electric Blue. Industrial precision.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Enterprise</span></div>
+      </div>
+    </a>
+    <a href="/concepts/aurora.html" class="card">
+      <div class="card-preview c-aurora"><span class="card-icon">🌌</span></div>
+      <div class="card-info">
+        <h2>Aurora</h2>
+        <p>Midnight Navy + Dual Neon. Bold futuristic.</p>
+        <div class="tags"><span class="tag">High Risk</span><span class="tag">Bold</span></div>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-label">Film Concepts</div>
+  <div class="grid">
+    <a href="/concepts/blade-runner.html" class="card">
+      <div class="card-preview c-blade-runner"><span class="card-icon">🌧️</span></div>
+      <div class="card-info">
+        <h2>Blade Runner 2049</h2>
+        <p>Cyberpunk noir. Teal fog + amber glow + holographic pink.</p>
+        <div class="tags"><span class="tag">High Impact</span><span class="tag">Sci-Fi</span></div>
+      </div>
+    </a>
+    <a href="/concepts/tron.html" class="card">
+      <div class="card-preview c-tron"><span class="card-icon">⚡</span></div>
+      <div class="card-info">
+        <h2>Tron: Legacy</h2>
+        <p>Digital grid. Neon blue circuits + orange accents on void black.</p>
+        <div class="tags"><span class="tag">High Impact</span><span class="tag">Digital</span></div>
+      </div>
+    </a>
+    <a href="/concepts/drive.html" class="card">
+      <div class="card-preview c-drive"><span class="card-icon">🏎️</span></div>
+      <div class="card-info">
+        <h2>Drive</h2>
+        <p>Neon noir. Hot pink + cyan on black. 80s synthwave revival.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Retro</span></div>
+      </div>
+    </a>
+    <a href="/concepts/inception.html" class="card">
+      <div class="card-preview c-inception"><span class="card-icon">🌀</span></div>
+      <div class="card-info">
+        <h2>Inception</h2>
+        <p>Dreamscape layers. Ice blue + bronze. Sophisticated depth.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Premium</span></div>
+      </div>
+    </a>
+    <a href="/concepts/batman.html" class="card">
+      <div class="card-preview c-batman"><span class="card-icon">🦇</span></div>
+      <div class="card-info">
+        <h2>The Batman</h2>
+        <p>Gotham noir. True black + deep crimson + rain-soaked neon.</p>
+        <div class="tags"><span class="tag">High Impact</span><span class="tag">Dark</span></div>
+      </div>
+    </a>
+    <a href="/concepts/dune.html" class="card">
+      <div class="card-preview c-dune"><span class="card-icon">🏜️</span></div>
+      <div class="card-info">
+        <h2>Dune</h2>
+        <p>Desert minimalism. Sand gold + muted blue. Vast and serene.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Premium</span></div>
+      </div>
+    </a>
+    <a href="/concepts/interstellar.html" class="card">
+      <div class="card-preview c-interstellar"><span class="card-icon">🕳️</span></div>
+      <div class="card-info">
+        <h2>Interstellar</h2>
+        <p>Cosmic void. Deep space black + warm amber + cool steel.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Epic</span></div>
+      </div>
+    </a>
+    <a href="/concepts/mad-max.html" class="card">
+      <div class="card-preview c-mad-max"><span class="card-icon">🔥</span></div>
+      <div class="card-info">
+        <h2>Mad Max: Fury Road</h2>
+        <p>Apocalyptic energy. Burnt orange + electric teal. War paint.</p>
+        <div class="tags"><span class="tag">High Risk</span><span class="tag">Aggressive</span></div>
+      </div>
+    </a>
+    <a href="/concepts/black-panther.html" class="card">
+      <div class="card-preview c-black-panther"><span class="card-icon">🐆</span></div>
+      <div class="card-info">
+        <h2>Black Panther</h2>
+        <p>Afrofuturism. Vibranium purple + kinetic blue + gold accents.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Regal</span></div>
+      </div>
+    </a>
+    <a href="/concepts/avatar.html" class="card">
+      <div class="card-preview c-avatar"><span class="card-icon">🌿</span></div>
+      <div class="card-info">
+        <h2>Avatar</h2>
+        <p>Bioluminescent. Deep forest + cyan glow + organic light.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Organic</span></div>
+      </div>
+    </a>
+    <a href="/concepts/oppenheimer.html" class="card">
+      <div class="card-preview c-oppenheimer"><span class="card-icon">💥</span></div>
+      <div class="card-info">
+        <h2>Oppenheimer</h2>
+        <p>Scientific gravity. B&W + fire orange. Analog film warmth.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Serious</span></div>
+      </div>
+    </a>
+    <a href="/concepts/barbie.html" class="card">
+      <div class="card-preview c-barbie"><span class="card-icon">👠</span></div>
+      <div class="card-info">
+        <h2>Barbie</h2>
+        <p>Pop art maximalism. Hot pink + pastels. Unapologetically bold.</p>
+        <div class="tags"><span class="tag">High Risk</span><span class="tag">Fun</span></div>
+      </div>
+    </a>
+    <a href="/concepts/grand-budapest.html" class="card">
+      <div class="card-preview c-grand-budapest"><span class="card-icon">🏨</span></div>
+      <div class="card-info">
+        <h2>Grand Budapest Hotel</h2>
+        <p>Wes Anderson. Dusty pink + regal purple. Symmetrical whimsy.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Artistic</span></div>
+      </div>
+    </a>
+    <a href="/concepts/spider-verse.html" class="card">
+      <div class="card-preview c-spider-verse"><span class="card-icon">🕷️</span></div>
+      <div class="card-info">
+        <h2>Spider-Verse</h2>
+        <p>Comic glitch. Multicolor halftone + chromatic aberration.</p>
+        <div class="tags"><span class="tag">High Risk</span><span class="tag">Dynamic</span></div>
+      </div>
+    </a>
+    <a href="/concepts/john-wick.html" class="card">
+      <div class="card-preview c-john-wick"><span class="card-icon">🪙</span></div>
+      <div class="card-info">
+        <h2>John Wick</h2>
+        <p>Continental noir. Gold + blood red + black. Lethal elegance.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Premium</span></div>
+      </div>
+    </a>
+    <a href="/concepts/fortnite.html" class="card">
+      <div class="card-preview c-fortnite"><span class="card-icon">🎮</span></div>
+      <div class="card-info">
+        <h2>Fortnite</h2>
+        <p>Battle Royale energy. Purple + gold + electric blue. Victory Royale.</p>
+        <div class="tags"><span class="tag">High Risk</span><span class="tag">Gen-Z</span></div>
+      </div>
+    </a>
+    <a href="/concepts/fantastic-mr-fox.html" class="card">
+      <div class="card-preview c-fantastic-mr-fox"><span class="card-icon">🦊</span></div>
+      <div class="card-info">
+        <h2>Fantastic Mr. Fox</h2>
+        <p>Stop-motion warmth. Autumn orange + parchment. Wes Anderson woodland.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Charming</span></div>
+      </div>
+    </a>
+    <a href="/concepts/gladiator.html" class="card">
+      <div class="card-preview c-gladiator"><span class="card-icon">🏛️</span></div>
+      <div class="card-info">
+        <h2>Gladiator</h2>
+        <p>Roman grandeur. Imperial gold + purple + colosseum sand.</p>
+        <div class="tags"><span class="tag">High Impact</span><span class="tag">Regal</span></div>
+      </div>
+    </a>
+    <a href="/concepts/goonies.html" class="card">
+      <div class="card-preview c-goonies"><span class="card-icon">🗺️</span></div>
+      <div class="card-info">
+        <h2>Goonies</h2>
+        <p>80s adventure. Treasure gold + pirate parchment. Never say die.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Nostalgic</span></div>
+      </div>
+    </a>
+    <a href="/concepts/star-trek.html" class="card">
+      <div class="card-preview c-star-trek"><span class="card-icon">🖖</span></div>
+      <div class="card-info">
+        <h2>Star Trek</h2>
+        <p>LCARS interface. Command gold + science blue. Make it so.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Utopian</span></div>
+      </div>
+    </a>
+    <a href="/concepts/rundown.html" class="card">
+      <div class="card-preview c-rundown"><span class="card-icon">🌴</span></div>
+      <div class="card-info">
+        <h2>The Rundown</h2>
+        <p>Jungle action. Green canopy + treasure gold. Two options.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Action</span></div>
+      </div>
+    </a>
+    <a href="/concepts/21-jump-street.html" class="card">
+      <div class="card-preview c-21-jump-street"><span class="card-icon">🚔</span></div>
+      <div class="card-info">
+        <h2>21 Jump Street</h2>
+        <p>Buddy cop comedy. Police blue + badge gold. Undercover excellence.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Comedy</span></div>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-label">Company Concepts</div>
+  <div class="grid">
+    <a href="/concepts/apple.html" class="card">
+      <div class="card-preview c-apple"><span class="card-icon">🍎</span></div>
+      <div class="card-info">
+        <h2>Apple</h2>
+        <p>Minimalist perfection. Pure white + near-black + blue accent. Less is more.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Premium</span></div>
+      </div>
+    </a>
+    <a href="/concepts/apple-music.html" class="card">
+      <div class="card-preview c-apple-music"><span class="card-icon">🎵</span></div>
+      <div class="card-info">
+        <h2>Apple Music</h2>
+        <p>Premium listening. Pink-to-red-to-purple gradient, lossless audio, spatial waves.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Premium</span></div>
+      </div>
+    </a>
+    <a href="/concepts/google.html" class="card">
+      <div class="card-preview c-google"><span class="card-icon">🔍</span></div>
+      <div class="card-info">
+        <h2>Google</h2>
+        <p>Playful precision. 4-color palette + Material Design. Organize everything.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Playful</span></div>
+      </div>
+    </a>
+    <a href="/concepts/nike.html" class="card">
+      <div class="card-preview c-nike"><span class="card-icon">✔️</span></div>
+      <div class="card-info">
+        <h2>Nike</h2>
+        <p>Athletic intensity. Pure black + white + volt. Just do it.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Bold</span></div>
+      </div>
+    </a>
+    <a href="/concepts/tesla.html" class="card">
+      <div class="card-preview c-tesla"><span class="card-icon">⚡</span></div>
+      <div class="card-info">
+        <h2>Tesla</h2>
+        <p>Electric future. Void black + crimson red. Accelerate the transition.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Futuristic</span></div>
+      </div>
+    </a>
+    <a href="/concepts/coca-cola.html" class="card">
+      <div class="card-preview c-coca-cola"><span class="card-icon">🥤</span></div>
+      <div class="card-info">
+        <h2>Coca-Cola</h2>
+        <p>Classic Americana. Iconic red + white ribbon. Open happiness.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Iconic</span></div>
+      </div>
+    </a>
+    <a href="/concepts/amazon.html" class="card">
+      <div class="card-preview c-amazon"><span class="card-icon">📦</span></div>
+      <div class="card-info">
+        <h2>Amazon</h2>
+        <p>Everything store. Orange smile + dark navy. From A to Z.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Scale</span></div>
+      </div>
+    </a>
+    <a href="/concepts/microsoft.html" class="card">
+      <div class="card-preview c-microsoft"><span class="card-icon">🪟</span></div>
+      <div class="card-info">
+        <h2>Microsoft</h2>
+        <p>Fluent Design. 4-color grid + acrylic glass. Empower everyone.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Enterprise</span></div>
+      </div>
+    </a>
+    <a href="/concepts/samsung.html" class="card">
+      <div class="card-preview c-samsung"><span class="card-icon">📱</span></div>
+      <div class="card-info">
+        <h2>Samsung</h2>
+        <p>Galaxy aesthetic. AMOLED black + Samsung blue. Do what you can't.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Premium</span></div>
+      </div>
+    </a>
+    <a href="/concepts/louis-vuitton.html" class="card">
+      <div class="card-preview c-louis-vuitton"><span class="card-icon">👜</span></div>
+      <div class="card-info">
+        <h2>Louis Vuitton</h2>
+        <p>Ultra-luxury. Monogram brown + gold. The art of travel.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Luxury</span></div>
+      </div>
+    </a>
+    <a href="/concepts/disney.html" class="card">
+      <div class="card-preview c-disney"><span class="card-icon">🏰</span></div>
+      <div class="card-info">
+        <h2>Disney</h2>
+        <p>Pure magic. Castle blue + stardust gold. Where dreams come true.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Magical</span></div>
+      </div>
+    </a>
+    <a href="/concepts/whatsapp.html" class="card">
+      <div class="card-preview c-whatsapp"><span class="card-icon">💬</span></div>
+      <div class="card-info">
+        <h2>WhatsApp</h2>
+        <p>Chat green + dark teal. Simple, secure, no-nonsense messaging.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Privacy</span></div>
+      </div>
+    </a>
+    <a href="/concepts/robinhood.html" class="card">
+      <div class="card-preview c-robinhood"><span class="card-icon">🪶</span></div>
+      <div class="card-info">
+        <h2>Robinhood</h2>
+        <p>Fintech green + dark. Investing for everyone. Democratized finance.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Fintech</span></div>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-label">Car Concepts</div>
+  <div class="grid">
+    <a href="/concepts/ferrari.html" class="card">
+      <div class="card-preview c-ferrari"><span class="card-icon">🏎️</span></div>
+      <div class="card-info">
+        <h2>Ferrari</h2>
+        <p>Rosso Corsa red + Prancing Horse gold. Born to race.</p>
+        <div class="tags"><span class="tag">High Impact</span><span class="tag">Racing</span></div>
+      </div>
+    </a>
+    <a href="/concepts/lamborghini.html" class="card">
+      <div class="card-preview c-lamborghini"><span class="card-icon">🐂</span></div>
+      <div class="card-info">
+        <h2>Lamborghini</h2>
+        <p>Giallo Orion yellow + angular black. Expect the unexpected.</p>
+        <div class="tags"><span class="tag">High Impact</span><span class="tag">Aggressive</span></div>
+      </div>
+    </a>
+    <a href="/concepts/porsche.html" class="card">
+      <div class="card-preview c-porsche"><span class="card-icon">🏁</span></div>
+      <div class="card-info">
+        <h2>Porsche</h2>
+        <p>Racing red + silver precision. There is no substitute.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Precision</span></div>
+      </div>
+    </a>
+    <a href="/concepts/bmw.html" class="card">
+      <div class="card-preview c-bmw"><span class="card-icon">🔵</span></div>
+      <div class="card-info">
+        <h2>BMW</h2>
+        <p>M-Sport stripes + kidney grille. The ultimate machine.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Athletic</span></div>
+      </div>
+    </a>
+    <a href="/concepts/mercedes.html" class="card">
+      <div class="card-preview c-mercedes"><span class="card-icon">⭐</span></div>
+      <div class="card-info">
+        <h2>Mercedes-Benz</h2>
+        <p>Silver Arrow + AMG red. The best or nothing.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Luxury</span></div>
+      </div>
+    </a>
+    <a href="/concepts/ford.html" class="card">
+      <div class="card-preview c-ford"><span class="card-icon">🦅</span></div>
+      <div class="card-info">
+        <h2>Ford</h2>
+        <p>Blue Oval + American muscle. Built tough.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Rugged</span></div>
+      </div>
+    </a>
+    <a href="/concepts/aston-martin.html" class="card">
+      <div class="card-preview c-aston-martin"><span class="card-icon">🇬🇧</span></div>
+      <div class="card-info">
+        <h2>Aston Martin</h2>
+        <p>British Racing Green + gold. Power, beauty, soul.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Bespoke</span></div>
+      </div>
+    </a>
+    <a href="/concepts/rolls-royce.html" class="card">
+      <div class="card-preview c-rolls-royce"><span class="card-icon">👑</span></div>
+      <div class="card-info">
+        <h2>Rolls-Royce</h2>
+        <p>Starlight headliner + silver Spirit. Inspiring greatness.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Ultra-Luxury</span></div>
+      </div>
+    </a>
+    <a href="/concepts/bugatti.html" class="card">
+      <div class="card-preview c-bugatti"><span class="card-icon">🏆</span></div>
+      <div class="card-info">
+        <h2>Bugatti</h2>
+        <p>French blue + Art Deco. Art, forme, technique.</p>
+        <div class="tags"><span class="tag">High Impact</span><span class="tag">Exclusive</span></div>
+      </div>
+    </a>
+    <a href="/concepts/mclaren.html" class="card">
+      <div class="card-preview c-mclaren"><span class="card-icon">🧡</span></div>
+      <div class="card-info">
+        <h2>McLaren</h2>
+        <p>Papaya orange + carbon fiber. Fearlessly forward.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Technical</span></div>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-label">Retail Concepts</div>
+  <div class="grid">
+    <a href="/concepts/target.html" class="card">
+      <div class="card-preview c-target"><span class="card-icon">🎯</span></div>
+      <div class="card-info">
+        <h2>Target</h2>
+        <p>Bullseye red + white. Expect more. Pay less.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Friendly</span></div>
+      </div>
+    </a>
+    <a href="/concepts/walmart.html" class="card">
+      <div class="card-preview c-walmart"><span class="card-icon">⭐</span></div>
+      <div class="card-info">
+        <h2>Walmart</h2>
+        <p>Blue + yellow spark. Save money. Live better.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Scale</span></div>
+      </div>
+    </a>
+    <a href="/concepts/ikea.html" class="card">
+      <div class="card-preview c-ikea"><span class="card-icon">🔧</span></div>
+      <div class="card-info">
+        <h2>IKEA</h2>
+        <p>Blue + yellow. Swedish flat-pack. The wonderful everyday.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Playful</span></div>
+      </div>
+    </a>
+    <a href="/concepts/costco.html" class="card">
+      <div class="card-preview c-costco"><span class="card-icon">🏪</span></div>
+      <div class="card-info">
+        <h2>Costco</h2>
+        <p>Red + blue warehouse. Members-only wholesale intelligence.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Value</span></div>
+      </div>
+    </a>
+    <a href="/concepts/whole-foods.html" class="card">
+      <div class="card-preview c-whole-foods"><span class="card-icon">🌿</span></div>
+      <div class="card-info">
+        <h2>Whole Foods</h2>
+        <p>Organic green + cream. Farm-to-table quality.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Natural</span></div>
+      </div>
+    </a>
+    <a href="/concepts/nordstrom.html" class="card">
+      <div class="card-preview c-nordstrom"><span class="card-icon">👔</span></div>
+      <div class="card-info">
+        <h2>Nordstrom</h2>
+        <p>Black + blush. Luxury editorial. In pursuit of the best.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Luxury</span></div>
+      </div>
+    </a>
+    <a href="/concepts/home-depot.html" class="card">
+      <div class="card-preview c-home-depot"><span class="card-icon">🔨</span></div>
+      <div class="card-info">
+        <h2>Home Depot</h2>
+        <p>Orange + black. How doers get more done.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Builder</span></div>
+      </div>
+    </a>
+    <a href="/concepts/sephora.html" class="card">
+      <div class="card-preview c-sephora"><span class="card-icon">💄</span></div>
+      <div class="card-info">
+        <h2>Sephora</h2>
+        <p>Black + white + red. We belong to something beautiful.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Chic</span></div>
+      </div>
+    </a>
+    <a href="/concepts/trader-joes.html" class="card">
+      <div class="card-preview c-trader-joes"><span class="card-icon">🌺</span></div>
+      <div class="card-info">
+        <h2>Trader Joe's</h2>
+        <p>Red + cream + tiki vibes. Your neighborhood tech store.</p>
+        <div class="tags"><span class="tag">High Risk</span><span class="tag">Quirky</span></div>
+      </div>
+    </a>
+    <a href="/concepts/rei.html" class="card">
+      <div class="card-preview c-rei"><span class="card-icon">⛰️</span></div>
+      <div class="card-info">
+        <h2>REI</h2>
+        <p>Forest green + earth tones. A life outdoors, well lived.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Adventure</span></div>
+      </div>
+    </a>
+  </div>
+
+  <div class="section-label">Communication Concepts</div>
+  <div class="grid">
+    <a href="/concepts/slack.html" class="card">
+      <div class="card-preview c-slack"><span class="card-icon">💬</span></div>
+      <div class="card-info">
+        <h2>Slack</h2>
+        <p>Aubergine + multicolor. Where work happens.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Playful</span></div>
+      </div>
+    </a>
+    <a href="/concepts/zoom.html" class="card">
+      <div class="card-preview c-zoom"><span class="card-icon">📹</span></div>
+      <div class="card-info">
+        <h2>Zoom</h2>
+        <p>Blue + white. One platform to connect.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Clean</span></div>
+      </div>
+    </a>
+    <a href="/concepts/discord.html" class="card">
+      <div class="card-preview c-discord"><span class="card-icon">🎮</span></div>
+      <div class="card-info">
+        <h2>Discord</h2>
+        <p>Blurple + dark mode. Your place to talk.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Community</span></div>
+      </div>
+    </a>
+    <a href="/concepts/whatsapp.html" class="card">
+      <div class="card-preview c-whatsapp"><span class="card-icon">📱</span></div>
+      <div class="card-info">
+        <h2>WhatsApp</h2>
+        <p>Green + teal. Simple. Secure. Reliable.</p>
+        <div class="tags"><span class="tag">Low Risk</span><span class="tag">Global</span></div>
+      </div>
+    </a>
+    <a href="/concepts/twilio.html" class="card">
+      <div class="card-preview c-twilio"><span class="card-icon">🔴</span></div>
+      <div class="card-info">
+        <h2>Twilio</h2>
+        <p>Red + dark navy. Ask your developer.</p>
+        <div class="tags"><span class="tag">Medium Risk</span><span class="tag">Developer</span></div>
+      </div>
+    </a>
+  </div>
+
+  <p class="footer">Click any concept to view full landing page</p>
+</body>
+</html>

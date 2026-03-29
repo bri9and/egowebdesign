@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Wholesale Intelligence</title>
+<meta name="description" content="KPT. Warehouse-scale AI and web engineering. Members-only tech at bulk pricing. No markup. No middlemen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET & CUSTOM PROPERTIES
+   ============================================================ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Costco Brand Palette */
+  --red: #E31837;
+  --red-dark: #B81230;
+  --red-light: #FF2D4D;
+  --blue: #005DAA;
+  --blue-dark: #004A88;
+  --blue-light: #0073D4;
+  --white: #FFFFFF;
+  --off-white: #F5F5F0;
+  --cream: #FFFEF7;
+
+  /* Warehouse / Industrial tones */
+  --concrete: #D4D2CC;
+  --steel: #8A8A8A;
+  --warehouse-gray: #3A3A3A;
+  --warehouse-dark: #1E1E1E;
+  --forklift-yellow: #FFD100;
+  --pallet-brown: #8B6914;
+  --price-yellow: #FFF200;
+
+  /* Text */
+  --text-dark: #1A1A1A;
+  --text-mid: #4A4A4A;
+  --text-light: #7A7A7A;
+
+  /* Typography */
+  --font-display: 'Anton', 'Impact', sans-serif;
+  --font-condensed: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-body: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Layout */
+  --max-w: 1400px;
+  --radius: 4px;
+  --tr: 0.25s ease;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--off-white);
+  color: var(--text-dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   SCROLL ANIMATIONS
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ============================================================
+   BACK LINK
+   ============================================================ */
+.back-link {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  font-family: var(--font-condensed);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+  background: var(--red);
+  padding: 8px 16px;
+  border: 2px solid var(--white);
+  transition: all var(--tr);
+}
+.back-link:hover {
+  background: var(--white);
+  color: var(--red);
+  text-decoration: none;
+}
+
+/* ============================================================
+   WAREHOUSE STRIPE — top bar
+   ============================================================ */
+.top-bar {
+  background: var(--blue);
+  color: var(--white);
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 10px 20px;
+  border-bottom: 3px solid var(--red);
+}
+.top-bar span {
+  color: var(--forklift-yellow);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue);
+  overflow: hidden;
+}
+
+/* Warehouse grid overlay */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 98px,
+      rgba(255,255,255,0.03) 98px,
+      rgba(255,255,255,0.03) 100px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 98px,
+      rgba(255,255,255,0.03) 98px,
+      rgba(255,255,255,0.03) 100px
+    );
+  pointer-events: none;
+}
+
+/* Red diagonal stripe */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 40%;
+  height: 200%;
+  background: var(--red);
+  transform: rotate(12deg);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 120px 24px 80px;
+  max-width: 1000px;
+}
+
+/* Membership badge */
+.membership-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.25);
+  padding: 10px 24px;
+  margin-bottom: 40px;
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--white);
+}
+.membership-badge .badge-icon {
+  width: 28px;
+  height: 20px;
+  background: var(--forklift-yellow);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 10px;
+  color: var(--blue-dark);
+  letter-spacing: 0;
+}
+
+.hero-logo {
+  font-family: var(--font-display);
+  font-size: clamp(100px, 18vw, 220px);
+  color: var(--white);
+  line-height: 0.85;
+  letter-spacing: -4px;
+  margin-bottom: 8px;
+  text-shadow: 4px 4px 0 var(--red);
+}
+
+.hero-tagline {
+  font-family: var(--font-condensed);
+  font-size: clamp(24px, 4vw, 48px);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.hero-sub {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.75);
+  max-width: 600px;
+  margin: 0 auto 48px;
+  line-height: 1.7;
+}
+
+.hero-price-tag {
+  display: inline-block;
+  background: var(--white);
+  padding: 16px 40px;
+  position: relative;
+  transform: rotate(-2deg);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+}
+.hero-price-tag::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border: 2px solid var(--red);
+}
+.hero-price-tag .price-label {
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-light);
+  display: block;
+  margin-bottom: 2px;
+}
+.hero-price-tag .price-value {
+  font-family: var(--font-display);
+  font-size: 42px;
+  color: var(--red);
+  line-height: 1;
+}
+.hero-price-tag .price-value sup {
+  font-size: 20px;
+  position: relative;
+  top: -16px;
+}
+.hero-price-tag .price-unit {
+  font-family: var(--font-condensed);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-mid);
+  letter-spacing: 1px;
+}
+
+/* Scrolling warehouse ticker */
+.warehouse-ticker {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--red);
+  padding: 12px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.warehouse-ticker-inner {
+  display: inline-block;
+  animation: ticker 30s linear infinite;
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--white);
+}
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ============================================================
+   SECTION BASE
+   ============================================================ */
+.section {
+  padding: 100px 24px;
+}
+.section-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.section-label {
+  font-family: var(--font-condensed);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 64px);
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+.section-desc {
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--text-mid);
+  max-width: 620px;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   AISLE SECTION — Products / Services
+   ============================================================ */
+.aisle-section {
+  background: var(--white);
+  border-top: 4px solid var(--red);
+  border-bottom: 4px solid var(--blue);
+}
+.aisle-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+.aisle-sign {
+  display: inline-block;
+  background: var(--blue);
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 18px;
+  padding: 8px 32px;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+.aisle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+.aisle-item {
+  border: 1px solid var(--concrete);
+  padding: 40px 32px;
+  position: relative;
+  transition: all var(--tr);
+  cursor: default;
+}
+.aisle-item:hover {
+  background: rgba(0, 93, 170, 0.03);
+  border-color: var(--blue);
+}
+.aisle-item-number {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--steel);
+  background: var(--off-white);
+  padding: 2px 8px;
+}
+.aisle-item-icon {
+  width: 56px;
+  height: 56px;
+  background: var(--blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: var(--white);
+}
+.aisle-item h3 {
+  font-family: var(--font-condensed);
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+.aisle-item p {
+  font-size: 15px;
+  color: var(--text-mid);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+/* Wholesale price tag on each item */
+.item-price {
+  display: inline-block;
+  background: var(--price-yellow);
+  padding: 6px 14px;
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text-dark);
+  position: relative;
+}
+.item-price::after {
+  content: '/mo';
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-mid);
+  margin-left: 2px;
+}
+.item-price-retail {
+  font-family: var(--font-condensed);
+  font-size: 13px;
+  color: var(--text-light);
+  text-decoration: line-through;
+  margin-left: 10px;
+}
+
+/* ============================================================
+   KIRKLAND SECTION — House Brand / Quality
+   ============================================================ */
+.kirkland-section {
+  background: var(--warehouse-dark);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+/* Subtle shelf lines */
+.kirkland-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 79px,
+    rgba(255,255,255,0.02) 79px,
+    rgba(255,255,255,0.02) 80px
+  );
+  pointer-events: none;
+}
+.kirkland-inner {
+  position: relative;
+  z-index: 2;
+}
+.kirkland-header {
+  margin-bottom: 64px;
+}
+.kirkland-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: 2px solid rgba(255,255,255,0.2);
+  padding: 10px 24px;
+  margin-bottom: 24px;
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.kirkland-label .ks-star {
+  color: var(--forklift-yellow);
+}
+.kirkland-header .section-title {
+  color: var(--white);
+}
+.kirkland-header .section-desc {
+  color: rgba(255,255,255,0.6);
+}
+
+.kirkland-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+.kirkland-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 40px;
+  transition: all var(--tr);
+}
+.kirkland-card:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.15);
+}
+.kirkland-card-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--forklift-yellow);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.kirkland-card h3 {
+  font-family: var(--font-condensed);
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+.kirkland-card p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.7;
+}
+
+/* ============================================================
+   MEMBERSHIP TIERS
+   ============================================================ */
+.membership-section {
+  background: linear-gradient(180deg, var(--off-white) 0%, var(--white) 100%);
+}
+.membership-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+.membership-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.membership-card {
+  border: 2px solid var(--concrete);
+  padding: 48px 36px;
+  text-align: center;
+  position: relative;
+  background: var(--white);
+  transition: all var(--tr);
+}
+.membership-card:hover {
+  border-color: var(--blue);
+  box-shadow: 0 8px 40px rgba(0,93,170,0.12);
+  transform: translateY(-4px);
+}
+.membership-card.featured {
+  border-color: var(--red);
+  background: var(--blue);
+  color: var(--white);
+  transform: scale(1.04);
+  z-index: 2;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.2);
+}
+.membership-card.featured:hover {
+  transform: scale(1.04) translateY(-4px);
+}
+.membership-card.featured .section-label,
+.membership-card.featured .card-tier-price-label,
+.membership-card.featured .card-features li {
+  color: rgba(255,255,255,0.7);
+}
+
+/* Membership card visual — like Costco card */
+.card-visual {
+  width: 180px;
+  height: 114px;
+  margin: 0 auto 28px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.card-visual-gold {
+  background: linear-gradient(135deg, #C5A44E 0%, #F0D68A 30%, #C5A44E 50%, #A08730 100%);
+}
+.card-visual-exec {
+  background: linear-gradient(135deg, var(--warehouse-dark) 0%, #3A3A3A 40%, var(--warehouse-dark) 100%);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.card-visual-business {
+  background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 40%, var(--blue-dark) 100%);
+}
+.card-visual-inner {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  right: 14px;
+}
+.card-visual-name {
+  font-family: var(--font-condensed);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--white);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+.card-visual-brand {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--white);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+.card-visual .card-photo {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 36px;
+  height: 44px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 2px;
+}
+
+.card-tier-name {
+  font-family: var(--font-condensed);
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+.card-tier-price {
+  font-family: var(--font-display);
+  font-size: 48px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.card-tier-price sup {
+  font-size: 22px;
+  position: relative;
+  top: -18px;
+}
+.card-tier-price-label {
+  font-family: var(--font-condensed);
+  font-size: 14px;
+  color: var(--text-light);
+  letter-spacing: 1px;
+  margin-bottom: 28px;
+}
+.card-features {
+  list-style: none;
+  text-align: left;
+  margin-bottom: 32px;
+}
+.card-features li {
+  font-size: 14px;
+  color: var(--text-mid);
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.membership-card.featured .card-features li {
+  border-bottom-color: rgba(255,255,255,0.1);
+}
+.card-features li .check {
+  color: var(--red);
+  font-weight: 700;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.membership-card.featured .card-features li .check {
+  color: var(--forklift-yellow);
+}
+
+.card-cta {
+  display: block;
+  width: 100%;
+  padding: 14px 24px;
+  font-family: var(--font-condensed);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  border: 2px solid var(--red);
+  background: var(--red);
+  color: var(--white);
+  cursor: pointer;
+  transition: all var(--tr);
+}
+.card-cta:hover {
+  background: var(--red-dark);
+  border-color: var(--red-dark);
+  text-decoration: none;
+}
+.card-cta-outline {
+  background: transparent;
+  color: var(--red);
+}
+.card-cta-outline:hover {
+  background: var(--red);
+  color: var(--white);
+}
+.membership-card.featured .card-cta {
+  background: var(--white);
+  color: var(--blue);
+  border-color: var(--white);
+}
+.membership-card.featured .card-cta:hover {
+  background: var(--off-white);
+  border-color: var(--off-white);
+}
+
+/* ============================================================
+   BULK STATS — Warehouse scale
+   ============================================================ */
+.stats-section {
+  background: var(--red);
+  color: var(--white);
+  padding: 80px 24px;
+  position: relative;
+}
+.stats-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 198px,
+      rgba(255,255,255,0.05) 198px,
+      rgba(255,255,255,0.05) 200px
+    );
+  pointer-events: none;
+}
+.stats-header {
+  text-align: center;
+  margin-bottom: 60px;
+  position: relative;
+  z-index: 2;
+}
+.stats-header .section-label {
+  color: rgba(255,255,255,0.6);
+}
+.stats-header .section-title {
+  color: var(--white);
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.stat-item {
+  text-align: center;
+  padding: 32px 20px;
+  border-right: 1px solid rgba(255,255,255,0.15);
+}
+.stat-item:last-child {
+  border-right: none;
+}
+.stat-number {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 6vw, 72px);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.stat-unit {
+  font-family: var(--font-condensed);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+}
+
+/* ============================================================
+   TREASURE HUNT — Featured Products
+   ============================================================ */
+.treasure-section {
+  background: var(--white);
+}
+.treasure-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+.treasure-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.treasure-item {
+  background: var(--off-white);
+  border: 2px solid transparent;
+  padding: 28px 24px;
+  position: relative;
+  transition: all var(--tr);
+  cursor: default;
+}
+.treasure-item:hover {
+  border-color: var(--red);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+.treasure-item-badge {
+  position: absolute;
+  top: -1px;
+  right: 16px;
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+}
+.treasure-item-icon {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+.treasure-item h4 {
+  font-family: var(--font-condensed);
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+}
+.treasure-item p {
+  font-size: 13px;
+  color: var(--text-mid);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.treasure-price {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.treasure-price-now {
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--red);
+}
+.treasure-price-was {
+  font-family: var(--font-condensed);
+  font-size: 14px;
+  color: var(--text-light);
+  text-decoration: line-through;
+}
+.treasure-price-save {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--blue);
+  padding: 2px 6px;
+}
+
+/* ============================================================
+   WAREHOUSE FLOOR — Process / How it works
+   ============================================================ */
+.process-section {
+  background: var(--blue);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+.process-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* Concrete floor texture suggestion */
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(0,0,0,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(0,0,0,0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+.process-header {
+  margin-bottom: 64px;
+  position: relative;
+  z-index: 2;
+}
+.process-header .section-label { color: rgba(255,255,255,0.5); }
+.process-header .section-title { color: var(--white); }
+.process-header .section-desc { color: rgba(255,255,255,0.6); }
+
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+  z-index: 2;
+}
+.process-step {
+  padding: 40px 28px;
+  border: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+  transition: all var(--tr);
+}
+.process-step:hover {
+  background: rgba(255,255,255,0.05);
+}
+.process-step-num {
+  font-family: var(--font-display);
+  font-size: 64px;
+  color: rgba(255,255,255,0.1);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.process-step h3 {
+  font-family: var(--font-condensed);
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.process-step p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7;
+}
+/* Arrow connector */
+.process-step::after {
+  content: '\2192';
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
+  color: rgba(255,255,255,0.25);
+  z-index: 3;
+}
+.process-step:last-child::after {
+  display: none;
+}
+
+/* ============================================================
+   CTA — Warehouse doors
+   ============================================================ */
+.cta-section {
+  background: var(--warehouse-dark);
+  color: var(--white);
+  text-align: center;
+  padding: 120px 24px;
+  position: relative;
+  overflow: hidden;
+}
+/* Loading dock striping */
+.cta-section::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--forklift-yellow) 0px,
+    var(--forklift-yellow) 20px,
+    var(--warehouse-dark) 20px,
+    var(--warehouse-dark) 40px
+  );
+}
+.cta-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--forklift-yellow) 0px,
+    var(--forklift-yellow) 20px,
+    var(--warehouse-dark) 20px,
+    var(--warehouse-dark) 40px
+  );
+}
+.cta-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.cta-inner .section-title {
+  color: var(--white);
+  margin-bottom: 16px;
+}
+.cta-desc {
+  font-size: 18px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 48px;
+  line-height: 1.7;
+}
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.cta-btn {
+  display: inline-block;
+  padding: 16px 40px;
+  font-family: var(--font-condensed);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--tr);
+  border: 2px solid transparent;
+}
+.cta-btn-primary {
+  background: var(--red);
+  color: var(--white);
+  border-color: var(--red);
+}
+.cta-btn-primary:hover {
+  background: var(--red-light);
+  border-color: var(--red-light);
+  text-decoration: none;
+}
+.cta-btn-secondary {
+  background: transparent;
+  color: var(--white);
+  border-color: rgba(255,255,255,0.3);
+}
+.cta-btn-secondary:hover {
+  border-color: var(--white);
+  background: rgba(255,255,255,0.05);
+  text-decoration: none;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: var(--blue-dark);
+  color: rgba(255,255,255,0.5);
+  padding: 48px 24px;
+  border-top: 4px solid var(--red);
+}
+.footer-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--white);
+  letter-spacing: 2px;
+}
+.footer-links {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.footer-links a {
+  font-family: var(--font-condensed);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+  transition: color var(--tr);
+}
+.footer-links a:hover {
+  color: var(--white);
+  text-decoration: none;
+}
+.footer-legal {
+  width: 100%;
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 12px;
+}
+.footer-legal span {
+  color: var(--red);
+}
+
+/* ============================================================
+   RESPONSIVE — 768px
+   ============================================================ */
+@media (max-width: 768px) {
+  .back-link {
+    top: auto;
+    bottom: 20px;
+    left: 20px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .hero-content { padding: 100px 20px 80px; }
+  .hero-logo { letter-spacing: -2px; }
+  .hero-tagline { letter-spacing: 4px; }
+  .hero-sub { font-size: 16px; }
+
+  .section { padding: 64px 20px; }
+
+  .aisle-grid {
+    grid-template-columns: 1fr;
+  }
+  .aisle-item { border-bottom: none; }
+  .aisle-item:last-child { border-bottom: 1px solid var(--concrete); }
+
+  .kirkland-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .membership-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+  .membership-card.featured {
+    transform: none;
+    order: -1;
+  }
+  .membership-card.featured:hover {
+    transform: translateY(-4px);
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .stat-item {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .stat-item:nth-child(even) { border-right: none; }
+
+  .treasure-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .process-steps {
+    grid-template-columns: 1fr;
+  }
+  .process-step::after { display: none; }
+
+  .cta-buttons { flex-direction: column; align-items: center; }
+
+  .footer-inner { flex-direction: column; text-align: center; }
+  .footer-links { justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .treasure-grid {
+    grid-template-columns: 1fr;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .stat-item { border-right: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">&larr; All Brands</a>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  Members-Only Tech &mdash; <span>Warehouse Pricing</span> &mdash; No Middlemen &mdash; Open 7 Days
+</div>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="membership-badge reveal">
+      <div class="badge-icon">KPT</div>
+      EXECUTIVE MEMBER SINCE 2024
+    </div>
+    <h1 class="hero-logo reveal reveal-delay-1">KPT</h1>
+    <p class="hero-tagline reveal reveal-delay-2">Wholesale Intelligence</p>
+    <p class="hero-sub reveal reveal-delay-3">
+      Warehouse-scale AI and premium web engineering. No markup, no middlemen, no fluff.
+      Just bulk-grade tech at members-only pricing.
+    </p>
+    <div class="hero-price-tag reveal reveal-delay-4">
+      <span class="price-label">Member Price</span>
+      <span class="price-value"><sup>$</sup>4,997</span>
+      <span class="price-unit">per project &bull; retail $12,500</span>
+    </div>
+  </div>
+
+  <!-- Scrolling Ticker -->
+  <div class="warehouse-ticker">
+    <div class="warehouse-ticker-inner">
+      &bull; AI VOICE AGENTS &bull; WEB DESIGN &bull; FULL-STACK DEV &bull; API INTEGRATION &bull; MOBILE APPS &bull; CLOUD INFRA &bull; DATA PIPELINES &bull; AI VOICE AGENTS &bull; WEB DESIGN &bull; FULL-STACK DEV &bull; API INTEGRATION &bull; MOBILE APPS &bull; CLOUD INFRA &bull; DATA PIPELINES &bull; AI VOICE AGENTS &bull; WEB DESIGN &bull; FULL-STACK DEV &bull; API INTEGRATION &bull; MOBILE APPS &bull; CLOUD INFRA &bull; DATA PIPELINES &bull;
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     AISLE — Services
+     ============================================================ -->
+<section class="section aisle-section">
+  <div class="section-inner">
+    <div class="aisle-header reveal">
+      <div class="aisle-sign">AISLE 1 &mdash; CORE SERVICES</div>
+      <h2 class="section-title">Bulk-Grade Solutions</h2>
+      <p class="section-desc" style="margin: 0 auto;">Enterprise-quality tech, warehouse-priced. Every service built for scale, tested for reliability, sold without the agency markup.</p>
+    </div>
+
+    <div class="aisle-grid">
+      <div class="aisle-item reveal">
+        <span class="aisle-item-number">SKU-001</span>
+        <div class="aisle-item-icon">&#9881;</div>
+        <h3>AI Voice Agents</h3>
+        <p>24/7 conversational AI that handles calls, qualifies leads, and books appointments. Trained on your business, deployed in days.</p>
+        <span class="item-price">$497</span>
+        <span class="item-price-retail">$1,200/mo</span>
+      </div>
+
+      <div class="aisle-item reveal reveal-delay-1">
+        <span class="aisle-item-number">SKU-002</span>
+        <div class="aisle-item-icon">&#9638;</div>
+        <h3>Premium Web Design</h3>
+        <p>High-performance websites built with Next.js, optimized for speed, SEO, and conversion. No templates. No WordPress.</p>
+        <span class="item-price">$2,997</span>
+        <span class="item-price-retail">$8,000</span>
+      </div>
+
+      <div class="aisle-item reveal reveal-delay-2">
+        <span class="aisle-item-number">SKU-003</span>
+        <div class="aisle-item-icon">&#9729;</div>
+        <h3>Cloud Infrastructure</h3>
+        <p>Production-ready deployments on Vercel, AWS, or GCP. CI/CD pipelines, monitoring, and auto-scaling included.</p>
+        <span class="item-price">$1,497</span>
+        <span class="item-price-retail">$4,500</span>
+      </div>
+
+      <div class="aisle-item reveal reveal-delay-1">
+        <span class="aisle-item-number">SKU-004</span>
+        <div class="aisle-item-icon">&#128268;</div>
+        <h3>API Integration</h3>
+        <p>Connect any system to any system. Payment processors, CRMs, databases, third-party services. Clean, documented, battle-tested.</p>
+        <span class="item-price">$997</span>
+        <span class="item-price-retail">$3,000</span>
+      </div>
+
+      <div class="aisle-item reveal reveal-delay-2">
+        <span class="aisle-item-number">SKU-005</span>
+        <div class="aisle-item-icon">&#128241;</div>
+        <h3>Mobile Applications</h3>
+        <p>Cross-platform mobile apps with React Native. Native performance, single codebase, deployed to both app stores.</p>
+        <span class="item-price">$3,497</span>
+        <span class="item-price-retail">$10,000</span>
+      </div>
+
+      <div class="aisle-item reveal reveal-delay-3">
+        <span class="aisle-item-number">SKU-006</span>
+        <div class="aisle-item-icon">&#128202;</div>
+        <h3>Data Pipelines</h3>
+        <p>Real-time data processing and analytics infrastructure. ETL workflows, dashboards, and actionable intelligence on demand.</p>
+        <span class="item-price">$1,997</span>
+        <span class="item-price-retail">$6,000</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     KIRKLAND SIGNATURE — House Brand Quality
+     ============================================================ -->
+<section class="section kirkland-section">
+  <div class="section-inner kirkland-inner">
+    <div class="kirkland-header reveal">
+      <div class="kirkland-label">
+        <span class="ks-star">&#9733;</span> KPT Signature Quality
+      </div>
+      <h2 class="section-title">Our House Brand<br>Promise</h2>
+      <p class="section-desc">Like Kirkland Signature, every KPT deliverable carries our name. That means we stand behind it completely. Same quality as the premium brands, fraction of the price.</p>
+    </div>
+
+    <div class="kirkland-grid">
+      <div class="kirkland-card reveal">
+        <div class="kirkland-card-tag">// Quality Guarantee</div>
+        <h3>Production-Grade Code</h3>
+        <p>Every line is reviewed, typed, tested, and documented. We ship the same stack the Fortune 500 uses, minus the six-figure consulting invoice.</p>
+      </div>
+      <div class="kirkland-card reveal reveal-delay-1">
+        <div class="kirkland-card-tag">// Direct Supply Chain</div>
+        <h3>No Agency Layers</h3>
+        <p>Your project goes from brief to senior engineers. No account managers, no project coordinators, no 40% overhead. Direct to the warehouse floor.</p>
+      </div>
+      <div class="kirkland-card reveal reveal-delay-2">
+        <div class="kirkland-card-tag">// Bulk Economics</div>
+        <h3>Volume Pricing Model</h3>
+        <p>We keep costs down by standardizing our toolchain and processes. The savings go to you, not to a downtown office lease.</p>
+      </div>
+      <div class="kirkland-card reveal reveal-delay-3">
+        <div class="kirkland-card-tag">// Satisfaction Policy</div>
+        <h3>100% Money Back</h3>
+        <p>Not happy? Full refund. No restocking fee, no questions asked. We have the confidence of a warehouse that moves 200M+ in annual volume.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     MEMBERSHIP TIERS
+     ============================================================ -->
+<section class="section membership-section">
+  <div class="section-inner">
+    <div class="membership-header reveal">
+      <p class="section-label">Membership Tiers</p>
+      <h2 class="section-title">Choose Your Card</h2>
+      <p class="section-desc" style="margin: 0 auto;">Every tier gets warehouse pricing. Executive members unlock the deepest discounts and priority access to limited-run builds.</p>
+    </div>
+
+    <div class="membership-grid">
+      <!-- Gold Star -->
+      <div class="membership-card reveal">
+        <div class="card-visual card-visual-gold">
+          <div class="card-photo"></div>
+          <div class="card-visual-inner">
+            <div class="card-visual-name">Gold Star Member</div>
+            <div class="card-visual-brand">KPT</div>
+          </div>
+        </div>
+        <h3 class="card-tier-name">Gold Star</h3>
+        <div class="card-tier-price"><sup>$</sup>60</div>
+        <div class="card-tier-price-label">per year</div>
+        <ul class="card-features">
+          <li><span class="check">&#10003;</span> Warehouse pricing on all services</li>
+          <li><span class="check">&#10003;</span> Monthly tech consultation</li>
+          <li><span class="check">&#10003;</span> Priority support queue</li>
+          <li><span class="check">&#10003;</span> Member-only project templates</li>
+        </ul>
+        <a href="#" class="card-cta card-cta-outline">Join Now</a>
+      </div>
+
+      <!-- Executive (Featured) -->
+      <div class="membership-card featured reveal reveal-delay-1">
+        <div class="card-visual card-visual-exec">
+          <div class="card-photo"></div>
+          <div class="card-visual-inner">
+            <div class="card-visual-name">Executive Member</div>
+            <div class="card-visual-brand">KPT</div>
+          </div>
+        </div>
+        <h3 class="card-tier-name">Executive</h3>
+        <div class="card-tier-price"><sup>$</sup>120</div>
+        <div class="card-tier-price-label">per year</div>
+        <ul class="card-features">
+          <li><span class="check">&#10003;</span> Everything in Gold Star</li>
+          <li><span class="check">&#10003;</span> 2% annual reward on all spend</li>
+          <li><span class="check">&#10003;</span> Dedicated engineering lead</li>
+          <li><span class="check">&#10003;</span> Early access to new services</li>
+          <li><span class="check">&#10003;</span> Quarterly roadmap sessions</li>
+        </ul>
+        <a href="#" class="card-cta">Get Executive</a>
+      </div>
+
+      <!-- Business -->
+      <div class="membership-card reveal reveal-delay-2">
+        <div class="card-visual card-visual-business">
+          <div class="card-photo"></div>
+          <div class="card-visual-inner">
+            <div class="card-visual-name">Business Member</div>
+            <div class="card-visual-brand">KPT</div>
+          </div>
+        </div>
+        <h3 class="card-tier-name">Business</h3>
+        <div class="card-tier-price"><sup>$</sup>60</div>
+        <div class="card-tier-price-label">per year</div>
+        <ul class="card-features">
+          <li><span class="check">&#10003;</span> Everything in Gold Star</li>
+          <li><span class="check">&#10003;</span> Resale & white-label rights</li>
+          <li><span class="check">&#10003;</span> Multi-seat team access</li>
+          <li><span class="check">&#10003;</span> Volume discount tiers</li>
+        </ul>
+        <a href="#" class="card-cta card-cta-outline">Join Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     BULK STATS
+     ============================================================ -->
+<section class="stats-section">
+  <div class="section-inner">
+    <div class="stats-header reveal">
+      <p class="section-label">By The Numbers</p>
+      <h2 class="section-title">Warehouse Scale</h2>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-number">847</div>
+        <div class="stat-unit">Projects</div>
+        <div class="stat-label">Shipped to production</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-number">99.9</div>
+        <div class="stat-unit">% Uptime</div>
+        <div class="stat-label">Across all deployments</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-number">62</div>
+        <div class="stat-unit">% Savings</div>
+        <div class="stat-label">vs. traditional agencies</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-number">4.2M</div>
+        <div class="stat-unit">API Calls</div>
+        <div class="stat-label">Processed daily</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TREASURE HUNT — Featured Finds
+     ============================================================ -->
+<section class="section treasure-section">
+  <div class="section-inner">
+    <div class="treasure-header reveal">
+      <p class="section-label">Limited Time Finds</p>
+      <h2 class="section-title">The Treasure Hunt</h2>
+      <p class="section-desc" style="margin: 0 auto;">Like that random Vitamix by the paper towels, these deals appear when you least expect them. Members-only. While supplies last.</p>
+    </div>
+
+    <div class="treasure-grid">
+      <div class="treasure-item reveal">
+        <div class="treasure-item-badge">Hot Buy</div>
+        <div class="treasure-item-icon">&#128640;</div>
+        <h4>Startup Launch Pack</h4>
+        <p>Landing page + brand identity + domain + hosting. Everything to go from zero to live in 72 hours.</p>
+        <div class="treasure-price">
+          <span class="treasure-price-now">$1,997</span>
+          <span class="treasure-price-was">$4,500</span>
+          <span class="treasure-price-save">-56%</span>
+        </div>
+      </div>
+
+      <div class="treasure-item reveal reveal-delay-1">
+        <div class="treasure-item-badge">Member Pick</div>
+        <div class="treasure-item-icon">&#129302;</div>
+        <h4>AI Agent Bundle</h4>
+        <p>Voice agent + chat widget + appointment booking. Triple threat for service businesses.</p>
+        <div class="treasure-price">
+          <span class="treasure-price-now">$897</span>
+          <span class="treasure-price-was">$2,100</span>
+          <span class="treasure-price-save">-57%</span>
+        </div>
+      </div>
+
+      <div class="treasure-item reveal reveal-delay-2">
+        <div class="treasure-item-badge">Bulk Deal</div>
+        <div class="treasure-item-icon">&#128230;</div>
+        <h4>5-Page Website</h4>
+        <p>Full responsive site: Home, About, Services, Contact, Blog. SEO-optimized, CMS-ready.</p>
+        <div class="treasure-price">
+          <span class="treasure-price-now">$3,497</span>
+          <span class="treasure-price-was">$7,500</span>
+          <span class="treasure-price-save">-53%</span>
+        </div>
+      </div>
+
+      <div class="treasure-item reveal reveal-delay-3">
+        <div class="treasure-item-badge">New Item</div>
+        <div class="treasure-item-icon">&#128272;</div>
+        <h4>Security Audit</h4>
+        <p>Full-stack security review: auth, API, infra, dependencies. Detailed report + remediation plan.</p>
+        <div class="treasure-price">
+          <span class="treasure-price-now">$997</span>
+          <span class="treasure-price-was">$3,000</span>
+          <span class="treasure-price-save">-67%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PROCESS — Warehouse Floor
+     ============================================================ -->
+<section class="section process-section">
+  <div class="section-inner">
+    <div class="process-header reveal">
+      <p class="section-label">How It Works</p>
+      <h2 class="section-title">The Warehouse Floor</h2>
+      <p class="section-desc">From loading dock to delivery. Our process is optimized like a supply chain &mdash; lean, fast, zero waste.</p>
+    </div>
+
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="process-step-num">01</div>
+        <h3>Intake</h3>
+        <p>Submit your brief through the member portal. We assess scope, complexity, and timeline within 24 hours.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-1">
+        <div class="process-step-num">02</div>
+        <h3>Pick & Pack</h3>
+        <p>Senior engineers select the optimal stack and architecture. No committees. No bloated proposals. Just the right tools.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="process-step-num">03</div>
+        <h3>Quality Check</h3>
+        <p>Every build goes through automated testing, security scanning, and performance benchmarks before it leaves the floor.</p>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <div class="process-step-num">04</div>
+        <h3>Ship It</h3>
+        <p>Deploy to production with full documentation, training, and 90 days of post-launch support included.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA
+     ============================================================ -->
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <p class="section-label" style="color: var(--forklift-yellow);">Doors Are Open</p>
+    <h2 class="section-title">Start Your Membership</h2>
+    <p class="cta-desc">
+      Walk through the warehouse doors. Get access to enterprise-grade tech at wholesale prices.
+      No long-term contracts. Cancel anytime. Satisfaction guaranteed.
+    </p>
+    <div class="cta-buttons">
+      <a href="#" class="cta-btn cta-btn-primary">Get Your Card</a>
+      <a href="#" class="cta-btn cta-btn-secondary">Book a Tour</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">KPT</div>
+    <div class="footer-links">
+      <a href="#">Services</a>
+      <a href="#">Membership</a>
+      <a href="#">Careers</a>
+      <a href="#">Locations</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="footer-legal">
+      &copy; 2024 KPT Wholesale Intelligence. All rights reserved.
+      <br>A brand concept inspired by <span>Costco Wholesale</span>.
+      <br>Built with warehouse-grade HTML, CSS &amp; JavaScript.
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT — IntersectionObserver
+     ============================================================ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Stat counter animation
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const text = el.textContent.trim();
+        const hasM = text.includes('M');
+        const hasPercent = text.includes('%');
+        const numericStr = text.replace(/[^0-9.]/g, '');
+        const target = parseFloat(numericStr);
+        const suffix = hasM ? 'M' : hasPercent ? '' : '';
+
+        if (isNaN(target)) return;
+
+        const duration = 1800;
+        const startTime = performance.now();
+        const isDecimal = text.includes('.');
+        const decimalPlaces = isDecimal ? (numericStr.split('.')[1] || '').length : 0;
+
+        function animate(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = eased * target;
+
+          if (isDecimal) {
+            el.textContent = current.toFixed(decimalPlaces) + suffix;
+          } else {
+            el.textContent = Math.floor(current).toLocaleString() + suffix;
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            // Restore original text exactly
+            el.textContent = text;
+          }
+        }
+
+        requestAnimationFrame(animate);
+        statObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.stat-number').forEach(el => statObserver.observe(el));
+});
+</script>
+
+</body>
+</html>

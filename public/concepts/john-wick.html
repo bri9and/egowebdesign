@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — The Continental</title>
+<meta name="description" content="KPT. Bespoke AI voice agents and premium web design. Precision engineered. No exceptions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0A0808;
+    --gold: #DAA520;
+    --gold-dim: rgba(218, 165, 32, 0.15);
+    --gold-glow: rgba(218, 165, 32, 0.25);
+    --blood: #8B0000;
+    --blood-dim: rgba(139, 0, 0, 0.2);
+    --neon-blue: #1E40AF;
+    --neon-blue-dim: rgba(30, 64, 175, 0.15);
+    --charcoal: #1A1A1A;
+    --ivory: #F5F0E1;
+    --ivory-dim: rgba(245, 240, 225, 0.7);
+    --gray: #6B6560;
+    --surface: #151312;
+    --surface-light: #1E1B19;
+    --border: rgba(218, 165, 32, 0.1);
+    --border-hover: rgba(218, 165, 32, 0.35);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--ivory);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    line-height: 1.15;
+    color: var(--ivory);
+  }
+
+  .label, .mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  /* ── Layout ───────────────────────────────────────────────── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .section {
+    padding: 120px 0;
+  }
+
+  /* ── Reveal Animation ──────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Back Link ─────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--gray);
+    letter-spacing: 0.5px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: rgba(10, 8, 8, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    transition: all 0.25s ease;
+  }
+  .back-link:hover {
+    color: var(--gold);
+    border-color: var(--border-hover);
+  }
+
+  /* ── Nav ──────────────────────────────────────────────────── */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0 24px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 8, 8, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.3s ease;
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    flex-shrink: 0;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 6px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--gray);
+    transition: color 0.2s ease;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--black);
+    background: var(--gold);
+    padding: 10px 24px;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .nav-cta:hover {
+    background: #E8B930;
+    box-shadow: 0 0 24px var(--gold-glow);
+    transform: translateY(-1px);
+  }
+
+  .nav-mobile-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .nav-mobile-toggle span {
+    width: 22px;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 1px;
+    transition: all 0.25s ease;
+  }
+
+  /* ── Divider ───────────────────────────────────────────────── */
+  .gold-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 24px;
+    opacity: 0.4;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.6;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  /* ── Hero ───────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 40%, rgba(218, 165, 32, 0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 70% 60%, rgba(30, 64, 175, 0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 30% 40% at 20% 80%, rgba(139, 0, 0, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    padding: 8px 20px;
+    border: 1px solid rgba(218, 165, 32, 0.2);
+    background: rgba(218, 165, 32, 0.04);
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(218, 165, 32, 0.4); }
+    50% { opacity: 0.5; box-shadow: 0 0 0 6px rgba(218, 165, 32, 0); }
+  }
+
+  .hero h1 {
+    font-size: clamp(36px, 5.5vw, 64px);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 0.5px;
+    margin-bottom: 28px;
+    color: var(--ivory);
+    line-height: 1.2;
+  }
+  .hero h1 .accent { color: var(--gold); font-style: normal; }
+
+  .hero-sub {
+    font-size: clamp(15px, 1.8vw, 18px);
+    color: var(--gray);
+    max-width: 560px;
+    margin: 0 auto 56px;
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 80px;
+  }
+
+  .btn-gold {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--black);
+    background: var(--gold);
+    padding: 14px 36px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .btn-gold:hover {
+    background: #E8B930;
+    box-shadow: 0 4px 32px var(--gold-glow);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ivory);
+    background: transparent;
+    padding: 14px 36px;
+    border: 1px solid rgba(218, 165, 32, 0.25);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .btn-outline:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(218, 165, 32, 0.04);
+    transform: translateY(-2px);
+  }
+
+  /* ── Gold Coin ─────────────────────────────────────────────── */
+  .coin-container {
+    perspective: 600px;
+    display: inline-block;
+  }
+
+  .coin {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(
+      145deg,
+      #F5D060 0%,
+      #DAA520 25%,
+      #B8860B 50%,
+      #DAA520 75%,
+      #F5D060 100%
+    );
+    box-shadow:
+      0 0 20px rgba(218, 165, 32, 0.3),
+      0 0 60px rgba(218, 165, 32, 0.1),
+      inset 0 2px 4px rgba(255, 255, 255, 0.3),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+    animation: spinCoin 6s ease-in-out infinite;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .coin::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .coin::after {
+    content: 'K';
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: rgba(10, 8, 8, 0.6);
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);
+  }
+
+  @keyframes spinCoin {
+    0% { transform: rotateY(0deg); }
+    25% { transform: rotateY(180deg); }
+    50% { transform: rotateY(360deg); }
+    75% { transform: rotateY(180deg); }
+    100% { transform: rotateY(0deg); }
+  }
+
+  /* ── Products (Continental Services) ───────────────────────── */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-top: 64px;
+  }
+
+  .product-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .product-card:hover::before {
+    opacity: 1;
+  }
+
+  .product-card:hover {
+    border-color: rgba(218, 165, 32, 0.25);
+    background: var(--surface-light);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  .product-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid rgba(218, 165, 32, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    background: rgba(218, 165, 32, 0.05);
+  }
+
+  .product-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  .product-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    opacity: 0.5;
+  }
+
+  .product-card h3 {
+    font-size: 28px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    color: var(--ivory);
+  }
+
+  .product-card p {
+    font-size: 15px;
+    color: var(--gray);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  .product-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .product-features li {
+    font-size: 13px;
+    color: var(--ivory-dim);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .product-features li::before {
+    content: '—';
+    color: var(--gold);
+    opacity: 0.5;
+  }
+
+  /* ── Neon accent bar ───────────────────────────────────────── */
+  .product-card:first-child {
+    border-left: 1px solid var(--border);
+  }
+  .product-card:first-child .product-icon {
+    box-shadow: 0 0 20px rgba(30, 64, 175, 0.1);
+    border-color: rgba(30, 64, 175, 0.3);
+    background: rgba(30, 64, 175, 0.05);
+  }
+  .product-card:first-child .product-icon svg {
+    stroke: #4B7BE5;
+  }
+
+  .product-card:last-child .product-icon {
+    box-shadow: 0 0 20px rgba(139, 0, 0, 0.1);
+    border-color: rgba(218, 165, 32, 0.3);
+  }
+
+  /* ── The Rules ─────────────────────────────────────────────── */
+  .rules-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .rules-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 64px;
+  }
+
+  .rule-card {
+    padding: 48px 36px;
+    border-right: 1px solid var(--border);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .rule-card:last-child {
+    border-right: none;
+  }
+
+  .rule-card:hover {
+    background: rgba(218, 165, 32, 0.02);
+  }
+
+  .rule-number {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--gold);
+    opacity: 0.2;
+    margin-bottom: 20px;
+    line-height: 1;
+  }
+
+  .rule-card h3 {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 14px;
+    color: var(--ivory);
+  }
+
+  .rule-card p {
+    font-size: 14px;
+    color: var(--gray);
+    line-height: 1.7;
+  }
+
+  /* ── Coin Economy (Stats) ──────────────────────────────────── */
+  .coins-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    margin-top: 64px;
+  }
+
+  .coin-stat {
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .coin-stat-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 24px;
+    background: linear-gradient(
+      145deg,
+      #F5D060 0%,
+      #DAA520 25%,
+      #B8860B 50%,
+      #DAA520 75%,
+      #F5D060 100%
+    );
+    box-shadow:
+      0 0 30px rgba(218, 165, 32, 0.15),
+      inset 0 2px 4px rgba(255, 255, 255, 0.3),
+      inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .coin-stat-circle::before {
+    content: '';
+    position: absolute;
+    inset: 7px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .coin-stat-value {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: rgba(10, 8, 8, 0.7);
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.15);
+  }
+
+  .coin-stat h4 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: var(--ivory);
+  }
+
+  .coin-stat p {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+
+  /* ── The High Table ────────────────────────────────────────── */
+  .high-table-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .high-table-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 64px;
+  }
+
+  .testimonial-card {
+    padding: 40px 36px;
+    border: 1px solid var(--border);
+    background: rgba(10, 8, 8, 0.5);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .testimonial-card:hover {
+    border-color: rgba(218, 165, 32, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .testimonial-card::before {
+    content: '\201C';
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 64px;
+    color: var(--gold);
+    opacity: 0.15;
+    position: absolute;
+    top: 16px;
+    left: 28px;
+    line-height: 1;
+  }
+
+  .testimonial-text {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ivory-dim);
+    line-height: 1.7;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .testimonial-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--charcoal), var(--surface));
+    border: 1px solid rgba(218, 165, 32, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  .testimonial-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ivory);
+  }
+
+  .testimonial-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── CTA Section ───────────────────────────────────────────── */
+  .cta-section {
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--gold-dim) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  .cta-section h2 {
+    font-size: clamp(32px, 4.5vw, 56px);
+    font-weight: 400;
+    font-style: italic;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-section .cta-sub {
+    font-size: 17px;
+    color: var(--gray);
+    max-width: 500px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-form {
+    display: flex;
+    gap: 0;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-input {
+    flex: 1;
+    padding: 16px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--ivory);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-right: none;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .cta-input::placeholder {
+    color: var(--gray);
+    opacity: 0.6;
+  }
+
+  .cta-input:focus {
+    border-color: rgba(218, 165, 32, 0.4);
+  }
+
+  .cta-submit {
+    padding: 16px 32px;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold);
+    border: 1px solid var(--gold);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .cta-submit:hover {
+    background: #E8B930;
+    box-shadow: 0 0 24px var(--gold-glow);
+  }
+
+  .cta-note {
+    margin-top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gray);
+    opacity: 0.5;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Footer ────────────────────────────────────────────────── */
+  .footer {
+    padding: 60px 24px 40px;
+    border-top: 1px solid var(--border);
+    background: var(--black);
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .footer-brand {
+    max-width: 280px;
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .footer-tagline {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 60px;
+  }
+
+  .footer-col h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.5;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-col li a {
+    font-size: 14px;
+    color: var(--gray);
+    transition: color 0.2s ease;
+  }
+  .footer-col li a:hover { color: var(--ivory); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 48px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gray);
+    opacity: 0.4;
+    letter-spacing: 0.5px;
+  }
+
+  .footer-rule {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--gray);
+    opacity: 0.3;
+  }
+
+  /* ── Neon Accent Strips ────────────────────────────────────── */
+  .neon-strip {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(30, 64, 175, 0.4) 20%,
+      rgba(139, 0, 0, 0.3) 50%,
+      rgba(30, 64, 175, 0.4) 80%,
+      transparent 100%
+    );
+  }
+
+  /* ── Responsive ────────────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .rules-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .rule-card {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .rule-card:last-child { border-bottom: none; }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .nav-mobile-toggle { display: flex; }
+
+    .section { padding: 80px 0; }
+
+    .hero { padding: 100px 20px 60px; min-height: 90vh; }
+    .hero h1 { font-size: clamp(28px, 7vw, 44px); }
+
+    .products-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .product-card { padding: 36px 28px; }
+
+    .coins-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .coin-stat { padding: 24px 12px; }
+
+    .coin-stat-circle {
+      width: 80px;
+      height: 80px;
+    }
+
+    .coin-stat-value { font-size: 22px; }
+
+    .high-table-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .cta-form {
+      flex-direction: column;
+    }
+    .cta-input {
+      border-right: 1px solid var(--border);
+      border-bottom: none;
+    }
+
+    .footer-inner { flex-direction: column; gap: 32px; }
+    .footer-links { gap: 40px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  }
+
+  @media (max-width: 480px) {
+    .coins-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-ctas {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn-gold, .btn-outline { width: 100%; justify-content: center; }
+
+    .footer-links { flex-direction: column; gap: 28px; }
+  }
+
+  /* ── Mobile Nav Open ───────────────────────────────────────── */
+  .nav.open .nav-links {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: rgba(10, 8, 8, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 24px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav.open .nav-cta {
+    display: inline-block;
+    position: absolute;
+    top: calc(72px + var(--mobile-nav-height, 160px));
+  }
+</style>
+</head>
+<body>
+
+<!-- Back -->
+<a href="/index.html" class="back-link">&larr; Back</a>
+
+<!-- Nav -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">KPT</div>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#rules">The Rules</a></li>
+      <li><a href="#economy">The Economy</a></li>
+      <li><a href="#council">High Table</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Request Membership</a>
+    <button class="nav-mobile-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content reveal">
+    <div class="coin-container" style="margin-bottom: 40px;">
+      <div class="coin"></div>
+    </div>
+    <div class="hero-badge">The Continental &mdash; Est. 2024</div>
+    <h1>&ldquo;People keep asking if we&rsquo;re back.<br><span class="accent">Yeah. We&rsquo;re thinking we&rsquo;re back.</span>&rdquo;</h1>
+    <p class="hero-sub">
+      Bespoke AI voice agents and premium web design,
+      engineered with the precision of a man on a mission.
+      No shortcuts. No excuses. Just results.
+    </p>
+    <div class="hero-ctas">
+      <a href="#services" class="btn-gold">View Services</a>
+      <a href="#contact" class="btn-outline">Request a Marker</a>
+    </div>
+  </div>
+</section>
+
+<div class="neon-strip"></div>
+
+<!-- Products / Services -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label">Continental Services</div>
+      <div class="gold-divider"></div>
+      <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 400;">A Table for Two</h2>
+      <p style="color: var(--gray); max-width: 520px; margin: 16px auto 0; font-size: 15px; line-height: 1.7;">
+        Two offerings. Both lethal. Choose the weapon that fits the contract.
+      </p>
+    </div>
+
+    <div class="products-grid">
+      <div class="product-card reveal">
+        <div class="product-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="23"/>
+            <line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </div>
+        <div class="product-number">Service I</div>
+        <h3>KPT Agents</h3>
+        <p>
+          AI voice agents that answer, qualify, and close &mdash; 24 hours a day, 7 days a week.
+          Your front desk never sleeps. Your competitors never rest. Neither should your phone lines.
+        </p>
+        <ul class="product-features">
+          <li>Human-grade voice AI, zero hold times</li>
+          <li>Lead qualification on autopilot</li>
+          <li>Appointment booking &amp; CRM sync</li>
+          <li>Custom personality &amp; brand voice</li>
+          <li>Real-time analytics dashboard</li>
+        </ul>
+      </div>
+
+      <div class="product-card reveal">
+        <div class="product-icon">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+          </svg>
+        </div>
+        <div class="product-number">Service II</div>
+        <h3>KPT Designs</h3>
+        <p>
+          Premium web experiences built to convert. Every pixel placed with purpose.
+          Every interaction engineered for impact. This is web design as a weapon.
+        </p>
+        <ul class="product-features">
+          <li>Conversion-optimized architecture</li>
+          <li>Performance-first engineering</li>
+          <li>Mobile-native responsive design</li>
+          <li>SEO &amp; analytics integration</li>
+          <li>Ongoing support &amp; iteration</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-strip"></div>
+
+<!-- The Rules -->
+<section class="section rules-section" id="rules">
+  <div class="container">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label">The Code</div>
+      <div class="gold-divider"></div>
+      <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 400;">The Rules</h2>
+      <p style="color: var(--gray); max-width: 500px; margin: 16px auto 0; font-size: 15px; line-height: 1.7;">
+        Everyone in this industry operates by a set of rules.<br>These are ours.
+      </p>
+    </div>
+
+    <div class="rules-grid">
+      <div class="rule-card reveal">
+        <div class="rule-number">I</div>
+        <h3>No Corners Cut</h3>
+        <p>
+          Every project is built with the same discipline &mdash; from a single landing page
+          to a full-scale AI deployment. Half-measures are for half-operators.
+        </p>
+      </div>
+      <div class="rule-card reveal">
+        <div class="rule-number">II</div>
+        <h3>Honor the Contract</h3>
+        <p>
+          Deadlines are sacred. Deliverables are non-negotiable. When we give our word,
+          it carries the weight of a marker. We always collect &mdash; and we always deliver.
+        </p>
+      </div>
+      <div class="rule-card reveal">
+        <div class="rule-number">III</div>
+        <h3>Everything Is Personal</h3>
+        <p>
+          Your business is not a ticket number. Every solution is tailored, every strategy
+          custom-built. We treat your success as our own &mdash; because in this line of work, reputation is everything.
+        </p>
+      </div>
+      <div class="rule-card reveal">
+        <div class="rule-number">IV</div>
+        <h3>Precision Over Volume</h3>
+        <p>
+          We do not spray and pray. Every line of code, every design choice, every automation
+          is deliberate. Fewer shots, higher accuracy.
+        </p>
+      </div>
+      <div class="rule-card reveal">
+        <div class="rule-number">V</div>
+        <h3>Loyalty Rewarded</h3>
+        <p>
+          Long-term clients receive priority service, preferential rates, and first access
+          to new capabilities. Loyalty in this world is not forgotten.
+        </p>
+      </div>
+      <div class="rule-card reveal">
+        <div class="rule-number">VI</div>
+        <h3>Consequences Guaranteed</h3>
+        <p>
+          Every deployment is measured. Every campaign tracked. If something is not performing,
+          we fix it. Results are not optional &mdash; they are the only currency that matters.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Coin Economy -->
+<section class="section" id="economy">
+  <div class="container">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label">The Economy</div>
+      <div class="gold-divider"></div>
+      <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 400;">The Coin Speaks</h2>
+      <p style="color: var(--gray); max-width: 500px; margin: 16px auto 0; font-size: 15px; line-height: 1.7;">
+        In this economy, gold coins are earned through results. Here is what ours have bought.
+      </p>
+    </div>
+
+    <div class="coins-grid">
+      <div class="coin-stat reveal">
+        <div class="coin-stat-circle">
+          <span class="coin-stat-value">99%</span>
+        </div>
+        <h4>Uptime</h4>
+        <p>AI agents that never sleep,<br>never call in sick</p>
+      </div>
+      <div class="coin-stat reveal">
+        <div class="coin-stat-circle">
+          <span class="coin-stat-value">3s</span>
+        </div>
+        <h4>Response</h4>
+        <p>Average pickup time,<br>faster than any human</p>
+      </div>
+      <div class="coin-stat reveal">
+        <div class="coin-stat-circle">
+          <span class="coin-stat-value">40%</span>
+        </div>
+        <h4>Conversion</h4>
+        <p>Average lead-to-booking<br>rate increase</p>
+      </div>
+      <div class="coin-stat reveal">
+        <div class="coin-stat-circle">
+          <span class="coin-stat-value">&lt;1s</span>
+        </div>
+        <h4>Load Time</h4>
+        <p>Every site engineered<br>for speed</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="neon-strip"></div>
+
+<!-- The High Table -->
+<section class="section high-table-section" id="council">
+  <div class="container">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label">The Council</div>
+      <div class="gold-divider"></div>
+      <h2 style="font-size: clamp(28px, 4vw, 48px); font-weight: 400;">The High Table</h2>
+      <p style="color: var(--gray); max-width: 500px; margin: 16px auto 0; font-size: 15px; line-height: 1.7;">
+        Those who have worked with us know &mdash; a seat at this table is earned, not given.
+      </p>
+    </div>
+
+    <div class="high-table-grid">
+      <div class="testimonial-card reveal">
+        <p class="testimonial-text">
+          They built our AI phone system in two weeks. Our missed calls dropped to zero.
+          It is like having a receptionist who never blinks.
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">M</div>
+          <div>
+            <div class="testimonial-name">Marcus Webb</div>
+            <div class="testimonial-role">Director, Meridian Group</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <p class="testimonial-text">
+          Our new site converts at triple the old rate. Every detail was considered.
+          They do not just build websites &mdash; they build revenue engines.
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">S</div>
+          <div>
+            <div class="testimonial-name">Sofia Reyes</div>
+            <div class="testimonial-role">Founder, Lux Hospitality</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <p class="testimonial-text">
+          Professional. Precise. Relentless. They treated our launch like their own &mdash;
+          and the results spoke louder than any pitch deck ever could.
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">D</div>
+          <div>
+            <div class="testimonial-name">Daniel Park</div>
+            <div class="testimonial-role">CTO, Ironclad Ventures</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta-section" id="contact">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Membership</div>
+      <div class="gold-divider"></div>
+      <h2><span style="color: var(--gold);">Membership</span> has its privileges.</h2>
+      <p class="cta-sub">
+        Request access. We will reach out within 24 hours to discuss your contract.
+        No obligations. No blood oaths. Yet.
+      </p>
+      <form class="cta-form" onsubmit="return false;">
+        <input type="email" class="cta-input" placeholder="your@email.com" required>
+        <button type="submit" class="cta-submit">Request Access</button>
+      </form>
+      <p class="cta-note">No spam. Discretion guaranteed. Excommunicado reserved for spammers.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">KPT</div>
+      <p class="footer-tagline">
+        Bespoke AI agents and premium web design. Built with precision. Delivered with purpose.
+      </p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">KPT Agents</a></li>
+          <li><a href="#services">KPT Designs</a></li>
+          <li><a href="#contact">Request a Marker</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Continental</h4>
+        <ul>
+          <li><a href="#rules">The Rules</a></li>
+          <li><a href="#economy">The Economy</a></li>
+          <li><a href="#council">The High Table</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="mailto:hello@kpt.com">hello@kpt.com</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Twitter / X</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">&copy; 2024 KPT. All rights reserved.</span>
+    <span class="footer-rule">&ldquo;Rules &hellip; without them, we live with the animals.&rdquo;</span>
+  </div>
+</footer>
+
+<script>
+  /* ── Mobile Nav Toggle ───────────────────────────────────── */
+  const navToggle = document.getElementById('navToggle');
+  const nav = document.getElementById('nav');
+
+  navToggle.addEventListener('click', () => {
+    nav.classList.toggle('open');
+  });
+
+  /* Close mobile nav on link click */
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('open');
+    });
+  });
+
+  /* ── Intersection Observer — Reveal on Scroll ────────────── */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    revealObserver.observe(el);
+  });
+
+  /* ── Nav background on scroll ────────────────────────────── */
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    if (scrollY > 60) {
+      nav.style.background = 'rgba(10, 8, 8, 0.95)';
+    } else {
+      nav.style.background = 'rgba(10, 8, 8, 0.8)';
+    }
+    lastScroll = scrollY;
+  }, { passive: true });
+
+  /* ── Staggered reveal for grid children ──────────────────── */
+  const staggerObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const children = entry.target.querySelectorAll('.reveal');
+        children.forEach((child, i) => {
+          setTimeout(() => {
+            child.classList.add('visible');
+          }, i * 120);
+        });
+        staggerObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.05,
+    rootMargin: '0px 0px -20px 0px'
+  });
+
+  document.querySelectorAll('.products-grid, .rules-grid, .coins-grid, .high-table-grid').forEach(grid => {
+    staggerObserver.observe(grid);
+  });
+</script>
+</body>
+</html>

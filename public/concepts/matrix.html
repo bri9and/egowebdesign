@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Enter The Matrix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET & CUSTOM PROPERTIES
+   ============================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --black: #000000;
+  --base: #0D0208;
+  --green: #00FF41;
+  --green-mid: #008F11;
+  --green-dim: #003B00;
+  --green-glow: rgba(0, 255, 65, 0.4);
+  --green-faint: rgba(0, 255, 65, 0.08);
+  --green-border: rgba(0, 255, 65, 0.15);
+  --green-text-dim: rgba(0, 255, 65, 0.5);
+  --red: #FF0000;
+  --blue: #4444FF;
+  --white: #CCFFCC;
+  --muted: rgba(0, 255, 65, 0.35);
+  --font: 'Share Tech Mono', 'Source Code Pro', 'Courier New', monospace;
+  --font-alt: 'Source Code Pro', 'Share Tech Mono', monospace;
+  --container: 1100px;
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--base);
+  color: var(--green);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  position: relative;
+}
+
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ============================================================
+   MATRIX DIGITAL RAIN CANVAS
+   ============================================================ */
+#matrix-rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ============================================================
+   CRT SCANLINE OVERLAY
+   ============================================================ */
+.crt-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.crt-overlay::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none;
+}
+
+/* ============================================================
+   CONTENT LAYER (above canvas, below CRT)
+   ============================================================ */
+.content-layer {
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================================================
+   PHOSPHOR GLOW UTILITY
+   ============================================================ */
+.glow {
+  text-shadow: 0 0 7px var(--green-glow), 0 0 20px rgba(0,255,65,0.2), 0 0 42px rgba(0,255,65,0.1);
+}
+.glow-strong {
+  text-shadow: 0 0 10px var(--green), 0 0 30px var(--green-glow), 0 0 60px rgba(0,255,65,0.15);
+}
+
+/* ============================================================
+   GLITCH EFFECT
+   ============================================================ */
+.glitch-hover {
+  position: relative;
+  display: inline-block;
+}
+.glitch-hover:hover {
+  animation: glitch 0.3s ease-in-out;
+}
+@keyframes glitch {
+  0% { transform: translate(0); }
+  10% { transform: translate(-3px, 2px); filter: hue-rotate(90deg); }
+  20% { transform: translate(3px, -2px); }
+  30% { transform: translate(-2px, -1px); filter: hue-rotate(0deg); }
+  40% { transform: translate(2px, 1px); }
+  50% { transform: translate(-1px, 2px); filter: hue-rotate(-90deg); }
+  60% { transform: translate(1px, -1px); }
+  70% { transform: translate(-2px, 1px); filter: hue-rotate(0deg); }
+  80% { transform: translate(2px, -2px); }
+  90% { transform: translate(-1px, 1px); }
+  100% { transform: translate(0); filter: hue-rotate(0deg); }
+}
+
+/* Persistent glitch for headings */
+@keyframes glitch-persistent {
+  0%, 90%, 100% { transform: translate(0); clip-path: none; }
+  92% { transform: translate(-2px, 1px); }
+  94% { transform: translate(2px, -1px); }
+  96% { transform: translate(-1px, -1px); }
+  98% { transform: translate(1px, 1px); }
+}
+
+/* ============================================================
+   BLINKING CURSOR
+   ============================================================ */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 1.1em;
+  background: var(--green);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+  box-shadow: 0 0 8px var(--green-glow);
+}
+
+/* ============================================================
+   BACK LINK
+   ============================================================ */
+.back-link {
+  position: fixed;
+  top: 18px;
+  left: 20px;
+  z-index: 1001;
+  font-size: 13px;
+  color: var(--green-mid);
+  transition: color 0.2s, text-shadow 0.2s;
+  font-family: var(--font);
+}
+.back-link:hover {
+  color: var(--green);
+  text-shadow: 0 0 10px var(--green-glow);
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--green-border);
+}
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.nav-logo {
+  font-family: var(--font);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: var(--green);
+  text-shadow: 0 0 10px var(--green-glow), 0 0 30px rgba(0,255,65,0.2);
+}
+.nav-logo .dot {
+  color: #FF0000;
+  text-shadow: 0 0 8px rgba(255,0,0,0.6);
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+}
+.nav-links a {
+  font-size: 13px;
+  color: var(--green-mid);
+  transition: color 0.2s, text-shadow 0.2s;
+  letter-spacing: 1px;
+}
+.nav-links a::before {
+  content: '> ';
+  color: var(--green-dim);
+}
+.nav-links a:hover {
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+.nav-cta {
+  padding: 8px 20px;
+  border: 1px solid var(--green-mid);
+  background: transparent;
+  color: var(--green);
+  font-family: var(--font);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-shadow: 0 0 5px var(--green-glow);
+  letter-spacing: 1px;
+}
+.nav-cta:hover {
+  background: rgba(0, 255, 65, 0.1);
+  border-color: var(--green);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.2), inset 0 0 20px rgba(0, 255, 65, 0.05);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  position: relative;
+}
+
+.hero-content {
+  max-width: 800px;
+  position: relative;
+}
+
+.hero-terminal {
+  margin-bottom: 32px;
+  text-align: left;
+  display: inline-block;
+}
+
+.hero-line {
+  font-size: 14px;
+  color: var(--green-mid);
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.4s, transform 0.4s;
+}
+.hero-line.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.hero-line .prompt {
+  color: var(--green-dim);
+}
+
+.hero h1 {
+  font-family: var(--font);
+  font-size: clamp(36px, 7vw, 80px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 4px;
+  margin-bottom: 24px;
+  color: var(--green);
+  text-shadow: 0 0 15px var(--green-glow), 0 0 40px rgba(0,255,65,0.15), 0 0 80px rgba(0,255,65,0.08);
+  animation: glitch-persistent 8s ease-in-out infinite;
+}
+
+.hero p {
+  font-size: clamp(14px, 1.5vw, 17px);
+  color: var(--green-mid);
+  max-width: 600px;
+  margin: 0 auto 40px;
+  line-height: 1.8;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-matrix {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border: 1px solid var(--green);
+  background: transparent;
+  color: var(--green);
+  font-family: var(--font);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-shadow: 0 0 5px var(--green-glow);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+.btn-matrix::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0,255,65,0.1), transparent);
+  transition: left 0.5s;
+}
+.btn-matrix:hover::before {
+  left: 100%;
+}
+.btn-matrix:hover {
+  background: rgba(0, 255, 65, 0.08);
+  box-shadow: 0 0 30px rgba(0, 255, 65, 0.2), 0 0 60px rgba(0, 255, 65, 0.08), inset 0 0 30px rgba(0, 255, 65, 0.03);
+}
+
+.btn-matrix-filled {
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid var(--green);
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.15);
+}
+.btn-matrix-filled:hover {
+  background: rgba(0, 255, 65, 0.2);
+  box-shadow: 0 0 30px rgba(0, 255, 65, 0.3), 0 0 60px rgba(0, 255, 65, 0.1);
+}
+
+/* ============================================================
+   SECTION UTILITIES
+   ============================================================ */
+section { padding: 100px 0; position: relative; }
+
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-label {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--green-dim);
+  margin-bottom: 16px;
+  padding: 4px 12px;
+  border: 1px solid var(--green-dim);
+}
+
+.section-title {
+  font-family: var(--font);
+  font-size: clamp(24px, 4vw, 44px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  color: var(--green);
+  text-shadow: 0 0 10px var(--green-glow), 0 0 30px rgba(0,255,65,0.12);
+}
+
+.section-sub {
+  font-size: 14px;
+  color: var(--green-mid);
+  max-width: 560px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* Divider */
+.section-divider {
+  height: 1px;
+  background: var(--green-border);
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+/* ============================================================
+   PRODUCTS — TERMINAL WINDOW CARDS
+   ============================================================ */
+.products-section { background: transparent; }
+
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.terminal-card {
+  border: 1px solid var(--green-border);
+  background: rgba(0, 0, 0, 0.85);
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.terminal-card:hover {
+  border-color: var(--green-mid);
+  box-shadow: 0 0 40px rgba(0, 255, 65, 0.08), inset 0 0 40px rgba(0, 255, 65, 0.02);
+}
+
+.terminal-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(0, 255, 65, 0.05);
+  border-bottom: 1px solid var(--green-border);
+  font-size: 12px;
+  color: var(--green-mid);
+  letter-spacing: 1px;
+}
+.terminal-titlebar .dots {
+  display: flex;
+  gap: 5px;
+}
+.terminal-titlebar .dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--green-dim);
+  background: transparent;
+}
+.terminal-titlebar .dots span:first-child { background: var(--green-dim); }
+
+.terminal-body {
+  padding: 28px 24px;
+}
+
+.terminal-body h3 {
+  font-family: var(--font);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green-glow);
+  letter-spacing: 2px;
+}
+
+.terminal-body .desc {
+  color: var(--green-mid);
+  font-size: 13px;
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.terminal-features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.terminal-features li {
+  font-size: 13px;
+  color: var(--green);
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(0, 255, 65, 0.05);
+}
+.terminal-features li::before {
+  content: '> ';
+  color: var(--green-mid);
+}
+.terminal-features li:last-child {
+  border-bottom: none;
+}
+
+.terminal-output {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--green-border);
+  font-size: 11px;
+  color: var(--green-dim);
+}
+.terminal-output::before {
+  content: '$ status: ';
+  color: var(--green-mid);
+}
+
+/* ============================================================
+   STATS — SYSTEM DIAGNOSTIC READOUT
+   ============================================================ */
+.stats-section {
+  background: transparent;
+  padding: 80px 0;
+}
+
+.stats-container {
+  border: 1px solid var(--green-border);
+  background: rgba(0, 0, 0, 0.85);
+  padding: 32px;
+}
+
+.stats-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--green-border);
+}
+.stats-header .status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green-glow);
+  animation: blink 2s ease-in-out infinite;
+}
+.stats-header span {
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--green);
+  text-shadow: 0 0 5px var(--green-glow);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.stat-item {
+  padding: 16px;
+  border: 1px solid rgba(0, 255, 65, 0.08);
+  background: rgba(0, 255, 65, 0.02);
+}
+
+.stat-key {
+  font-size: 11px;
+  color: var(--green-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.stat-key::before {
+  content: '// ';
+}
+
+.stat-value {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  color: var(--green);
+  text-shadow: 0 0 10px var(--green-glow), 0 0 30px rgba(0,255,65,0.15);
+  line-height: 1;
+}
+
+.stat-unit {
+  font-size: 12px;
+  color: var(--green-mid);
+  margin-top: 4px;
+}
+
+
+/* ============================================================
+   LIVE TERMINAL OUTPUT — CODE BLOCK SECTION
+   ============================================================ */
+.terminal-section { padding: 80px 0; }
+
+.live-terminal {
+  border: 1px solid var(--green-border);
+  background: rgba(0, 0, 0, 0.9);
+  max-width: 800px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.live-terminal-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: rgba(0, 255, 65, 0.05);
+  border-bottom: 1px solid var(--green-border);
+}
+.live-terminal-titlebar .title {
+  font-size: 12px;
+  color: var(--green-mid);
+  letter-spacing: 1px;
+}
+.live-terminal-titlebar .live-dot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 2px;
+}
+.live-terminal-titlebar .live-dot::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green-glow);
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+.live-terminal-body {
+  padding: 20px;
+  height: 320px;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.terminal-log-line {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s, transform 0.3s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.terminal-log-line.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.terminal-log-line .timestamp {
+  color: var(--green-dim);
+}
+.terminal-log-line .level-info {
+  color: var(--green-mid);
+}
+.terminal-log-line .level-success {
+  color: var(--green);
+  text-shadow: 0 0 5px var(--green-glow);
+}
+.terminal-log-line .level-deploy {
+  color: #00CCFF;
+  text-shadow: 0 0 5px rgba(0,204,255,0.4);
+}
+.terminal-log-line .msg {
+  color: var(--green);
+}
+
+/* ============================================================
+   CTA SECTION
+   ============================================================ */
+.cta-section {
+  padding: 120px 0;
+  text-align: center;
+}
+
+.cta-section h2 {
+  font-family: var(--font);
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--green);
+  text-shadow: 0 0 15px var(--green-glow), 0 0 40px rgba(0,255,65,0.15);
+  margin-bottom: 16px;
+  animation: glitch-persistent 10s ease-in-out infinite;
+}
+
+.cta-section .cta-sub {
+  font-size: 14px;
+  color: var(--green-mid);
+  max-width: 500px;
+  margin: 0 auto 40px;
+  line-height: 1.8;
+}
+
+.cta-form {
+  display: flex;
+  max-width: 520px;
+  margin: 0 auto;
+  border: 1px solid var(--green-border);
+  background: rgba(0, 0, 0, 0.9);
+  align-items: center;
+}
+
+.cta-form .prompt-label {
+  padding: 0 12px;
+  font-size: 13px;
+  color: var(--green-mid);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cta-input {
+  flex: 1;
+  padding: 16px 8px;
+  border: none;
+  background: transparent;
+  color: var(--green);
+  font-family: var(--font);
+  font-size: 14px;
+  outline: none;
+  caret-color: var(--green);
+}
+.cta-input::placeholder {
+  color: var(--green-dim);
+}
+
+.cta-btn {
+  padding: 16px 24px;
+  border: none;
+  border-left: 1px solid var(--green-border);
+  background: rgba(0, 255, 65, 0.08);
+  color: var(--green);
+  font-family: var(--font);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  text-shadow: 0 0 5px var(--green-glow);
+}
+.cta-btn:hover {
+  background: rgba(0, 255, 65, 0.15);
+  box-shadow: 0 0 20px rgba(0, 255, 65, 0.15);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  padding: 32px 0;
+  border-top: 1px solid var(--green-border);
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-logo {
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+}
+.footer-links a {
+  font-size: 12px;
+  color: var(--green-dim);
+  transition: color 0.2s;
+  letter-spacing: 1px;
+}
+.footer-links a:hover {
+  color: var(--green);
+}
+
+.footer-copy {
+  font-size: 11px;
+  color: var(--green-dim);
+  letter-spacing: 2px;
+}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ============================================================
+   MOBILE NAV HAMBURGER
+   ============================================================ */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+  background: none;
+  border: none;
+}
+.nav-hamburger span {
+  width: 22px;
+  height: 2px;
+  background: var(--green);
+  border-radius: 1px;
+  box-shadow: 0 0 4px var(--green-glow);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .product-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .back-link {
+    position: relative;
+    top: auto;
+    left: auto;
+    display: block;
+    padding: 76px 24px 0;
+  }
+}
+
+@media (max-width: 600px) {
+  section { padding: 64px 0; }
+  .hero h1 { letter-spacing: 1px; }
+  .hero-ctas { flex-direction: column; align-items: center; }
+  .btn-matrix { width: 100%; max-width: 320px; justify-content: center; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .stats-container { padding: 20px; }
+  .terminal-body { padding: 20px 16px; }
+  .cta-form { flex-direction: column; }
+  .cta-form .prompt-label { padding: 12px 12px 0; }
+  .cta-btn { border-left: none; border-top: 1px solid var(--green-border); }
+  .footer-inner { flex-direction: column; text-align: center; }
+  .footer-links { flex-wrap: wrap; justify-content: center; }
+  .live-terminal-body { height: 260px; font-size: 11px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     MATRIX DIGITAL RAIN CANVAS
+     ============================================================ -->
+<canvas id="matrix-rain"></canvas>
+
+<!-- CRT Scanline Overlay -->
+<div class="crt-overlay"></div>
+
+<!-- ============================================================
+     CONTENT LAYER
+     ============================================================ -->
+<div class="content-layer">
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link glitch-hover">&gt; cd ../concepts</a>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<nav class="navbar">
+  <div class="container">
+    <a href="#" class="nav-logo">KPT<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="#products" class="glitch-hover">agents</a></li>
+      <li><a href="#designs" class="glitch-hover">designs</a></li>
+      <li><a href="#about" class="glitch-hover">about</a></li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="#cta" class="nav-cta glitch-hover">jack_in()</a>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-terminal" id="hero-terminal">
+      <div class="hero-line" id="line-1"><span class="prompt">&gt;</span> SYSTEM INITIALIZING...</div>
+      <div class="hero-line" id="line-2"><span class="prompt">&gt;</span> LOADING NEURAL NETWORKS... OK</div>
+      <div class="hero-line" id="line-3"><span class="prompt">&gt;</span> KPT PROTOCOL ACTIVE</div>
+    </div>
+    <h1 class="glow-strong" id="hero-headline"></h1>
+    <p>AI voice agents that never sleep. Websites built by those who see the truth. Two products. One system. Plug in.</p>
+    <div class="hero-ctas">
+      <a href="#cta" class="btn-matrix btn-matrix-filled">[ ENTER THE MATRIX ]</a>
+      <a href="#products" class="btn-matrix">[ VIEW SOURCE ]</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PRODUCTS
+     ============================================================ -->
+<section class="products-section" id="products">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">// PRODUCTS</div>
+      <h2 class="section-title glow">Two programs. One system.</h2>
+      <p class="section-sub">Each module runs independently. Together they form an unstoppable protocol for business dominance.</p>
+    </div>
+    <div class="product-grid">
+      <!-- KPT Agents -->
+      <div class="terminal-card reveal">
+        <div class="terminal-titlebar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span>kpt-agents.exe</span>
+        </div>
+        <div class="terminal-body">
+          <h3 class="glitch-hover">KPT AGENTS</h3>
+          <p class="desc">AI-powered voice agents that answer calls, book appointments, and qualify leads — in natural conversation, 24/7/365.</p>
+          <ul class="terminal-features">
+            <li>Natural voice conversations</li>
+            <li>Appointment scheduling</li>
+            <li>Lead qualification &amp; routing</li>
+            <li>CRM &amp; calendar integration</li>
+            <li>Multi-language support</li>
+          </ul>
+          <div class="terminal-output">ONLINE — 99.9% uptime — 847 active agents</div>
+        </div>
+      </div>
+      <!-- KPT Designs -->
+      <div class="terminal-card reveal reveal-delay-1" id="designs">
+        <div class="terminal-titlebar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span>kpt-designs.exe</span>
+        </div>
+        <div class="terminal-body">
+          <h3 class="glitch-hover">KPT DESIGNS</h3>
+          <p class="desc">High-performance websites built for conversions. Clean code, stunning design, blazing fast — tailored to your brand.</p>
+          <ul class="terminal-features">
+            <li>Custom design &amp; development</li>
+            <li>Mobile-first responsive</li>
+            <li>SEO &amp; performance optimized</li>
+            <li>Conversion-focused layouts</li>
+            <li>Ongoing support &amp; iteration</li>
+          </ul>
+          <div class="terminal-output">ONLINE — 150+ sites deployed — avg load 0.8s</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     STATS — SYSTEM DIAGNOSTIC
+     ============================================================ -->
+<section class="stats-section" id="about">
+  <div class="container">
+    <div class="live-terminal reveal">
+      <div class="live-terminal-titlebar">
+        <span class="title">kpt-diagnostics v2.1.0</span>
+        <span class="live-dot">LIVE</span>
+      </div>
+      <div class="live-terminal-body" style="height:auto;padding:24px 20px;">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-key">call_answer_rate</div>
+            <div class="stat-value glow">98%</div>
+            <div class="stat-unit">// all channels</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-key">avg_response</div>
+            <div class="stat-value glow">3.2s</div>
+            <div class="stat-unit">// voice latency</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-key">conversion_lift</div>
+            <div class="stat-value glow">2.4x</div>
+            <div class="stat-unit">// vs baseline</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-key">businesses_served</div>
+            <div class="stat-value glow">150+</div>
+            <div class="stat-unit">// and growing</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     LIVE TERMINAL — CODE BLOCK SECTION
+     ============================================================ -->
+<section class="terminal-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">// LIVE FEED</div>
+      <h2 class="section-title glow">System Activity</h2>
+      <p class="section-sub">Real-time output from the KPT network. Agents deploying. Sites launching. Business transforming.</p>
+    </div>
+    <div class="live-terminal reveal">
+      <div class="live-terminal-titlebar">
+        <span class="title">kpt-system-monitor v4.2.1</span>
+        <span class="live-dot">LIVE</span>
+      </div>
+      <div class="live-terminal-body" id="live-terminal-body">
+        <!-- Lines populated by JS -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     CTA
+     ============================================================ -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="reveal">
+      <h2>FREE YOUR MIND.</h2>
+      <p class="cta-sub">The Matrix has you. Stop losing calls. Stop losing visitors. Enter the KPT system and see what your business becomes.</p>
+      <form class="cta-form" onsubmit="event.preventDefault()">
+        <span class="prompt-label">&gt; enter_email:</span>
+        <input type="email" class="cta-input" placeholder="neo@example.com" aria-label="Email address" required>
+        <button type="submit" class="cta-btn">[ EXECUTE ]</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">KPT<span style="color:var(--red)">.</span></div>
+      <div class="footer-links">
+        <a href="#products">&gt; products</a>
+        <a href="#about">&gt; status</a>
+        <a href="#cta">&gt; jack_in</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 KPT // ALL SYSTEMS OPERATIONAL</div>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /content-layer -->
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+(function() {
+  'use strict';
+
+  /* ===========================================================
+     1. MATRIX DIGITAL RAIN
+     =========================================================== */
+  var canvas = document.getElementById('matrix-rain');
+  var ctx = canvas.getContext('2d');
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // Characters: Katakana + Latin + Numbers
+  var katakana = '\u30A0\u30A1\u30A2\u30A3\u30A4\u30A5\u30A6\u30A7\u30A8\u30A9\u30AA\u30AB\u30AC\u30AD\u30AE\u30AF\u30B0\u30B1\u30B2\u30B3\u30B4\u30B5\u30B6\u30B7\u30B8\u30B9\u30BA\u30BB\u30BC\u30BD\u30BE\u30BF\u30C0\u30C1\u30C2\u30C3\u30C4\u30C5\u30C6\u30C7\u30C8\u30C9\u30CA\u30CB\u30CC\u30CD\u30CE\u30CF\u30D0\u30D1\u30D2\u30D3\u30D4\u30D5\u30D6\u30D7\u30D8\u30D9\u30DA\u30DB\u30DC\u30DD\u30DE\u30DF';
+  var latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  var nums = '0123456789';
+  var chars = katakana + latin + nums;
+
+  var fontSize = 14;
+  var totalColumns = Math.floor(canvas.width / fontSize);
+  // Use only 25% of columns for a subtler rain
+  var activeCount = Math.max(4, Math.floor(totalColumns * 0.25));
+  var activeColumns = [];
+  while (activeColumns.length < activeCount) {
+    var col = Math.floor(Math.random() * totalColumns);
+    if (activeColumns.indexOf(col) === -1) activeColumns.push(col);
+  }
+  var drops = new Array(totalColumns).fill(-999);
+  for (var i = 0; i < activeColumns.length; i++) {
+    drops[activeColumns[i]] = Math.random() * -100;
+  }
+
+  function drawRain() {
+    // Semi-transparent black to create trail effect — higher opacity = faster fade
+    ctx.fillStyle = 'rgba(0, 2, 8, 0.08)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.font = fontSize + 'px "Share Tech Mono", monospace';
+
+    for (var i = 0; i < drops.length; i++) {
+      if (drops[i] <= -999) continue; // skip inactive columns
+      var char = chars[Math.floor(Math.random() * chars.length)];
+      var x = i * fontSize;
+      var y = drops[i] * fontSize;
+
+      // Vary brightness: lead character is brightest
+      var brightness = Math.random();
+      if (brightness > 0.95) {
+        // Bright white-green head
+        ctx.fillStyle = '#AAFFAA';
+        ctx.shadowColor = '#00FF41';
+        ctx.shadowBlur = 15;
+      } else if (brightness > 0.8) {
+        ctx.fillStyle = '#00FF41';
+        ctx.shadowColor = '#00FF41';
+        ctx.shadowBlur = 8;
+      } else if (brightness > 0.5) {
+        ctx.fillStyle = '#008F11';
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+      } else {
+        ctx.fillStyle = '#003B00';
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.fillText(char, x, y);
+      ctx.shadowBlur = 0;
+
+      // Reset drop to top when it goes off screen
+      if (y > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
+      drops[i]++;
+    }
+  }
+
+  // Run at ~20fps for slower, subtler rain
+  setInterval(drawRain, 50);
+
+  // Recalculate columns on resize, keeping 25% active
+  window.addEventListener('resize', function() {
+    var newTotal = Math.floor(canvas.width / fontSize);
+    var newActive = Math.max(4, Math.floor(newTotal * 0.25));
+    // Expand array if needed
+    while (drops.length < newTotal) drops.push(-999);
+    drops.length = newTotal;
+    // Pick new active set
+    var currentActive = 0;
+    for (var i = 0; i < drops.length; i++) {
+      if (drops[i] > -999) currentActive++;
+    }
+    while (currentActive < newActive) {
+      var col = Math.floor(Math.random() * newTotal);
+      if (drops[col] <= -999) { drops[col] = Math.random() * -100; currentActive++; }
+    }
+  });
+
+
+  /* ===========================================================
+     2. HERO TYPING SEQUENCE
+     =========================================================== */
+  var heroLines = [
+    { id: 'line-1', delay: 500 },
+    { id: 'line-2', delay: 1800 },
+    { id: 'line-3', delay: 3200 }
+  ];
+
+  heroLines.forEach(function(item) {
+    setTimeout(function() {
+      var el = document.getElementById(item.id);
+      if (el) el.classList.add('visible');
+    }, item.delay);
+  });
+
+  // Type out the main headline
+  var headline = document.getElementById('hero-headline');
+  var headlineText = 'WAKE UP.';
+  var headlineIndex = 0;
+
+  function typeHeadline() {
+    if (headlineIndex <= headlineText.length) {
+      headline.innerHTML = headlineText.substring(0, headlineIndex) + '<span class="cursor"></span>';
+      headlineIndex++;
+      setTimeout(typeHeadline, 120 + Math.random() * 80);
+    } else {
+      // After typing, pause, then change to final text
+      setTimeout(function() {
+        headline.innerHTML = '';
+        headlineIndex = 0;
+        typeSecondLine();
+      }, 2000);
+    }
+  }
+
+  var secondText = 'YOU ARE THE ONE.';
+  function typeSecondLine() {
+    if (headlineIndex <= secondText.length) {
+      headline.innerHTML = secondText.substring(0, headlineIndex) + '<span class="cursor"></span>';
+      headlineIndex++;
+      setTimeout(typeSecondLine, 100 + Math.random() * 60);
+    }
+    // Leave cursor blinking at the end
+  }
+
+  setTimeout(typeHeadline, 4200);
+
+
+  /* ===========================================================
+     3. LIVE TERMINAL LOG
+     =========================================================== */
+  var logMessages = [
+    { ts: '03:27:41', level: 'info', msg: 'Agent KPT-A041 deployed to Rivera Dental Group' },
+    { ts: '03:27:42', level: 'success', msg: 'Inbound call answered in 1.2s — lead qualified' },
+    { ts: '03:27:44', level: 'info', msg: 'Site kpt-designs://atlas-property launched — Lighthouse 98' },
+    { ts: '03:27:45', level: 'deploy', msg: 'Deploying neural voice model v4.2.1...' },
+    { ts: '03:27:47', level: 'success', msg: 'Model deployed — latency 890ms — accuracy 99.2%' },
+    { ts: '03:27:49', level: 'info', msg: 'Appointment booked: Torres Auto — March 29, 10:00 AM' },
+    { ts: '03:27:51', level: 'deploy', msg: 'Pushing site update: northside-auto.com — v3.1.0' },
+    { ts: '03:27:53', level: 'success', msg: 'Site live — Core Web Vitals: LCP 0.7s, CLS 0.01' },
+    { ts: '03:27:55', level: 'info', msg: 'Agent KPT-A099 handling overflow — 3 concurrent calls' },
+    { ts: '03:27:57', level: 'success', msg: 'Lead converted: $4,200 contract signed via voice agent' },
+    { ts: '03:27:59', level: 'deploy', msg: 'Rolling out multilingual pack: ES, FR, DE, JP' },
+    { ts: '03:28:01', level: 'info', msg: 'Webhook received: Stripe payment $890 — invoice #KPT-2847' },
+    { ts: '03:28:03', level: 'success', msg: 'SEO audit complete: 47 pages optimized, 12 new backlinks' },
+    { ts: '03:28:05', level: 'info', msg: 'Agent KPT-A023 escalated call to human — confidence 0.42' },
+    { ts: '03:28:07', level: 'deploy', msg: 'New client onboarded: Greenfield Properties — agents + design' },
+    { ts: '03:28:09', level: 'success', msg: 'A/B test winner: variant B — 34% higher conversion' },
+    { ts: '03:28:11', level: 'info', msg: 'System health check: all 847 agents responding — 0 errors' },
+    { ts: '03:28:13', level: 'success', msg: 'Database backup complete: 2.4GB compressed — integrity verified' },
+    { ts: '03:28:15', level: 'deploy', msg: 'CDN cache purged — 150 sites refreshed in 0.3s' },
+    { ts: '03:28:17', level: 'info', msg: 'Voice training batch #4891 complete — 99.7% accuracy' },
+    { ts: '03:28:19', level: 'success', msg: 'Monthly report generated: $1.2M revenue processed' },
+    { ts: '03:28:21', level: 'deploy', msg: 'Scaling agent pool: 847 → 912 instances' },
+    { ts: '03:28:23', level: 'info', msg: 'SSL certificates renewed: 150 domains — zero downtime' },
+    { ts: '03:28:25', level: 'success', msg: 'Client NPS score: 94 — up 7 points from last quarter' }
+  ];
+
+  var terminalBody = document.getElementById('live-terminal-body');
+  var logIndex = 0;
+  var maxVisibleLines = 14;
+
+  function addLogLine() {
+    var msg = logMessages[logIndex % logMessages.length];
+    var line = document.createElement('div');
+    line.className = 'terminal-log-line';
+
+    var levelClass = 'level-info';
+    var levelText = 'INFO';
+    if (msg.level === 'success') { levelClass = 'level-success'; levelText = ' OK '; }
+    if (msg.level === 'deploy') { levelClass = 'level-deploy'; levelText = 'DEPLOY'; }
+
+    line.innerHTML = '<span class="timestamp">[' + msg.ts + ']</span> <span class="' + levelClass + '">[' + levelText + ']</span> <span class="msg">' + msg.msg + '</span>';
+
+    terminalBody.appendChild(line);
+
+    // Trigger animation
+    requestAnimationFrame(function() {
+      line.classList.add('visible');
+    });
+
+    // Remove old lines to prevent overflow
+    var lines = terminalBody.querySelectorAll('.terminal-log-line');
+    if (lines.length > maxVisibleLines) {
+      lines[0].style.opacity = '0';
+      lines[0].style.transform = 'translateY(-8px)';
+      setTimeout(function() {
+        if (lines[0] && lines[0].parentNode) {
+          lines[0].parentNode.removeChild(lines[0]);
+        }
+      }, 300);
+    }
+
+    logIndex++;
+
+    // Increment timestamp
+    var parts = msg.ts.split(':');
+    var seconds = parseInt(parts[2]) + 2;
+    var minutes = parseInt(parts[1]);
+    var hours = parseInt(parts[0]);
+    if (seconds >= 60) { seconds -= 60; minutes++; }
+    if (minutes >= 60) { minutes -= 60; hours++; }
+    if (hours >= 24) hours = 0;
+    var nextIdx = (logIndex) % logMessages.length;
+    logMessages[nextIdx].ts =
+      String(hours).padStart(2, '0') + ':' +
+      String(minutes).padStart(2, '0') + ':' +
+      String(seconds).padStart(2, '0');
+  }
+
+  // Start after a small delay, then add lines periodically
+  var terminalStarted = false;
+  function startTerminal() {
+    if (terminalStarted) return;
+    terminalStarted = true;
+    // Add initial burst
+    for (var i = 0; i < 6; i++) {
+      (function(delay) {
+        setTimeout(addLogLine, delay);
+      })(i * 200);
+    }
+    // Then continue at intervals
+    setInterval(addLogLine, 2500);
+  }
+
+
+  /* ===========================================================
+     4. INTERSECTION OBSERVER — SCROLL REVEAL
+     =========================================================== */
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+
+          // Start terminal when its section is visible
+          if (entry.target.closest('.terminal-section') || entry.target.querySelector('.live-terminal')) {
+            startTerminal();
+          }
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(function(el) { observer.observe(el); });
+  } else {
+    reveals.forEach(function(el) { el.classList.add('visible'); });
+    startTerminal();
+  }
+
+
+  /* ===========================================================
+     5. SMOOTH SCROLL
+     =========================================================== */
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      var id = this.getAttribute('href');
+      if (id === '#') return;
+      var target = document.querySelector(id);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+
+  /* ===========================================================
+     6. NAVBAR SCROLL EFFECT
+     =========================================================== */
+  var navbar = document.querySelector('.navbar');
+  var scrolled = false;
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 50 && !scrolled) {
+      scrolled = true;
+      navbar.style.background = 'rgba(0, 0, 0, 0.95)';
+      navbar.style.borderBottomColor = 'rgba(0, 255, 65, 0.25)';
+    } else if (window.scrollY <= 50 && scrolled) {
+      scrolled = false;
+      navbar.style.background = 'rgba(0, 0, 0, 0.85)';
+      navbar.style.borderBottomColor = 'rgba(0, 255, 65, 0.15)';
+    }
+  }, { passive: true });
+
+})();
+</script>
+
+</body>
+</html>

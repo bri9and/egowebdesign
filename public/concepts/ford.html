@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Ford</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ford-blue: #003478;
+    --ford-blue-light: #1A4F9C;
+    --ford-blue-dark: #001F4D;
+    --ford-blue-deep: #00162E;
+    --white: #FFFFFF;
+    --silver: #C0C6CC;
+    --chrome: #D8DEE4;
+    --chrome-light: #E8ECF0;
+    --red: #D0021B;
+    --red-dim: rgba(208, 2, 27, 0.15);
+    --red-glow: rgba(208, 2, 27, 0.5);
+    --dark-steel: #1A1E24;
+    --gunmetal: #2C3038;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A0B0C4;
+    --text-muted: #5A6A7A;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.2);
+    --font-heading: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', -apple-system, BlinkMacSystemFont, sans-serif;
+    --nav-height: 60px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--ford-blue-deep);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    background: transparent;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  nav.scrolled {
+    background: rgba(0, 20, 50, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .nav-back {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--silver);
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-back:hover { color: var(--white); }
+
+  .nav-back svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .nav-back:hover svg { transform: translateX(-3px); }
+
+  .nav-logo {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--red);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ==============================
+     HERO SECTION
+     ============================== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #001030 0%, var(--ford-blue) 40%, var(--ford-blue-dark) 100%);
+  }
+
+  /* Steel grid overlay */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 99px, rgba(255,255,255,0.02) 99px, rgba(255,255,255,0.02) 100px),
+      repeating-linear-gradient(90deg, transparent, transparent 99px, rgba(255,255,255,0.02) 99px, rgba(255,255,255,0.02) 100px);
+    pointer-events: none;
+  }
+
+  /* Road stripe */
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 30%;
+    background: repeating-linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0.3) 0px,
+      rgba(255, 255, 255, 0.3) 30px,
+      transparent 30px,
+      transparent 60px
+    );
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  /* Blue Oval Badge */
+  .oval-badge {
+    width: 260px;
+    height: 160px;
+    margin: 0 auto 40px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: badgeReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+  }
+
+  .oval-badge::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #004AAD 0%, #003478 40%, #00254D 100%);
+    border: 4px solid var(--chrome);
+    box-shadow:
+      0 0 0 2px rgba(0, 52, 120, 0.5),
+      0 0 60px rgba(0, 74, 173, 0.4),
+      inset 0 -10px 30px rgba(0, 0, 0, 0.3),
+      inset 0 10px 20px rgba(255, 255, 255, 0.1);
+  }
+
+  .oval-text {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-heading);
+    font-size: 84px;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: 12px;
+    text-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.3),
+      0 0 40px rgba(255, 255, 255, 0.15);
+    line-height: 1;
+  }
+
+  @keyframes badgeReveal {
+    0% { opacity: 0; transform: scale(0.7) rotateX(20deg); }
+    100% { opacity: 1; transform: scale(1) rotateX(0); }
+  }
+
+  .hero-tagline {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 14px;
+    text-transform: uppercase;
+    color: var(--chrome);
+    margin-bottom: 20px;
+    animation: slideUp 0.8s 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+  }
+
+  .hero-sub {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 48px;
+    animation: slideUp 0.8s 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    line-height: 1.7;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    animation: slideUp 0.8s 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+  }
+
+  @keyframes slideUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .btn-primary {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .btn-primary:hover::before { left: 100%; }
+  .btn-primary:hover { background: #B8011A; box-shadow: 0 8px 30px var(--red-glow); }
+
+  .btn-outline {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    background: transparent;
+    color: var(--chrome);
+    border: 2px solid var(--chrome);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+    border-color: var(--white);
+  }
+
+  /* Scroll indicator */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .scroll-indicator span {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .scroll-indicator .chevron {
+    width: 20px;
+    height: 20px;
+    border-right: 2px solid var(--text-muted);
+    border-bottom: 2px solid var(--text-muted);
+    transform: rotate(45deg);
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+    50% { opacity: 1; transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ==============================
+     SECTION COMMON
+     ============================== */
+  section {
+    padding: 120px 40px;
+    position: relative;
+  }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: 52px;
+    font-weight: 800;
+    color: var(--white);
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .section-desc {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 60px;
+  }
+
+  /* Reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ==============================
+     BUILT TOUGH SECTION
+     ============================== */
+  .tough-section {
+    background: linear-gradient(180deg, var(--ford-blue-dark) 0%, var(--ford-blue-deep) 100%);
+  }
+
+  .tough-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .tough-card {
+    background: linear-gradient(180deg, rgba(0, 52, 120, 0.3) 0%, rgba(0, 20, 50, 0.6) 100%);
+    border: 1px solid rgba(192, 198, 204, 0.1);
+    padding: 40px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .tough-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 0;
+    background: var(--red);
+    transition: height 0.4s ease;
+  }
+
+  .tough-card:hover::before { height: 100%; }
+
+  .tough-card:hover {
+    border-color: rgba(192, 198, 204, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Rivet dots */
+  .tough-card::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--chrome), #888);
+    box-shadow:
+      0 16px 0 0 #888,
+      inset 0 1px 2px rgba(255,255,255,0.3);
+    opacity: 0.3;
+  }
+
+  .tough-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+
+  .tough-card h3 {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .tough-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .tough-card .spec {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .tough-card .spec strong {
+    color: var(--chrome);
+    font-weight: 700;
+    display: block;
+    font-size: 28px;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* ==============================
+     LINEUP SECTION (PRODUCTS)
+     ============================== */
+  .lineup-section {
+    background: var(--ford-blue-deep);
+  }
+
+  .lineup-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .lineup-card {
+    background: var(--dark-steel);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: all 0.4s ease;
+    position: relative;
+  }
+
+  .lineup-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .lineup-visual {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lineup-visual .bg-pattern {
+    position: absolute;
+    inset: 0;
+  }
+
+  .lineup-visual .model-badge {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-heading);
+    font-size: 64px;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.08);
+    letter-spacing: 8px;
+    text-transform: uppercase;
+  }
+
+  .lineup-visual .emblem {
+    position: absolute;
+    z-index: 2;
+    font-size: 40px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+  }
+
+  .lineup-info {
+    padding: 32px;
+  }
+
+  .lineup-info .series {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+
+  .lineup-info h3 {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .lineup-info p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .lineup-specs {
+    display: flex;
+    gap: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .lineup-spec {
+    flex: 1;
+  }
+
+  .lineup-spec .val {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--white);
+  }
+
+  .lineup-spec .label {
+    font-family: var(--font-heading);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* Lineup card visual backgrounds */
+  .lineup-mustang .bg-pattern {
+    background: linear-gradient(135deg, #001845 0%, #003478 50%, #001230 100%);
+  }
+
+  .lineup-f150 .bg-pattern {
+    background: linear-gradient(135deg, #1A1E24 0%, #2C3038 50%, #0D0F13 100%);
+  }
+
+  .lineup-bronco .bg-pattern {
+    background: linear-gradient(135deg, #0A2810 0%, #163820 50%, #051408 100%);
+  }
+
+  .lineup-lightning .bg-pattern {
+    background: linear-gradient(135deg, #1A0030 0%, #30004A 50%, #0D0018 100%);
+  }
+
+  /* ==============================
+     STATS / PRODUCTION LINE
+     ============================== */
+  .stats-section {
+    background: var(--dark-steel);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Conveyor belt lines */
+  .stats-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 199px,
+        rgba(255,255,255,0.02) 199px,
+        rgba(255,255,255,0.02) 200px
+      );
+    pointer-events: none;
+  }
+
+  .stats-section::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(208, 2, 27, 0.3) 50%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .stats-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .stat-cell {
+    padding: 48px 32px;
+    text-align: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.04);
+    position: relative;
+  }
+
+  .stat-cell:last-child { border-right: none; }
+
+  .stat-cell::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: var(--ford-blue);
+    transition: width 0.4s ease, background 0.4s ease;
+  }
+
+  .stat-cell:hover::before {
+    width: 80px;
+    background: var(--red);
+  }
+
+  .stat-number {
+    font-family: var(--font-heading);
+    font-size: 56px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-number .unit {
+    font-size: 28px;
+    color: var(--chrome);
+    font-weight: 700;
+  }
+
+  .stat-label {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Counter animation */
+  .stat-number[data-count] {
+    display: inline-block;
+  }
+
+  /* ==============================
+     ASSEMBLY LINE SECTION
+     ============================== */
+  .assembly-section {
+    background: linear-gradient(180deg, var(--ford-blue-deep) 0%, #000D1A 100%);
+  }
+
+  .assembly-timeline {
+    position: relative;
+    padding-left: 60px;
+  }
+
+  .assembly-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 23px;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--ford-blue) 0%, var(--red) 100%);
+  }
+
+  .assembly-step {
+    position: relative;
+    padding-bottom: 60px;
+  }
+
+  .assembly-step:last-child { padding-bottom: 0; }
+
+  .assembly-dot {
+    position: absolute;
+    left: -60px;
+    top: 4px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ford-blue-dark);
+    border: 2px solid var(--ford-blue-light);
+    border-radius: 50%;
+    transition: all 0.4s ease;
+  }
+
+  .assembly-step:hover .assembly-dot {
+    border-color: var(--red);
+    box-shadow: 0 0 20px var(--red-dim);
+  }
+
+  .assembly-dot span {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--chrome);
+  }
+
+  .assembly-step h3 {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .assembly-step p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 500px;
+  }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  .cta-section {
+    background: var(--ford-blue);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.08) 0%, transparent 60%),
+      linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.2) 100%);
+    pointer-events: none;
+  }
+
+  /* Chrome racing stripes */
+  .cta-stripes {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: 100%;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0.04;
+  }
+
+  .cta-stripes .stripe {
+    width: 40px;
+    height: 100%;
+    background: white;
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-section .section-title {
+    font-size: 60px;
+    margin-bottom: 20px;
+  }
+
+  .cta-section .section-desc {
+    margin: 0 auto 48px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .btn-white {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 48px;
+    background: var(--white);
+    color: var(--ford-blue);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-white:hover {
+    background: var(--chrome);
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 48px;
+    background: transparent;
+    color: var(--white);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--white);
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: #000A18;
+    padding: 60px 40px 40px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-oval {
+    width: 60px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, var(--ford-blue-light), var(--ford-blue-dark));
+    border: 2px solid var(--chrome);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer-oval span {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: 2px;
+  }
+
+  .footer-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .footer-text strong {
+    color: var(--text-secondary);
+    font-weight: 600;
+    display: block;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+  }
+
+  .footer-links a {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+  }
+
+  .footer-links a:hover { color: var(--chrome); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+
+    section { padding: 80px 20px; }
+
+    .hero { min-height: 100svh; }
+
+    .oval-badge {
+      width: 200px;
+      height: 120px;
+      margin-bottom: 32px;
+    }
+
+    .oval-text { font-size: 60px; letter-spacing: 8px; }
+
+    .hero-tagline {
+      font-size: 16px;
+      letter-spacing: 8px;
+    }
+
+    .hero-sub { font-size: 15px; padding: 0 10px; }
+
+    .hero-cta-group {
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-primary, .btn-outline, .btn-white, .btn-ghost {
+      width: 100%;
+      max-width: 280px;
+      text-align: center;
+    }
+
+    .section-title { font-size: 36px; }
+
+    .tough-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .lineup-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+    }
+
+    .stat-cell {
+      padding: 32px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .stat-cell:nth-child(odd) { border-right: 1px solid rgba(255, 255, 255, 0.04); }
+    .stat-cell:nth-child(even) { border-right: none; }
+    .stat-cell:nth-last-child(-n+2) { border-bottom: none; }
+
+    .stat-number { font-size: 42px; }
+
+    .assembly-timeline { padding-left: 48px; }
+    .assembly-dot { left: -48px; width: 40px; height: 40px; }
+
+    .cta-section .section-title { font-size: 38px; }
+
+    .cta-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .footer-inner {
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+    }
+
+    .footer-brand { flex-direction: column; }
+    .footer-links { gap: 20px; flex-wrap: wrap; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav id="navbar">
+    <a href="/index.html" class="nav-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      Gallery
+    </a>
+    <div class="nav-logo">KPT</div>
+    <ul class="nav-links">
+      <li><a href="#tough">Built Tough</a></li>
+      <li><a href="#lineup">Lineup</a></li>
+      <li><a href="#stats">Factory</a></li>
+      <li><a href="#assembly">Assembly</a></li>
+    </ul>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="oval-badge">
+        <span class="oval-text">KPT</span>
+      </div>
+      <h1 class="hero-tagline">Built KPT Tough</h1>
+      <p class="hero-sub">American engineering meets relentless innovation. Forged in the heartland, built to dominate every road, every challenge, every mile.</p>
+      <div class="hero-cta-group">
+        <button class="btn-primary" onclick="document.getElementById('lineup').scrollIntoView({behavior:'smooth'})">Explore the Lineup</button>
+        <button class="btn-outline" onclick="document.getElementById('tough').scrollIntoView({behavior:'smooth'})">Our Foundation</button>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="chevron"></div>
+    </div>
+  </section>
+
+  <!-- ========== BUILT TOUGH ========== -->
+  <section class="tough-section" id="tough">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">Foundation</div>
+        <h2 class="section-title">Built Different.<br>Built Tougher.</h2>
+        <p class="section-desc">Every component stress-tested. Every system battle-hardened. KPT delivers the kind of reliability you stake your reputation on.</p>
+      </div>
+      <div class="tough-grid">
+        <div class="tough-card reveal reveal-delay-1">
+          <div class="tough-icon">&#9881;</div>
+          <h3>Iron Core</h3>
+          <p>Military-grade infrastructure running on bare metal. No shortcuts, no compromises. Pure power under the hood when you need it most.</p>
+          <div class="spec">Uptime<strong>99.97%</strong></div>
+        </div>
+        <div class="tough-card reveal reveal-delay-2">
+          <div class="tough-icon">&#9889;</div>
+          <h3>V8 Engine</h3>
+          <p>Eight parallel processing cores working in unison. Delivers raw throughput that leaves the competition eating dust on the straightaway.</p>
+          <div class="spec">Latency<strong>&lt;12ms</strong></div>
+        </div>
+        <div class="tough-card reveal reveal-delay-3">
+          <div class="tough-icon">&#128736;</div>
+          <h3>Steel Frame</h3>
+          <p>Structural integrity that withstands anything the road throws at it. Redundant systems, automatic failover, zero single points of failure.</p>
+          <div class="spec">Recovery<strong>&lt;30s</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== LINEUP ========== -->
+  <section class="lineup-section" id="lineup">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">Product Lineup</div>
+        <h2 class="section-title">The Fleet</h2>
+        <p class="section-desc">From high-performance sprints to heavy-duty workloads. A product for every mission, built to the same uncompromising standard.</p>
+      </div>
+      <div class="lineup-grid">
+        <div class="lineup-card lineup-mustang reveal reveal-delay-1">
+          <div class="lineup-visual">
+            <div class="bg-pattern"></div>
+            <div class="model-badge">GT</div>
+            <div class="emblem">&#127942;</div>
+          </div>
+          <div class="lineup-info">
+            <div class="series">Performance Series</div>
+            <h3>KPT Mustang</h3>
+            <p>The speed demon. Optimized for low-latency, high-frequency operations where every millisecond is the difference between first and forgotten.</p>
+            <div class="lineup-specs">
+              <div class="lineup-spec">
+                <div class="val">5,000</div>
+                <div class="label">Req/Second</div>
+              </div>
+              <div class="lineup-spec">
+                <div class="val">8ms</div>
+                <div class="label">P99 Latency</div>
+              </div>
+              <div class="lineup-spec">
+                <div class="val">Zero</div>
+                <div class="label">Cold Starts</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lineup-card lineup-f150 reveal reveal-delay-2">
+          <div class="lineup-visual">
+            <div class="bg-pattern"></div>
+            <div class="model-badge">F-150</div>
+            <div class="emblem">&#128666;</div>
+          </div>
+          <div class="lineup-info">
+            <div class="series">Workhorse Series</div>
+            <h3>KPT Hauler</h3>
+            <p>The backbone of your operation. Massive payload capacity for data-heavy workloads. Reliable as sunrise, tough as the terrain demands.</p>
+            <div class="lineup-specs">
+              <div class="lineup-spec">
+                <div class="val">10TB</div>
+                <div class="label">Throughput</div>
+              </div>
+              <div class="lineup-spec">
+                <div class="val">Auto</div>
+                <div class="label">Scaling</div>
+              </div>
+              <div class="lineup-spec">
+                <div class="val">99.99%</div>
+                <div class="label">SLA</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lineup-card lineup-bronco reveal reveal-delay-3">
+          <div class="lineup-visual">
+            <div class="bg-pattern"></div>
+            <div class="model-badge">4x4</div>
+            <div class="emblem">&#127956;</div>
+          </div>
+          <div class="lineup-info">
+            <div class="series">Explorer Series</div>
+            <h3>KPT Trailblazer</h3>
+            <p>Go where others can't. Edge computing that thrives in hostile environments -- low bandwidth, intermittent connectivity, harsh conditions.</p>
+            <div class="lineup-specs">
+              <div class="lineup-spec">
+                <div class="val">Edge</div>
+                <div class="label">Compute</div>
+              </div>
+              <div class="lineup-spec">
+                <div class="val">50ms</div>
+                <div class="label">Offline Sync</div>
+              </div>
+              <div class="lineup-spec">
+                <div class="val">256</div>
+                <div class="label">Edge Nodes</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lineup-card lineup-lightning reveal reveal-delay-4">
+          <div class="lineup-visual">
+            <div class="bg-pattern"></div>
+            <div class="model-badge">EV</div>
+            <div class="emblem">&#9889;</div>
+          </div>
+          <div class="lineup-info">
+            <div class="series">Next-Gen Series</div>
+            <h3>KPT Lightning</h3>
+            <p>The future, electrified. AI-native architecture that learns, adapts, and accelerates. Instant torque for instant intelligence.</p>
+            <div class="lineup-specs">
+              <div class="lineup-spec">
+                <div class="val">GPT-4</div>
+                <div class="label">Class Models</div>
+              </div>
+              <div class="lineup-spec">
+                <div class="val">Real-time</div>
+                <div class="label">Inference</div>
+              </div>
+              <div class="lineup-spec">
+                <div class="val">Custom</div>
+                <div class="label">Fine-tune</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== STATS / FACTORY ========== -->
+  <section class="stats-section" id="stats">
+    <div class="section-inner">
+      <div class="stats-header reveal">
+        <div class="section-label" style="text-align:center">Production Floor</div>
+        <h2 class="section-title" style="text-align:center">Factory Output</h2>
+        <p class="section-desc" style="text-align:center;margin-left:auto;margin-right:auto;">Numbers forged on the production line. Every metric earned, not estimated.</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-cell reveal reveal-delay-1">
+          <div class="stat-number" data-count="2.4">0</div>
+          <div class="stat-number"><span class="unit">B</span></div>
+          <div class="stat-label">Requests Served</div>
+        </div>
+        <div class="stat-cell reveal reveal-delay-2">
+          <div class="stat-number" data-count="99.97">0</div>
+          <div class="stat-number"><span class="unit">%</span></div>
+          <div class="stat-label">Uptime Record</div>
+        </div>
+        <div class="stat-cell reveal reveal-delay-3">
+          <div class="stat-number" data-count="47">0</div>
+          <div class="stat-number"><span class="unit">ms</span></div>
+          <div class="stat-label">Avg Response</div>
+        </div>
+        <div class="stat-cell reveal reveal-delay-4">
+          <div class="stat-number" data-count="186">0</div>
+          <div class="stat-number"><span class="unit">K</span></div>
+          <div class="stat-label">Active Operators</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== ASSEMBLY LINE ========== -->
+  <section class="assembly-section" id="assembly">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-label">The Process</div>
+        <h2 class="section-title">Assembly Line<br>Precision</h2>
+        <p class="section-desc">From concept to deployment, every step engineered with the discipline of a world-class manufacturing operation.</p>
+      </div>
+      <div class="assembly-timeline">
+        <div class="assembly-step reveal reveal-delay-1">
+          <div class="assembly-dot"><span>01</span></div>
+          <h3>Blueprint</h3>
+          <p>Every project starts with precision engineering. Architecture blueprints reviewed, stress-tested, and approved before a single line of code ships.</p>
+        </div>
+        <div class="assembly-step reveal reveal-delay-2">
+          <div class="assembly-dot"><span>02</span></div>
+          <h3>Fabrication</h3>
+          <p>Code forged in isolated environments. Each module built to spec, tested in isolation, then integration-tested against the full assembly.</p>
+        </div>
+        <div class="assembly-step reveal reveal-delay-3">
+          <div class="assembly-dot"><span>03</span></div>
+          <h3>Quality Control</h3>
+          <p>Multi-stage inspection pipeline. Automated testing, security scanning, performance benchmarking. Nothing leaves the floor without a green stamp.</p>
+        </div>
+        <div class="assembly-step reveal reveal-delay-4">
+          <div class="assembly-dot"><span>04</span></div>
+          <h3>Road Test</h3>
+          <p>Real-world conditions, real-world loads. Canary deployments, progressive rollouts, and 24/7 monitoring ensure every release is road-ready.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CTA ========== -->
+  <section class="cta-section">
+    <div class="cta-stripes">
+      <div class="stripe"></div>
+      <div class="stripe"></div>
+    </div>
+    <div class="cta-content section-inner reveal">
+      <div class="section-label" style="text-align:center">Start Your Engine</div>
+      <h2 class="section-title">Go Further</h2>
+      <p class="section-desc">Join the operators who build on KPT. American-grade engineering for the builders who refuse to settle.</p>
+      <div class="cta-buttons">
+        <button class="btn-white">Get Started</button>
+        <button class="btn-ghost">Talk to Sales</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-oval"><span>KPT</span></div>
+        <div class="footer-text">
+          <strong>KPT Technologies</strong>
+          Built Different. Built Tougher.
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="#tough">Foundation</a>
+        <a href="#lineup">Lineup</a>
+        <a href="#stats">Factory</a>
+        <a href="/index.html">Gallery</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      KPT Brand Concept &mdash; Ford Inspiration &mdash; Blue Oval Energy
+    </div>
+  </footer>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script>
+    /* --- Navbar scroll effect --- */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* --- Intersection Observer for reveals --- */
+    const observerOptions = {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* --- Stat counter animation --- */
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseFloat(el.dataset.count);
+          const duration = 2000;
+          const start = performance.now();
+          const isDecimal = target % 1 !== 0;
+
+          function update(now) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = target * eased;
+
+            if (isDecimal) {
+              el.textContent = current.toFixed(current < 10 ? 1 : 0);
+            } else {
+              el.textContent = Math.round(current);
+            }
+
+            if (progress < 1) {
+              requestAnimationFrame(update);
+            } else {
+              el.textContent = isDecimal ? target.toFixed(target < 10 ? 1 : 0) : target;
+            }
+          }
+
+          requestAnimationFrame(update);
+          countObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.stat-number[data-count]').forEach(el => countObserver.observe(el));
+
+    /* --- Smooth scroll for anchor links --- */
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>

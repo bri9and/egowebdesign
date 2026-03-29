@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Disney</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Satisfy&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --disney-blue: #0063E5;
+    --disney-blue-light: #1A7AFF;
+    --disney-blue-dark: #004BB5;
+    --disney-blue-dim: rgba(0, 99, 229, 0.12);
+    --disney-blue-glow: rgba(0, 99, 229, 0.5);
+    --gold: #FFD700;
+    --gold-light: #FFE44D;
+    --gold-dim: rgba(255, 215, 0, 0.10);
+    --gold-glow: rgba(255, 215, 0, 0.40);
+    --navy: #040714;
+    --navy-light: #0C1126;
+    --navy-mid: #121835;
+    --surface: #0E1429;
+    --surface-raised: #161D3A;
+    --surface-glass: rgba(14, 20, 41, 0.75);
+    --white: #FFFFFF;
+    --text-primary: #F0F0F5;
+    --text-secondary: #9CA3C2;
+    --text-muted: #4A5278;
+    --border: rgba(255, 215, 0, 0.06);
+    --border-hover: rgba(255, 215, 0, 0.20);
+    --sparkle: #FFFFFFCC;
+    --font-accent: 'Satisfy', cursive;
+    --font-body: 'Inter', -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --max-width: 1200px;
+    --nav-height: 72px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .gold-text { color: var(--gold); }
+  .blue-text { color: var(--disney-blue-light); }
+  .accent-text { font-family: var(--font-accent); }
+
+  /* ==============================
+     STARFIELD BACKGROUND
+     ============================== */
+  .starfield {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 50%;
+    animation: twinkle var(--dur, 3s) ease-in-out infinite alternate;
+    opacity: 0;
+  }
+
+  @keyframes twinkle {
+    0% { opacity: 0.1; transform: scale(0.8); }
+    50% { opacity: var(--max-op, 0.7); transform: scale(1.2); }
+    100% { opacity: 0.2; transform: scale(1); }
+  }
+
+  /* ==============================
+     SHOOTING STARS
+     ============================== */
+  .shooting-star {
+    position: fixed;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--white));
+    border-radius: 2px;
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+    filter: drop-shadow(0 0 6px var(--gold-glow));
+  }
+
+  .shooting-star::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -2px;
+    width: 6px;
+    height: 6px;
+    background: var(--white);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--gold), 0 0 20px var(--gold-glow);
+  }
+
+  @keyframes shoot {
+    0% { opacity: 0; transform: translateX(0) translateY(0) rotate(-35deg); }
+    5% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; transform: translateX(600px) translateY(300px) rotate(-35deg); }
+  }
+
+  /* ==============================
+     SPARKLE PARTICLES
+     ============================== */
+  @keyframes sparkle-float {
+    0% { opacity: 0; transform: translateY(0) scale(0); }
+    20% { opacity: 1; transform: translateY(-10px) scale(1); }
+    80% { opacity: 0.8; transform: translateY(-40px) scale(0.6); }
+    100% { opacity: 0; transform: translateY(-60px) scale(0); }
+  }
+
+  .sparkle-particle {
+    position: absolute;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .sparkle-particle svg {
+    width: 12px;
+    height: 12px;
+    fill: var(--gold);
+    filter: drop-shadow(0 0 4px var(--gold-glow));
+    animation: sparkle-float var(--dur, 2s) ease-out forwards;
+    animation-delay: var(--delay, 0s);
+  }
+
+  /* ==============================
+     FAIRY DUST TRAIL
+     ============================== */
+  .fairy-dust {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .dust-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--gold), 0 0 12px var(--gold-glow);
+    animation: dust-fade 0.8s ease-out forwards;
+  }
+
+  @keyframes dust-fade {
+    0% { opacity: 1; transform: scale(1) translate(0, 0); }
+    100% { opacity: 0; transform: scale(0) translate(var(--dx, 10px), var(--dy, -20px)); }
+  }
+
+  /* ==============================
+     SCROLL REVEAL
+     ============================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ==============================
+     BACK LINK
+     ============================== */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 24px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.25s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+  }
+  .back-link:hover { color: var(--gold); }
+  .back-link span { transition: transform 0.2s; display: inline-block; }
+  .back-link:hover span { transform: translateX(-3px); }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    background: rgba(4, 7, 20, 0.85);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(4, 7, 20, 0.95);
+    box-shadow: 0 1px 0 rgba(255, 215, 0, 0.08);
+  }
+
+  nav .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--font-accent);
+    font-size: 28px;
+    color: var(--gold);
+    text-shadow: 0 0 20px var(--gold-glow);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+    font-family: var(--font-mono);
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold-glow);
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* Mobile toggle */
+  .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+  .nav-toggle span { display: block; width: 20px; height: 2px; background: var(--gold); margin: 4px 0; border-radius: 2px; transition: 0.3s; }
+
+  /* ==============================
+     HERO
+     ============================== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    overflow: hidden;
+  }
+
+  .hero-bg-gradient {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0, 99, 229, 0.15), transparent 70%),
+      radial-gradient(ellipse 50% 40% at 50% 80%, rgba(255, 215, 0, 0.06), transparent 60%);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Castle SVG */
+  .castle-container {
+    margin-bottom: 24px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .castle-svg {
+    width: 320px;
+    height: auto;
+    filter: drop-shadow(0 0 30px var(--disney-blue-glow)) drop-shadow(0 0 60px rgba(0, 99, 229, 0.2));
+    opacity: 0;
+    animation: castle-appear 2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  }
+
+  @keyframes castle-appear {
+    0% { opacity: 0; transform: scale(0.85) translateY(20px); filter: drop-shadow(0 0 0px transparent); }
+    60% { opacity: 1; transform: scale(1.02) translateY(-5px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); filter: drop-shadow(0 0 30px var(--disney-blue-glow)) drop-shadow(0 0 60px rgba(0, 99, 229, 0.2)); }
+  }
+
+  /* Star arc above castle */
+  .star-arc {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 380px;
+    height: 120px;
+    pointer-events: none;
+  }
+
+  .arc-star {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--gold), 0 0 20px var(--gold-glow);
+    opacity: 0;
+    animation: arc-star-appear 0.6s ease-out forwards;
+  }
+
+  @keyframes arc-star-appear {
+    0% { opacity: 0; transform: scale(0); }
+    60% { opacity: 1; transform: scale(1.5); }
+    100% { opacity: 0.9; transform: scale(1); }
+  }
+
+  .hero-title {
+    font-size: clamp(72px, 12vw, 140px);
+    font-weight: 700;
+    letter-spacing: 20px;
+    color: var(--white);
+    text-shadow:
+      0 0 40px var(--disney-blue-glow),
+      0 0 80px rgba(0, 99, 229, 0.3),
+      0 2px 4px rgba(0, 0, 0, 0.4);
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: title-glow 1.5s ease-out 0.8s forwards;
+  }
+
+  @keyframes title-glow {
+    0% { opacity: 0; letter-spacing: 40px; filter: blur(8px); }
+    60% { opacity: 1; filter: blur(0); }
+    100% { opacity: 1; letter-spacing: 20px; }
+  }
+
+  .hero-tagline {
+    font-family: var(--font-accent);
+    font-size: clamp(24px, 4vw, 42px);
+    color: var(--gold);
+    text-shadow: 0 0 20px var(--gold-glow);
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 1.4s forwards;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    max-width: 500px;
+    margin: 0 auto 40px;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 1.7s forwards;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 40px;
+    background: var(--disney-blue);
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 2s forwards;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 20px var(--disney-blue-glow), 0 0 60px rgba(0, 99, 229, 0.15);
+  }
+
+  .hero-cta:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 40px var(--disney-blue-glow), 0 0 80px rgba(0, 99, 229, 0.25);
+  }
+
+  .hero-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
+
+  .hero-cta:hover::before {
+    transform: translateX(100%);
+  }
+
+  /* Scroll indicator */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 2.5s forwards;
+  }
+
+  .scroll-indicator .mouse {
+    width: 24px;
+    height: 38px;
+    border: 2px solid var(--text-muted);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    padding-top: 8px;
+  }
+
+  .scroll-indicator .wheel {
+    width: 3px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 2px;
+    animation: scroll-wheel 1.5s ease-in-out infinite;
+    box-shadow: 0 0 6px var(--gold-glow);
+  }
+
+  @keyframes scroll-wheel {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(10px); opacity: 0; }
+  }
+
+  /* ==============================
+     SECTION COMMON
+     ============================== */
+  section {
+    position: relative;
+    z-index: 2;
+    padding: 120px 0;
+  }
+
+  .section-label {
+    font-family: var(--font-accent);
+    font-size: 22px;
+    color: var(--gold);
+    margin-bottom: 12px;
+    text-shadow: 0 0 12px var(--gold-glow);
+  }
+
+  .section-title {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .section-desc {
+    max-width: 600px;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+  }
+
+  .section-divider {
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--disney-blue), var(--gold));
+    border-radius: 2px;
+    margin: 20px 0 0;
+    box-shadow: 0 0 12px var(--disney-blue-glow);
+  }
+
+  /* ==============================
+     MAGIC FEATURE CARDS
+     ============================== */
+  .features {
+    background: linear-gradient(180deg, var(--navy), var(--navy-light) 50%, var(--navy));
+  }
+
+  .features-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .features-header .section-desc {
+    margin: 0 auto;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .feature-card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px 32px;
+    overflow: hidden;
+    cursor: default;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--disney-blue), var(--gold), var(--disney-blue));
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: opacity 0.4s;
+    animation: shimmer-bar 3s linear infinite;
+  }
+
+  @keyframes shimmer-bar {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  .feature-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(0, 99, 229, 0.08), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-hover);
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.3),
+      0 0 40px var(--disney-blue-dim),
+      0 0 80px rgba(255, 215, 0, 0.03);
+  }
+
+  .feature-card:hover::before { opacity: 1; }
+  .feature-card:hover::after { opacity: 1; }
+
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    font-size: 24px;
+    position: relative;
+  }
+
+  .feature-icon.blue-icon {
+    background: var(--disney-blue-dim);
+    color: var(--disney-blue-light);
+    box-shadow: 0 0 20px var(--disney-blue-dim);
+  }
+
+  .feature-icon.gold-icon {
+    background: var(--gold-dim);
+    color: var(--gold);
+    box-shadow: 0 0 20px var(--gold-dim);
+  }
+
+  .feature-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .feature-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .feature-card .sparkle-hint {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 16px;
+    height: 16px;
+    opacity: 0;
+    transition: opacity 0.4s;
+    fill: var(--gold);
+    filter: drop-shadow(0 0 4px var(--gold-glow));
+    animation: sparkle-spin 4s linear infinite;
+  }
+
+  .feature-card:hover .sparkle-hint { opacity: 0.8; }
+
+  @keyframes sparkle-spin {
+    0% { transform: rotate(0deg) scale(1); }
+    25% { transform: rotate(90deg) scale(1.2); }
+    50% { transform: rotate(180deg) scale(1); }
+    75% { transform: rotate(270deg) scale(0.8); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+
+  /* ==============================
+     SHOWCASE / HIGHLIGHT
+     ============================== */
+  .showcase {
+    background: linear-gradient(180deg, var(--navy-light), var(--navy-mid) 50%, var(--navy-light));
+  }
+
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .showcase-visual {
+    position: relative;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .magic-orb {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, var(--disney-blue-light), var(--disney-blue-dark) 60%, var(--navy) 100%);
+    box-shadow:
+      0 0 60px var(--disney-blue-glow),
+      0 0 120px rgba(0, 99, 229, 0.2),
+      inset 0 0 60px rgba(0, 0, 0, 0.4);
+    animation: orb-pulse 4s ease-in-out infinite;
+    position: relative;
+  }
+
+  .magic-orb::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 25%;
+    width: 30%;
+    height: 20%;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.25), transparent);
+    border-radius: 50%;
+    filter: blur(4px);
+  }
+
+  .magic-orb::after {
+    content: 'KPT';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: 8px;
+    color: var(--white);
+    text-shadow: 0 0 20px rgba(255,255,255,0.4);
+  }
+
+  @keyframes orb-pulse {
+    0%, 100% { box-shadow: 0 0 60px var(--disney-blue-glow), 0 0 120px rgba(0, 99, 229, 0.2); transform: scale(1); }
+    50% { box-shadow: 0 0 80px var(--disney-blue-glow), 0 0 160px rgba(0, 99, 229, 0.3); transform: scale(1.03); }
+  }
+
+  .orb-ring {
+    position: absolute;
+    border: 1px solid rgba(0, 99, 229, 0.15);
+    border-radius: 50%;
+    animation: ring-expand 6s ease-in-out infinite;
+  }
+
+  .orb-ring:nth-child(1) { width: 340px; height: 340px; animation-delay: 0s; }
+  .orb-ring:nth-child(2) { width: 400px; height: 400px; animation-delay: 2s; }
+  .orb-ring:nth-child(3) { width: 460px; height: 460px; animation-delay: 4s; }
+
+  @keyframes ring-expand {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.05); }
+  }
+
+  .showcase-content { max-width: 480px; }
+
+  .showcase-list {
+    list-style: none;
+    margin-top: 32px;
+  }
+
+  .showcase-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+
+  .showcase-list li:last-child { border-bottom: none; }
+
+  .showcase-list .list-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--gold-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-size: 14px;
+  }
+
+  .showcase-list strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* ==============================
+     STARRY STATS
+     ============================== */
+  .stats-section {
+    background: var(--navy);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(0, 99, 229, 0.06), transparent 60%);
+    pointer-events: none;
+  }
+
+  .stats-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .stats-header .section-desc {
+    margin: 0 auto;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .stat-card {
+    position: relative;
+    text-align: center;
+    padding: 48px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.4s, box-shadow 0.4s;
+  }
+
+  .stat-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.04);
+  }
+
+  .stat-card .stat-stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .stat-card .mini-star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: twinkle 2s ease-in-out infinite alternate;
+  }
+
+  .stat-value {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-value .stat-suffix {
+    font-size: 28px;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .stat-sublabel {
+    font-family: var(--font-accent);
+    font-size: 15px;
+    color: var(--disney-blue-light);
+    margin-top: 8px;
+    opacity: 0.7;
+  }
+
+  /* ==============================
+     MAGIC BANNER
+     ============================== */
+  .magic-banner {
+    background: linear-gradient(135deg, var(--disney-blue-dark), var(--disney-blue) 50%, #1A3A8A);
+    position: relative;
+    overflow: hidden;
+    padding: 100px 0;
+  }
+
+  .magic-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(255,215,0,0.1), transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(255,255,255,0.05), transparent 50%);
+    pointer-events: none;
+  }
+
+  .banner-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .banner-content .section-label {
+    color: var(--gold-light);
+  }
+
+  .banner-content .section-title {
+    font-size: clamp(28px, 4vw, 44px);
+    color: var(--white);
+    max-width: 700px;
+    margin: 0 auto 32px;
+  }
+
+  .banner-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 40px;
+    background: var(--white);
+    color: var(--disney-blue);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .banner-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .banner-sparkles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .banner-sparkle {
+    position: absolute;
+    fill: var(--gold);
+    opacity: 0.3;
+    animation: sparkle-spin 6s linear infinite;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: var(--navy);
+    border-top: 1px solid var(--border);
+    padding: 60px 0 40px;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  .footer-castle {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    max-width: 80vw;
+    height: auto;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-brand .nav-logo {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .footer-brand p {
+    font-size: 14px;
+    color: var(--text-muted);
+    max-width: 280px;
+    line-height: 1.7;
+  }
+
+  .footer-col h4 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+  }
+
+  .footer-col ul li {
+    margin-bottom: 10px;
+  }
+
+  .footer-col ul a {
+    font-size: 14px;
+    color: var(--text-muted);
+    transition: color 0.3s;
+  }
+
+  .footer-col ul a:hover { color: var(--gold); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-muted);
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-bottom .magic-quote {
+    font-family: var(--font-accent);
+    color: var(--gold);
+    opacity: 0.5;
+    font-size: 14px;
+  }
+
+  .footer-bottom-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-bottom-links a {
+    color: var(--text-muted);
+    transition: color 0.3s;
+  }
+
+  .footer-bottom-links a:hover { color: var(--text-secondary); }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 768px) {
+    .back-link { padding: 10px 16px; font-size: 12px; }
+
+    nav { padding: 0 16px; }
+    .nav-links {
+      position: fixed;
+      top: var(--nav-height); left: 0; right: 0;
+      background: rgba(4, 7, 20, 0.95);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      padding: 24px;
+      gap: 20px;
+      border-bottom: 1px solid var(--border);
+      transform: translateY(-120%);
+      transition: transform 0.4s ease;
+    }
+    .nav-links.open { transform: translateY(0); }
+    .nav-toggle { display: block; }
+
+    .hero { padding: 100px 16px 60px; }
+    .castle-svg { width: 220px; }
+    .star-arc { width: 260px; }
+    .hero-title { letter-spacing: 10px; }
+
+    section { padding: 80px 0; }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .feature-card { padding: 32px 24px; }
+
+    .showcase-grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .showcase-visual { order: -1; max-width: 300px; margin: 0 auto; }
+    .magic-orb { width: 200px; height: 200px; }
+    .magic-orb::after { font-size: 32px; letter-spacing: 4px; }
+    .orb-ring:nth-child(1) { width: 260px; height: 260px; }
+    .orb-ring:nth-child(2) { width: 300px; height: 300px; }
+    .orb-ring:nth-child(3) { width: 340px; height: 340px; }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .stat-card { padding: 32px 16px; }
+    .stat-value { font-size: 36px; }
+
+    .footer-inner {
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .hero-title { letter-spacing: 6px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Starfield -->
+<div class="starfield" id="starfield"></div>
+
+<!-- Shooting Stars -->
+<div id="shooting-stars"></div>
+
+<!-- Fairy Dust Container -->
+<div class="fairy-dust" id="fairy-dust"></div>
+
+<!-- Back Link -->
+<a href="index.html" class="back-link"><span>&larr;</span> Back</a>
+
+<!-- Navigation -->
+<nav id="mainNav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">KPT</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#features">Magic</a></li>
+      <li><a href="#showcase">Platform</a></li>
+      <li><a href="#stats">Kingdom</a></li>
+      <li><a href="#magic">Begin</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg-gradient"></div>
+  <div class="hero-content">
+    <div class="castle-container">
+      <!-- Star Arc -->
+      <div class="star-arc" id="star-arc"></div>
+      <!-- Castle Silhouette SVG -->
+      <svg class="castle-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="castle-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4A9FFF" />
+            <stop offset="40%" stop-color="#1A7AFF" />
+            <stop offset="100%" stop-color="#0050CC" />
+          </linearGradient>
+          <linearGradient id="castle-shine" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.15)" />
+            <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+          </linearGradient>
+          <filter id="castle-glow">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
+        <!-- Base / ground -->
+        <rect x="80" y="260" width="240" height="40" rx="4" fill="url(#castle-grad)" opacity="0.6" />
+        <!-- Main walls -->
+        <rect x="100" y="180" width="200" height="80" rx="2" fill="url(#castle-grad)" />
+        <!-- Main gate -->
+        <path d="M175 260 Q175 220 200 210 Q225 220 225 260 Z" fill="#040714" opacity="0.7" />
+        <!-- Gate detail -->
+        <line x1="200" y1="215" x2="200" y2="260" stroke="url(#castle-grad)" stroke-width="1" opacity="0.4" />
+        <!-- Windows on main wall -->
+        <circle cx="140" cy="220" r="6" fill="#FFD700" opacity="0.6" />
+        <circle cx="160" cy="205" r="5" fill="#FFD700" opacity="0.5" />
+        <circle cx="240" cy="205" r="5" fill="#FFD700" opacity="0.5" />
+        <circle cx="260" cy="220" r="6" fill="#FFD700" opacity="0.6" />
+        <!-- Left tower -->
+        <rect x="90" y="130" width="40" height="50" rx="2" fill="url(#castle-grad)" />
+        <polygon points="90,130 110,80 130,130" fill="url(#castle-grad)" />
+        <circle cx="110" cy="150" r="4" fill="#FFD700" opacity="0.5" />
+        <!-- Right tower -->
+        <rect x="270" y="130" width="40" height="50" rx="2" fill="url(#castle-grad)" />
+        <polygon points="270,130 290,80 310,130" fill="url(#castle-grad)" />
+        <circle cx="290" cy="150" r="4" fill="#FFD700" opacity="0.5" />
+        <!-- Center spire -->
+        <rect x="180" y="110" width="40" height="70" rx="2" fill="url(#castle-grad)" />
+        <polygon points="175,110 200,30 225,110" fill="url(#castle-grad)" />
+        <circle cx="200" cy="140" r="5" fill="#FFD700" opacity="0.6" />
+        <!-- Small turrets -->
+        <rect x="135" y="150" width="25" height="30" rx="1" fill="url(#castle-grad)" />
+        <polygon points="135,150 147,115 160,150" fill="url(#castle-grad)" />
+        <circle cx="147" cy="163" r="3" fill="#FFD700" opacity="0.4" />
+        <rect x="240" y="150" width="25" height="30" rx="1" fill="url(#castle-grad)" />
+        <polygon points="240,150 253,115 265,150" fill="url(#castle-grad)" />
+        <circle cx="253" cy="163" r="3" fill="#FFD700" opacity="0.4" />
+        <!-- Flags -->
+        <line x1="200" y1="30" x2="200" y2="10" stroke="url(#castle-grad)" stroke-width="1.5" />
+        <polygon points="200,10 215,18 200,22" fill="#FFD700" opacity="0.7" />
+        <line x1="110" y1="80" x2="110" y2="64" stroke="url(#castle-grad)" stroke-width="1" />
+        <polygon points="110,64 120,69 110,72" fill="#FFD700" opacity="0.5" />
+        <line x1="290" y1="80" x2="290" y2="64" stroke="url(#castle-grad)" stroke-width="1" />
+        <polygon points="290,64 300,69 290,72" fill="#FFD700" opacity="0.5" />
+        <!-- Battlements -->
+        <rect x="100" y="175" width="10" height="8" fill="url(#castle-grad)" />
+        <rect x="120" y="175" width="10" height="8" fill="url(#castle-grad)" />
+        <rect x="168" y="175" width="10" height="8" fill="url(#castle-grad)" />
+        <rect x="222" y="175" width="10" height="8" fill="url(#castle-grad)" />
+        <rect x="270" y="175" width="10" height="8" fill="url(#castle-grad)" />
+        <rect x="290" y="175" width="10" height="8" fill="url(#castle-grad)" />
+        <!-- Shine overlay -->
+        <rect x="100" y="110" width="200" height="150" rx="2" fill="url(#castle-shine)" />
+        <!-- Top star -->
+        <polygon points="200,2 203,8 210,8 204,12 206,18 200,14 194,18 196,12 190,8 197,8"
+                 fill="#FFD700" filter="url(#castle-glow)">
+          <animateTransform attributeName="transform" type="scale" values="1;1.2;1" dur="2s"
+                            repeatCount="indefinite" additive="sum"
+                            calcMode="spline" keySplines="0.4 0 0.2 1;0.4 0 0.2 1" />
+        </polygon>
+      </svg>
+    </div>
+
+    <h1 class="hero-title">KPT</h1>
+    <p class="hero-tagline">Where Technology Meets Magic</p>
+    <p class="hero-subtitle">Dream it. Build it. Ship it.</p>
+    <button class="hero-cta" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" fill="currentColor"/></svg>
+      Begin the Journey
+    </button>
+  </div>
+  <div class="scroll-indicator">
+    <div class="mouse"><div class="wheel"></div></div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="features-header reveal">
+      <p class="section-label">A Whole New World</p>
+      <h2 class="section-title">Enchanted Capabilities</h2>
+      <p class="section-desc">Every great story needs magic. Every great platform needs features that feel effortless, powerful, and a little bit wonderful.</p>
+      <div class="section-divider" style="margin: 20px auto 0;"></div>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <svg class="sparkle-hint" viewBox="0 0 24 24"><polygon points="12,2 14,9 21,9 15,13 17,20 12,16 7,20 9,13 3,9 10,9"/></svg>
+        <div class="feature-icon blue-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3 class="feature-title">Infinite Layers</h3>
+        <p class="feature-desc">Stack capabilities like never before. Each layer adds depth, intelligence, and a touch of magic to your workflows.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <svg class="sparkle-hint" viewBox="0 0 24 24"><polygon points="12,2 14,9 21,9 15,13 17,20 12,16 7,20 9,13 3,9 10,9"/></svg>
+        <div class="feature-icon gold-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </div>
+        <h3 class="feature-title">Radiant Intelligence</h3>
+        <p class="feature-desc">AI that illuminates possibilities. Pattern recognition that sees what others miss, with the clarity of starlight.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <svg class="sparkle-hint" viewBox="0 0 24 24"><polygon points="12,2 14,9 21,9 15,13 17,20 12,16 7,20 9,13 3,9 10,9"/></svg>
+        <div class="feature-icon blue-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3 class="feature-title">Lightning Spells</h3>
+        <p class="feature-desc">Execution speed that defies gravity. Deploy in seconds, iterate in moments, ship at the speed of thought.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <svg class="sparkle-hint" viewBox="0 0 24 24"><polygon points="12,2 14,9 21,9 15,13 17,20 12,16 7,20 9,13 3,9 10,9"/></svg>
+        <div class="feature-icon gold-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="feature-title">Enchanted Shield</h3>
+        <p class="feature-desc">Security woven into every layer, invisible yet impenetrable. Your data sleeps behind castle walls of encryption.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <svg class="sparkle-hint" viewBox="0 0 24 24"><polygon points="12,2 14,9 21,9 15,13 17,20 12,16 7,20 9,13 3,9 10,9"/></svg>
+        <div class="feature-icon blue-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3 class="feature-title">World Stage</h3>
+        <p class="feature-desc">Global by design. Edge deployment across every kingdom, ensuring magical experiences no matter where your audience resides.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <svg class="sparkle-hint" viewBox="0 0 24 24"><polygon points="12,2 14,9 21,9 15,13 17,20 12,16 7,20 9,13 3,9 10,9"/></svg>
+        <div class="feature-icon gold-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3 class="feature-title">Storybook Docs</h3>
+        <p class="feature-desc">Documentation that tells a story. Every API, every endpoint, narrated with clarity that even beginners can follow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Showcase -->
+<section class="showcase" id="showcase">
+  <div class="container">
+    <div class="showcase-grid">
+      <div class="showcase-visual reveal">
+        <div class="orb-ring"></div>
+        <div class="orb-ring"></div>
+        <div class="orb-ring"></div>
+        <div class="magic-orb"></div>
+      </div>
+      <div class="showcase-content">
+        <p class="section-label reveal">Once Upon a Platform</p>
+        <h2 class="section-title reveal reveal-delay-1">Built for Dreamers<br><span class="gold-text">and Builders</span></h2>
+        <p class="section-desc reveal reveal-delay-2">The best stories are told by those who dare to imagine. KPT gives you the tools to write yours, with infrastructure that scales from spark to spectacle.</p>
+        <div class="section-divider reveal reveal-delay-2"></div>
+        <ul class="showcase-list reveal reveal-delay-3">
+          <li>
+            <span class="list-icon">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6"/></svg>
+            </span>
+            <span><strong>Pixie Dust Deploys</strong> &mdash; Zero-downtime releases that feel like pure magic. One click from staging to stardom.</span>
+          </li>
+          <li>
+            <span class="list-icon">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6"/></svg>
+            </span>
+            <span><strong>Enchanted Pipelines</strong> &mdash; CI/CD that orchestrates itself. From commit to curtain call in under ninety seconds.</span>
+          </li>
+          <li>
+            <span class="list-icon">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6"/></svg>
+            </span>
+            <span><strong>Wishing Star Analytics</strong> &mdash; Real-time insights that reveal the story behind your metrics, illuminated by AI.</span>
+          </li>
+          <li>
+            <span class="list-icon">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6"/></svg>
+            </span>
+            <span><strong>Happily Ever Uptime</strong> &mdash; 99.99% availability guaranteed. Your castle never closes, your gates never lock.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats-section" id="stats">
+  <div class="container">
+    <div class="stats-header reveal">
+      <p class="section-label">Wish Upon a Metric</p>
+      <h2 class="section-title">Numbers That Sparkle</h2>
+      <p class="section-desc">Behind every wish is a number. Behind every number is a story worth telling.</p>
+      <div class="section-divider" style="margin: 20px auto 0;"></div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card reveal reveal-delay-1">
+        <div class="stat-stars"></div>
+        <div class="stat-value" data-target="99.99" data-suffix="%" data-decimals="2">0<span class="stat-suffix">%</span></div>
+        <div class="stat-label">Uptime</div>
+        <div class="stat-sublabel">Always open</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2">
+        <div class="stat-stars"></div>
+        <div class="stat-value" data-target="12" data-suffix="ms">0<span class="stat-suffix">ms</span></div>
+        <div class="stat-label">Latency</div>
+        <div class="stat-sublabel">Fast as pixie dust</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3">
+        <div class="stat-stars"></div>
+        <div class="stat-value" data-target="50" data-suffix="M+">0<span class="stat-suffix">M+</span></div>
+        <div class="stat-label">API Calls Daily</div>
+        <div class="stat-sublabel">A world of wishes</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-4">
+        <div class="stat-stars"></div>
+        <div class="stat-value" data-target="180" data-suffix="+">0<span class="stat-suffix">+</span></div>
+        <div class="stat-label">Regions</div>
+        <div class="stat-sublabel">Every kingdom reached</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Magic Banner / CTA -->
+<section class="magic-banner" id="magic">
+  <div class="banner-sparkles" id="banner-sparkles"></div>
+  <div class="container banner-content">
+    <p class="section-label reveal">The Magic Starts Here</p>
+    <h2 class="section-title reveal reveal-delay-1">Ready to Write Your<br><span style="color: var(--gold-light);">Happily Ever After?</span></h2>
+    <div class="reveal reveal-delay-2">
+      <button class="banner-cta">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polygon points="8,1 10,6 16,6 11,9.5 13,15 8,11.5 3,15 5,9.5 0,6 6,6" fill="currentColor"/></svg>
+        Start Building Magic
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <!-- Castle silhouette watermark -->
+  <svg class="footer-castle" viewBox="0 0 800 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="
+      M 50 300 L 50 220 L 30 220 L 30 180 L 50 180 L 50 160 L 60 160 L 60 130 L 55 130 L 55 100 L 65 100 L 65 130 L 70 130 L 70 160 L 80 160 L 80 180 L 100 180 L 100 220 L 90 220 L 90 300
+      M 120 300 L 120 200 L 110 200 L 110 170 L 130 170 L 130 200 L 140 200 L 140 240 L 155 240 L 155 300
+      M 170 300 L 170 230 L 180 230 L 180 190 L 175 190 L 175 150 L 185 150 L 185 190 L 195 190 L 195 170 L 190 170 L 190 140 L 200 140 L 200 170 L 210 170 L 210 190 L 220 190 L 220 230 L 230 230 L 230 300
+      M 250 300 L 250 180 L 260 180 L 260 160 L 255 160 L 255 120 L 265 120 L 265 160 L 275 160 L 275 130 L 270 130 L 270 90 L 280 90 L 280 130 L 290 130 L 290 160 L 300 160 L 300 180 L 310 180 L 310 300
+      M 320 300 L 320 200 L 330 200 L 330 170 L 335 170 L 335 140 L 340 140 L 340 110 L 345 110 L 345 80 L 350 80 L 350 50 L 360 20 L 365 8 L 370 3 L 375 0 L 380 3 L 385 8 L 390 20 L 400 50 L 400 80 L 405 80 L 405 110 L 410 110 L 410 140 L 415 140 L 415 170 L 420 170 L 420 200 L 430 200 L 430 300
+      M 440 300 L 440 180 L 450 180 L 450 160 L 445 160 L 445 130 L 455 130 L 455 90 L 460 90 L 460 130 L 470 130 L 470 160 L 480 160 L 480 130 L 485 130 L 485 90 L 495 90 L 495 160 L 505 160 L 505 180 L 510 180 L 510 300
+      M 530 300 L 530 230 L 540 230 L 540 190 L 545 190 L 545 150 L 555 150 L 555 190 L 565 190 L 565 170 L 570 170 L 570 140 L 580 140 L 580 170 L 590 170 L 590 190 L 595 190 L 595 230 L 605 230 L 605 300
+      M 620 300 L 620 200 L 630 200 L 630 170 L 640 170 L 640 200 L 650 200 L 650 240 L 660 240 L 660 300
+      M 680 300 L 680 220 L 700 220 L 700 180 L 710 180 L 710 160 L 715 160 L 715 130 L 720 130 L 720 100 L 725 100 L 725 130 L 730 130 L 730 160 L 740 160 L 740 180 L 750 180 L 750 220 L 760 220 L 760 300
+      Z" fill="rgba(255,215,0,0.04)"/>
+  </svg>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">KPT</a>
+        <p>Where technology meets magic. Build extraordinary experiences that enchant your users and stand the test of time.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Enterprise</a></li>
+          <li><a href="#">Changelog</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">API Reference</a></li>
+          <li><a href="#">Tutorials</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 KPT. All rights reserved.</span>
+      <span class="magic-quote">Where dreams come true.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  // ========== STARFIELD ==========
+  const starfield = document.getElementById('starfield');
+  const starCount = 200;
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 2 + 1;
+    star.style.cssText =
+      'left:' + (Math.random() * 100) + '%;' +
+      'top:' + (Math.random() * 100) + '%;' +
+      'width:' + size + 'px;' +
+      'height:' + size + 'px;' +
+      '--dur:' + (2 + Math.random() * 4) + 's;' +
+      '--max-op:' + (0.3 + Math.random() * 0.7) + ';' +
+      'animation-delay:' + (Math.random() * 5) + 's;';
+    if (Math.random() < 0.12) {
+      star.style.boxShadow = '0 0 6px rgba(255,215,0,0.4)';
+      star.style.background = '#FFD700';
+    }
+    frag.appendChild(star);
+  }
+  starfield.appendChild(frag);
+
+  // ========== STAR ARC ==========
+  var starArc = document.getElementById('star-arc');
+  var arcPoints = 12;
+  for (var i = 0; i < arcPoints; i++) {
+    var angle = (Math.PI / (arcPoints - 1)) * i;
+    var x = 190 - 170 * Math.cos(angle);
+    var y = 110 - 100 * Math.sin(angle);
+    var dot = document.createElement('div');
+    dot.className = 'arc-star';
+    var s = 3 + Math.random() * 4;
+    dot.style.cssText =
+      'left:' + x + 'px;' +
+      'top:' + y + 'px;' +
+      'width:' + s + 'px;' +
+      'height:' + s + 'px;' +
+      'animation-delay:' + (0.5 + i * 0.12) + 's;';
+    starArc.appendChild(dot);
+  }
+
+  // ========== SHOOTING STARS ==========
+  var shootContainer = document.getElementById('shooting-stars');
+  function createShootingStar() {
+    var star = document.createElement('div');
+    star.className = 'shooting-star';
+    var startX = Math.random() * window.innerWidth * 0.6;
+    var startY = Math.random() * window.innerHeight * 0.4;
+    var length = 80 + Math.random() * 100;
+    star.style.cssText =
+      'left:' + startX + 'px;' +
+      'top:' + startY + 'px;' +
+      'width:' + length + 'px;' +
+      'animation:shoot ' + (1.2 + Math.random() * 0.8) + 's linear forwards;';
+    shootContainer.appendChild(star);
+    star.addEventListener('animationend', function() { star.remove(); });
+  }
+
+  setTimeout(function() { createShootingStar(); }, 2000);
+  setInterval(function() {
+    if (Math.random() < 0.4) createShootingStar();
+  }, 3000);
+
+  // ========== FAIRY DUST ON MOUSE ==========
+  var dustContainer = document.getElementById('fairy-dust');
+  var lastDustTime = 0;
+  document.addEventListener('mousemove', function(e) {
+    var now = Date.now();
+    if (now - lastDustTime < 50) return;
+    lastDustTime = now;
+
+    for (var j = 0; j < 3; j++) {
+      var p = document.createElement('div');
+      p.className = 'dust-particle';
+      var dx = (Math.random() - 0.5) * 30;
+      var dy = -10 - Math.random() * 25;
+      p.style.cssText =
+        'left:' + (e.clientX + (Math.random() - 0.5) * 10) + 'px;' +
+        'top:' + (e.clientY + (Math.random() - 0.5) * 10) + 'px;' +
+        '--dx:' + dx + 'px;' +
+        '--dy:' + dy + 'px;' +
+        'width:' + (2 + Math.random() * 3) + 'px;' +
+        'height:' + (2 + Math.random() * 3) + 'px;' +
+        'animation-delay:' + (j * 0.05) + 's;';
+      dustContainer.appendChild(p);
+      (function(el) { setTimeout(function() { el.remove(); }, 900); })(p);
+    }
+  });
+
+  // ========== CARD MOUSE TRACKING ==========
+  document.querySelectorAll('.feature-card').forEach(function(card) {
+    card.addEventListener('mousemove', function(e) {
+      var rect = card.getBoundingClientRect();
+      var x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+      var y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+      card.style.setProperty('--mx', x + '%');
+      card.style.setProperty('--my', y + '%');
+    });
+  });
+
+  // ========== STAT CARD MINI STARS ==========
+  document.querySelectorAll('.stat-card .stat-stars').forEach(function(container) {
+    for (var k = 0; k < 8; k++) {
+      var star = document.createElement('div');
+      star.className = 'mini-star';
+      star.style.cssText =
+        'left:' + (10 + Math.random() * 80) + '%;' +
+        'top:' + (10 + Math.random() * 80) + '%;' +
+        'width:' + (2 + Math.random() * 2) + 'px;' +
+        'height:' + (2 + Math.random() * 2) + 'px;' +
+        '--dur:' + (1.5 + Math.random() * 2) + 's;' +
+        '--max-op:' + (0.2 + Math.random() * 0.4) + ';' +
+        'animation-delay:' + (Math.random() * 3) + 's;';
+      container.appendChild(star);
+    }
+  });
+
+  // ========== BANNER SPARKLES ==========
+  var bannerSparkles = document.getElementById('banner-sparkles');
+  var ns = 'http://www.w3.org/2000/svg';
+  for (var b = 0; b < 20; b++) {
+    var svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('class', 'banner-sparkle');
+    var sz = 8 + Math.random() * 16;
+    svg.style.cssText =
+      'width:' + sz + 'px;' +
+      'height:' + sz + 'px;' +
+      'left:' + (Math.random() * 100) + '%;' +
+      'top:' + (Math.random() * 100) + '%;' +
+      'animation-delay:' + (Math.random() * 6) + 's;' +
+      'animation-duration:' + (4 + Math.random() * 4) + 's;' +
+      'opacity:' + (0.1 + Math.random() * 0.25) + ';';
+    var poly = document.createElementNS(ns, 'polygon');
+    poly.setAttribute('points', '12,2 14,9 21,9 15,13 17,20 12,16 7,20 9,13 3,9 10,9');
+    svg.appendChild(poly);
+    bannerSparkles.appendChild(svg);
+  }
+
+  // ========== SCROLL REVEAL (IntersectionObserver) ==========
+  var revealElements = document.querySelectorAll('.reveal');
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  revealElements.forEach(function(el) { revealObserver.observe(el); });
+
+  // ========== COUNTER ANIMATION ==========
+  var statValues = document.querySelectorAll('.stat-value[data-target]');
+  var counterObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  statValues.forEach(function(el) { counterObserver.observe(el); });
+
+  function animateCounter(el) {
+    var target = parseFloat(el.dataset.target);
+    var suffix = el.dataset.suffix || '';
+    var decimals = parseInt(el.dataset.decimals) || 0;
+    var duration = 2000;
+    var start = performance.now();
+
+    function update(now) {
+      var elapsed = now - start;
+      var progress = Math.min(elapsed / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var current = (target * eased).toFixed(decimals);
+      el.innerHTML = current + '<span class="stat-suffix">' + suffix + '</span>';
+      if (progress < 1) requestAnimationFrame(update);
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  // ========== SPARKLE BURST ON CARD HOVER ==========
+  document.querySelectorAll('.feature-card').forEach(function(card) {
+    var hasSparkled = false;
+    card.addEventListener('mouseenter', function() {
+      if (hasSparkled) return;
+      hasSparkled = true;
+      setTimeout(function() { hasSparkled = false; }, 1500);
+
+      var rect = card.getBoundingClientRect();
+      for (var m = 0; m < 6; m++) {
+        var sparkle = document.createElement('div');
+        sparkle.className = 'sparkle-particle';
+        sparkle.innerHTML = '<svg viewBox="0 0 24 24"><polygon points="12,2 14,9 21,9 15,13 17,20 12,16 7,20 9,13 3,9 10,9"/></svg>';
+        sparkle.style.cssText =
+          'left:' + (rect.left + Math.random() * rect.width) + 'px;' +
+          'top:' + (rect.top + rect.height * 0.3 + Math.random() * rect.height * 0.4) + 'px;' +
+          'position:fixed;' +
+          '--dur:' + (1 + Math.random() * 1.5) + 's;' +
+          '--delay:' + (m * 0.08) + 's;';
+        document.body.appendChild(sparkle);
+        (function(el) { setTimeout(function() { el.remove(); }, 3000); })(sparkle);
+      }
+    });
+  });
+
+  // ========== NAV SCROLL EFFECT ==========
+  var mainNav = document.getElementById('mainNav');
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(function() {
+        if (window.scrollY > 100) {
+          mainNav.classList.add('scrolled');
+        } else {
+          mainNav.classList.remove('scrolled');
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // ========== MOBILE NAV TOGGLE ==========
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+
+  navToggle.addEventListener('click', function() {
+    navLinks.classList.toggle('open');
+  });
+
+  navLinks.querySelectorAll('a').forEach(function(link) {
+    link.addEventListener('click', function() {
+      navLinks.classList.remove('open');
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>

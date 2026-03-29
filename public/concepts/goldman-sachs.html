@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Goldman Sachs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =============================================
+     RESET & CUSTOM PROPERTIES
+     ============================================= */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gs-blue: #7399C6;
+    --gs-blue-light: #9BB5D6;
+    --gs-blue-dim: rgba(115, 153, 198, 0.12);
+    --gs-blue-glow: rgba(115, 153, 198, 0.06);
+    --navy: #0D2240;
+    --navy-deep: #071528;
+    --navy-soft: #132E54;
+    --gold: #C5A258;
+    --gold-bright: #D4B46A;
+    --gold-dim: rgba(197, 162, 88, 0.15);
+    --white: #FFFFFF;
+    --white-90: rgba(255, 255, 255, 0.9);
+    --white-70: rgba(255, 255, 255, 0.7);
+    --white-50: rgba(255, 255, 255, 0.5);
+    --white-20: rgba(255, 255, 255, 0.2);
+    --white-08: rgba(255, 255, 255, 0.08);
+    --white-04: rgba(255, 255, 255, 0.04);
+    --black: #000000;
+    --black-90: rgba(0, 0, 0, 0.9);
+    --charcoal: #1A1A1A;
+    --slate: #8A9AB5;
+
+    --font-display: 'Cormorant Garamond', 'Georgia', serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+    --ease-institutional: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-prestige: cubic-bezier(0.22, 0.68, 0, 1.05);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    background: var(--navy-deep);
+    color: var(--white-90);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--gold);
+    color: var(--navy-deep);
+  }
+
+  /* =============================================
+     BACK LINK
+     ============================================= */
+  .back-link {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--white-70);
+    text-decoration: none;
+    padding: 0.6rem 1rem;
+    background: rgba(13, 34, 64, 0.85);
+    border: 1px solid var(--white-08);
+    border-radius: 2px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: all 0.3s var(--ease-institutional);
+  }
+
+  .back-link:hover {
+    color: var(--gold);
+    border-color: var(--gold-dim);
+    background: rgba(13, 34, 64, 0.95);
+  }
+
+  .back-link svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s var(--ease-institutional);
+  }
+
+  .back-link:hover svg {
+    transform: translateX(-3px);
+  }
+
+  /* =============================================
+     NAVIGATION
+     ============================================= */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    padding: 1.25rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: transparent;
+    transition: all 0.4s var(--ease-institutional);
+  }
+
+  .nav.scrolled {
+    background: rgba(7, 21, 40, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--white-08);
+    padding: 0.75rem 3rem;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white-70);
+    text-decoration: none;
+    transition: color 0.3s var(--ease-institutional);
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    transition: width 0.3s var(--ease-institutional);
+  }
+
+  .nav-links a:hover {
+    color: var(--white);
+  }
+
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+
+  /* =============================================
+     HERO
+     ============================================= */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 30%, rgba(115, 153, 198, 0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 30% 70%, rgba(197, 162, 88, 0.04) 0%, transparent 60%),
+      linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 50%, var(--navy-deep) 100%);
+  }
+
+  /* Subtle grid pattern */
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--white-04) 1px, transparent 1px),
+      linear-gradient(90deg, var(--white-04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.3;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 70%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+  }
+
+  .hero-insignia {
+    display: inline-block;
+    margin-bottom: 2rem;
+    padding: 0.75rem 2.5rem;
+    border: 1px solid var(--gold-dim);
+    border-radius: 0;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s var(--ease-reveal);
+  }
+
+  .hero-insignia.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 10vw, 9rem);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    line-height: 0.95;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s var(--ease-reveal) 0.15s;
+  }
+
+  .hero-title.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hero-title span {
+    display: block;
+    font-size: 0.18em;
+    font-family: var(--font-body);
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gs-blue);
+    margin-top: 0.8rem;
+  }
+
+  .hero-rule {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 2rem auto;
+    opacity: 0;
+    transform: scaleX(0);
+    transition: all 1s var(--ease-reveal) 0.3s;
+  }
+
+  .hero-rule.visible {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .hero-philosophy {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--white-70);
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s var(--ease-reveal) 0.45s;
+  }
+
+  .hero-philosophy.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s var(--ease-reveal) 0.6s;
+  }
+
+  .hero-cta-group.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 2.5rem;
+    background: var(--gs-blue);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.35s var(--ease-institutional);
+  }
+
+  .btn-primary:hover {
+    background: var(--gs-blue-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(115, 153, 198, 0.25);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 2.5rem;
+    background: transparent;
+    color: var(--white-90);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--white-20);
+    cursor: pointer;
+    transition: all 0.35s var(--ease-institutional);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    transform: translateY(-2px);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--white-50);
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    animation: scrollPulse 2.5s ease-in-out infinite;
+  }
+
+  .hero-scroll .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(180deg, var(--gold), transparent);
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  /* =============================================
+     SECTION COMMON
+     ============================================= */
+  .section {
+    padding: 7rem 2rem;
+    position: relative;
+  }
+
+  .section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .section-label {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  .section-label.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s var(--ease-reveal);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400;
+    color: var(--white);
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .section-title.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.7s var(--ease-reveal) 0.1s;
+  }
+
+  .section-subtitle {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--white-50);
+    letter-spacing: 0.02em;
+    max-width: 560px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  .section-subtitle.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s var(--ease-reveal) 0.2s;
+  }
+
+  .section-rule {
+    width: 50px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.5rem auto;
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .section-rule.visible {
+    opacity: 1;
+    transform: scaleX(1);
+    transition: all 0.8s var(--ease-reveal) 0.15s;
+  }
+
+  /* =============================================
+     PRINCIPLES SECTION
+     ============================================= */
+  .principles {
+    background: var(--navy);
+  }
+
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .principle-card {
+    padding: 2.5rem 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--white-08);
+    transition: all 0.4s var(--ease-institutional);
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  .principle-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.7s var(--ease-reveal);
+  }
+
+  .principle-card:hover {
+    border-color: var(--gs-blue-dim);
+    background: rgba(115, 153, 198, 0.04);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .principle-number {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--gs-blue);
+    opacity: 0.4;
+    line-height: 1;
+    margin-bottom: 1.25rem;
+  }
+
+  .principle-title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.01em;
+  }
+
+  .principle-desc {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--white-50);
+    line-height: 1.7;
+  }
+
+  /* =============================================
+     STATS SECTION
+     ============================================= */
+  .stats {
+    background: var(--navy-deep);
+    border-top: 1px solid var(--white-08);
+    border-bottom: 1px solid var(--white-08);
+    padding: 5rem 2rem;
+  }
+
+  .stats-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .stat-item {
+    padding: 1.5rem 1rem;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .stat-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s var(--ease-reveal);
+  }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-number .gold {
+    color: var(--gold);
+  }
+
+  .stat-label {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  .stat-divider {
+    display: none;
+    width: 30px;
+    height: 1px;
+    background: var(--white-20);
+    margin: 0 auto 0.75rem;
+  }
+
+  /* =============================================
+     SERVICES SECTION
+     ============================================= */
+  .services {
+    background: linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 100%);
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .service-card {
+    padding: 3rem 2.5rem;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid var(--white-08);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(25px);
+    transition: all 0.4s var(--ease-institutional);
+  }
+
+  .service-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.7s var(--ease-reveal);
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--gs-blue);
+    transition: height 0.5s var(--ease-institutional);
+  }
+
+  .service-card:hover::before {
+    height: 100%;
+  }
+
+  .service-card:hover {
+    background: rgba(115, 153, 198, 0.03);
+    border-color: rgba(115, 153, 198, 0.15);
+    transform: translateY(-3px);
+  }
+
+  .service-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--gold-dim);
+    margin-bottom: 1.5rem;
+    color: var(--gold);
+  }
+
+  .service-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .service-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.01em;
+  }
+
+  .service-desc {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--white-50);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gs-blue);
+    text-decoration: none;
+    transition: all 0.3s var(--ease-institutional);
+  }
+
+  .service-link:hover {
+    color: var(--gs-blue-light);
+    gap: 0.75rem;
+  }
+
+  .service-link svg {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s var(--ease-institutional);
+  }
+
+  .service-link:hover svg {
+    transform: translateX(3px);
+  }
+
+  /* =============================================
+     QUOTE SECTION
+     ============================================= */
+  .quote-section {
+    background: var(--navy);
+    padding: 6rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quote-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(197, 162, 88, 0.03) 0%, transparent 70%);
+  }
+
+  .quote-mark {
+    font-family: var(--font-display);
+    font-size: 5rem;
+    color: var(--gold);
+    opacity: 0.3;
+    line-height: 1;
+    margin-bottom: -1rem;
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  .quote-mark.visible {
+    opacity: 0.3;
+    transform: scale(1);
+    transition: all 0.8s var(--ease-reveal);
+  }
+
+  .quote-text {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--white-90);
+    max-width: 800px;
+    margin: 0 auto 2rem;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .quote-text.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.8s var(--ease-reveal) 0.15s;
+  }
+
+  .quote-attr {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  .quote-attr.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s var(--ease-reveal) 0.3s;
+  }
+
+  /* =============================================
+     CTA SECTION
+     ============================================= */
+  .cta {
+    background: var(--navy-deep);
+    padding: 7rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(115, 153, 198, 0.06) 0%, transparent 70%);
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 1rem;
+    letter-spacing: 0.03em;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .cta-title.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.7s var(--ease-reveal);
+  }
+
+  .cta-desc {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--white-50);
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  .cta-desc.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s var(--ease-reveal) 0.1s;
+  }
+
+  .cta-btn-group {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  .cta-btn-group.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s var(--ease-reveal) 0.2s;
+  }
+
+  /* =============================================
+     FOOTER
+     ============================================= */
+  .footer {
+    background: var(--black);
+    border-top: 1px solid var(--white-08);
+    padding: 4rem 2rem 3rem;
+  }
+
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--white-08);
+    margin-bottom: 2.5rem;
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--white);
+    letter-spacing: 0.1em;
+  }
+
+  .footer-tagline {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--white-50);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-columns {
+    display: flex;
+    gap: 4rem;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .footer-col a {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--white-50);
+    text-decoration: none;
+    transition: color 0.3s var(--ease-institutional);
+  }
+
+  .footer-col a:hover {
+    color: var(--white);
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-legal {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: var(--white-50);
+    letter-spacing: 0.03em;
+  }
+
+  .footer-legal a {
+    color: var(--white-50);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .footer-legal a:hover {
+    color: var(--gold);
+  }
+
+  .footer-seal {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white-50);
+  }
+
+  .footer-seal-icon {
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--gold-dim);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+  }
+
+  .footer-seal-icon svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* =============================================
+     SCROLL ANIMATIONS
+     ============================================= */
+  .animate-in {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  .animate-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.7s var(--ease-reveal), transform 0.7s var(--ease-reveal);
+  }
+
+  /* Staggered delays */
+  .stagger-1 { transition-delay: 0s !important; }
+  .stagger-2 { transition-delay: 0.1s !important; }
+  .stagger-3 { transition-delay: 0.2s !important; }
+  .stagger-4 { transition-delay: 0.3s !important; }
+  .stagger-5 { transition-delay: 0.4s !important; }
+  .stagger-6 { transition-delay: 0.5s !important; }
+
+  /* =============================================
+     RESPONSIVE — 768px
+     ============================================= */
+  @media (max-width: 768px) {
+    .nav {
+      padding: 1rem 1.5rem;
+    }
+
+    .nav.scrolled {
+      padding: 0.5rem 1.5rem;
+    }
+
+    .nav-links {
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      font-size: 0.65rem;
+    }
+
+    .back-link {
+      top: 1rem;
+      left: 1rem;
+      font-size: 0.7rem;
+      padding: 0.4rem 0.75rem;
+    }
+
+    .hero {
+      padding: 5rem 1.5rem 3rem;
+      min-height: 90vh;
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 12vw, 5rem);
+    }
+
+    .hero-philosophy {
+      font-size: 1.1rem;
+    }
+
+    .hero-scroll {
+      display: none;
+    }
+
+    .section {
+      padding: 4rem 1.5rem;
+    }
+
+    .principles-grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .principle-card {
+      padding: 2rem 1.5rem;
+    }
+
+    .stats {
+      padding: 3rem 1.5rem;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .services-grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .service-card {
+      padding: 2rem 1.5rem;
+    }
+
+    .quote-section {
+      padding: 4rem 1.5rem;
+    }
+
+    .quote-text {
+      font-size: 1.3rem;
+    }
+
+    .cta {
+      padding: 4rem 1.5rem;
+    }
+
+    .footer-top {
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .footer-columns {
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      padding: 0.85rem 2rem;
+      font-size: 0.7rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Back Link -->
+  <a href="/index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    All Themes
+  </a>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <ul class="nav-links">
+      <li><a href="#principles">Principles</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-grid"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-insignia animate-in">Est. 2024</div>
+      <h1 class="hero-title animate-in">KPT<span>Precision Technology</span></h1>
+      <div class="hero-rule animate-in"></div>
+      <p class="hero-philosophy animate-in">"Our clients' interests always come first."</p>
+      <div class="hero-cta-group animate-in">
+        <a href="#services" class="btn-primary">
+          Explore Services
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <a href="#contact" class="btn-secondary">Schedule a Briefing</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Principles -->
+  <section class="section principles" id="principles">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-label animate-in">Business Principles</div>
+        <h2 class="section-title animate-in">Built on Conviction</h2>
+        <div class="section-rule animate-in"></div>
+        <p class="section-subtitle animate-in">The same rigor applied to global capital markets, now applied to technology infrastructure and operational excellence.</p>
+      </div>
+      <div class="principles-grid">
+        <div class="principle-card animate-in stagger-1">
+          <div class="principle-number">01</div>
+          <h3 class="principle-title">Client Primacy</h3>
+          <p class="principle-desc">Every engagement begins and ends with the client's objectives. We measure success by outcomes delivered, not hours billed.</p>
+        </div>
+        <div class="principle-card animate-in stagger-2">
+          <div class="principle-number">02</div>
+          <h3 class="principle-title">Intellectual Capital</h3>
+          <p class="principle-desc">We recruit, develop, and retain the most capable technologists. Our people are our most valuable asset and competitive advantage.</p>
+        </div>
+        <div class="principle-card animate-in stagger-3">
+          <div class="principle-number">03</div>
+          <h3 class="principle-title">Institutional Integrity</h3>
+          <p class="principle-desc">We operate with the highest standards of governance, transparency, and risk management. Reputation is earned over decades and lost in moments.</p>
+        </div>
+        <div class="principle-card animate-in stagger-4">
+          <div class="principle-number">04</div>
+          <h3 class="principle-title">Long-Term Orientation</h3>
+          <p class="principle-desc">We build for permanence, not quarterly cycles. Sustainable architecture creates compounding value for every stakeholder.</p>
+        </div>
+        <div class="principle-card animate-in stagger-5">
+          <div class="principle-number">05</div>
+          <h3 class="principle-title">Disciplined Execution</h3>
+          <p class="principle-desc">Superior technology demands superior process. Every deployment is tested, monitored, and continuously improved.</p>
+        </div>
+        <div class="principle-card animate-in stagger-6">
+          <div class="principle-number">06</div>
+          <h3 class="principle-title">Fiduciary Standard</h3>
+          <p class="principle-desc">We hold ourselves to the fiduciary standard in all technical recommendations. Our counsel is unconflicted and evidence-based.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat-item animate-in stagger-1">
+        <div class="stat-number">99<span class="gold">.9</span>%</div>
+        <div class="stat-label">Uptime SLA</div>
+      </div>
+      <div class="stat-item animate-in stagger-2">
+        <div class="stat-number"><span class="gold">$</span>2.4<span class="gold">B</span></div>
+        <div class="stat-label">Transactions Secured</div>
+      </div>
+      <div class="stat-item animate-in stagger-3">
+        <div class="stat-number">140<span class="gold">+</span></div>
+        <div class="stat-label">Enterprise Clients</div>
+      </div>
+      <div class="stat-item animate-in stagger-4">
+        <div class="stat-number">&lt;50<span class="gold">ms</span></div>
+        <div class="stat-label">Avg Response Time</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section services" id="services">
+    <div class="section-container">
+      <div class="section-header">
+        <div class="section-label animate-in">Advisory & Implementation</div>
+        <h2 class="section-title animate-in">Institutional-Grade Solutions</h2>
+        <div class="section-rule animate-in"></div>
+        <p class="section-subtitle animate-in">Comprehensive technology services engineered for organizations that demand uncompromising reliability and performance.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card animate-in stagger-1">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+          </div>
+          <h3 class="service-title">Platform Architecture</h3>
+          <p class="service-desc">End-to-end system design for mission-critical platforms. We engineer infrastructure that scales with institutional-grade reliability, from multi-region deployments to zero-downtime migrations.</p>
+          <a href="#contact" class="service-link">
+            Learn More
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+        <div class="service-card animate-in stagger-2">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <h3 class="service-title">Security & Compliance</h3>
+          <p class="service-desc">Comprehensive cybersecurity frameworks aligned with SOC 2, ISO 27001, and financial regulatory requirements. Threat modeling, penetration testing, and continuous monitoring.</p>
+          <a href="#contact" class="service-link">
+            Learn More
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+        <div class="service-card animate-in stagger-3">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+          </div>
+          <h3 class="service-title">Performance Engineering</h3>
+          <p class="service-desc">Latency optimization, capacity planning, and real-time systems tuning. Purpose-built for high-frequency environments where milliseconds determine market position.</p>
+          <a href="#contact" class="service-link">
+            Learn More
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+        <div class="service-card animate-in stagger-4">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </div>
+          <h3 class="service-title">Strategic Advisory</h3>
+          <p class="service-desc">Technology due diligence, digital transformation roadmaps, and executive counsel. We advise boards and C-suites on technology strategy with Wall Street discipline.</p>
+          <a href="#contact" class="service-link">
+            Learn More
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote -->
+  <section class="quote-section">
+    <div class="quote-mark animate-in">"</div>
+    <blockquote class="quote-text animate-in">Our clients' interests always come first. Our experience shows that if we serve our clients well, our own success will follow.</blockquote>
+    <div class="quote-attr animate-in">Business Principle No. 1</div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="contact">
+    <div class="cta-content">
+      <h2 class="cta-title animate-in">Begin the Conversation</h2>
+      <p class="cta-desc animate-in">The most consequential technology decisions deserve institutional counsel. Our senior partners are available for a confidential preliminary discussion.</p>
+      <div class="cta-btn-group animate-in">
+        <a href="#" class="btn-primary">
+          Request a Meeting
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <a href="#" class="btn-secondary">Download Capabilities Deck</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">KPT</div>
+          <div class="footer-tagline">Precision Technology. Institutional Standards.</div>
+        </div>
+        <div class="footer-columns">
+          <div class="footer-col">
+            <h4>Services</h4>
+            <ul>
+              <li><a href="#services">Platform Architecture</a></li>
+              <li><a href="#services">Security & Compliance</a></li>
+              <li><a href="#services">Performance Engineering</a></li>
+              <li><a href="#services">Strategic Advisory</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Firm</h4>
+            <ul>
+              <li><a href="#principles">Our Principles</a></li>
+              <li><a href="#contact">Leadership</a></li>
+              <li><a href="#contact">Careers</a></li>
+              <li><a href="#contact">Newsroom</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Connect</h4>
+            <ul>
+              <li><a href="#contact">Contact</a></li>
+              <li><a href="#contact">Investor Relations</a></li>
+              <li><a href="#contact">Media Inquiries</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-legal">
+          &copy; 2024 KPT. All rights reserved. &nbsp;|&nbsp; <a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Terms of Service</a> &nbsp;|&nbsp; <a href="#">Disclosures</a>
+        </div>
+        <div class="footer-seal">
+          <div class="footer-seal-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          SOC 2 Compliant
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* =============================================
+       INTERSECTION OBSERVER — SCROLL ANIMATIONS
+       ============================================= */
+    (function() {
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      document.querySelectorAll('.animate-in').forEach(function(el) {
+        observer.observe(el);
+      });
+    })();
+
+    /* =============================================
+       NAV SCROLL BEHAVIOR
+       ============================================= */
+    (function() {
+      var nav = document.getElementById('nav');
+      var scrolled = false;
+
+      window.addEventListener('scroll', function() {
+        var shouldBeScrolled = window.scrollY > 80;
+        if (shouldBeScrolled !== scrolled) {
+          scrolled = shouldBeScrolled;
+          if (scrolled) {
+            nav.classList.add('scrolled');
+          } else {
+            nav.classList.remove('scrolled');
+          }
+        }
+      }, { passive: true });
+    })();
+
+    /* =============================================
+       SMOOTH SCROLL FOR NAV LINKS
+       ============================================= */
+    document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

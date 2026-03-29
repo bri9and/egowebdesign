@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Make Your Day</title>
+<meta name="description" content="KPT — Scroll-stopping technology that goes viral. Built for creators, powered by momentum.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cyan: #25F4EE;
+    --red: #FE2C55;
+    --black: #010101;
+    --black-soft: #121212;
+    --black-card: #1a1a1a;
+    --black-elevated: #222222;
+    --white: #FFFFFF;
+    --white-dim: rgba(255, 255, 255, 0.7);
+    --white-muted: rgba(255, 255, 255, 0.4);
+    --cyan-glow: rgba(37, 244, 238, 0.3);
+    --red-glow: rgba(254, 44, 85, 0.3);
+    --border: rgba(255, 255, 255, 0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    line-height: 1.1;
+    color: var(--white);
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  /* ── Layout ───────────────────────────────────────────────── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .section { padding: 100px 0; }
+
+  /* ── Scroll Animations ─────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── Back Link ─────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: rgba(1, 1, 1, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    transition: all 0.3s ease;
+    letter-spacing: 0.3px;
+  }
+  .back-link:hover {
+    background: var(--black-card);
+    border-color: var(--cyan);
+    box-shadow: 0 0 20px var(--cyan-glow);
+  }
+  .back-link svg { width: 14px; height: 14px; }
+
+  /* ── Navigation ────────────────────────────────────────────── */
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    padding: 16px 0;
+    background: rgba(1, 1, 1, 0.8);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+  }
+  .navbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .nav-logo .music-note {
+    width: 32px;
+    height: 32px;
+    position: relative;
+  }
+  .nav-logo .music-note svg { width: 100%; height: 100%; }
+  .nav-links { display: flex; align-items: center; gap: 32px; }
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white-dim);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    padding: 10px 24px;
+    background: var(--red);
+    color: var(--white) !important;
+    border-radius: 4px;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+  }
+  .nav-cta:hover {
+    background: #e02249;
+    box-shadow: 0 0 30px var(--red-glow);
+  }
+
+  /* ── Hero ───────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: 80px;
+  }
+
+  /* Vertical video feed columns in background */
+  .hero-bg-feeds {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    align-items: stretch;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+  .feed-col {
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    animation: feedScroll 20s linear infinite;
+  }
+  .feed-col:nth-child(2) { animation-delay: -4s; animation-duration: 25s; }
+  .feed-col:nth-child(3) { animation-delay: -8s; animation-duration: 18s; }
+  .feed-col:nth-child(4) { animation-delay: -2s; animation-duration: 22s; }
+  .feed-col:nth-child(5) { animation-delay: -6s; animation-duration: 28s; }
+  .feed-col:nth-child(6) { animation-delay: -10s; animation-duration: 16s; }
+  .feed-col:nth-child(7) { animation-delay: -3s; animation-duration: 24s; }
+  .feed-col:nth-child(8) { animation-delay: -7s; animation-duration: 21s; }
+  .feed-card {
+    width: 100%;
+    border-radius: 8px;
+    background: var(--white);
+  }
+  @keyframes feedScroll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+  }
+
+  /* Radial glow behind hero text */
+  .hero-glow {
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--cyan-glow) 0%, transparent 60%);
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0.4;
+  }
+  .hero-glow-red {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--red-glow) 0%, transparent 60%);
+    top: 40%;
+    right: 10%;
+    transform: translate(50%, -50%);
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+  }
+
+  /* Glitch / 3D text effect */
+  .glitch-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(100px, 18vw, 220px);
+    font-weight: 900;
+    letter-spacing: -4px;
+    position: relative;
+    display: inline-block;
+    color: var(--white);
+    line-height: 0.9;
+  }
+  .glitch-title::before,
+  .glitch-title::after {
+    content: 'KPT';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+  }
+  .glitch-title::before {
+    color: var(--cyan);
+    z-index: -1;
+    animation: glitchCyan 3s infinite;
+  }
+  .glitch-title::after {
+    color: var(--red);
+    z-index: -1;
+    animation: glitchRed 3s infinite;
+  }
+
+  @keyframes glitchCyan {
+    0%, 100% { transform: translate(-3px, -2px); opacity: 0.7; }
+    20% { transform: translate(2px, -3px); opacity: 0.8; }
+    40% { transform: translate(-4px, 1px); clip-path: inset(20% 0 40% 0); opacity: 1; }
+    60% { transform: translate(3px, -1px); clip-path: inset(60% 0 10% 0); opacity: 0.6; }
+    80% { transform: translate(-2px, 3px); opacity: 0.8; }
+  }
+  @keyframes glitchRed {
+    0%, 100% { transform: translate(3px, 2px); opacity: 0.7; }
+    20% { transform: translate(-2px, 3px); opacity: 0.8; }
+    40% { transform: translate(4px, -1px); clip-path: inset(50% 0 20% 0); opacity: 1; }
+    60% { transform: translate(-3px, 1px); clip-path: inset(10% 0 60% 0); opacity: 0.6; }
+    80% { transform: translate(2px, -3px); opacity: 0.8; }
+  }
+
+  .hero-tagline {
+    font-size: clamp(18px, 3vw, 28px);
+    color: var(--white-dim);
+    margin-top: 24px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+  }
+  .hero-tagline strong {
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--white-muted);
+    margin-top: 16px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 36px;
+    background: var(--red);
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-primary:hover {
+    background: #e02249;
+    box-shadow: 0 0 40px var(--red-glow), 0 8px 32px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 36px;
+    background: transparent;
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 700;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Inter', sans-serif;
+  }
+  .btn-secondary:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 30px var(--cyan-glow);
+    transform: translateY(-2px);
+  }
+
+  /* Scroll indicator */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--white-muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: floatBounce 2s ease-in-out infinite;
+  }
+  .scroll-indicator .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--white-muted), transparent);
+  }
+  @keyframes floatBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* ── Music Note Logo ────────────────────────────────────────── */
+  .tiktok-note {
+    display: inline-block;
+    position: relative;
+    width: 48px;
+    height: 48px;
+  }
+  .tiktok-note svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── Video Feed Section ─────────────────────────────────────── */
+  .feed-section {
+    background: var(--black-soft);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+    line-height: 1.05;
+  }
+
+  .section-desc {
+    font-size: 17px;
+    color: var(--white-dim);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* Phone mockups for vertical video */
+  .phone-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 60px;
+    flex-wrap: wrap;
+  }
+  .phone-mockup {
+    width: 200px;
+    height: 360px;
+    background: var(--black-card);
+    border-radius: 24px;
+    border: 2px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .phone-mockup:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+  .phone-notch {
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 6px;
+    background: var(--black);
+    border-radius: 3px;
+    z-index: 3;
+  }
+  .phone-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px 16px;
+  }
+  .phone-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 40%, transparent 70%);
+    z-index: 1;
+  }
+  .phone-text {
+    position: relative;
+    z-index: 2;
+  }
+  .phone-user {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .phone-caption {
+    font-size: 11px;
+    color: var(--white-dim);
+    line-height: 1.4;
+  }
+  .phone-music {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: var(--white-dim);
+    margin-top: 8px;
+  }
+  .phone-music .spinning-disc {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--white-dim);
+    animation: spin 3s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .phone-sidebar {
+    position: absolute;
+    right: 12px;
+    bottom: 80px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .phone-sidebar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .phone-sidebar-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+  .phone-sidebar-count {
+    font-size: 9px;
+    color: var(--white-dim);
+  }
+
+  /* Phone color accents */
+  .phone-mockup:nth-child(1) .phone-accent {
+    position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(135deg, rgba(37, 244, 238, 0.15), rgba(254, 44, 85, 0.1));
+  }
+  .phone-mockup:nth-child(2) .phone-accent {
+    position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(135deg, rgba(254, 44, 85, 0.15), rgba(37, 244, 238, 0.1));
+  }
+  .phone-mockup:nth-child(3) .phone-accent {
+    position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(135deg, rgba(254, 44, 85, 0.1), rgba(37, 244, 238, 0.15));
+  }
+  .phone-mockup:nth-child(4) .phone-accent {
+    position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(135deg, rgba(37, 244, 238, 0.1), rgba(255, 255, 255, 0.05));
+  }
+
+  /* ── Features Grid ─────────────────────────────────────────── */
+  .features-section { position: relative; }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+    background: var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .feature-card {
+    background: var(--black-soft);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+  .feature-card:hover {
+    background: var(--black-card);
+  }
+  .feature-card:hover .feature-icon {
+    transform: scale(1.1);
+  }
+
+  .feature-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 24px;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .feature-icon.cyan { background: rgba(37, 244, 238, 0.12); color: var(--cyan); }
+  .feature-icon.red { background: rgba(254, 44, 85, 0.12); color: var(--red); }
+
+  .feature-card h3 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+  .feature-card p {
+    font-size: 14px;
+    color: var(--white-muted);
+    line-height: 1.7;
+  }
+
+  /* Accent line on hover */
+  .feature-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--red));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+  .feature-card:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* ── Stats ─────────────────────────────────────────────────── */
+  .stats-section {
+    background: var(--black-soft);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .stats-section::before {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--red-glow) 0%, transparent 70%);
+    top: -200px;
+    right: -100px;
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-item {
+    padding: 20px 0;
+  }
+  .stat-number {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-number .cyan { color: var(--cyan); }
+  .stat-number .red { color: var(--red); }
+  .stat-number .gradient {
+    background: linear-gradient(135deg, var(--cyan), var(--red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    font-size: 14px;
+    color: var(--white-muted);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Viral Section (Social Proof) ───────────────────────────── */
+  .viral-section { position: relative; overflow: hidden; }
+  .viral-section .container {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+  }
+  .viral-text { flex: 1; }
+  .viral-visual {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Hashtag tags */
+  .hashtag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+  }
+  .hashtag {
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--black-soft);
+    color: var(--white-dim);
+    transition: all 0.3s ease;
+  }
+  .hashtag:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: 0 0 20px var(--cyan-glow);
+  }
+  .hashtag.hot {
+    border-color: var(--red);
+    color: var(--red);
+  }
+  .hashtag.hot:hover {
+    box-shadow: 0 0 20px var(--red-glow);
+  }
+
+  /* Music note animation */
+  .music-visual {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--black-card), var(--black-elevated));
+    border: 3px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: spin 8s linear infinite;
+  }
+  .music-visual::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 2px dashed rgba(255, 255, 255, 0.06);
+    animation: spin 15s linear infinite reverse;
+  }
+  .music-visual-inner {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--black);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spin 8s linear infinite reverse;
+  }
+  .music-visual-inner svg {
+    width: 40px;
+    height: 40px;
+    fill: var(--white);
+  }
+
+  /* ── CTA Section ───────────────────────────────────────────── */
+  .cta-section {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: linear-gradient(180deg,
+      transparent 0%,
+      rgba(254, 44, 85, 0.05) 50%,
+      rgba(37, 244, 238, 0.03) 100%
+    );
+    pointer-events: none;
+  }
+
+  .cta-title {
+    font-size: clamp(36px, 6vw, 72px);
+    font-weight: 900;
+    letter-spacing: -2px;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .cta-title .glitch-inline {
+    position: relative;
+    display: inline-block;
+  }
+  .cta-title .glitch-inline::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: -2px;
+    color: var(--cyan);
+    opacity: 0.6;
+    z-index: -1;
+  }
+  .cta-title .glitch-inline::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 2px;
+    color: var(--red);
+    opacity: 0.6;
+    z-index: -1;
+  }
+
+  .cta-desc {
+    font-size: 18px;
+    color: var(--white-dim);
+    max-width: 500px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Footer ────────────────────────────────────────────────── */
+  .footer {
+    padding: 60px 0 40px;
+    border-top: 1px solid var(--border);
+    background: var(--black);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+  .footer-brand .footer-logo {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-brand p {
+    font-size: 14px;
+    color: var(--white-muted);
+    line-height: 1.7;
+    max-width: 300px;
+  }
+  .footer-col h4 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    color: var(--white-dim);
+  }
+  .footer-col a {
+    display: block;
+    font-size: 14px;
+    color: var(--white-muted);
+    padding: 4px 0;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--white); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--white-muted);
+  }
+  .footer-bottom-links {
+    display: flex;
+    gap: 24px;
+  }
+  .footer-bottom-links a { transition: color 0.2s; }
+  .footer-bottom-links a:hover { color: var(--white); }
+
+  /* ── Floating Music Notes ──────────────────────────────────── */
+  .floating-notes {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .floating-note {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0;
+    animation: noteFloat 6s ease-in-out infinite;
+  }
+  .floating-note:nth-child(1) { left: 5%; animation-delay: 0s; }
+  .floating-note:nth-child(2) { left: 15%; animation-delay: 1.5s; font-size: 16px; }
+  .floating-note:nth-child(3) { left: 30%; animation-delay: 3s; font-size: 24px; }
+  .floating-note:nth-child(4) { left: 50%; animation-delay: 0.8s; }
+  .floating-note:nth-child(5) { left: 70%; animation-delay: 2.5s; font-size: 18px; }
+  .floating-note:nth-child(6) { left: 85%; animation-delay: 4s; font-size: 14px; }
+  .floating-note:nth-child(7) { left: 95%; animation-delay: 1s; font-size: 22px; }
+  @keyframes noteFloat {
+    0% { bottom: -30px; opacity: 0; transform: translateX(0) rotate(0deg); }
+    20% { opacity: 0.15; }
+    50% { opacity: 0.1; }
+    80% { opacity: 0.05; }
+    100% { bottom: 110vh; opacity: 0; transform: translateX(-40px) rotate(-30deg); }
+  }
+
+  /* ── Responsive ────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .section { padding: 60px 0; }
+
+    .nav-links { display: none; }
+
+    .glitch-title {
+      letter-spacing: -2px;
+    }
+
+    .phone-row {
+      gap: 12px;
+    }
+    .phone-mockup {
+      width: 140px;
+      height: 250px;
+      border-radius: 16px;
+    }
+    .phone-mockup:nth-child(4) { display: none; }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 1px;
+    }
+    .feature-card {
+      padding: 32px 24px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .viral-section .container {
+      flex-direction: column;
+      gap: 40px;
+    }
+    .music-visual {
+      width: 200px;
+      height: 200px;
+    }
+    .music-visual-inner {
+      width: 70px;
+      height: 70px;
+    }
+
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .footer-brand { grid-column: 1 / -1; }
+
+    .footer-bottom {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .hero-bg-feeds { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating Music Notes -->
+<div class="floating-notes">
+  <div class="floating-note">&x266A;</div>
+  <div class="floating-note">&x266B;</div>
+  <div class="floating-note">&x266A;</div>
+  <div class="floating-note">&x266B;</div>
+  <div class="floating-note">&x266A;</div>
+  <div class="floating-note">&x266B;</div>
+  <div class="floating-note">&x266A;</div>
+</div>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+  All Concepts
+</a>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="container">
+    <a href="#" class="nav-logo">
+      <!-- TikTok-style music note -->
+      <div class="music-note">
+        <svg viewBox="0 0 48 48" fill="none">
+          <path d="M34 6h-4v24.5c0 3.6-2.9 6.5-6.5 6.5S17 34.1 17 30.5s2.9-6.5 6.5-6.5c1.2 0 2.3.3 3.3.9V18c-1.1-.3-2.2-.5-3.3-.5-6.4 0-11.5 5.1-11.5 11.5S17.1 40.5 23.5 40.5 35 35.4 35 29V14c2.2 1.6 4.8 2.6 7.5 2.8v-5c-4.7-.4-8.5-3.7-8.5-5.8z" fill="white"/>
+          <path d="M34 6h-4v24.5c0 3.6-2.9 6.5-6.5 6.5S17 34.1 17 30.5s2.9-6.5 6.5-6.5c1.2 0 2.3.3 3.3.9V18c-1.1-.3-2.2-.5-3.3-.5-6.4 0-11.5 5.1-11.5 11.5S17.1 40.5 23.5 40.5 35 35.4 35 29V14c2.2 1.6 4.8 2.6 7.5 2.8v-5c-4.7-.4-8.5-3.7-8.5-5.8z" fill="#25F4EE" transform="translate(-2, -1)" opacity="0.6"/>
+          <path d="M34 6h-4v24.5c0 3.6-2.9 6.5-6.5 6.5S17 34.1 17 30.5s2.9-6.5 6.5-6.5c1.2 0 2.3.3 3.3.9V18c-1.1-.3-2.2-.5-3.3-.5-6.4 0-11.5 5.1-11.5 11.5S17.1 40.5 23.5 40.5 35 35.4 35 29V14c2.2 1.6 4.8 2.6 7.5 2.8v-5c-4.7-.4-8.5-3.7-8.5-5.8z" fill="#FE2C55" transform="translate(2, 1)" opacity="0.6"/>
+        </svg>
+      </div>
+      KPT
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#viral">Trending</a>
+      <a href="#stats">Impact</a>
+      <a href="#cta" class="nav-cta">Get Started</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <!-- Background video feed columns -->
+  <div class="hero-bg-feeds">
+    <div class="feed-col">
+      <div class="feed-card" style="height:120px;"></div>
+      <div class="feed-card" style="height:180px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+      <div class="feed-card" style="height:160px;"></div>
+      <div class="feed-card" style="height:120px;"></div>
+      <div class="feed-card" style="height:180px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+      <div class="feed-card" style="height:160px;"></div>
+    </div>
+    <div class="feed-col">
+      <div class="feed-card" style="height:160px;"></div>
+      <div class="feed-card" style="height:120px;"></div>
+      <div class="feed-card" style="height:200px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+      <div class="feed-card" style="height:160px;"></div>
+      <div class="feed-card" style="height:120px;"></div>
+      <div class="feed-card" style="height:200px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+    </div>
+    <div class="feed-col">
+      <div class="feed-card" style="height:140px;"></div>
+      <div class="feed-card" style="height:200px;"></div>
+      <div class="feed-card" style="height:120px;"></div>
+      <div class="feed-card" style="height:180px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+      <div class="feed-card" style="height:200px;"></div>
+      <div class="feed-card" style="height:120px;"></div>
+      <div class="feed-card" style="height:180px;"></div>
+    </div>
+    <div class="feed-col">
+      <div class="feed-card" style="height:180px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+      <div class="feed-card" style="height:160px;"></div>
+      <div class="feed-card" style="height:200px;"></div>
+      <div class="feed-card" style="height:180px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+      <div class="feed-card" style="height:160px;"></div>
+      <div class="feed-card" style="height:200px;"></div>
+    </div>
+    <div class="feed-col">
+      <div class="feed-card" style="height:200px;"></div>
+      <div class="feed-card" style="height:120px;"></div>
+      <div class="feed-card" style="height:180px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+      <div class="feed-card" style="height:200px;"></div>
+      <div class="feed-card" style="height:120px;"></div>
+      <div class="feed-card" style="height:180px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+    </div>
+    <div class="feed-col">
+      <div class="feed-card" style="height:120px;"></div>
+      <div class="feed-card" style="height:160px;"></div>
+      <div class="feed-card" style="height:200px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+      <div class="feed-card" style="height:120px;"></div>
+      <div class="feed-card" style="height:160px;"></div>
+      <div class="feed-card" style="height:200px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+    </div>
+    <div class="feed-col">
+      <div class="feed-card" style="height:160px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+      <div class="feed-card" style="height:120px;"></div>
+      <div class="feed-card" style="height:200px;"></div>
+      <div class="feed-card" style="height:160px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+      <div class="feed-card" style="height:120px;"></div>
+      <div class="feed-card" style="height:200px;"></div>
+    </div>
+    <div class="feed-col">
+      <div class="feed-card" style="height:140px;"></div>
+      <div class="feed-card" style="height:180px;"></div>
+      <div class="feed-card" style="height:160px;"></div>
+      <div class="feed-card" style="height:120px;"></div>
+      <div class="feed-card" style="height:140px;"></div>
+      <div class="feed-card" style="height:180px;"></div>
+      <div class="feed-card" style="height:160px;"></div>
+      <div class="feed-card" style="height:120px;"></div>
+    </div>
+  </div>
+
+  <div class="hero-glow"></div>
+  <div class="hero-glow-red"></div>
+
+  <div class="hero-content">
+    <div class="reveal">
+      <div class="glitch-title">KPT</div>
+    </div>
+    <p class="hero-tagline reveal reveal-delay-1"><strong>Make Your Day.</strong></p>
+    <p class="hero-sub reveal reveal-delay-2">
+      Scroll-stopping technology that captures attention and goes viral. Built for creators, fueled by momentum.
+    </p>
+    <div class="hero-buttons reveal reveal-delay-3">
+      <a href="#cta" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Start Creating
+      </a>
+      <a href="#features" class="btn-secondary">Explore</a>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    Scroll
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- Vertical Video Feed Section -->
+<section class="section feed-section">
+  <div class="container">
+    <div style="text-align:center; max-width:700px; margin:0 auto;">
+      <div class="section-label reveal">For You</div>
+      <h2 class="section-title reveal reveal-delay-1">Your feed.<br>Your algorithm.</h2>
+      <p class="section-desc reveal reveal-delay-2" style="margin:0 auto;">
+        Every scroll is personalized. KPT learns what captures your attention and delivers exactly what you need, right when you need it.
+      </p>
+    </div>
+    <div class="phone-row">
+      <div class="phone-mockup reveal reveal-delay-1">
+        <div class="phone-accent"></div>
+        <div class="phone-notch"></div>
+        <div class="phone-gradient"></div>
+        <div class="phone-content">
+          <div class="phone-text">
+            <div class="phone-user">@kpt_official</div>
+            <div class="phone-caption">The algorithm doesn't miss. #fyp #tech</div>
+            <div class="phone-music"><div class="spinning-disc"></div> Original Sound - KPT</div>
+          </div>
+        </div>
+        <div class="phone-sidebar">
+          <div class="phone-sidebar-item"><div class="phone-sidebar-icon">&hearts;</div><div class="phone-sidebar-count">847K</div></div>
+          <div class="phone-sidebar-item"><div class="phone-sidebar-icon">&#x1F4AC;</div><div class="phone-sidebar-count">12.4K</div></div>
+          <div class="phone-sidebar-item"><div class="phone-sidebar-icon">&#x21AA;</div><div class="phone-sidebar-count">54K</div></div>
+        </div>
+      </div>
+      <div class="phone-mockup reveal reveal-delay-2">
+        <div class="phone-accent"></div>
+        <div class="phone-notch"></div>
+        <div class="phone-gradient"></div>
+        <div class="phone-content">
+          <div class="phone-text">
+            <div class="phone-user">@creator.life</div>
+            <div class="phone-caption">POV: your project goes viral overnight</div>
+            <div class="phone-music"><div class="spinning-disc"></div> Trending Sound</div>
+          </div>
+        </div>
+        <div class="phone-sidebar">
+          <div class="phone-sidebar-item"><div class="phone-sidebar-icon">&hearts;</div><div class="phone-sidebar-count">1.2M</div></div>
+          <div class="phone-sidebar-item"><div class="phone-sidebar-icon">&#x1F4AC;</div><div class="phone-sidebar-count">38K</div></div>
+          <div class="phone-sidebar-item"><div class="phone-sidebar-icon">&#x21AA;</div><div class="phone-sidebar-count">92K</div></div>
+        </div>
+      </div>
+      <div class="phone-mockup reveal reveal-delay-3">
+        <div class="phone-accent"></div>
+        <div class="phone-notch"></div>
+        <div class="phone-gradient"></div>
+        <div class="phone-content">
+          <div class="phone-text">
+            <div class="phone-user">@tech.wizard</div>
+            <div class="phone-caption">Wait for it... the reveal is everything</div>
+            <div class="phone-music"><div class="spinning-disc"></div> Oh No - Kreepa</div>
+          </div>
+        </div>
+        <div class="phone-sidebar">
+          <div class="phone-sidebar-item"><div class="phone-sidebar-icon">&hearts;</div><div class="phone-sidebar-count">456K</div></div>
+          <div class="phone-sidebar-item"><div class="phone-sidebar-icon">&#x1F4AC;</div><div class="phone-sidebar-count">8.7K</div></div>
+          <div class="phone-sidebar-item"><div class="phone-sidebar-icon">&#x21AA;</div><div class="phone-sidebar-count">31K</div></div>
+        </div>
+      </div>
+      <div class="phone-mockup reveal reveal-delay-4">
+        <div class="phone-accent"></div>
+        <div class="phone-notch"></div>
+        <div class="phone-gradient"></div>
+        <div class="phone-content">
+          <div class="phone-text">
+            <div class="phone-user">@build.daily</div>
+            <div class="phone-caption">Day 47 of building in public #buildinpublic</div>
+            <div class="phone-music"><div class="spinning-disc"></div> Aesthetic - Tollan Kim</div>
+          </div>
+        </div>
+        <div class="phone-sidebar">
+          <div class="phone-sidebar-item"><div class="phone-sidebar-icon">&hearts;</div><div class="phone-sidebar-count">234K</div></div>
+          <div class="phone-sidebar-item"><div class="phone-sidebar-icon">&#x1F4AC;</div><div class="phone-sidebar-count">5.1K</div></div>
+          <div class="phone-sidebar-item"><div class="phone-sidebar-icon">&#x21AA;</div><div class="phone-sidebar-count">18K</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="section features-section">
+  <div class="container">
+    <div style="text-align:center; max-width:600px; margin:0 auto;">
+      <div class="section-label reveal">Features</div>
+      <h2 class="section-title reveal reveal-delay-1">Built to go <span style="color:var(--red);">viral</span></h2>
+      <p class="section-desc reveal reveal-delay-2" style="margin:0 auto;">
+        Every feature is engineered for maximum reach, engagement, and creative expression.
+      </p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon cyan">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+        </div>
+        <h3>For You Engine</h3>
+        <p>AI-powered recommendations that learn your taste in real time. Every scroll gets smarter.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon red">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Duet & Stitch</h3>
+        <p>Build on top of what works. Remix, react, and collaborate with anyone in the ecosystem.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon cyan">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        </div>
+        <h3>Sound Library</h3>
+        <p>Millions of trending sounds at your fingertips. Ride the wave or start your own trend.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon red">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3>Viral Effects</h3>
+        <p>AR filters, green screen, time warp, and effects that make every creation pop.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon cyan">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>Live Engage</h3>
+        <p>Go live and connect with your audience in real time. Gifts, Q&A, and instant feedback.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon red">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Analytics</h3>
+        <p>Track views, reach, engagement rate, and audience demographics. Data-driven growth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section id="stats" class="section stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-number"><span class="cyan">1B+</span></div>
+        <div class="stat-label">Monthly Active Users</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-number"><span class="red">95</span><span style="font-size:0.6em; color:var(--red);">min</span></div>
+        <div class="stat-label">Avg. Daily Watch Time</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-number"><span class="gradient">4.7B</span></div>
+        <div class="stat-label">Daily Video Views</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-number"><span class="cyan">150+</span></div>
+        <div class="stat-label">Markets Worldwide</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Viral / Trending Section -->
+<section id="viral" class="section viral-section">
+  <div class="container">
+    <div class="viral-text">
+      <div class="section-label reveal">Trending Now</div>
+      <h2 class="section-title reveal reveal-delay-1">Sounds that <span style="color:var(--cyan);">move</span> the world</h2>
+      <p class="section-desc reveal reveal-delay-2">
+        From bedroom creators to Billboard charts. Every trend starts with one video, one sound, one moment that captures lightning in a bottle.
+      </p>
+      <div class="hashtag-cloud reveal reveal-delay-3">
+        <span class="hashtag hot">#FYP</span>
+        <span class="hashtag">#BuildInPublic</span>
+        <span class="hashtag hot">#Viral</span>
+        <span class="hashtag">#TechTok</span>
+        <span class="hashtag">#LearnOnKPT</span>
+        <span class="hashtag hot">#Trending</span>
+        <span class="hashtag">#CreatorEconomy</span>
+        <span class="hashtag">#CodeTok</span>
+        <span class="hashtag hot">#ForYou</span>
+        <span class="hashtag">#SmallBusiness</span>
+      </div>
+    </div>
+    <div class="viral-visual reveal reveal-delay-2">
+      <div class="music-visual">
+        <div class="music-visual-inner">
+          <svg viewBox="0 0 48 48" fill="none">
+            <path d="M34 6h-4v24.5c0 3.6-2.9 6.5-6.5 6.5S17 34.1 17 30.5s2.9-6.5 6.5-6.5c1.2 0 2.3.3 3.3.9V18c-1.1-.3-2.2-.5-3.3-.5-6.4 0-11.5 5.1-11.5 11.5S17.1 40.5 23.5 40.5 35 35.4 35 29V14c2.2 1.6 4.8 2.6 7.5 2.8v-5c-4.7-.4-8.5-3.7-8.5-5.8z" fill="white"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" class="section cta-section">
+  <div class="container">
+    <div class="section-label reveal">Ready?</div>
+    <h2 class="cta-title reveal reveal-delay-1">
+      <span class="glitch-inline" data-text="Make">Make</span> Your Day.
+    </h2>
+    <p class="cta-desc reveal reveal-delay-2">
+      Join a billion creators and start building something the world can't scroll past.
+    </p>
+    <div class="cta-buttons reveal reveal-delay-3">
+      <a href="#" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+        Sign Up Free
+      </a>
+      <a href="#" class="btn-secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Watch Demo
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+            <path d="M34 6h-4v24.5c0 3.6-2.9 6.5-6.5 6.5S17 34.1 17 30.5s2.9-6.5 6.5-6.5c1.2 0 2.3.3 3.3.9V18c-1.1-.3-2.2-.5-3.3-.5-6.4 0-11.5 5.1-11.5 11.5S17.1 40.5 23.5 40.5 35 35.4 35 29V14c2.2 1.6 4.8 2.6 7.5 2.8v-5c-4.7-.4-8.5-3.7-8.5-5.8z" fill="white"/>
+            <path d="M34 6h-4v24.5c0 3.6-2.9 6.5-6.5 6.5S17 34.1 17 30.5s2.9-6.5 6.5-6.5c1.2 0 2.3.3 3.3.9V18c-1.1-.3-2.2-.5-3.3-.5-6.4 0-11.5 5.1-11.5 11.5S17.1 40.5 23.5 40.5 35 35.4 35 29V14c2.2 1.6 4.8 2.6 7.5 2.8v-5c-4.7-.4-8.5-3.7-8.5-5.8z" fill="#25F4EE" transform="translate(-1.5, -0.8)" opacity="0.5"/>
+            <path d="M34 6h-4v24.5c0 3.6-2.9 6.5-6.5 6.5S17 34.1 17 30.5s2.9-6.5 6.5-6.5c1.2 0 2.3.3 3.3.9V18c-1.1-.3-2.2-.5-3.3-.5-6.4 0-11.5 5.1-11.5 11.5S17.1 40.5 23.5 40.5 35 35.4 35 29V14c2.2 1.6 4.8 2.6 7.5 2.8v-5c-4.7-.4-8.5-3.7-8.5-5.8z" fill="#FE2C55" transform="translate(1.5, 0.8)" opacity="0.5"/>
+          </svg>
+          KPT
+        </div>
+        <p>Technology that captures attention and inspires creativity. Make every moment count.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#">For You</a>
+        <a href="#">LIVE</a>
+        <a href="#">Effects</a>
+        <a href="#">Sounds</a>
+        <a href="#">Creator Tools</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Newsroom</a>
+        <a href="#">Careers</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="#">Creator Portal</a>
+        <a href="#">Developer API</a>
+        <a href="#">Safety Center</a>
+        <a href="#">Community</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 KPT. Make Your Day.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Terms</a>
+        <a href="#">Privacy</a>
+        <a href="#">Cookies</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // IntersectionObserver scroll reveal
+  document.addEventListener('DOMContentLoaded', () => {
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    reveals.forEach(el => observer.observe(el));
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

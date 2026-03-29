@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Epic Games</title>
+<meta name="description" content="KPT — Powered by Unreal ambition. Game store meets game engine. Built for creators who ship worlds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Custom Properties ───────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --epic-blue: #0078F2;
+    --epic-blue-bright: #3399FF;
+    --epic-blue-dim: rgba(0, 120, 242, 0.15);
+    --epic-blue-glow: rgba(0, 120, 242, 0.4);
+    --epic-blue-deep: #0060C0;
+    --black: #121212;
+    --black-pure: #000000;
+    --dark-gray: #1A1A1A;
+    --dark-gray-2: #222222;
+    --dark-gray-3: #2A2A2A;
+    --mid-gray: #3A3A3A;
+    --light-gray: #888888;
+    --off-white: #E8E8E8;
+    --white: #FFFFFF;
+    --accent-cyan: #00D4FF;
+    --accent-green: #44E060;
+    --accent-orange: #FF6C2F;
+    --accent-yellow: #FFD500;
+    --surface: rgba(255, 255, 255, 0.04);
+    --surface-hover: rgba(255, 255, 255, 0.08);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(0, 120, 242, 0.5);
+    --max-width: 1200px;
+    --nav-height: 72px;
+    --font: 'Inter', -apple-system, system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--off-white);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font);
+    color: var(--white);
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── Scroll Reveal ───────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ── Keyframes ───────────────────────────────────────────── */
+  @keyframes heroGlow {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+  }
+
+  @keyframes gridPulse {
+    0%, 100% { opacity: 0.03; }
+    50% { opacity: 0.08; }
+  }
+
+  @keyframes floatUp {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes scanLine {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes countUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Navigation ──────────────────────────────────────────── */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    z-index: 1000;
+    background: rgba(18, 18, 18, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    transition: transform 0.3s ease;
+  }
+
+  .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .nav-logo {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-logo-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--epic-blue);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    letter-spacing: 0;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--light-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a.active { color: var(--white); }
+  .nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--epic-blue);
+    border-radius: 1px;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .nav-back {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--light-gray);
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-back:hover { color: var(--epic-blue-bright); }
+  .nav-back svg { width: 16px; height: 16px; }
+
+  .btn-nav {
+    padding: 8px 20px;
+    background: var(--epic-blue);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .btn-nav:hover { background: var(--epic-blue-bright); transform: translateY(-1px); }
+
+  /* ── Hero ─────────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding-top: var(--nav-height);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0, 120, 242, 0.15), transparent 70%),
+      radial-gradient(ellipse 50% 50% at 80% 20%, rgba(0, 212, 255, 0.06), transparent),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(0, 120, 242, 0.08), transparent),
+      var(--black);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridPulse 6s ease-in-out infinite;
+  }
+
+  .hero-scan {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--epic-blue-glow), transparent);
+    animation: scanLine 8s linear infinite;
+    opacity: 0.6;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--epic-blue-glow) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: heroGlow 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+    padding: 0 24px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: var(--epic-blue-dim);
+    border: 1px solid rgba(0, 120, 242, 0.3);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--epic-blue-bright);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 32px;
+  }
+
+  .hero-badge-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    animation: heroGlow 2s ease-in-out infinite;
+  }
+
+  .hero-title {
+    font-size: clamp(64px, 10vw, 120px);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--white) 0%, var(--white) 50%, var(--epic-blue-bright) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 300;
+    color: var(--light-gray);
+    letter-spacing: -0.01em;
+    margin-bottom: 40px;
+    line-height: 1.4;
+  }
+
+  .hero-subtitle strong {
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 36px;
+    background: var(--epic-blue);
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.15) 50%, transparent 70%);
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .btn-primary:hover { background: var(--epic-blue-bright); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0, 120, 242, 0.4); }
+  .btn-primary:hover::before { opacity: 1; }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 36px;
+    background: transparent;
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 700;
+    border: 2px solid var(--mid-gray);
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--white); background: rgba(255, 255, 255, 0.05); transform: translateY(-2px); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 2;
+  }
+
+  .hero-scroll-text {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--light-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .hero-scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--epic-blue), transparent);
+    animation: floatUp 2s ease-in-out infinite;
+  }
+
+  /* ── Trusted Bar ─────────────────────────────────────────── */
+  .trusted-bar {
+    padding: 60px 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--dark-gray);
+  }
+
+  .trusted-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--light-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .trusted-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .trusted-logo {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--mid-gray);
+    letter-spacing: -0.01em;
+    transition: color 0.3s;
+    white-space: nowrap;
+  }
+  .trusted-logo:hover { color: var(--light-gray); }
+
+  /* ── Section shared ──────────────────────────────────────── */
+  .section { padding: 120px 0; }
+  .section-alt { background: var(--dark-gray); }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--epic-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(32px, 4vw, 52px);
+    margin-bottom: 20px;
+    letter-spacing: -0.03em;
+  }
+
+  .section-desc {
+    font-size: 18px;
+    color: var(--light-gray);
+    max-width: 600px;
+    line-height: 1.7;
+  }
+
+  /* ── Features (Launcher Grid) ────────────────────────────── */
+  .features-header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+
+  .features-header .section-desc {
+    margin: 0 auto;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 40px 32px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--epic-blue);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .feature-card:hover {
+    border-color: var(--border-hover);
+    background: var(--surface-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+  .feature-card:hover::before { transform: scaleX(1); }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--epic-blue-dim);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    font-size: 22px;
+  }
+
+  .feature-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    color: var(--light-gray);
+    line-height: 1.7;
+  }
+
+  .feature-tag {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-radius: 3px;
+    background: var(--epic-blue-dim);
+    color: var(--epic-blue-bright);
+  }
+
+  /* ── Engine Showcase (Split) ─────────────────────────────── */
+  .engine-showcase {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .engine-visual {
+    position: relative;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .engine-ring {
+    position: absolute;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    animation: rotate 30s linear infinite;
+  }
+  .engine-ring-1 { width: 100%; height: 100%; }
+  .engine-ring-2 { width: 75%; height: 75%; animation-duration: 20s; animation-direction: reverse; border-color: rgba(0, 120, 242, 0.15); }
+  .engine-ring-3 { width: 50%; height: 50%; animation-duration: 15s; border-color: rgba(0, 120, 242, 0.25); }
+
+  .engine-ring-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--epic-blue);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--epic-blue-glow);
+  }
+  .engine-ring-1 .engine-ring-dot { top: 0; left: 50%; transform: translate(-50%, -50%); }
+  .engine-ring-2 .engine-ring-dot { bottom: 0; right: 12.5%; transform: translate(50%, 50%); }
+  .engine-ring-3 .engine-ring-dot { top: 25%; left: 0; transform: translate(-50%, -50%); }
+
+  .engine-core {
+    width: 80px;
+    height: 80px;
+    background: var(--epic-blue);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--white);
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 60px var(--epic-blue-glow), 0 0 120px rgba(0, 120, 242, 0.15);
+  }
+
+  .engine-info .section-desc {
+    margin-bottom: 32px;
+  }
+
+  .engine-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .engine-stat {
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+
+  .engine-stat-value {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--epic-blue-bright);
+    letter-spacing: -0.02em;
+  }
+
+  .engine-stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--light-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
+
+  /* ── Store Showcase (Game Cards) ─────────────────────────── */
+  .store-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 48px;
+  }
+
+  .store-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .store-card {
+    background: var(--dark-gray-2);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s;
+    border: 1px solid transparent;
+  }
+  .store-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--border-hover);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  }
+
+  .store-card-img {
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, var(--dark-gray-3), var(--dark-gray));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .store-card-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(18, 18, 18, 0.8) 0%, transparent 50%);
+  }
+
+  .store-card-glyph {
+    font-size: 48px;
+    opacity: 0.3;
+    position: relative;
+    z-index: 1;
+  }
+
+  .store-card-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-radius: 3px;
+    z-index: 2;
+  }
+  .badge-free { background: var(--epic-blue); color: var(--white); }
+  .badge-sale { background: var(--accent-orange); color: var(--white); }
+  .badge-new { background: var(--accent-green); color: var(--black); }
+  .badge-hot { background: var(--accent-yellow); color: var(--black); }
+
+  .store-card-info { padding: 16px; }
+  .store-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .store-card-meta {
+    font-size: 12px;
+    color: var(--light-gray);
+  }
+  .store-card-price {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--white);
+  }
+  .store-card-price .original {
+    text-decoration: line-through;
+    color: var(--light-gray);
+    font-weight: 500;
+    margin-right: 8px;
+    font-size: 12px;
+  }
+
+  /* ── Stats Banner ────────────────────────────────────────── */
+  .stats-banner {
+    padding: 80px 0;
+    background: linear-gradient(135deg, var(--dark-gray) 0%, var(--black) 50%, var(--dark-gray) 100%);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats-banner::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    height: 400px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse, rgba(0, 120, 242, 0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-item {}
+
+  .stat-number {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat-number .accent { color: var(--epic-blue-bright); }
+
+  .stat-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--light-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Workflow Section ────────────────────────────────────── */
+  .workflow-header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+
+  .workflow-header .section-desc {
+    margin: 0 auto;
+  }
+
+  .workflow-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    position: relative;
+  }
+
+  .workflow-steps::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: 12.5%;
+    right: 12.5%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--epic-blue), var(--epic-blue), transparent);
+    opacity: 0.3;
+  }
+
+  .workflow-step {
+    text-align: center;
+    position: relative;
+  }
+
+  .workflow-step-num {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    background: var(--dark-gray-2);
+    border: 2px solid var(--mid-gray);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--epic-blue-bright);
+    transition: all 0.3s;
+    position: relative;
+    z-index: 2;
+  }
+  .workflow-step:hover .workflow-step-num {
+    border-color: var(--epic-blue);
+    background: var(--epic-blue-dim);
+    box-shadow: 0 0 30px var(--epic-blue-glow);
+    transform: scale(1.1);
+  }
+
+  .workflow-step-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  .workflow-step-desc {
+    font-size: 13px;
+    color: var(--light-gray);
+    line-height: 1.6;
+  }
+
+  /* ── CTA ──────────────────────────────────────────────────── */
+  .cta-section {
+    padding: 140px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0, 120, 242, 0.12), transparent 70%),
+      var(--black);
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .cta-title {
+    font-size: clamp(36px, 5vw, 64px);
+    margin-bottom: 20px;
+    letter-spacing: -0.03em;
+  }
+
+  .cta-desc {
+    font-size: 18px;
+    color: var(--light-gray);
+    max-width: 500px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Footer ──────────────────────────────────────────────── */
+  .footer {
+    background: var(--dark-gray);
+    border-top: 1px solid var(--border);
+    padding: 64px 0 32px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+
+  .footer-brand-name {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--white);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-brand-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--epic-blue);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .footer-brand-desc {
+    font-size: 14px;
+    color: var(--light-gray);
+    line-height: 1.7;
+    max-width: 300px;
+  }
+
+  .footer-col-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 20px;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-links a {
+    font-size: 14px;
+    color: var(--light-gray);
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--epic-blue-bright); }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--light-gray);
+  }
+
+  .footer-socials {
+    display: flex;
+    gap: 16px;
+  }
+
+  .footer-social {
+    width: 32px;
+    height: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  .footer-social:hover {
+    border-color: var(--epic-blue);
+    background: var(--epic-blue-dim);
+    color: var(--epic-blue-bright);
+  }
+
+  /* ── Responsive ──────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+
+    .hero-title {
+      font-size: clamp(48px, 14vw, 80px);
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn-primary, .btn-secondary {
+      width: 100%;
+      max-width: 320px;
+      justify-content: center;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .feature-card {
+      padding: 28px 24px;
+    }
+
+    .engine-showcase {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .engine-visual {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .store-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .store-cards {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .stat-number {
+      font-size: 36px;
+    }
+
+    .workflow-steps {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .workflow-steps::before { display: none; }
+
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .section { padding: 80px 0; }
+    .cta-section { padding: 100px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ NAVIGATION ═══════════════════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-left">
+      <a href="#" class="nav-logo">
+        <span class="nav-logo-icon">K</span>
+        KPT
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features" class="active">Store</a></li>
+        <li><a href="#engine">Engine</a></li>
+        <li><a href="#library">Library</a></li>
+        <li><a href="#workflow">Workflow</a></li>
+      </ul>
+    </div>
+    <div class="nav-right">
+      <a href="/index.html" class="nav-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Gallery
+      </a>
+      <button class="btn-nav">Get KPT</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-scan"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge reveal">
+      <span class="hero-badge-dot"></span>
+      Unreal Performance
+    </div>
+    <h1 class="hero-title reveal reveal-delay-1">KPT</h1>
+    <p class="hero-subtitle reveal reveal-delay-2">
+      The platform where <strong>creators ship worlds</strong>.<br>
+      Game store meets game engine. Built different.
+    </p>
+    <div class="hero-actions reveal reveal-delay-3">
+      <button class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Launcher
+      </button>
+      <button class="btn-secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Watch Trailer
+      </button>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span class="hero-scroll-text">Explore</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════ TRUSTED BAR ═══════════════════ -->
+<div class="trusted-bar">
+  <div class="container">
+    <p class="trusted-label reveal">Trusted by industry leaders</p>
+    <div class="trusted-logos reveal reveal-delay-1">
+      <span class="trusted-logo">Fortnite</span>
+      <span class="trusted-logo">Rocket League</span>
+      <span class="trusted-logo">Fall Guys</span>
+      <span class="trusted-logo">MetaHuman</span>
+      <span class="trusted-logo">Twinmotion</span>
+      <span class="trusted-logo">RealityScan</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ FEATURES ═══════════════════ -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="features-header">
+      <p class="section-label reveal">Core Systems</p>
+      <h2 class="section-title reveal reveal-delay-1">Everything creators need.<br>Nothing they don't.</h2>
+      <p class="section-desc reveal reveal-delay-2">Six foundational systems engineered for maximum output with zero bloat. Each one battle-tested at scale.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">&#9889;</div>
+        <h3 class="feature-title">Nanite Rendering</h3>
+        <p class="feature-desc">Virtualized geometry that streams in real-time. Billions of polygons, zero LOD management. Cinema-quality at interactive framerates.</p>
+        <span class="feature-tag">Core Engine</span>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">&#127912;</div>
+        <h3 class="feature-title">Lumen GI</h3>
+        <p class="feature-desc">Dynamic global illumination and reflections. No baking, no probes, no compromises. Light bounces everywhere, instantly.</p>
+        <span class="feature-tag">Lighting</span>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">&#128640;</div>
+        <h3 class="feature-title">World Partition</h3>
+        <p class="feature-desc">Massive open worlds that stream seamlessly. Automatic level streaming, distance-based loading, collaborative editing built in.</p>
+        <span class="feature-tag">Scale</span>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">&#129302;</div>
+        <h3 class="feature-title">MetaHuman Pipeline</h3>
+        <p class="feature-desc">Photorealistic digital humans created in minutes. Full facial rig, motion capture ready, animation blueprints included.</p>
+        <span class="feature-tag">Characters</span>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-4">
+        <div class="feature-icon">&#128736;</div>
+        <h3 class="feature-title">Blueprint System</h3>
+        <p class="feature-desc">Visual scripting that ships AAA games. No code required for prototyping. Seamless C++ integration when you need performance.</p>
+        <span class="feature-tag">Tools</span>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-5">
+        <div class="feature-icon">&#127758;</div>
+        <h3 class="feature-title">Cross-Platform Deploy</h3>
+        <p class="feature-desc">One codebase, every platform. PC, console, mobile, VR, web. Single click deployment with automated optimization per target.</p>
+        <span class="feature-tag">Shipping</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ENGINE SHOWCASE ═══════════════════ -->
+<section class="section section-alt" id="engine">
+  <div class="container">
+    <div class="engine-showcase">
+      <div class="engine-visual reveal">
+        <div class="engine-ring engine-ring-1"><span class="engine-ring-dot"></span></div>
+        <div class="engine-ring engine-ring-2"><span class="engine-ring-dot"></span></div>
+        <div class="engine-ring engine-ring-3"><span class="engine-ring-dot"></span></div>
+        <div class="engine-core">K</div>
+      </div>
+
+      <div class="engine-info">
+        <p class="section-label reveal">The Engine</p>
+        <h2 class="section-title reveal reveal-delay-1">Unreal power.<br>Unreal simplicity.</h2>
+        <p class="section-desc reveal reveal-delay-2">Built on decades of real-time rendering expertise. From indie prototypes to AAA blockbusters, the engine scales to match your ambition. Free to create, 5% after your first million.</p>
+
+        <div class="engine-stats reveal reveal-delay-3">
+          <div class="engine-stat">
+            <div class="engine-stat-value">5.4</div>
+            <div class="engine-stat-label">Engine Version</div>
+          </div>
+          <div class="engine-stat">
+            <div class="engine-stat-value">100%</div>
+            <div class="engine-stat-label">Source Access</div>
+          </div>
+          <div class="engine-stat">
+            <div class="engine-stat-value">28M+</div>
+            <div class="engine-stat-label">Creators</div>
+          </div>
+          <div class="engine-stat">
+            <div class="engine-stat-value">$0</div>
+            <div class="engine-stat-label">To Start</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ STORE / LIBRARY ═══════════════════ -->
+<section class="section" id="library">
+  <div class="container">
+    <div class="store-header">
+      <div>
+        <p class="section-label reveal">The Store</p>
+        <h2 class="section-title reveal reveal-delay-1">Your library. Always growing.</h2>
+      </div>
+      <button class="btn-secondary reveal reveal-delay-2" style="padding: 10px 24px; font-size: 13px;">Browse All</button>
+    </div>
+
+    <div class="store-cards">
+      <div class="store-card reveal">
+        <div class="store-card-img" style="background: linear-gradient(135deg, #1a1a3e, #0a0a1a);">
+          <span class="store-card-glyph">&#9876;</span>
+          <span class="store-card-badge badge-free">Free</span>
+        </div>
+        <div class="store-card-info">
+          <div class="store-card-title">Realm of Shadows</div>
+          <div class="store-card-meta">Action RPG</div>
+          <div class="store-card-price">Free</div>
+        </div>
+      </div>
+
+      <div class="store-card reveal reveal-delay-1">
+        <div class="store-card-img" style="background: linear-gradient(135deg, #1a2a1a, #0a1a0a);">
+          <span class="store-card-glyph">&#127793;</span>
+          <span class="store-card-badge badge-sale">-40%</span>
+        </div>
+        <div class="store-card-info">
+          <div class="store-card-title">Verdant Worlds</div>
+          <div class="store-card-meta">Survival Craft</div>
+          <div class="store-card-price"><span class="original">$29.99</span>$17.99</div>
+        </div>
+      </div>
+
+      <div class="store-card reveal reveal-delay-2">
+        <div class="store-card-img" style="background: linear-gradient(135deg, #2a1a1a, #1a0a0a);">
+          <span class="store-card-glyph">&#128293;</span>
+          <span class="store-card-badge badge-hot">Hot</span>
+        </div>
+        <div class="store-card-info">
+          <div class="store-card-title">Inferno Protocol</div>
+          <div class="store-card-meta">FPS Tactical</div>
+          <div class="store-card-price">$49.99</div>
+        </div>
+      </div>
+
+      <div class="store-card reveal reveal-delay-3">
+        <div class="store-card-img" style="background: linear-gradient(135deg, #0a1a2a, #0a0a1a);">
+          <span class="store-card-glyph">&#128752;</span>
+          <span class="store-card-badge badge-new">New</span>
+        </div>
+        <div class="store-card-info">
+          <div class="store-card-title">Stellar Drift</div>
+          <div class="store-card-meta">Space Sim</div>
+          <div class="store-card-price">$39.99</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ STATS BANNER ═══════════════════ -->
+<section class="stats-banner">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-number">230<span class="accent">M</span></div>
+        <div class="stat-label">Players</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-number">2,<span class="accent">500</span>+</div>
+        <div class="stat-label">Games</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-number">99<span class="accent">.</span>9%</div>
+        <div class="stat-label">Uptime</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-number"><span class="accent">$</span>50B</div>
+        <div class="stat-label">Creator Revenue</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ WORKFLOW ═══════════════════ -->
+<section class="section section-alt" id="workflow">
+  <div class="container">
+    <div class="workflow-header">
+      <p class="section-label reveal">How It Works</p>
+      <h2 class="section-title reveal reveal-delay-1">From concept to shipped.<br>Four steps. Zero friction.</h2>
+      <p class="section-desc reveal reveal-delay-2">The complete pipeline from first prototype to global launch. Every tool integrated, every step optimized.</p>
+    </div>
+
+    <div class="workflow-steps">
+      <div class="workflow-step reveal">
+        <div class="workflow-step-num">01</div>
+        <h3 class="workflow-step-title">Create</h3>
+        <p class="workflow-step-desc">Open the engine, pick a template or start blank. Nanite and Lumen are on by default.</p>
+      </div>
+
+      <div class="workflow-step reveal reveal-delay-1">
+        <div class="workflow-step-num">02</div>
+        <h3 class="workflow-step-title">Build</h3>
+        <p class="workflow-step-desc">Blueprint or C++, your call. World Partition handles scale. MetaHuman handles faces.</p>
+      </div>
+
+      <div class="workflow-step reveal reveal-delay-2">
+        <div class="workflow-step-num">03</div>
+        <h3 class="workflow-step-title">Test</h3>
+        <p class="workflow-step-desc">Multiplayer testing baked in. Automated QA tools, crash analytics, performance profiling.</p>
+      </div>
+
+      <div class="workflow-step reveal reveal-delay-3">
+        <div class="workflow-step-num">04</div>
+        <h3 class="workflow-step-title">Ship</h3>
+        <p class="workflow-step-desc">One-click deploy to every platform. Built-in store page, achievements, matchmaking, analytics.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CTA ═══════════════════ -->
+<section class="cta-section">
+  <div class="cta-bg"></div>
+  <div class="container cta-content">
+    <p class="section-label reveal">Ready to build?</p>
+    <h2 class="cta-title reveal reveal-delay-1">Your world is waiting.</h2>
+    <p class="cta-desc reveal reveal-delay-2">Join millions of creators building the next generation of interactive experiences. Free to start. Free to dream.</p>
+    <div class="cta-buttons reveal reveal-delay-3">
+      <button class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Get KPT Free
+      </button>
+      <button class="btn-secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        Learn More
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand-name">
+          <span class="footer-brand-icon">K</span>
+          KPT
+        </div>
+        <p class="footer-brand-desc">Game store meets game engine. The platform where creators ship worlds, powered by Unreal ambition and MetaHuman realism.</p>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Platform</h4>
+        <ul class="footer-links">
+          <li><a href="#">Store</a></li>
+          <li><a href="#">Engine</a></li>
+          <li><a href="#">Marketplace</a></li>
+          <li><a href="#">Creator Portal</a></li>
+          <li><a href="#">Documentation</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Community</h4>
+        <ul class="footer-links">
+          <li><a href="#">Forums</a></li>
+          <li><a href="#">Dev Blog</a></li>
+          <li><a href="#">Learning</a></li>
+          <li><a href="#">Events</a></li>
+          <li><a href="#">MegaGrants</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Company</h4>
+        <ul class="footer-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Newsroom</a></li>
+          <li><a href="#">Legal</a></li>
+          <li><a href="#">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 KPT. Built with Unreal ambition.</span>
+      <a href="/index.html" style="color: var(--epic-blue-bright); font-weight: 600;">Back to Gallery</a>
+      <div class="footer-socials">
+        <a href="#" class="footer-social" aria-label="Twitter">&#120143;</a>
+        <a href="#" class="footer-social" aria-label="YouTube">&#9654;</a>
+        <a href="#" class="footer-social" aria-label="Discord">&#9830;</a>
+        <a href="#" class="footer-social" aria-label="GitHub">&#9733;</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // IntersectionObserver for scroll animations
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+    reveals.forEach(el => observer.observe(el));
+
+    // Nav hide/show on scroll
+    let lastScroll = 0;
+    const nav = document.querySelector('.nav');
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > lastScroll && currentScroll > 100) {
+        nav.style.transform = 'translateY(-100%)';
+        nav.style.transition = 'transform 0.3s ease';
+      } else {
+        nav.style.transform = 'translateY(0)';
+      }
+      lastScroll = currentScroll;
+    });
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

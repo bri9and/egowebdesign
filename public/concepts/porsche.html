@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Porsche</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,300&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --porsche-red: #D5001C;
+    --porsche-red-deep: #A30015;
+    --porsche-red-dim: rgba(213, 0, 28, 0.12);
+    --porsche-red-glow: rgba(213, 0, 28, 0.35);
+    --black: #000000;
+    --black-warm: #0A0A0A;
+    --white: #FFFFFF;
+    --platinum: #C0C0C8;
+    --silver: #A8A8B0;
+    --matte-gray: #1A1A1E;
+    --carbon: #121214;
+    --gunmetal: #2A2A30;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A8A8B0;
+    --text-muted: #58585E;
+    --border: rgba(255, 255, 255, 0.06);
+    --border-hover: rgba(255, 255, 255, 0.15);
+    --font-body: 'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --nav-height: 60px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  /* ==============================
+     SCROLL REVEAL
+     ============================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    background: transparent;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease;
+  }
+
+  nav.scrolled {
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-back {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-back:hover { color: var(--porsche-red); }
+
+  .nav-back svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+  }
+
+  .nav-brand {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+  }
+
+  .nav-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ==============================
+     RACING STRIPE
+     ============================== */
+  .racing-stripe {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100vh;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      var(--porsche-red-dim) 20%,
+      rgba(213, 0, 28, 0.06) 50%,
+      transparent 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ==============================
+     HERO SECTION
+     ============================== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 40%, rgba(213, 0, 28, 0.06) 0%, transparent 70%),
+      radial-gradient(circle at 50% 100%, rgba(213, 0, 28, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* Subtle grid pattern */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--porsche-red);
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--porsche-red);
+    vertical-align: middle;
+    margin: 0 16px;
+    opacity: 0.5;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(100px, 15vw, 200px);
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: var(--white);
+    line-height: 0.85;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .hero-title span {
+    display: inline-block;
+    position: relative;
+  }
+
+  /* Red underline accent */
+  .hero-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: var(--porsche-red);
+    margin: 24px auto 0;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--platinum);
+    margin-top: 40px;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-top: 16px;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* 911 silhouette watermark */
+  .hero-watermark {
+    position: absolute;
+    bottom: -20px;
+    right: -5%;
+    width: 55%;
+    max-width: 700px;
+    opacity: 0.025;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 2;
+  }
+
+  .hero-scroll span {
+    font-size: 9px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--porsche-red), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  /* ==============================
+     SECTION UTILITY
+     ============================== */
+  section {
+    position: relative;
+    padding: 120px 48px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--porsche-red);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .section-desc {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-muted);
+    max-width: 500px;
+    line-height: 1.7;
+  }
+
+  /* Divider */
+  .divider {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border-hover), transparent);
+  }
+
+  /* ==============================
+     PHILOSOPHY SECTION
+     ============================== */
+  .philosophy {
+    background: var(--black-warm);
+  }
+
+  .philosophy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 64px;
+  }
+
+  .philosophy-visual {
+    position: relative;
+    aspect-ratio: 4/3;
+    background: var(--carbon);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .philosophy-visual::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, transparent, var(--porsche-red), transparent);
+  }
+
+  .rpm-gauge {
+    position: relative;
+    width: 200px;
+    height: 200px;
+  }
+
+  .rpm-gauge svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .rpm-track {
+    fill: none;
+    stroke: var(--gunmetal);
+    stroke-width: 6;
+  }
+
+  .rpm-fill {
+    fill: none;
+    stroke: var(--porsche-red);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 502;
+    stroke-dashoffset: 502;
+    transition: stroke-dashoffset 2s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: drop-shadow(0 0 8px var(--porsche-red-glow));
+  }
+
+  .rpm-gauge.animated .rpm-fill {
+    stroke-dashoffset: 125;
+  }
+
+  .rpm-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  .rpm-value {
+    font-family: var(--font-display);
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .rpm-unit {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .philosophy-text h3 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+
+  .philosophy-text p {
+    font-size: 15px;
+    color: var(--silver);
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  .philosophy-text .accent-line {
+    width: 40px;
+    height: 2px;
+    background: var(--porsche-red);
+    margin-bottom: 24px;
+  }
+
+  /* ==============================
+     FEATURE CARDS
+     ============================== */
+  .features {
+    background: var(--carbon);
+  }
+
+  .features-header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+
+  .features-header .section-desc {
+    margin: 0 auto;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .feature-card {
+    position: relative;
+    background: var(--matte-gray);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 48px 36px 40px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--porsche-red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .feature-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
+  }
+
+  .feature-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .feature-number {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--porsche-red);
+    margin-bottom: 24px;
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--platinum);
+  }
+
+  .feature-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    fill: none;
+  }
+
+  .feature-card h3 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .feature-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .feature-card .feature-tag {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--porsche-red);
+    padding: 6px 12px;
+    border: 1px solid var(--porsche-red-dim);
+    border-radius: 1px;
+  }
+
+  /* ==============================
+     STATS / INSTRUMENT CLUSTER
+     ============================== */
+  .stats {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stats-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .stats-header .section-desc {
+    margin: 0 auto;
+  }
+
+  .stats-cluster {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .stat-cell {
+    position: relative;
+    padding: 48px 32px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    transition: background 0.3s ease;
+  }
+
+  .stat-cell:last-child { border-right: none; }
+
+  .stat-cell:hover {
+    background: rgba(213, 0, 28, 0.03);
+  }
+
+  .stat-cell::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--porsche-red);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stat-cell:hover::after {
+    width: 100%;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 4px;
+  }
+
+  .stat-value .stat-unit {
+    font-size: 0.4em;
+    font-weight: 500;
+    color: var(--porsche-red);
+    vertical-align: super;
+    letter-spacing: 0.05em;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  .stat-bar {
+    width: 40px;
+    height: 2px;
+    background: var(--gunmetal);
+    margin: 16px auto 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 1px;
+  }
+
+  .stat-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--porsche-red);
+    border-radius: 1px;
+    width: 0;
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .stat-cell.animated .stat-bar-fill {
+    width: 100%;
+  }
+
+  /* ==============================
+     PRECISION SECTION
+     ============================== */
+  .precision {
+    background: var(--black-warm);
+  }
+
+  .precision-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+    margin-top: 64px;
+  }
+
+  .precision-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .precision-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s ease;
+  }
+
+  .precision-item:first-child { padding-top: 0; }
+
+  .precision-item:hover {
+    padding-left: 8px;
+  }
+
+  .precision-item:hover .precision-num {
+    color: var(--porsche-red);
+  }
+
+  .precision-num {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--gunmetal);
+    min-width: 32px;
+    padding-top: 2px;
+    transition: color 0.3s ease;
+  }
+
+  .precision-content h4 {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .precision-content p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .precision-visual {
+    position: relative;
+    background: var(--carbon);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .precision-visual::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 24px;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--porsche-red), transparent);
+    opacity: 0.2;
+  }
+
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .spec-row:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .spec-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .spec-value {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.02em;
+  }
+
+  .spec-value.red { color: var(--porsche-red); }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  .cta {
+    background: var(--black);
+    text-align: center;
+    padding: 140px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(213, 0, 28, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Racing stripes behind CTA */
+  .cta::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 200px;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 49%,
+      rgba(213, 0, 28, 0.02) 49%,
+      rgba(213, 0, 28, 0.02) 51%,
+      transparent 51%
+    );
+    pointer-events: none;
+  }
+
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cta-desc {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+    position: relative;
+    z-index: 2;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 36px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: none;
+  }
+
+  .btn-primary {
+    background: var(--porsche-red);
+    color: var(--white);
+  }
+
+  .btn-primary:hover {
+    background: var(--porsche-red-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px var(--porsche-red-glow);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--platinum);
+    border: 1px solid var(--border-hover);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--porsche-red);
+    color: var(--white);
+    transform: translateY(-2px);
+  }
+
+  .btn svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    stroke-width: 2;
+    fill: none;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: var(--carbon);
+    border-top: 1px solid var(--border);
+    padding: 48px;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .footer-brand {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: var(--text-primary);
+  }
+
+  .footer-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+  }
+
+  .footer-right {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .footer-link {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+  }
+
+  .footer-link:hover { color: var(--porsche-red); }
+
+  .footer-divider {
+    width: 1px;
+    height: 16px;
+    background: var(--border);
+  }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 768px) {
+    nav { padding: 0 24px; }
+    section { padding: 80px 24px; }
+    .hero { padding: 100px 24px 60px; }
+
+    .philosophy-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .feature-card { padding: 32px 24px; }
+
+    .stats-cluster {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-cell {
+      padding: 32px 20px;
+    }
+
+    .stat-cell:nth-child(2) { border-right: none; }
+    .stat-cell:nth-child(2) { border-bottom: 1px solid var(--border); }
+    .stat-cell:nth-child(1) { border-bottom: 1px solid var(--border); }
+
+    .precision-layout {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .cta { padding: 100px 24px; }
+
+    .footer-inner {
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+    }
+
+    .footer-right {
+      gap: 20px;
+    }
+
+    .hero-tagline {
+      font-size: 14px;
+      letter-spacing: 4px;
+    }
+
+    .hero-watermark {
+      width: 90%;
+      bottom: -10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-title {
+      letter-spacing: 0.08em;
+    }
+
+    .stats-cluster {
+      grid-template-columns: 1fr;
+    }
+
+    .stat-cell {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat-cell:last-child { border-bottom: none; }
+
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      width: 16px;
+      margin: 0 10px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Racing Stripe -->
+  <div class="racing-stripe"></div>
+
+  <!-- Navigation -->
+  <nav id="nav">
+    <a href="/index.html" class="nav-back">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      Gallery
+    </a>
+    <span class="nav-brand">KPT</span>
+    <span class="nav-label">Porsche</span>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-eyebrow reveal">Precision Engineered</div>
+    <h1 class="hero-title reveal reveal-delay-1">KPT</h1>
+    <p class="hero-tagline reveal reveal-delay-2">There Is No Substitute</p>
+    <p class="hero-sub reveal reveal-delay-3">Technology built without compromise</p>
+
+    <!-- 911 Silhouette Watermark -->
+    <svg class="hero-watermark" viewBox="0 0 800 300" fill="none">
+      <path d="M50 260 L50 240 Q50 200 80 180 L120 160 Q160 140 200 135 L280 130 Q320 128 360 128 L420 128 Q460 128 490 130 L520 132 Q560 135 580 140 L620 155 Q660 170 680 185 L710 205 Q730 220 740 235 L750 260 Z" stroke="white" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <circle cx="180" cy="262" r="35" stroke="white" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <circle cx="180" cy="262" r="20" stroke="white" stroke-width="1" fill="none" opacity="0.3"/>
+      <circle cx="640" cy="262" r="35" stroke="white" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <circle cx="640" cy="262" r="20" stroke="white" stroke-width="1" fill="none" opacity="0.3"/>
+      <path d="M280 130 Q300 110 340 105 L400 102 Q440 100 460 102 L520 108 Q540 112 550 120" stroke="white" stroke-width="1" fill="none" opacity="0.3"/>
+      <line x1="50" y1="262" x2="750" y2="262" stroke="white" stroke-width="0.5" opacity="0.2"/>
+    </svg>
+
+    <div class="hero-scroll">
+      <span>Explore</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- Philosophy Section -->
+  <section class="philosophy">
+    <div class="container">
+      <div class="philosophy-grid">
+        <div class="philosophy-visual reveal">
+          <div class="rpm-gauge" id="rpmGauge">
+            <svg viewBox="0 0 180 180">
+              <circle class="rpm-track" cx="90" cy="90" r="80" />
+              <circle class="rpm-fill" cx="90" cy="90" r="80" />
+            </svg>
+            <div class="rpm-label">
+              <div class="rpm-value">9K</div>
+              <div class="rpm-unit">RPM</div>
+            </div>
+          </div>
+        </div>
+        <div class="philosophy-text reveal reveal-delay-1">
+          <div class="section-label">Philosophy</div>
+          <h3>Driven by Dreams.<br>Built by Engineers.</h3>
+          <div class="accent-line"></div>
+          <p>Every detail serves a purpose. Every line of code is precision-machined. We do not decorate. We engineer.</p>
+          <p>Like the flat-six that powers the 911, KPT is rear-mounted ambition: unconventional architecture delivering unmatched performance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <div class="features-header">
+        <div class="section-label reveal">Engineering</div>
+        <h2 class="section-title reveal reveal-delay-1">Precision at Every Layer</h2>
+        <p class="section-desc reveal reveal-delay-2">Six disciplines. Zero compromise. Each system engineered with the same obsession Porsche applies to aerodynamics.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Card 1 -->
+        <div class="feature-card reveal">
+          <div class="feature-number">01</div>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <h3>Power Delivery</h3>
+          <p>Flat response curves. Instant torque on demand. Performance architecture that never lags under load.</p>
+          <span class="feature-tag">Turbo S</span>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-number">02</div>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <h3>Lap Precision</h3>
+          <p>Millisecond-accurate timing. Every operation measured, every cycle accountable. No wasted motion.</p>
+          <span class="feature-tag">Chronograph</span>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-number">03</div>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Active Safety</h3>
+          <p>Multi-layered defense systems. Predictive threat assessment. Protection that activates before you sense danger.</p>
+          <span class="feature-tag">PSM</span>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="feature-card reveal">
+          <div class="feature-number">04</div>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h3>Cockpit Interface</h3>
+          <p>Driver-centric controls. Information hierarchy engineered around the operator. No clutter, pure function.</p>
+          <span class="feature-tag">PCM</span>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-number">05</div>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3>Telemetry</h3>
+          <p>Real-time system vitals. Track every metric across every node. Full race data at the pit wall.</p>
+          <span class="feature-tag">Live Data</span>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-number">06</div>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+          </div>
+          <h3>Heritage Mode</h3>
+          <p>Seventy years of motorsport DNA. Legacy protocols honoring proven engineering. Evolution, not revolution.</p>
+          <span class="feature-tag">Le Mans</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats / Instrument Cluster -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-header">
+        <div class="section-label reveal">Performance Data</div>
+        <h2 class="section-title reveal reveal-delay-1">The Numbers Speak</h2>
+        <p class="section-desc reveal reveal-delay-2">Measured. Verified. Certified. Raw performance telemetry from the engineering floor.</p>
+      </div>
+
+      <div class="stats-cluster reveal">
+        <div class="stat-cell" data-target="0.9" data-suffix="ms">
+          <div class="stat-value">0.9<span class="stat-unit">ms</span></div>
+          <div class="stat-label">Response Time</div>
+          <div class="stat-bar"><div class="stat-bar-fill"></div></div>
+        </div>
+        <div class="stat-cell" data-target="99.97" data-suffix="%">
+          <div class="stat-value">99.97<span class="stat-unit">%</span></div>
+          <div class="stat-label">Uptime SLA</div>
+          <div class="stat-bar"><div class="stat-bar-fill"></div></div>
+        </div>
+        <div class="stat-cell" data-target="24" data-suffix="/7">
+          <div class="stat-value">24<span class="stat-unit">/7</span></div>
+          <div class="stat-label">Endurance</div>
+          <div class="stat-bar"><div class="stat-bar-fill"></div></div>
+        </div>
+        <div class="stat-cell" data-target="911" data-suffix="">
+          <div class="stat-value">911<span class="stat-unit">+</span></div>
+          <div class="stat-label">Deployments</div>
+          <div class="stat-bar"><div class="stat-bar-fill"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Precision Section -->
+  <section class="precision">
+    <div class="container">
+      <div class="section-label reveal">Specifications</div>
+      <h2 class="section-title reveal reveal-delay-1">Engineered to Specification</h2>
+      <p class="section-desc reveal reveal-delay-2">Every tolerance measured. Every component stress-tested. This is what obsession looks like in production.</p>
+
+      <div class="precision-layout">
+        <ul class="precision-list">
+          <li class="precision-item reveal">
+            <span class="precision-num">01</span>
+            <div class="precision-content">
+              <h4>Monocoque Architecture</h4>
+              <p>Single-shell structure. No bolted-on afterthoughts. Structural integrity from the ground up.</p>
+            </div>
+          </li>
+          <li class="precision-item reveal reveal-delay-1">
+            <span class="precision-num">02</span>
+            <div class="precision-content">
+              <h4>Active Aero Pipeline</h4>
+              <p>Dynamic resource allocation that adjusts in real time. Maximum downforce when you need it.</p>
+            </div>
+          </li>
+          <li class="precision-item reveal reveal-delay-2">
+            <span class="precision-num">03</span>
+            <div class="precision-content">
+              <h4>Carbon Ceramic Security</h4>
+              <p>Fade-free protection under extreme conditions. The harder you push, the better it performs.</p>
+            </div>
+          </li>
+          <li class="precision-item reveal reveal-delay-3">
+            <span class="precision-num">04</span>
+            <div class="precision-content">
+              <h4>PDK Deployment</h4>
+              <p>Dual-clutch delivery. Seamless gear changes with zero torque interruption. Ship without downtime.</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="precision-visual reveal reveal-delay-2">
+          <div class="spec-row">
+            <span class="spec-label">Architecture</span>
+            <span class="spec-value">Flat-6</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Displacement</span>
+            <span class="spec-value">4.0L</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Output</span>
+            <span class="spec-value red">518 HP</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">0-60</span>
+            <span class="spec-value">2.7s</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Top Speed</span>
+            <span class="spec-value red">205 mph</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Weight</span>
+            <span class="spec-value">1,450 kg</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="section-label reveal">Ready</div>
+    <h2 class="cta-title reveal reveal-delay-1">Start Your Engine</h2>
+    <p class="cta-desc reveal reveal-delay-2">No waiting list. No compromise. Pure performance technology, engineered in Stuttgart precision, delivered worldwide.</p>
+    <div class="cta-buttons reveal reveal-delay-3">
+      <a href="#" class="btn btn-primary">
+        Configure
+        <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+      <a href="#" class="btn btn-secondary">
+        Technical Specs
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span class="footer-brand">KPT</span>
+        <span class="footer-sub">Precision. Performance. Purpose.</span>
+      </div>
+      <div class="footer-right">
+        <a href="/index.html" class="footer-link">Gallery</a>
+        <div class="footer-divider"></div>
+        <span class="footer-link">Porsche Concept</span>
+        <div class="footer-divider"></div>
+        <span class="footer-link" style="color: var(--text-muted); opacity: 0.5;">&copy; KPT 2026</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // ==============================
+    // Scroll Reveal (IntersectionObserver)
+    // ==============================
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ==============================
+    // Nav scroll behavior
+    // ==============================
+    const nav = document.getElementById('nav');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      if (scrollY > 60) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+      lastScroll = scrollY;
+    }, { passive: true });
+
+    // ==============================
+    // RPM Gauge Animation
+    // ==============================
+    const rpmGauge = document.getElementById('rpmGauge');
+    const rpmObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            rpmGauge.classList.add('animated');
+          }, 400);
+          rpmObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    rpmObserver.observe(rpmGauge);
+
+    // ==============================
+    // Stats Bar Animation
+    // ==============================
+    const statCells = document.querySelectorAll('.stat-cell');
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const cells = entry.target.querySelectorAll ?
+            (entry.target.classList.contains('stat-cell') ? [entry.target] : entry.target.querySelectorAll('.stat-cell'))
+            : [entry.target];
+
+          cells.forEach((cell, i) => {
+            setTimeout(() => {
+              cell.classList.add('animated');
+            }, i * 200);
+          });
+          statsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    document.querySelectorAll('.stats-cluster').forEach(el => statsObserver.observe(el));
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Formula One</title>
+<meta name="description" content="KPT. Engineered at the limit. Where milliseconds define everything. Lights out and away we go.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Custom Properties ─────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --f1-red: #E10600;
+    --f1-red-dark: #B00500;
+    --f1-red-dim: rgba(225, 6, 0, 0.15);
+    --f1-red-glow: rgba(225, 6, 0, 0.5);
+    --black: #000000;
+    --black-off: #0A0A0A;
+    --carbon: #1A1A1E;
+    --carbon-light: #2A2A2F;
+    --white: #FFFFFF;
+    --white-off: #F0F0F0;
+    --gray: #888888;
+    --gray-dark: #444444;
+    --drs-green: #00D26A;
+    --soft-red: #E10600;
+    --medium-yellow: #FFC906;
+    --hard-white: #EEEEEE;
+    --inter-blue: #3895D3;
+    --wet-green: #00CC66;
+    --border: rgba(225, 6, 0, 0.12);
+    --border-hover: rgba(225, 6, 0, 0.4);
+    --font-display: 'Exo 2', 'Rajdhani', 'Impact', sans-serif;
+    --font-heading: 'Rajdhani', 'Exo 2', sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --nav-height: 56px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black-off);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  /* ── Scrollbar ────────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--f1-red); border-radius: 3px; }
+
+  /* ── Top Racing Stripe ────────────────────────────────────── */
+  .racing-stripe {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--f1-red);
+    z-index: 1001;
+  }
+
+  /* ── Navigation ───────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 3px; left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    background: transparent;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, border-bottom 0.4s ease;
+    border-bottom: 1px solid transparent;
+  }
+
+  nav.scrolled {
+    background: rgba(0, 0, 0, 0.94);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-back {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-back:hover { color: var(--f1-red); }
+  .nav-back svg { width: 16px; height: 16px; transition: transform 0.3s ease; }
+  .nav-back:hover svg { transform: translateX(-3px); }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 6px;
+    color: var(--f1-red);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .nav-lights {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .nav-light {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--f1-red);
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+  }
+
+  .nav-light.on { opacity: 1; box-shadow: 0 0 8px var(--f1-red-glow); }
+
+  /* ── Reveal Animation ─────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ── Hero Section ─────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--black);
+  }
+
+  /* Carbon fiber weave */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 1px,
+        rgba(255, 255, 255, 0.012) 1px,
+        rgba(255, 255, 255, 0.012) 2px
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 1px,
+        rgba(255, 255, 255, 0.012) 1px,
+        rgba(255, 255, 255, 0.012) 2px
+      );
+    z-index: 1;
+  }
+
+  /* Red glow */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(ellipse, var(--f1-red-glow) 0%, transparent 65%);
+    opacity: 0.25;
+    z-index: 1;
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.2; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.35; transform: translateX(-50%) scale(1.04); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 24px;
+  }
+
+  /* ── Timing Tower (Hero KPT) ──────────────────────────────── */
+  .timing-tower {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 32px;
+  }
+
+  .timing-row {
+    display: flex;
+    align-items: center;
+    background: var(--carbon);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+  }
+
+  .timing-row:first-child { border-radius: 8px 8px 0 0; }
+  .timing-row:last-child { border-radius: 0 0 8px 8px; border-bottom: none; }
+
+  .timing-pos {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    background: var(--f1-red);
+    padding: 14px 14px;
+    min-width: 46px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .timing-row:nth-child(2) .timing-pos { background: var(--carbon-light); }
+  .timing-row:nth-child(3) .timing-pos { background: var(--carbon-light); }
+
+  .timing-name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--white);
+    padding: 14px 20px;
+    min-width: 120px;
+    text-align: left;
+    line-height: 1;
+  }
+
+  .timing-time {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray);
+    padding: 14px 18px;
+    margin-left: auto;
+    white-space: nowrap;
+    line-height: 1;
+  }
+
+  .timing-row.p1 .timing-time {
+    color: var(--drs-green);
+  }
+
+  .timing-row.p1 .timing-name {
+    color: var(--f1-red);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 10vw, 100px);
+    font-weight: 900;
+    letter-spacing: 16px;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 0.95;
+    margin-bottom: 8px;
+    text-shadow: 0 0 60px var(--f1-red-glow);
+    display: none;
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-top: 28px;
+    margin-bottom: 16px;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray-dark);
+    letter-spacing: 1px;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  /* Start lights */
+  .start-lights {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 40px;
+  }
+
+  .start-light-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .start-light-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #1A0000;
+    border: 1px solid rgba(225, 6, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .start-light-dot.lit {
+    background: var(--f1-red);
+    box-shadow: 0 0 12px var(--f1-red-glow), 0 0 24px rgba(225, 6, 0, 0.3);
+  }
+
+  .start-light-dot.go {
+    background: var(--drs-green);
+    border-color: rgba(0, 210, 106, 0.3);
+    box-shadow: 0 0 12px rgba(0, 210, 106, 0.5), 0 0 24px rgba(0, 210, 106, 0.3);
+  }
+
+  /* ── Checkered divider ────────────────────────────────────── */
+  .checkered-divider {
+    width: 100%;
+    height: 16px;
+    background:
+      repeating-conic-gradient(var(--carbon) 0% 25%, transparent 0% 50%) 0 0 / 16px 16px;
+    opacity: 0.4;
+  }
+
+  /* ── Section Common ───────────────────────────────────────── */
+  section {
+    padding: 100px 24px;
+    position: relative;
+  }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--f1-red);
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+
+  .section-desc {
+    font-size: 15px;
+    color: var(--gray);
+    max-width: 560px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* ── DRS Zone Banner ──────────────────────────────────────── */
+  .drs-banner {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    overflow: hidden;
+  }
+
+  .drs-tag {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--drs-green);
+    background: rgba(0, 210, 106, 0.1);
+    border: 1px solid rgba(0, 210, 106, 0.25);
+    padding: 6px 16px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .drs-text {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    white-space: nowrap;
+  }
+
+  /* ── Features Grid (Grid Position Cards) ──────────────────── */
+  .features-section {
+    background: var(--black-off);
+  }
+
+  .features-header {
+    margin-bottom: 56px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .feature-card {
+    background: var(--carbon);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .feature-card:hover {
+    background: var(--carbon-light);
+  }
+
+  .feature-card:hover .feature-position {
+    background: var(--f1-red);
+    color: var(--white);
+  }
+
+  .feature-position {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gray);
+    background: rgba(255,255,255,0.04);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: all 0.3s ease;
+  }
+
+  .feature-pos-num {
+    min-width: 28px;
+  }
+
+  .feature-tire {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid;
+    flex-shrink: 0;
+  }
+
+  .tire-soft { border-color: var(--soft-red); }
+  .tire-medium { border-color: var(--medium-yellow); }
+  .tire-hard { border-color: var(--hard-white); }
+  .tire-inter { border-color: var(--inter-blue); }
+  .tire-wet { border-color: var(--wet-green); }
+
+  .feature-body {
+    padding: 24px 20px 28px;
+  }
+
+  .feature-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+    display: block;
+    line-height: 1;
+  }
+
+  .feature-name {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .feature-desc {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .feature-gap {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--drs-green);
+    margin-top: 14px;
+    letter-spacing: 1px;
+  }
+
+  /* ── Telemetry Stats ──────────────────────────────────────── */
+  .telemetry-section {
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .telemetry-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 39px,
+        rgba(225, 6, 0, 0.03) 39px,
+        rgba(225, 6, 0, 0.03) 40px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 39px,
+        rgba(225, 6, 0, 0.03) 39px,
+        rgba(225, 6, 0, 0.03) 40px
+      );
+    z-index: 0;
+  }
+
+  .telemetry-section .section-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .telemetry-header {
+    margin-bottom: 56px;
+  }
+
+  .telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+
+  .telemetry-card {
+    background: rgba(26, 26, 30, 0.8);
+    backdrop-filter: blur(8px);
+    padding: 32px 24px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.04);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .telemetry-card:hover {
+    border-color: var(--border-hover);
+  }
+
+  .telemetry-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--f1-red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s ease;
+  }
+
+  .telemetry-card:hover::after {
+    transform: scaleX(1);
+  }
+
+  .telemetry-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-dark);
+    margin-bottom: 12px;
+  }
+
+  .telemetry-value {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .telemetry-value .unit {
+    font-size: 0.4em;
+    font-weight: 500;
+    color: var(--gray);
+    letter-spacing: 2px;
+    vertical-align: top;
+    margin-left: 2px;
+  }
+
+  .telemetry-delta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 8px;
+  }
+
+  .delta-positive { color: var(--drs-green); }
+  .delta-negative { color: var(--f1-red); }
+
+  /* ── Race Strategy Section ────────────────────────────────── */
+  .strategy-section {
+    background: var(--black-off);
+  }
+
+  .strategy-header {
+    margin-bottom: 56px;
+  }
+
+  .strategy-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .strategy-stint {
+    display: flex;
+    align-items: stretch;
+    background: var(--carbon);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.3s ease;
+  }
+
+  .strategy-stint:first-child { border-radius: 8px 8px 0 0; }
+  .strategy-stint:last-child { border-radius: 0 0 8px 8px; border-bottom: none; }
+
+  .strategy-stint:hover { background: var(--carbon-light); }
+
+  .stint-lap {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray);
+    padding: 20px 18px;
+    min-width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .stint-tire {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 18px;
+    min-width: 56px;
+    border-right: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .stint-tire-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 3px solid;
+  }
+
+  .stint-info {
+    flex: 1;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .stint-title {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+
+  .stint-desc {
+    font-size: 12px;
+    color: var(--gray);
+    font-weight: 300;
+  }
+
+  .stint-time {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--drs-green);
+    padding: 20px 18px;
+    display: flex;
+    align-items: center;
+    min-width: 100px;
+    justify-content: flex-end;
+  }
+
+  /* ── CTA Section ──────────────────────────────────────────── */
+  .cta-section {
+    background: var(--black);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(ellipse, var(--f1-red-dim) 0%, transparent 70%);
+    z-index: 0;
+  }
+
+  .cta-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 900;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+
+  .cta-desc {
+    font-size: 15px;
+    color: var(--gray);
+    max-width: 440px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: var(--f1-red);
+    color: var(--white);
+    padding: 16px 40px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    background: var(--f1-red-dark);
+    box-shadow: 0 0 30px rgba(225, 6, 0, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--white);
+    padding: 16px 40px;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--f1-red);
+    color: var(--f1-red);
+    transform: translateY(-2px);
+  }
+
+  /* ── Lap Counter (between sections) ──────────────────────── */
+  .lap-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 14px 24px;
+    background: rgba(26, 26, 30, 0.6);
+    border-top: 1px solid rgba(255,255,255,0.03);
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .lap-counter-line {
+    flex: 1;
+    max-width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(225, 6, 0, 0.2), transparent);
+  }
+
+  .lap-counter-text {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-dark);
+    white-space: nowrap;
+  }
+
+  /* ── Footer ───────────────────────────────────────────────── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.04);
+    padding: 48px 24px;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 8px;
+    color: var(--f1-red);
+  }
+
+  .footer-tagline {
+    font-size: 12px;
+    color: var(--gray-dark);
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+
+  .footer-cols {
+    display: flex;
+    gap: 60px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 14px;
+  }
+
+  .footer-col a {
+    display: block;
+    font-size: 13px;
+    color: var(--gray-dark);
+    padding: 3px 0;
+    transition: color 0.3s ease;
+  }
+
+  .footer-col a:hover { color: var(--f1-red); }
+
+  .footer-bottom {
+    max-width: 1100px;
+    margin: 32px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gray-dark);
+    letter-spacing: 1px;
+  }
+
+  .footer-fia {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gray-dark);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  /* ── Responsive ───────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    nav { padding: 0 16px; }
+    .nav-logo { font-size: 20px; letter-spacing: 4px; }
+
+    section { padding: 64px 16px; }
+
+    .timing-tower { width: 100%; max-width: 340px; }
+    .timing-name { font-size: 18px; letter-spacing: 2px; padding: 12px 14px; }
+    .timing-pos { padding: 12px 10px; min-width: 38px; font-size: 12px; }
+    .timing-time { padding: 12px 12px; font-size: 12px; }
+
+    .start-lights { gap: 8px; }
+    .start-light-dot { width: 14px; height: 14px; }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+
+    .telemetry-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+    }
+
+    .strategy-stint {
+      flex-wrap: wrap;
+    }
+
+    .stint-lap { min-width: 60px; padding: 14px 12px; font-size: 11px; }
+    .stint-tire { padding: 14px 12px; min-width: 44px; }
+    .stint-info { padding: 14px 16px; }
+    .stint-time { padding: 14px 12px; min-width: auto; width: 100%; justify-content: flex-start; border-top: 1px solid rgba(255,255,255,0.04); }
+
+    .footer-inner { flex-direction: column; gap: 32px; }
+    .footer-cols { gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+
+    .drs-banner { flex-direction: column; gap: 12px; }
+
+    .cta-title { letter-spacing: 3px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Racing stripe -->
+<div class="racing-stripe"></div>
+
+<!-- Navigation -->
+<nav>
+  <a href="/index.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Pit Lane
+  </a>
+  <div class="nav-logo">KPT</div>
+  <div class="nav-lights">
+    <div class="nav-light on"></div>
+    <div class="nav-light on"></div>
+    <div class="nav-light on"></div>
+    <div class="nav-light"></div>
+    <div class="nav-light"></div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="timing-tower reveal">
+      <div class="timing-row p1">
+        <div class="timing-pos">P1</div>
+        <div class="timing-name">KPT</div>
+        <div class="timing-time">1:23.456</div>
+      </div>
+      <div class="timing-row">
+        <div class="timing-pos">P2</div>
+        <div class="timing-name">NXT</div>
+        <div class="timing-time">+0.237</div>
+      </div>
+      <div class="timing-row">
+        <div class="timing-pos">P3</div>
+        <div class="timing-name">OTH</div>
+        <div class="timing-time">+0.814</div>
+      </div>
+    </div>
+
+    <div class="hero-subtitle reveal reveal-delay-1">Engineered at the Limit</div>
+    <div class="hero-tagline reveal reveal-delay-2">Where milliseconds define everything. Precision-built systems for those who refuse to settle for second.</div>
+
+    <div class="start-lights reveal reveal-delay-3">
+      <div class="start-light-col">
+        <div class="start-light-dot" data-light="1"></div>
+        <div class="start-light-dot" data-light="1"></div>
+      </div>
+      <div class="start-light-col">
+        <div class="start-light-dot" data-light="2"></div>
+        <div class="start-light-dot" data-light="2"></div>
+      </div>
+      <div class="start-light-col">
+        <div class="start-light-dot" data-light="3"></div>
+        <div class="start-light-dot" data-light="3"></div>
+      </div>
+      <div class="start-light-col">
+        <div class="start-light-dot" data-light="4"></div>
+        <div class="start-light-dot" data-light="4"></div>
+      </div>
+      <div class="start-light-col">
+        <div class="start-light-dot" data-light="5"></div>
+        <div class="start-light-dot" data-light="5"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DRS Zone Banner -->
+<div class="drs-banner">
+  <div class="drs-tag">DRS Enabled</div>
+  <div class="drs-text">Detection point reached &mdash; Reduced drag, maximum velocity</div>
+</div>
+
+<!-- Features (Grid Position Cards) -->
+<section class="features-section">
+  <div class="section-inner">
+    <div class="features-header">
+      <div class="section-label reveal">// GRID LINEUP</div>
+      <div class="section-title reveal reveal-delay-1">Race-Day Capabilities</div>
+      <div class="section-desc reveal reveal-delay-2">Every system component tuned for pole position. Six core disciplines, zero compromise.</div>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-position">
+          <span class="feature-pos-num">P1</span>
+          <div class="feature-tire tire-soft"></div>
+        </div>
+        <div class="feature-body">
+          <span class="feature-icon">&#9889;</span>
+          <div class="feature-name">Power Unit</div>
+          <div class="feature-desc">Hybrid architecture delivering maximum output. Internal combustion meets electric recovery for relentless performance.</div>
+          <div class="feature-gap">+0.000s LEADER</div>
+        </div>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-position">
+          <span class="feature-pos-num">P2</span>
+          <div class="feature-tire tire-medium"></div>
+        </div>
+        <div class="feature-body">
+          <span class="feature-icon">&#9881;</span>
+          <div class="feature-name">Aero Package</div>
+          <div class="feature-desc">Ground-effect downforce with drag reduction. Computational fluid dynamics refined through ten thousand iterations.</div>
+          <div class="feature-gap">+0.042s GAP</div>
+        </div>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-position">
+          <span class="feature-pos-num">P3</span>
+          <div class="feature-tire tire-hard"></div>
+        </div>
+        <div class="feature-body">
+          <span class="feature-icon">&#128225;</span>
+          <div class="feature-name">Telemetry</div>
+          <div class="feature-desc">Real-time data streams from 300+ sensors. Every input captured, analyzed, and acted upon in under 5ms.</div>
+          <div class="feature-gap">+0.118s GAP</div>
+        </div>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-position">
+          <span class="feature-pos-num">P4</span>
+          <div class="feature-tire tire-soft"></div>
+        </div>
+        <div class="feature-body">
+          <span class="feature-icon">&#128640;</span>
+          <div class="feature-name">Race Strategy</div>
+          <div class="feature-desc">Predictive models running Monte Carlo simulations. Pit windows, tire degradation, weather — all calculated in real time.</div>
+          <div class="feature-gap">+0.256s GAP</div>
+        </div>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-position">
+          <span class="feature-pos-num">P5</span>
+          <div class="feature-tire tire-inter"></div>
+        </div>
+        <div class="feature-body">
+          <span class="feature-icon">&#128737;</span>
+          <div class="feature-name">Safety Systems</div>
+          <div class="feature-desc">Halo-grade protection at every layer. Redundant fail-safes, automated shutdown protocols, zero-tolerance architecture.</div>
+          <div class="feature-gap">+0.403s GAP</div>
+        </div>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-position">
+          <span class="feature-pos-num">P6</span>
+          <div class="feature-tire tire-wet"></div>
+        </div>
+        <div class="feature-body">
+          <span class="feature-icon">&#128311;</span>
+          <div class="feature-name">Pit Crew</div>
+          <div class="feature-desc">Sub-two-second stops. Synchronized team execution, orchestrated handoffs, and zero wasted motion under pressure.</div>
+          <div class="feature-gap">+0.571s GAP</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lap Counter -->
+<div class="lap-counter">
+  <div class="lap-counter-line"></div>
+  <div class="lap-counter-text">Lap 42 / 56</div>
+  <div class="lap-counter-line"></div>
+</div>
+
+<!-- Telemetry Stats -->
+<section class="telemetry-section">
+  <div class="section-inner">
+    <div class="telemetry-header">
+      <div class="section-label reveal">// LIVE TELEMETRY</div>
+      <div class="section-title reveal reveal-delay-1">Performance Data</div>
+      <div class="section-desc reveal reveal-delay-2">Real-time metrics streaming from the chassis. Numbers that define championship caliber.</div>
+    </div>
+
+    <div class="telemetry-grid">
+      <div class="telemetry-card reveal">
+        <div class="telemetry-label">Top Speed</div>
+        <div class="telemetry-value" data-target="347" data-suffix="">0<span class="unit">KPH</span></div>
+        <div class="telemetry-delta delta-positive">+12 vs prev</div>
+      </div>
+
+      <div class="telemetry-card reveal reveal-delay-1">
+        <div class="telemetry-label">Lap Time</div>
+        <div class="telemetry-value telemetry-time">1:23<span class="unit">.456</span></div>
+        <div class="telemetry-delta delta-positive">-0.237s delta</div>
+      </div>
+
+      <div class="telemetry-card reveal reveal-delay-2">
+        <div class="telemetry-label">G-Force</div>
+        <div class="telemetry-value" data-target="6.2" data-suffix="">0<span class="unit">G</span></div>
+        <div class="telemetry-delta delta-positive">Peak lateral</div>
+      </div>
+
+      <div class="telemetry-card reveal reveal-delay-3">
+        <div class="telemetry-label">Pit Stop</div>
+        <div class="telemetry-value telemetry-time">1.8<span class="unit">SEC</span></div>
+        <div class="telemetry-delta delta-positive">Season best</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Checkered divider -->
+<div class="checkered-divider"></div>
+
+<!-- Race Strategy -->
+<section class="strategy-section">
+  <div class="section-inner">
+    <div class="strategy-header">
+      <div class="section-label reveal">// RACE STRATEGY</div>
+      <div class="section-title reveal reveal-delay-1">Execution Timeline</div>
+      <div class="section-desc reveal reveal-delay-2">Four stints. Three stops. One objective. Every second calculated, every move deliberate.</div>
+    </div>
+
+    <div class="strategy-timeline">
+      <div class="strategy-stint reveal">
+        <div class="stint-lap">LAP 1-14</div>
+        <div class="stint-tire">
+          <div class="stint-tire-dot" style="border-color: var(--soft-red);"></div>
+        </div>
+        <div class="stint-info">
+          <div class="stint-title">Discovery Phase</div>
+          <div class="stint-desc">Requirement analysis. Landscape mapping. Aggressive first stint on soft compounds — push hard, build the gap.</div>
+        </div>
+        <div class="stint-time">-2.4s</div>
+      </div>
+
+      <div class="strategy-stint reveal reveal-delay-1">
+        <div class="stint-lap">LAP 15-30</div>
+        <div class="stint-tire">
+          <div class="stint-tire-dot" style="border-color: var(--medium-yellow);"></div>
+        </div>
+        <div class="stint-info">
+          <div class="stint-title">Build Phase</div>
+          <div class="stint-desc">Architecture and implementation. Medium compound for consistency — maintain pace through the technical sector.</div>
+        </div>
+        <div class="stint-time">-4.1s</div>
+      </div>
+
+      <div class="strategy-stint reveal reveal-delay-2">
+        <div class="stint-lap">LAP 31-46</div>
+        <div class="stint-tire">
+          <div class="stint-tire-dot" style="border-color: var(--hard-white);"></div>
+        </div>
+        <div class="stint-info">
+          <div class="stint-title">Endurance Phase</div>
+          <div class="stint-desc">Testing and hardening. Hard compound for the long run — reliable degradation model, no surprises.</div>
+        </div>
+        <div class="stint-time">-5.8s</div>
+      </div>
+
+      <div class="strategy-stint reveal reveal-delay-3">
+        <div class="stint-lap">LAP 47-56</div>
+        <div class="stint-tire">
+          <div class="stint-tire-dot" style="border-color: var(--soft-red);"></div>
+        </div>
+        <div class="stint-info">
+          <div class="stint-title">Sprint Finish</div>
+          <div class="stint-desc">Deployment and optimization. Fresh softs for the final push — fastest lap, maximum points, lights out.</div>
+        </div>
+        <div class="stint-time">-7.2s</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-inner cta-inner">
+    <div class="section-label reveal">// LIGHTS OUT</div>
+    <div class="cta-title reveal reveal-delay-1">And Away<br>We Go</div>
+    <div class="cta-desc reveal reveal-delay-2">The grid is set. The strategy is loaded. All systems report nominal. Take your position on the grid.</div>
+    <div class="cta-buttons reveal reveal-delay-3">
+      <a href="#" class="btn-primary">Enter the Grid</a>
+      <a href="#" class="btn-secondary">View Telemetry</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">KPT</div>
+      <div class="footer-tagline">Precision engineered. Race proven.</div>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Paddock</h4>
+        <a href="#">Power Unit</a>
+        <a href="#">Aero Package</a>
+        <a href="#">Telemetry</a>
+        <a href="#">Strategy</a>
+      </div>
+      <div class="footer-col">
+        <h4>Team</h4>
+        <a href="#">Race Engineers</a>
+        <a href="#">Pit Crew</a>
+        <a href="#">Technical Director</a>
+        <a href="#">Team Principal</a>
+      </div>
+      <div class="footer-col">
+        <h4>Circuit</h4>
+        <a href="#">Documentation</a>
+        <a href="#">Track Map</a>
+        <a href="#">Race Control</a>
+        <a href="#">Regulations</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2026 KPT Engineering. All rights reserved.</div>
+    <div class="footer-fia">FIA Homologated</div>
+  </div>
+</footer>
+
+<script>
+  // ── Nav scroll effect ──────────────────────────────────────
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ── IntersectionObserver for scroll reveal ─────────────────
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // ── Start lights sequence ──────────────────────────────────
+  function startLightSequence() {
+    const lights = [1, 2, 3, 4, 5];
+    let i = 0;
+
+    function lightNext() {
+      if (i < lights.length) {
+        document.querySelectorAll(`[data-light="${lights[i]}"]`).forEach(dot => {
+          dot.classList.add('lit');
+        });
+        i++;
+        setTimeout(lightNext, 600);
+      } else {
+        // Lights out
+        setTimeout(() => {
+          document.querySelectorAll('.start-light-dot').forEach(dot => {
+            dot.classList.remove('lit');
+            dot.classList.add('go');
+          });
+          // Reset after a moment
+          setTimeout(() => {
+            document.querySelectorAll('.start-light-dot').forEach(dot => {
+              dot.classList.remove('go');
+            });
+            // Restart after pause
+            setTimeout(startLightSequence, 2000);
+          }, 1200);
+        }, 800 + Math.random() * 600);
+      }
+    }
+
+    lightNext();
+  }
+
+  // Begin light sequence after hero loads
+  setTimeout(startLightSequence, 1500);
+
+  // ── Animated telemetry counters ────────────────────────────
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseFloat(el.dataset.target);
+        const suffix = el.dataset.suffix || '';
+        const unitSpan = el.querySelector('.unit');
+        const unitText = unitSpan ? unitSpan.outerHTML : '';
+        const isFloat = target % 1 !== 0;
+        const duration = 1600;
+        const start = performance.now();
+
+        function animate(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = target * eased;
+
+          if (isFloat) {
+            el.innerHTML = current.toFixed(1) + unitText;
+          } else {
+            el.innerHTML = Math.round(current) + unitText;
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          }
+        }
+
+        requestAnimationFrame(animate);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.telemetry-value[data-target]').forEach(el => {
+    counterObserver.observe(el);
+  });
+
+  // ── Nav lights ambient animation ───────────────────────────
+  const navLights = document.querySelectorAll('.nav-light');
+  setInterval(() => {
+    const onCount = Math.floor(Math.random() * 4) + 1;
+    navLights.forEach((light, i) => {
+      light.classList.toggle('on', i < onCount);
+    });
+  }, 3000);
+</script>
+
+</body>
+</html>

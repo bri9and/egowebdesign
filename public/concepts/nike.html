@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Just Build It.</title>
+<meta name="description" content="KPT. AI voice agents and premium web design. No hesitation. No compromise. Just build it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #111111;
+    --white: #FFFFFF;
+    --accent: #FF6B00;
+    --accent-dim: rgba(255, 107, 0, 0.15);
+    --accent-glow: rgba(255, 107, 0, 0.3);
+    --gray-100: #F5F5F5;
+    --gray-200: #E5E5E5;
+    --gray-400: #9E9E9E;
+    --gray-600: #666666;
+    --gray-800: #333333;
+    --gray-900: #1A1A1A;
+    --surface: #181818;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.2);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ── Typography ────────────────────────────────────────────── */
+  .font-display { font-family: 'Oswald', 'Impact', sans-serif; }
+  .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── Back Link ─────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    z-index: 1000;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .back-link:hover { color: var(--accent); }
+
+  /* ── Navigation ────────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: rgba(17, 17, 17, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.3s ease;
+  }
+
+  .nav-logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ── Hero ───────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-headline {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(72px, 14vw, 200px);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 32px;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero-headline .accent { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--gray-400);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 48px;
+    background: var(--white);
+    color: var(--black);
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .hero-cta:hover {
+    background: var(--accent);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 60px var(--accent-dim);
+  }
+
+  .hero-cta svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  .hero-cta:hover svg { transform: translateX(4px); }
+
+  /* ── Swoosh Divider ────────────────────────────────────────── */
+  .swoosh {
+    width: 100%;
+    height: 120px;
+    position: relative;
+    margin-top: -1px;
+  }
+
+  .swoosh svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .swoosh-reverse { transform: scaleY(-1); }
+
+  /* ── Section Common ────────────────────────────────────────── */
+  section {
+    padding: 120px 24px;
+    position: relative;
+  }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(40px, 6vw, 80px);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .section-desc {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--gray-400);
+    max-width: 540px;
+    line-height: 1.7;
+    margin-bottom: 64px;
+  }
+
+  /* ── Reveal Animation ──────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── Products ──────────────────────────────────────────────── */
+  .products { background: var(--gray-100); color: var(--black); }
+  .products .section-label { color: var(--accent); }
+  .products .section-desc { color: var(--gray-600); }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .product-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    padding: 56px 48px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    cursor: default;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.08);
+    border-color: var(--accent);
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 0;
+    background: var(--accent);
+    transition: height 0.4s ease;
+  }
+
+  .product-card:hover::before { height: 100%; }
+
+  .product-number {
+    font-family: 'Oswald', sans-serif;
+    font-size: 80px;
+    font-weight: 700;
+    color: var(--gray-200);
+    line-height: 1;
+    margin-bottom: 16px;
+    transition: color 0.4s ease;
+  }
+
+  .product-card:hover .product-number { color: var(--accent-dim); }
+
+  .product-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--black);
+    margin-bottom: 16px;
+  }
+
+  .product-desc {
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--gray-600);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+
+  .product-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 6px 16px;
+    border: 1px solid var(--accent);
+    display: inline-block;
+  }
+
+  /* ── Athletes (Testimonials) ───────────────────────────────── */
+  .athletes { background: var(--black); }
+
+  .athlete-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  .athlete-card {
+    border: 1px solid var(--border);
+    padding: 48px 36px;
+    position: relative;
+    transition: all 0.4s ease;
+  }
+
+  .athlete-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+  }
+
+  .athlete-quote-mark {
+    font-family: 'Oswald', sans-serif;
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .athlete-quote {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--gray-200);
+    line-height: 1.8;
+    margin-bottom: 32px;
+    font-style: italic;
+  }
+
+  .athlete-divider {
+    width: 40px;
+    height: 2px;
+    background: var(--accent);
+    margin-bottom: 24px;
+  }
+
+  .athlete-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .athlete-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-600);
+  }
+
+  /* ── Stats ─────────────────────────────────────────────────── */
+  .stats { background: var(--gray-100); color: var(--black); }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    text-align: center;
+  }
+
+  .stat-item {
+    padding: 32px 16px;
+  }
+
+  .stat-number {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(56px, 7vw, 96px);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--black);
+    margin-bottom: 8px;
+  }
+
+  .stat-number .accent { color: var(--accent); }
+
+  .stat-unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray-600);
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+  }
+
+  /* ── Training Program ──────────────────────────────────────── */
+  .training { background: var(--black); }
+
+  .training-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+  }
+
+  .training-phase {
+    padding: 48px;
+    border: 1px solid var(--border);
+    position: relative;
+    transition: all 0.4s ease;
+  }
+
+  .training-phase:hover {
+    background: var(--surface);
+  }
+
+  .phase-week {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .phase-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .phase-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--gray-400);
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .phase-tasks {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .phase-tasks li {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gray-400);
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .phase-tasks li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* ── CTA ────────────────────────────────────────────────────── */
+  .cta-section {
+    background: var(--black);
+    padding: 160px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: 'KPT';
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(120px, 20vw, 300px);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.02);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .cta-headline {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(48px, 8vw, 120px);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .cta-sub {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--gray-400);
+    max-width: 400px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 22px 64px;
+    background: var(--accent);
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 24px 64px var(--accent-glow);
+  }
+
+  .cta-button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .cta-button:hover::after { left: 100%; }
+
+  /* ── Footer ────────────────────────────────────────────────── */
+  footer {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    padding: 64px 48px;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-brand {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+
+  .footer-brand span { color: var(--accent); }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-600);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--gray-600);
+    letter-spacing: 1px;
+    text-align: center;
+    margin-top: 48px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── Keyframes ─────────────────────────────────────────────── */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Mobile Nav Toggle ─────────────────────────────────────── */
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  .nav-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    margin: 6px 0;
+    transition: all 0.3s ease;
+  }
+
+  /* ── Responsive ────────────────────────────────────────────── */
+  @media (max-width: 1024px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .athlete-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .training-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 24px; }
+
+    .nav-toggle { display: block; }
+
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: rgba(17, 17, 17, 0.98);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      padding: 32px 24px;
+      gap: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-links.open { display: flex; }
+
+    .back-link { top: 76px; left: 16px; font-size: 11px; }
+
+    section { padding: 80px 20px; }
+
+    .hero { padding: 100px 20px 60px; min-height: 90vh; }
+    .hero-headline { letter-spacing: 0; }
+
+    .product-card { padding: 36px 28px; }
+    .product-number { font-size: 56px; }
+
+    .athlete-card { padding: 36px 28px; }
+
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+    .cta-section { padding: 100px 20px; }
+    .cta-button { padding: 18px 40px; font-size: 14px; }
+
+    footer { padding: 40px 24px; }
+    .footer-inner { flex-direction: column; gap: 24px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 20px; }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .stat-number { font-size: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">&#8592; Back</a>
+
+<!-- Navigation -->
+<nav>
+  <a href="#" class="nav-logo">KPT<span>.</span></a>
+  <button class="nav-toggle" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#athletes">Athletes</a></li>
+    <li><a href="#stats">Performance</a></li>
+    <li><a href="#training">Training</a></li>
+    <li><a href="#cta">Start</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-label font-mono">AI Agents &bull; Web Design &bull; No Limits</div>
+  <h1 class="hero-headline font-display">
+    JUST<br>BUILD <span class="accent">IT.</span>
+  </h1>
+  <p class="hero-sub">
+    Stop planning. Stop waiting. KPT builds AI voice agents and
+    premium websites that move as fast as you do.
+  </p>
+  <a href="#products" class="hero-cta">
+    Explore the Lineup
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+  </a>
+</section>
+
+<!-- Swoosh Divider -->
+<div class="swoosh">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 120L60 108C120 96 240 72 360 54C480 36 600 24 720 30C840 36 960 60 1080 72C1200 84 1320 84 1380 84L1440 84V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#F5F5F5"/>
+    <path d="M0 120L60 108C120 96 240 72 360 54C480 36 600 24 720 30C840 36 960 60 1080 72C1200 84 1320 84 1380 84L1440 84" stroke="#FF6B00" stroke-width="2" stroke-opacity="0.3"/>
+  </svg>
+</div>
+
+<!-- Products -->
+<section class="products" id="products">
+  <div class="section-inner">
+    <div class="section-label font-mono reveal">// Product Lineup</div>
+    <h2 class="section-title font-display reveal reveal-delay-1">
+      Built to<br>Dominate.
+    </h2>
+    <p class="section-desc reveal reveal-delay-2">
+      Two products. Zero compromises. Engineered for businesses
+      that refuse to stand still.
+    </p>
+
+    <div class="product-grid">
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-number font-display">01</div>
+        <h3 class="product-name font-display">KPT Agents</h3>
+        <p class="product-desc">
+          AI voice agents that answer every call, qualify every lead,
+          and book every appointment. 24/7. No breaks. No excuses.
+          Your competition sleeps. Your agent doesn't.
+        </p>
+        <span class="product-tag font-mono">AI Voice Technology</span>
+      </div>
+      <div class="product-card reveal reveal-delay-3">
+        <div class="product-number font-display">02</div>
+        <h3 class="product-name font-display">KPT Designs</h3>
+        <p class="product-desc">
+          Premium web design that converts. Not templates. Not themes.
+          Custom-built, performance-obsessed digital experiences
+          that make your brand impossible to ignore.
+        </p>
+        <span class="product-tag font-mono">Premium Web Design</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Swoosh Divider (reversed) -->
+<div class="swoosh swoosh-reverse">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 120L60 108C120 96 240 72 360 54C480 36 600 24 720 30C840 36 960 60 1080 72C1200 84 1320 84 1380 84L1440 84V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="#F5F5F5"/>
+    <path d="M0 120L60 108C120 96 240 72 360 54C480 36 600 24 720 30C840 36 960 60 1080 72C1200 84 1320 84 1380 84L1440 84" stroke="#FF6B00" stroke-width="2" stroke-opacity="0.3"/>
+  </svg>
+</div>
+
+<!-- Athletes (Testimonials) -->
+<section class="athletes" id="athletes">
+  <div class="section-inner">
+    <div class="section-label font-mono reveal">// Athlete Stories</div>
+    <h2 class="section-title font-display reveal reveal-delay-1">
+      They Chose<br>to Move.
+    </h2>
+    <p class="section-desc reveal reveal-delay-2">
+      Real founders. Real results. No staged endorsements.
+      Just people who stopped hesitating and started building.
+    </p>
+
+    <div class="athlete-grid">
+      <div class="athlete-card reveal reveal-delay-1">
+        <div class="athlete-quote-mark font-display">&ldquo;</div>
+        <p class="athlete-quote">
+          We were losing 40% of inbound calls after hours. KPT Agents
+          picked up every single one. Revenue jumped 35% in sixty days.
+          That's not marketing — that's math.
+        </p>
+        <div class="athlete-divider"></div>
+        <div class="athlete-name font-display">Marcus Chen</div>
+        <div class="athlete-title font-mono">CEO, Ridgeline Property Group</div>
+      </div>
+      <div class="athlete-card reveal reveal-delay-2">
+        <div class="athlete-quote-mark font-display">&ldquo;</div>
+        <p class="athlete-quote">
+          Our old site looked fine. But it didn't convert. KPT rebuilt
+          it in three weeks and our booking rate tripled. Tripled.
+          I don't know how else to say it.
+        </p>
+        <div class="athlete-divider"></div>
+        <div class="athlete-name font-display">Sarah Okafor</div>
+        <div class="athlete-title font-mono">Founder, Bloom Studio Salon</div>
+      </div>
+      <div class="athlete-card reveal reveal-delay-3">
+        <div class="athlete-quote-mark font-display">&ldquo;</div>
+        <p class="athlete-quote">
+          I was skeptical about AI answering our phones. Two months in,
+          our patients love it. Missed calls dropped to zero. Zero.
+          KPT made believers out of us.
+        </p>
+        <div class="athlete-divider"></div>
+        <div class="athlete-name font-display">Dr. James Whitfield</div>
+        <div class="athlete-title font-mono">Director, Clearview Dental</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Swoosh Divider -->
+<div class="swoosh">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0L48 12C96 24 192 48 288 60C384 72 480 72 576 66C672 60 768 48 864 42C960 36 1056 36 1152 42C1248 48 1344 60 1392 66L1440 72V120H0Z" fill="#F5F5F5"/>
+    <path d="M0 0L48 12C96 24 192 48 288 60C384 72 480 72 576 66C672 60 768 48 864 42C960 36 1056 36 1152 42C1248 48 1344 60 1392 66L1440 72" stroke="#FF6B00" stroke-width="2" stroke-opacity="0.3"/>
+  </svg>
+</div>
+
+<!-- Stats -->
+<section class="stats" id="stats">
+  <div class="section-inner">
+    <div class="section-label font-mono reveal" style="text-align:center;">// Performance Metrics</div>
+    <h2 class="section-title font-display reveal reveal-delay-1" style="text-align:center; margin-bottom:64px;">
+      The Numbers<br>Don't Lie<span style="color:var(--accent)">.</span>
+    </h2>
+
+    <div class="stats-grid">
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-number font-display">99<span class="accent">%</span></div>
+        <div class="stat-unit font-mono">Uptime</div>
+        <div class="stat-label font-display">Agent Availability</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-number font-display">3<span class="accent">x</span></div>
+        <div class="stat-unit font-mono">Average</div>
+        <div class="stat-label font-display">Lead Conversion Lift</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-number font-display">&lt;2<span class="accent">s</span></div>
+        <div class="stat-unit font-mono">Response</div>
+        <div class="stat-label font-display">Answer Latency</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-4">
+        <div class="stat-number font-display">0</div>
+        <div class="stat-unit font-mono">Missed Calls</div>
+        <div class="stat-label font-display">After Deployment</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Swoosh Divider (reversed) -->
+<div class="swoosh swoosh-reverse">
+  <svg viewBox="0 0 1440 120" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 0L48 12C96 24 192 48 288 60C384 72 480 72 576 66C672 60 768 48 864 42C960 36 1056 36 1152 42C1248 48 1344 60 1392 66L1440 72V120H0Z" fill="#F5F5F5"/>
+    <path d="M0 0L48 12C96 24 192 48 288 60C384 72 480 72 576 66C672 60 768 48 864 42C960 36 1056 36 1152 42C1248 48 1344 60 1392 66L1440 72" stroke="#FF6B00" stroke-width="2" stroke-opacity="0.3"/>
+  </svg>
+</div>
+
+<!-- Training Program -->
+<section class="training" id="training">
+  <div class="section-inner">
+    <div class="section-label font-mono reveal">// Training Program</div>
+    <h2 class="section-title font-display reveal reveal-delay-1">
+      Your Launch<br>Playbook<span style="color:var(--accent)">.</span>
+    </h2>
+    <p class="section-desc reveal reveal-delay-2">
+      Four phases. No bloat. We move fast because your business
+      can't afford to wait.
+    </p>
+
+    <div class="training-grid">
+      <div class="training-phase reveal reveal-delay-1">
+        <div class="phase-week font-mono">Week 01</div>
+        <h3 class="phase-name font-display">Discovery Sprint</h3>
+        <p class="phase-desc">
+          Deep-dive into your business, audience, and competitive landscape.
+          We map every conversion point.
+        </p>
+        <ul class="phase-tasks">
+          <li>Business audit & goals alignment</li>
+          <li>Competitor analysis & positioning</li>
+          <li>User journey mapping</li>
+        </ul>
+      </div>
+      <div class="training-phase reveal reveal-delay-2">
+        <div class="phase-week font-mono">Week 02</div>
+        <h3 class="phase-name font-display">Architecture & Design</h3>
+        <p class="phase-desc">
+          Structure your digital presence for maximum impact.
+          Every pixel earns its place.
+        </p>
+        <ul class="phase-tasks">
+          <li>Information architecture & wireframes</li>
+          <li>Visual design system creation</li>
+          <li>Agent voice & personality scripting</li>
+        </ul>
+      </div>
+      <div class="training-phase reveal reveal-delay-3">
+        <div class="phase-week font-mono">Week 03</div>
+        <h3 class="phase-name font-display">Build & Integrate</h3>
+        <p class="phase-desc">
+          Full-stack execution. Your site goes live. Your agents go online.
+          Everything connects.
+        </p>
+        <ul class="phase-tasks">
+          <li>Frontend development & optimization</li>
+          <li>AI agent training & deployment</li>
+          <li>CRM & calendar integration</li>
+        </ul>
+      </div>
+      <div class="training-phase reveal reveal-delay-4">
+        <div class="phase-week font-mono">Week 04</div>
+        <h3 class="phase-name font-display">Launch & Dominate</h3>
+        <p class="phase-desc">
+          Go live. Monitor. Optimize. We don't disappear after launch — we
+          push performance until the numbers sing.
+        </p>
+        <ul class="phase-tasks">
+          <li>Production deployment & QA</li>
+          <li>Performance monitoring & analytics</li>
+          <li>Ongoing iteration & support</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="section-inner">
+    <div class="section-label font-mono reveal" style="margin-bottom:24px;">// Your Move</div>
+    <h2 class="cta-headline font-display reveal reveal-delay-1">
+      Stop Thinking.<br>Start <span style="color:var(--accent)">Building.</span>
+    </h2>
+    <p class="cta-sub reveal reveal-delay-2">
+      The gap between where you are and where you want to be
+      is one decision. Make it.
+    </p>
+    <a href="#hero" class="cta-button reveal reveal-delay-3">
+      Let's Go
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand font-display">KPT<span>.</span></div>
+    <ul class="footer-links">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#athletes">Athletes</a></li>
+      <li><a href="#stats">Performance</a></li>
+      <li><a href="#training">Training</a></li>
+    </ul>
+  </div>
+  <p class="footer-copy">&copy; 2026 KPT. All rights reserved. Just build it.</p>
+</footer>
+
+<!-- JavaScript -->
+<script>
+  // ── IntersectionObserver for reveal animations ──────────────
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    revealObserver.observe(el);
+  });
+
+  // ── Mobile nav toggle ──────────────────────────────────────
+  const navToggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
+
+  navToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+
+  // Close mobile menu on link click
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+    });
+  });
+
+  // ── Smooth scroll for anchor links ─────────────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ── Nav background on scroll ───────────────────────────────
+  const nav = document.querySelector('nav');
+  let lastScroll = 0;
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    if (currentScroll > 100) {
+      nav.style.background = 'rgba(17, 17, 17, 0.98)';
+    } else {
+      nav.style.background = 'rgba(17, 17, 17, 0.92)';
+    }
+    lastScroll = currentScroll;
+  }, { passive: true });
+</script>
+</body>
+</html>

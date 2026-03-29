@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Trader Joe's</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Patrick+Hand&family=Permanent+Marker&family=Caveat:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --red: #D32F2F;
+    --red-dark: #B71C1C;
+    --red-deeper: #7F0000;
+    --cream: #FFF8E7;
+    --cream-warm: #FFF3D6;
+    --ivory: #FFFDF5;
+    --navy: #1A237E;
+    --navy-light: #283593;
+    --navy-dark: #0D1642;
+    --teal: #00695C;
+    --teal-light: #00897B;
+    --tropical-green: #2E7D32;
+    --tropical-yellow: #FFB300;
+    --tropical-orange: #E65100;
+    --chalkboard: #2D3A2E;
+    --chalkboard-text: #E8E0C8;
+    --wood: #5D4037;
+    --wood-light: #795548;
+    --white: #FFFFFF;
+    --black: #1A1A1A;
+    --text-dark: #2C1810;
+    --text-muted: #6D5D53;
+    --font-display: 'Bangers', cursive;
+    --font-hand: 'Patrick Hand', cursive;
+    --font-marker: 'Permanent Marker', cursive;
+    --font-sketch: 'Caveat', cursive;
+    --font-mono: 'JetBrains Mono', monospace;
+    --max-width: 1200px;
+    --nav-height: 72px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text-dark);
+    font-family: var(--font-hand);
+    font-size: 18px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 { line-height: 1.2; }
+  a { text-decoration: none; color: inherit; }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ==============================
+     BACK LINK
+     ============================== */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: rgba(211, 47, 47, 0.9);
+    backdrop-filter: blur(12px);
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    transition: all 0.3s ease;
+  }
+  .back-link:hover {
+    background: var(--red-dark);
+    transform: translateX(-2px);
+  }
+  .back-link svg { width: 14px; height: 14px; }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    background: var(--red);
+    border-bottom: 4px solid var(--red-dark);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(211, 47, 47, 0.3);
+  }
+
+  nav .nav-inner {
+    max-width: var(--max-width);
+    width: 100%;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  nav .nav-brand {
+    font-family: var(--font-display);
+    font-size: 28px;
+    color: var(--cream);
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  }
+
+  nav .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  nav .nav-links a {
+    font-family: var(--font-hand);
+    font-size: 17px;
+    color: var(--cream);
+    opacity: 0.9;
+    transition: opacity 0.2s;
+    position: relative;
+  }
+
+  nav .nav-links a:hover { opacity: 1; }
+  nav .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--cream);
+    transition: width 0.3s ease;
+  }
+  nav .nav-links a:hover::after { width: 100%; }
+
+  /* ==============================
+     TIKI BORDER PATTERN
+     ============================== */
+  .tiki-border {
+    height: 16px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--tropical-yellow) 0px,
+      var(--tropical-yellow) 20px,
+      var(--red) 20px,
+      var(--red) 40px,
+      var(--navy) 40px,
+      var(--navy) 60px,
+      var(--teal) 60px,
+      var(--teal) 80px
+    );
+  }
+
+  /* ==============================
+     HERO SECTION
+     ============================== */
+  .hero {
+    margin-top: var(--nav-height);
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(0, 105, 92, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(26, 35, 126, 0.06) 0%, transparent 50%),
+      var(--cream);
+  }
+
+  .hero-bg-art {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Hand-drawn decorations */
+  .hero-doodle {
+    position: absolute;
+    font-size: 60px;
+    opacity: 0.08;
+    animation: float 6s ease-in-out infinite;
+  }
+  .hero-doodle:nth-child(1) { top: 10%; left: 8%; animation-delay: 0s; }
+  .hero-doodle:nth-child(2) { top: 20%; right: 12%; animation-delay: 1.2s; font-size: 50px; }
+  .hero-doodle:nth-child(3) { bottom: 25%; left: 15%; animation-delay: 2.4s; font-size: 45px; }
+  .hero-doodle:nth-child(4) { bottom: 15%; right: 8%; animation-delay: 0.8s; font-size: 55px; }
+  .hero-doodle:nth-child(5) { top: 50%; left: 5%; animation-delay: 3s; font-size: 40px; }
+  .hero-doodle:nth-child(6) { top: 35%; right: 5%; animation-delay: 1.8s; font-size: 48px; }
+  .hero-doodle:nth-child(7) { bottom: 40%; right: 20%; animation-delay: 2s; font-size: 52px; }
+  .hero-doodle:nth-child(8) { top: 60%; left: 25%; animation-delay: 3.5s; font-size: 38px; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-12px) rotate(3deg); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 60px 24px;
+  }
+
+  /* Signboard container */
+  .hero-signboard {
+    display: inline-block;
+    background: var(--wood);
+    border-radius: 12px;
+    padding: 48px 64px;
+    position: relative;
+    box-shadow:
+      inset 0 2px 4px rgba(255,255,255,0.15),
+      0 12px 40px rgba(0,0,0,0.25),
+      0 4px 8px rgba(0,0,0,0.15);
+    border: 3px solid var(--wood-light);
+  }
+
+  .hero-signboard::before,
+  .hero-signboard::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    width: 8px;
+    height: 32px;
+    background: #8D6E63;
+    border-radius: 3px;
+    box-shadow: inset -1px 0 2px rgba(0,0,0,0.3);
+  }
+  .hero-signboard::before { left: 30%; }
+  .hero-signboard::after { right: 30%; }
+
+  .hero-subtitle-top {
+    font-family: var(--font-hand);
+    font-size: 20px;
+    color: var(--cream);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    opacity: 0.85;
+  }
+
+  .hero-kpt {
+    font-family: var(--font-marker);
+    font-size: clamp(80px, 15vw, 160px);
+    color: var(--cream);
+    letter-spacing: 12px;
+    text-shadow:
+      4px 4px 0 rgba(0,0,0,0.3),
+      0 0 40px rgba(255, 248, 231, 0.15);
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-kpt::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 5%;
+    right: 5%;
+    height: 4px;
+    background: var(--red);
+    border-radius: 2px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .hero-tagline {
+    font-family: var(--font-sketch);
+    font-size: clamp(22px, 3vw, 32px);
+    color: var(--tropical-yellow);
+    margin-top: 16px;
+    font-weight: 600;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+  }
+
+  .hero-desc {
+    margin-top: 32px;
+    font-family: var(--font-hand);
+    font-size: 19px;
+    color: var(--text-dark);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+    opacity: 0.85;
+  }
+
+  .hero-cta-row {
+    margin-top: 36px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: var(--cream);
+    background: var(--red);
+    padding: 14px 32px;
+    border-radius: 8px;
+    border: 3px solid var(--red-dark);
+    box-shadow: 0 4px 0 var(--red-deeper), 0 6px 20px rgba(211,47,47,0.3);
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--red-deeper), 0 10px 30px rgba(211,47,47,0.4);
+  }
+  .btn-primary:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--red-deeper), 0 4px 10px rgba(211,47,47,0.3);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: var(--navy);
+    background: var(--cream);
+    padding: 14px 32px;
+    border-radius: 8px;
+    border: 3px solid var(--navy);
+    box-shadow: 0 4px 0 var(--navy-dark);
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--navy-dark), 0 6px 20px rgba(26,35,126,0.2);
+    background: var(--white);
+  }
+
+  /* Scroll indicator */
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: bob 2s ease-in-out infinite;
+  }
+  .scroll-hint span {
+    font-family: var(--font-sketch);
+    font-size: 16px;
+    color: var(--text-muted);
+  }
+  .scroll-hint .arrow {
+    width: 24px;
+    height: 24px;
+    border-right: 3px solid var(--red);
+    border-bottom: 3px solid var(--red);
+    transform: rotate(45deg);
+    opacity: 0.6;
+  }
+
+  @keyframes bob {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* ==============================
+     SECTION SHARED
+     ============================== */
+  section {
+    padding: 100px 0;
+    position: relative;
+  }
+
+  .section-label {
+    font-family: var(--font-display);
+    font-size: 14px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red);
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: var(--font-marker);
+    font-size: clamp(32px, 5vw, 52px);
+    text-align: center;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+
+  .section-subtitle {
+    font-family: var(--font-hand);
+    font-size: 20px;
+    color: var(--text-muted);
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 60px;
+  }
+
+  /* Reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+  .reveal-delay-6 { transition-delay: 0.6s; }
+
+  /* ==============================
+     FEARLESS FEATURES — TIKI CARDS
+     ============================== */
+  .features {
+    background:
+      radial-gradient(ellipse at 30% 30%, rgba(46, 125, 50, 0.04) 0%, transparent 60%),
+      var(--ivory);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+
+  .tiki-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 36px 28px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(211, 47, 47, 0.1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+  }
+
+  .tiki-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    border-color: var(--red);
+  }
+
+  .tiki-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--red), var(--tropical-orange), var(--tropical-yellow));
+    border-radius: 16px 16px 0 0;
+  }
+
+  .tiki-card-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin-bottom: 20px;
+    background: var(--cream);
+    border: 2px dashed var(--red);
+    position: relative;
+  }
+
+  .tiki-card h3 {
+    font-family: var(--font-marker);
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+
+  .tiki-card p {
+    font-family: var(--font-hand);
+    font-size: 17px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .tiki-card .card-tag {
+    display: inline-block;
+    margin-top: 16px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: rgba(0, 105, 92, 0.08);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+
+  /* ==============================
+     CHALKBOARD SECTION
+     ============================== */
+  .chalkboard-section {
+    background: var(--chalkboard);
+    position: relative;
+    overflow: hidden;
+    padding: 100px 0;
+  }
+
+  .chalkboard-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.01) 2px,
+        rgba(255,255,255,0.01) 4px
+      );
+    pointer-events: none;
+  }
+
+  /* Chalk dust effect */
+  .chalkboard-section::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 25%, rgba(255,255,255,0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 75% 60%, rgba(255,255,255,0.02) 0%, transparent 40%),
+      radial-gradient(ellipse at 45% 80%, rgba(255,255,255,0.025) 0%, transparent 45%);
+    pointer-events: none;
+  }
+
+  .chalk-frame {
+    position: absolute;
+    inset: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+
+  .chalkboard-section .section-label {
+    color: var(--tropical-yellow);
+    position: relative;
+    z-index: 1;
+  }
+
+  .chalkboard-section .section-title {
+    color: var(--chalkboard-text);
+    position: relative;
+    z-index: 1;
+  }
+
+  .chalkboard-section .section-subtitle {
+    color: rgba(232, 224, 200, 0.6);
+    position: relative;
+    z-index: 1;
+  }
+
+  .chalk-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .chalk-item {
+    padding: 32px;
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    position: relative;
+  }
+
+  .chalk-item-number {
+    font-family: var(--font-display);
+    font-size: 48px;
+    color: var(--red);
+    opacity: 0.7;
+    line-height: 1;
+    margin-bottom: 12px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+  }
+
+  .chalk-item h3 {
+    font-family: var(--font-sketch);
+    font-size: 26px;
+    color: var(--chalkboard-text);
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .chalk-item p {
+    font-family: var(--font-hand);
+    font-size: 17px;
+    color: rgba(232, 224, 200, 0.55);
+    line-height: 1.6;
+  }
+
+  /* Chalk underline */
+  .chalk-item h3::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: var(--tropical-yellow);
+    margin-top: 6px;
+    opacity: 0.5;
+    border-radius: 1px;
+  }
+
+  /* ==============================
+     STATS — PRICE TAG STYLE
+     ============================== */
+  .stats-section {
+    background: var(--cream);
+    padding: 100px 0;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .stat-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 32px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid var(--red);
+    box-shadow: 0 4px 16px rgba(211,47,47,0.08);
+    transition: transform 0.3s ease;
+  }
+
+  .stat-card:hover {
+    transform: scale(1.05);
+  }
+
+  /* Price tag hole */
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(211,47,47,0.2);
+    background: var(--cream);
+  }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: 52px;
+    color: var(--red);
+    line-height: 1;
+    margin-top: 16px;
+    margin-bottom: 8px;
+    text-shadow: 2px 2px 0 rgba(211,47,47,0.1);
+  }
+
+  .stat-label {
+    font-family: var(--font-hand);
+    font-size: 17px;
+    color: var(--text-muted);
+  }
+
+  .stat-sublabel {
+    font-family: var(--font-sketch);
+    font-size: 14px;
+    color: var(--teal);
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  /* ==============================
+     FLYER SECTION (Fearless Flyer)
+     ============================== */
+  .flyer-section {
+    background: var(--ivory);
+    padding: 100px 0;
+    position: relative;
+  }
+
+  .flyer-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--cream-warm);
+    border: 3px solid var(--red);
+    border-radius: 4px;
+    padding: 48px;
+    position: relative;
+    box-shadow: 4px 4px 0 var(--red-dark), 8px 8px 0 rgba(0,0,0,0.08);
+  }
+
+  .flyer-container::before {
+    content: 'THE FEARLESS FLYER';
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-display);
+    font-size: 14px;
+    letter-spacing: 4px;
+    color: var(--cream);
+    background: var(--red);
+    padding: 4px 20px;
+    border-radius: 4px;
+  }
+
+  .flyer-header {
+    text-align: center;
+    margin-bottom: 36px;
+    padding-bottom: 24px;
+    border-bottom: 2px dashed var(--red);
+  }
+
+  .flyer-header h2 {
+    font-family: var(--font-marker);
+    font-size: 36px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .flyer-header p {
+    font-family: var(--font-sketch);
+    font-size: 20px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .flyer-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .flyer-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 8px;
+    border: 1px solid rgba(211,47,47,0.1);
+    transition: background 0.2s;
+  }
+
+  .flyer-item:hover {
+    background: rgba(255,255,255,0.9);
+  }
+
+  .flyer-item-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: var(--red);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+  }
+
+  .flyer-item h4 {
+    font-family: var(--font-marker);
+    font-size: 17px;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .flyer-item p {
+    font-family: var(--font-hand);
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ==============================
+     TIKI SHOWCASE
+     ============================== */
+  .tiki-section {
+    background:
+      linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 50%, var(--navy-light) 100%);
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tiki-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(255,179,0,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 80% 20%, rgba(211,47,47,0.06) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .tiki-section .section-label { color: var(--tropical-yellow); position: relative; z-index: 1; }
+  .tiki-section .section-title { color: var(--cream); position: relative; z-index: 1; }
+  .tiki-section .section-subtitle { color: rgba(255,248,231,0.5); position: relative; z-index: 1; }
+
+  .tiki-showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tiki-showcase-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tiki-showcase-card:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--tropical-yellow);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+  }
+
+  .tiki-showcase-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--tropical-yellow), var(--red), var(--tropical-yellow));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .tiki-showcase-card:hover::after { opacity: 1; }
+
+  .tiki-showcase-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .tiki-showcase-card h3 {
+    font-family: var(--font-marker);
+    font-size: 20px;
+    color: var(--cream);
+    margin-bottom: 8px;
+  }
+
+  .tiki-showcase-card p {
+    font-family: var(--font-hand);
+    font-size: 16px;
+    color: rgba(255,248,231,0.5);
+    line-height: 1.5;
+  }
+
+  /* ==============================
+     HAWAIIAN SHIRT DIVIDER
+     ============================== */
+  .hawaiian-divider {
+    height: 60px;
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hawaiian-divider::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 10% 50%, var(--red) 8px, transparent 8px),
+      radial-gradient(circle at 30% 50%, var(--teal) 6px, transparent 6px),
+      radial-gradient(circle at 50% 50%, var(--tropical-yellow) 10px, transparent 10px),
+      radial-gradient(circle at 70% 50%, var(--navy) 7px, transparent 7px),
+      radial-gradient(circle at 90% 50%, var(--red) 5px, transparent 5px),
+      radial-gradient(circle at 20% 30%, var(--tropical-orange) 4px, transparent 4px),
+      radial-gradient(circle at 40% 70%, var(--teal-light) 5px, transparent 5px),
+      radial-gradient(circle at 60% 25%, var(--red) 6px, transparent 6px),
+      radial-gradient(circle at 80% 65%, var(--tropical-yellow) 4px, transparent 4px);
+    opacity: 0.15;
+  }
+
+  /* ==============================
+     TESTIMONIAL / QUOTE
+     ============================== */
+  .quote-section {
+    background: var(--cream);
+    padding: 80px 0;
+  }
+
+  .quote-card {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 48px;
+    background: var(--white);
+    border-radius: 20px;
+    border: 2px solid rgba(26, 35, 126, 0.1);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.06);
+    position: relative;
+  }
+
+  .quote-card::before {
+    content: '\201C';
+    font-family: var(--font-display);
+    font-size: 120px;
+    color: var(--red);
+    opacity: 0.12;
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    line-height: 1;
+  }
+
+  .quote-card blockquote {
+    font-family: var(--font-sketch);
+    font-size: 26px;
+    color: var(--navy);
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .quote-card cite {
+    font-family: var(--font-hand);
+    font-size: 17px;
+    color: var(--text-muted);
+    font-style: normal;
+  }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  .cta-section {
+    background: var(--red);
+    padding: 100px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 10% 50%, rgba(255,255,255,0.05) 0%, transparent 50%),
+      radial-gradient(circle at 90% 30%, rgba(0,0,0,0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .cta-content {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-icon {
+    font-size: 64px;
+    margin-bottom: 24px;
+    display: block;
+    animation: ring 3s ease-in-out infinite;
+  }
+
+  @keyframes ring {
+    0%, 100% { transform: rotate(0deg); }
+    10% { transform: rotate(14deg); }
+    20% { transform: rotate(-10deg); }
+    30% { transform: rotate(8deg); }
+    40% { transform: rotate(-4deg); }
+    50%, 100% { transform: rotate(0deg); }
+  }
+
+  .cta-content h2 {
+    font-family: var(--font-marker);
+    font-size: clamp(32px, 5vw, 52px);
+    color: var(--cream);
+    margin-bottom: 16px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.15);
+  }
+
+  .cta-content p {
+    font-family: var(--font-hand);
+    font-size: 20px;
+    color: rgba(255, 248, 231, 0.8);
+    max-width: 500px;
+    margin: 0 auto 36px;
+  }
+
+  .btn-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-display);
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: var(--red);
+    background: var(--cream);
+    padding: 18px 44px;
+    border-radius: 12px;
+    border: 3px solid var(--cream-warm);
+    box-shadow: 0 6px 0 var(--wood), 0 10px 30px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .btn-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 0 var(--wood), 0 14px 40px rgba(0,0,0,0.25);
+  }
+  .btn-cta:active {
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 var(--wood), 0 6px 15px rgba(0,0,0,0.2);
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: var(--navy-dark);
+    padding: 60px 0 32px;
+    position: relative;
+  }
+
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--red) 0px,
+      var(--red) 30px,
+      var(--tropical-yellow) 30px,
+      var(--tropical-yellow) 60px,
+      var(--teal) 60px,
+      var(--teal) 90px,
+      var(--navy-light) 90px,
+      var(--navy-light) 120px
+    );
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 48px;
+  }
+
+  .footer-brand h3 {
+    font-family: var(--font-marker);
+    font-size: 32px;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+
+  .footer-brand p {
+    font-family: var(--font-hand);
+    font-size: 16px;
+    color: rgba(255,248,231,0.4);
+    line-height: 1.6;
+    max-width: 280px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-display);
+    font-size: 15px;
+    letter-spacing: 2px;
+    color: var(--tropical-yellow);
+    margin-bottom: 16px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+  }
+
+  .footer-col ul li {
+    margin-bottom: 10px;
+  }
+
+  .footer-col ul li a {
+    font-family: var(--font-hand);
+    font-size: 16px;
+    color: rgba(255,248,231,0.45);
+    transition: color 0.2s;
+  }
+
+  .footer-col ul li a:hover {
+    color: var(--cream);
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-bottom p {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: rgba(255,248,231,0.25);
+  }
+
+  .footer-socials {
+    display: flex;
+    gap: 12px;
+  }
+
+  .footer-social-link {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+
+  .footer-social-link:hover {
+    background: var(--red);
+    border-color: var(--red);
+    transform: scale(1.1);
+  }
+
+  /* ==============================
+     WAVE SVG DIVIDERS
+     ============================== */
+  .wave-divider {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-bottom: -2px;
+  }
+
+  .wave-divider-flip {
+    transform: scaleY(-1);
+    margin-top: -2px;
+    margin-bottom: 0;
+  }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 768px) {
+    .hero-signboard {
+      padding: 36px 28px;
+    }
+
+    .hero-signboard::before { left: 20%; }
+    .hero-signboard::after { right: 20%; }
+
+    nav .nav-links { display: none; }
+
+    .features-grid,
+    .tiki-showcase-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .chalk-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .stats-row {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .flyer-container {
+      padding: 32px 20px;
+    }
+
+    .flyer-items {
+      grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .hero-desc {
+      font-size: 17px;
+    }
+
+    .hero-cta-row {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn-primary, .btn-secondary, .btn-cta {
+      width: 100%;
+      max-width: 280px;
+      justify-content: center;
+    }
+
+    section {
+      padding: 60px 0;
+    }
+  }
+
+  /* ==============================
+     HAND-DRAWN SVG BORDERS
+     ============================== */
+  .hand-drawn-line {
+    display: block;
+    margin: 0 auto;
+    max-width: 200px;
+    height: 8px;
+    opacity: 0.3;
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  Gallery
+</a>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">KPT Trading Co.</div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#showcase">Showcase</a></li>
+      <li><a href="#flyer">The Flyer</a></li>
+      <li><a href="#cta">Get Started</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Tiki Border -->
+<div class="tiki-border" style="margin-top: var(--nav-height);"></div>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg-art">
+    <div class="hero-doodle">🌺</div>
+    <div class="hero-doodle">🍍</div>
+    <div class="hero-doodle">🌴</div>
+    <div class="hero-doodle">🦜</div>
+    <div class="hero-doodle">🥥</div>
+    <div class="hero-doodle">🌊</div>
+    <div class="hero-doodle">🪺</div>
+    <div class="hero-doodle">🐚</div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-signboard reveal">
+      <div class="hero-subtitle-top">Welcome Aboard</div>
+      <div class="hero-kpt">KPT</div>
+      <div class="hero-tagline">Your Neighborhood Tech Company</div>
+    </div>
+
+    <p class="hero-desc reveal reveal-delay-2">
+      We sailed the seven seas of technology so you don't have to.
+      Unbeatable quality, friendly crew, and a few surprises in every aisle.
+    </p>
+
+    <div class="hero-cta-row reveal reveal-delay-3">
+      <a href="#features" class="btn-primary">Explore the Store &nbsp;🛒</a>
+      <a href="#flyer" class="btn-secondary">Read the Flyer &nbsp;📰</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll down, matey</span>
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<!-- Wave Divider -->
+<svg class="wave-divider" viewBox="0 0 1440 80" fill="none" preserveAspectRatio="none">
+  <path d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z" fill="#FFFDF5"/>
+</svg>
+
+<!-- Features (Tiki Cards) -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-label reveal">What's in Store</div>
+    <h2 class="section-title reveal">Fearless Features</h2>
+    <p class="section-subtitle reveal">Hand-picked from around the world, these are the goods you won't find anywhere else.</p>
+
+    <div class="features-grid">
+      <div class="tiki-card reveal reveal-delay-1">
+        <div class="tiki-card-icon">🚀</div>
+        <h3>Blazing Fast Voyages</h3>
+        <p>Our fleet of clipper ships deliver your data across the digital seas in record time. No trade winds required.</p>
+        <span class="card-tag">Performance</span>
+      </div>
+
+      <div class="tiki-card reveal reveal-delay-2">
+        <div class="tiki-card-icon">🔐</div>
+        <h3>Island-Grade Security</h3>
+        <p>Protected by ancient tiki guardians and modern encryption. Your treasure stays locked up tight.</p>
+        <span class="card-tag">Security</span>
+      </div>
+
+      <div class="tiki-card reveal reveal-delay-3">
+        <div class="tiki-card-icon">🎨</div>
+        <h3>Hand-Crafted Design</h3>
+        <p>Every pixel placed with the care of a chalkboard artist. No cookie-cutter templates — everything bespoke.</p>
+        <span class="card-tag">Design</span>
+      </div>
+
+      <div class="tiki-card reveal reveal-delay-4">
+        <div class="tiki-card-icon">🤝</div>
+        <h3>Friendly Crew Support</h3>
+        <p>Our crew members are trained to help, not upsell. Real humans, real answers, real aloha spirit.</p>
+        <span class="card-tag">Support</span>
+      </div>
+
+      <div class="tiki-card reveal reveal-delay-5">
+        <div class="tiki-card-icon">🧭</div>
+        <h3>Simple Navigation</h3>
+        <p>No confusing maps or hidden fees. Everything's clearly labeled, just like your favorite neighborhood store.</p>
+        <span class="card-tag">UX</span>
+      </div>
+
+      <div class="tiki-card reveal reveal-delay-6">
+        <div class="tiki-card-icon">🌱</div>
+        <h3>Sustainable Code</h3>
+        <p>Built to last with clean, maintainable code. We care about what goes into your stack — no artificial ingredients.</p>
+        <span class="card-tag">Quality</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Hawaiian Divider -->
+<div class="hawaiian-divider"></div>
+
+<!-- Chalkboard Section -->
+<section class="chalkboard-section" id="process">
+  <div class="chalk-frame"></div>
+  <div class="container">
+    <div class="section-label reveal">Our Process</div>
+    <h2 class="section-title reveal">How We Sail</h2>
+    <p class="section-subtitle reveal">Four simple steps, no detours, no hidden costs — just honest work, on the board.</p>
+
+    <div class="chalk-grid">
+      <div class="chalk-item reveal reveal-delay-1">
+        <div class="chalk-item-number">01</div>
+        <h3>Chart the Course</h3>
+        <p>We map out your project like old-world cartographers — thorough, precise, and with a sense of adventure. Every milestone marked in chalk.</p>
+      </div>
+
+      <div class="chalk-item reveal reveal-delay-2">
+        <div class="chalk-item-number">02</div>
+        <h3>Provision the Ship</h3>
+        <p>We stock the hold with the best tools, libraries, and frameworks. Only the freshest ingredients make it aboard our vessel.</p>
+      </div>
+
+      <div class="chalk-item reveal reveal-delay-3">
+        <div class="chalk-item-number">03</div>
+        <h3>Set Sail & Build</h3>
+        <p>Hands on deck! Our crew builds iteratively, testing the waters at every port. You'll see progress, not promises.</p>
+      </div>
+
+      <div class="chalk-item reveal reveal-delay-4">
+        <div class="chalk-item-number">04</div>
+        <h3>Safe Harbor Delivery</h3>
+        <p>We dock your project safely, fully tested and ready for the world. Then we stick around to help you navigate the waters ahead.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave divider (inverted) -->
+<svg class="wave-divider wave-divider-flip" viewBox="0 0 1440 80" fill="none" preserveAspectRatio="none">
+  <path d="M0,40 C240,0 480,80 720,40 C960,0 1200,60 1440,30 L1440,80 L0,80 Z" fill="#FFF8E7"/>
+</svg>
+
+<!-- Stats Section -->
+<section class="stats-section" id="stats">
+  <div class="container">
+    <div class="section-label reveal">By the Numbers</div>
+    <h2 class="section-title reveal">Today's Specials</h2>
+    <p class="section-subtitle reveal">Our prices are unbeatable. Our quality? Even more so.</p>
+
+    <div class="stats-row">
+      <div class="stat-card reveal reveal-delay-1">
+        <div class="stat-number">99.9%</div>
+        <div class="stat-label">Uptime Guaranteed</div>
+        <div class="stat-sublabel">always on deck</div>
+      </div>
+
+      <div class="stat-card reveal reveal-delay-2">
+        <div class="stat-number">50ms</div>
+        <div class="stat-label">Average Response</div>
+        <div class="stat-sublabel">faster than a trade wind</div>
+      </div>
+
+      <div class="stat-card reveal reveal-delay-3">
+        <div class="stat-number">10K+</div>
+        <div class="stat-label">Happy Customers</div>
+        <div class="stat-sublabel">and counting</div>
+      </div>
+
+      <div class="stat-card reveal reveal-delay-4">
+        <div class="stat-number">$0</div>
+        <div class="stat-label">Hidden Fees</div>
+        <div class="stat-sublabel">what you see is what you get</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tiki Showcase -->
+<section class="tiki-section" id="showcase">
+  <div class="container">
+    <div class="section-label reveal">The Goods</div>
+    <h2 class="section-title reveal">Trader's Showcase</h2>
+    <p class="section-subtitle reveal">Six rare finds from our global expeditions — each one a crowd favorite.</p>
+
+    <div class="tiki-showcase-grid">
+      <div class="tiki-showcase-card reveal reveal-delay-1">
+        <span class="tiki-showcase-icon">⚡</span>
+        <h3>Lightning Engine</h3>
+        <p>Edge-optimized compute that processes requests before you finish blinking.</p>
+      </div>
+
+      <div class="tiki-showcase-card reveal reveal-delay-2">
+        <span class="tiki-showcase-icon">🗺️</span>
+        <h3>Global Reach</h3>
+        <p>37 regions, zero cold starts. Your code runs where your users live.</p>
+      </div>
+
+      <div class="tiki-showcase-card reveal reveal-delay-3">
+        <span class="tiki-showcase-icon">🔮</span>
+        <h3>Smart Predictions</h3>
+        <p>AI-powered analytics that tell you what your customers want before they know.</p>
+      </div>
+
+      <div class="tiki-showcase-card reveal reveal-delay-4">
+        <span class="tiki-showcase-icon">🛡️</span>
+        <h3>Fort Knox Mode</h3>
+        <p>Zero-trust architecture, SOC2 certified, with automatic threat detection.</p>
+      </div>
+
+      <div class="tiki-showcase-card reveal reveal-delay-5">
+        <span class="tiki-showcase-icon">🎯</span>
+        <h3>Precision Scaling</h3>
+        <p>Scale from 10 to 10 million users without changing a single line of code.</p>
+      </div>
+
+      <div class="tiki-showcase-card reveal reveal-delay-6">
+        <span class="tiki-showcase-icon">🧩</span>
+        <h3>Plugin Paradise</h3>
+        <p>200+ integrations ready to snap in. Build your dream stack, no glue required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave Divider -->
+<svg class="wave-divider" viewBox="0 0 1440 80" fill="none" preserveAspectRatio="none">
+  <path d="M0,30 C360,70 720,10 1080,50 C1260,60 1380,40 1440,30 L1440,80 L0,80 Z" fill="#FFFDF5"/>
+</svg>
+
+<!-- Fearless Flyer Section -->
+<section class="flyer-section" id="flyer">
+  <div class="container">
+    <div class="section-label reveal">Fresh Off the Press</div>
+    <h2 class="section-title reveal">The Fearless Flyer</h2>
+    <p class="section-subtitle reveal">The latest discoveries from our trading expeditions around the tech world.</p>
+
+    <div class="flyer-container reveal">
+      <div class="flyer-header">
+        <h2>This Week's Discoveries</h2>
+        <p>Volume XLII — Edition 7 — March 2026</p>
+      </div>
+
+      <div class="flyer-items">
+        <div class="flyer-item">
+          <div class="flyer-item-icon">🏝️</div>
+          <div>
+            <h4>Island-Fresh APIs</h4>
+            <p>RESTful endpoints so clean they practically write their own documentation. Harvested at peak freshness.</p>
+          </div>
+        </div>
+
+        <div class="flyer-item">
+          <div class="flyer-item-icon">🧃</div>
+          <div>
+            <h4>Concentrate-Free Deploys</h4>
+            <p>One-click deployments with zero artificial complexity. Just pure, fresh production pushes.</p>
+          </div>
+        </div>
+
+        <div class="flyer-item">
+          <div class="flyer-item-icon">🫙</div>
+          <div>
+            <h4>Preserved Uptime</h4>
+            <p>Our homestyle monitoring keeps things running smoothly — jarred and sealed for guaranteed freshness.</p>
+          </div>
+        </div>
+
+        <div class="flyer-item">
+          <div class="flyer-item-icon">🧈</div>
+          <div>
+            <h4>Butter-Smooth UX</h4>
+            <p>60fps animations and zero jank. Spread it on thick — your users will taste the difference.</p>
+          </div>
+        </div>
+
+        <div class="flyer-item">
+          <div class="flyer-item-icon">🍪</div>
+          <div>
+            <h4>Cookie-Free Tracking</h4>
+            <p>Privacy-first analytics that respect your users. All the insights, none of the guilt.</p>
+          </div>
+        </div>
+
+        <div class="flyer-item">
+          <div class="flyer-item-icon">🫒</div>
+          <div>
+            <h4>Organic Error Handling</h4>
+            <p>Graceful degradation grown without pesticides. When things go wrong, they go wrong beautifully.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quote -->
+<section class="quote-section">
+  <div class="container">
+    <div class="quote-card reveal">
+      <blockquote>We're not trying to be the biggest tech company in the world. We're trying to be your favorite.</blockquote>
+      <cite>— The KPT Crew, since Day One</cite>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="cta-content reveal">
+      <span class="cta-icon">🔔</span>
+      <h2>All Aboard!</h2>
+      <p>Ring the ship's bell and join thousands of happy traders who chose the neighborhood tech company.</p>
+      <a href="#hero" class="btn-cta">Start Your Voyage &nbsp;⛵</a>
+    </div>
+  </div>
+</section>
+
+<!-- Tiki Border -->
+<div class="tiki-border"></div>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>KPT</h3>
+        <p>Your neighborhood tech company. Sailing the digital seas since day one, bringing you the best finds from around the world — no middlemen, no markup, no mystery ingredients.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#showcase">Showcase</a></li>
+          <li><a href="#flyer">The Flyer</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Status</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 KPT Trading Co. All rights reserved. Brewed with aloha.</p>
+      <div class="footer-socials">
+        <a href="#" class="footer-social-link">🐦</a>
+        <a href="#" class="footer-social-link">📸</a>
+        <a href="#" class="footer-social-link">💼</a>
+        <a href="#" class="footer-social-link">🎵</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- IntersectionObserver Scroll Animations -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const revealElements = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach(el => observer.observe(el));
+
+    // Smooth nav scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Nav background change on scroll
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        nav.style.boxShadow = '0 4px 30px rgba(211, 47, 47, 0.5)';
+      } else {
+        nav.style.boxShadow = '0 4px 20px rgba(211, 47, 47, 0.3)';
+      }
+    });
+
+    // Stat counter animation
+    const statNumbers = document.querySelectorAll('.stat-number');
+    const statObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const finalText = el.textContent;
+          const numMatch = finalText.match(/[\d.]+/);
+          if (numMatch) {
+            const finalNum = parseFloat(numMatch[0]);
+            const prefix = finalText.substring(0, finalText.indexOf(numMatch[0]));
+            const suffix = finalText.substring(finalText.indexOf(numMatch[0]) + numMatch[0].length);
+            const hasDecimal = numMatch[0].includes('.');
+            const decimalPlaces = hasDecimal ? numMatch[0].split('.')[1].length : 0;
+            const duration = 1500;
+            const startTime = performance.now();
+
+            function animate(currentTime) {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              const current = finalNum * eased;
+
+              if (hasDecimal) {
+                el.textContent = prefix + current.toFixed(decimalPlaces) + suffix;
+              } else {
+                el.textContent = prefix + Math.floor(current).toLocaleString() + suffix;
+              }
+
+              if (progress < 1) {
+                requestAnimationFrame(animate);
+              } else {
+                el.textContent = finalText;
+              }
+            }
+
+            requestAnimationFrame(animate);
+          }
+          statObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    statNumbers.forEach(el => statObserver.observe(el));
+  });
+</script>
+
+</body>
+</html>

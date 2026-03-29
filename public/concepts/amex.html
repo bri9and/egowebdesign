@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — American Express</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* =============================================
+     RESET & CUSTOM PROPERTIES
+     ============================================= */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --amex-blue: #006FCF;
+    --amex-blue-light: #1A8FEF;
+    --amex-blue-dark: #0058A6;
+    --navy: #00175A;
+    --navy-deep: #000D33;
+    --navy-mid: #001247;
+    --platinum: #C0C0C0;
+    --platinum-light: #D8D8D8;
+    --platinum-dim: rgba(192, 192, 192, 0.12);
+    --platinum-glow: rgba(192, 192, 192, 0.06);
+    --gold: #B8860B;
+    --gold-bright: #D4A017;
+    --gold-dim: rgba(184, 134, 11, 0.15);
+    --white: #FFFFFF;
+    --white-soft: rgba(255, 255, 255, 0.85);
+    --white-muted: rgba(255, 255, 255, 0.5);
+    --white-faint: rgba(255, 255, 255, 0.08);
+    --white-ghost: rgba(255, 255, 255, 0.03);
+    --surface: #F7F8FA;
+    --surface-warm: #EEF2F7;
+
+    --font-display: 'Playfair Display', 'Georgia', serif;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+    --ease-premium: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    background: var(--navy-deep);
+    color: var(--white);
+    font-family: var(--font-sans);
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--amex-blue);
+    color: var(--white);
+  }
+
+  /* =============================================
+     CENTURION WATERMARK PATTERN
+     ============================================= */
+  .centurion-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .centurion-bg::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(ellipse at center,
+      rgba(0, 111, 207, 0.08) 0%,
+      rgba(0, 111, 207, 0.03) 40%,
+      transparent 70%);
+    border-radius: 50%;
+  }
+
+  .centurion-bg::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -15%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(ellipse at center,
+      rgba(192, 192, 192, 0.05) 0%,
+      transparent 60%);
+    border-radius: 50%;
+  }
+
+  /* =============================================
+     SCROLL ANIMATIONS
+     ============================================= */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s var(--ease-reveal), transform 0.8s var(--ease-reveal);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* =============================================
+     NAVIGATION
+     ============================================= */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 1.25rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 13, 51, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--white-faint);
+    transition: background 0.4s var(--ease-smooth);
+  }
+
+  .nav-back {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--platinum-light);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.3s var(--ease-smooth);
+  }
+  .nav-back:hover { color: var(--amex-blue-light); }
+  .nav-back svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s var(--ease-smooth);
+  }
+  .nav-back:hover svg { transform: translateX(-3px); }
+
+  .nav-wordmark {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--white-muted);
+  }
+
+  /* =============================================
+     HERO
+     ============================================= */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 8rem 2rem 6rem;
+    overflow: hidden;
+  }
+
+  /* Centurion silhouette — CSS-only abstract representation */
+  .centurion-motif {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .centurion-motif::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 3px solid var(--platinum);
+    /* Helmet shape */
+  }
+  .centurion-motif::after {
+    content: '';
+    position: absolute;
+    top: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 60px;
+    border-top: 3px solid var(--platinum);
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+    border-radius: 50% 50% 0 0;
+    /* Crest */
+  }
+  .centurion-shield {
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 280px;
+    border: 3px solid var(--platinum);
+    border-radius: 0 0 50% 50%;
+    /* Shield body */
+  }
+  .centurion-shield::before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: var(--platinum);
+  }
+  .centurion-shield::after {
+    content: '';
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: var(--platinum);
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1.5rem;
+    background: var(--white-faint);
+    border: 1px solid rgba(192, 192, 192, 0.15);
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--platinum-light);
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-badge-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--amex-blue);
+    border-radius: 50%;
+    animation: pulse-dot 2s ease infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 111, 207, 0.5); }
+    50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(0, 111, 207, 0); }
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 10vw, 9rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(
+      135deg,
+      var(--white) 0%,
+      var(--amex-blue-light) 25%,
+      var(--amex-blue) 50%,
+      var(--amex-blue-light) 75%,
+      var(--platinum-light) 100%
+    );
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer-title 6s ease infinite;
+  }
+  @keyframes shimmer-title {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .hero-tagline {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--platinum);
+    letter-spacing: 0.04em;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--white-soft);
+    max-width: 540px;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 1.25rem;
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* =============================================
+     BUTTONS
+     ============================================= */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 2.5rem;
+    background: var(--amex-blue);
+    color: var(--white);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s var(--ease-smooth);
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+    transform: translateX(-100%);
+    transition: transform 0.5s var(--ease-smooth);
+  }
+  .btn-primary:hover::before { transform: translateX(100%); }
+  .btn-primary:hover {
+    background: var(--amex-blue-light);
+    box-shadow: 0 8px 32px rgba(0, 111, 207, 0.35);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 2.5rem;
+    background: transparent;
+    color: var(--platinum-light);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 1px solid rgba(192, 192, 192, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s var(--ease-smooth);
+  }
+  .btn-outline:hover {
+    border-color: var(--platinum);
+    color: var(--white);
+    background: var(--white-faint);
+    transform: translateY(-2px);
+  }
+
+  /* =============================================
+     SCROLL INDICATOR
+     ============================================= */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 1;
+  }
+  .scroll-indicator span {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white-muted);
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--amex-blue), transparent);
+    animation: scroll-pulse 2s ease infinite;
+  }
+  @keyframes scroll-pulse {
+    0%, 100% { opacity: 1; height: 40px; }
+    50% { opacity: 0.4; height: 25px; }
+  }
+
+  /* =============================================
+     PLATINUM CARD SECTION
+     ============================================= */
+  .card-section {
+    position: relative;
+    padding: 8rem 2rem;
+    background: linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 50%, var(--navy-deep) 100%);
+    overflow: hidden;
+  }
+
+  .card-section .centurion-bg::before {
+    top: 10%;
+    left: -5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(ellipse at center,
+      rgba(184, 134, 11, 0.06) 0%,
+      transparent 60%);
+  }
+
+  .section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--amex-blue-light);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+
+  .section-sub {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--white-soft);
+    max-width: 560px;
+    line-height: 1.8;
+    margin-bottom: 4rem;
+  }
+
+  /* Platinum Card Visual */
+  .card-showcase {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .platinum-card {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 1.586;
+    border-radius: 16px;
+    background: linear-gradient(135deg,
+      #2A2A2A 0%,
+      #4A4A4A 20%,
+      #C0C0C0 40%,
+      #E8E8E8 50%,
+      #C0C0C0 60%,
+      #4A4A4A 80%,
+      #2A2A2A 100%);
+    background-size: 300% 300%;
+    animation: card-shimmer 8s ease infinite;
+    box-shadow:
+      0 25px 60px rgba(0, 0, 0, 0.5),
+      0 0 0 1px rgba(255, 255, 255, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+    transform: perspective(800px) rotateY(-5deg) rotateX(2deg);
+    transition: transform 0.6s var(--ease-premium);
+  }
+  .platinum-card:hover {
+    transform: perspective(800px) rotateY(0deg) rotateX(0deg);
+  }
+
+  @keyframes card-shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .card-chip {
+    position: absolute;
+    top: 28%;
+    left: 8%;
+    width: 50px;
+    height: 38px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #D4A017 0%, #B8860B 40%, #D4A017 60%, #B8860B 100%);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2);
+  }
+  .card-chip::before {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: rgba(0,0,0,0.2);
+  }
+  .card-chip::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    width: 1px;
+    height: 80%;
+    background: rgba(0,0,0,0.15);
+  }
+
+  .card-logo {
+    position: absolute;
+    top: 8%;
+    right: 6%;
+    font-family: var(--font-sans);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  .card-name {
+    position: absolute;
+    bottom: 22%;
+    left: 8%;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  .card-number {
+    position: absolute;
+    bottom: 36%;
+    left: 8%;
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  .card-type {
+    position: absolute;
+    bottom: 8%;
+    left: 8%;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .card-centurion-mark {
+    position: absolute;
+    bottom: 6%;
+    right: 6%;
+    width: 60px;
+    height: 60px;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-centurion-mark::before {
+    content: '';
+    width: 24px;
+    height: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0 0 50% 50%;
+  }
+
+  .card-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .card-feature {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .card-feature-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--white-faint);
+    border: 1px solid rgba(192, 192, 192, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-feature-icon svg {
+    width: 20px;
+    height: 20px;
+    color: var(--amex-blue-light);
+  }
+
+  .card-feature h4 {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+  }
+  .card-feature p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--white-muted);
+    line-height: 1.6;
+  }
+
+  /* =============================================
+     MEMBERSHIP REWARDS SECTION
+     ============================================= */
+  .rewards-section {
+    position: relative;
+    padding: 8rem 2rem;
+    background: var(--navy-deep);
+    overflow: hidden;
+  }
+
+  .rewards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 4rem;
+  }
+
+  .reward-card {
+    position: relative;
+    padding: 2.5rem 2rem;
+    background: linear-gradient(135deg, var(--white-faint) 0%, var(--white-ghost) 100%);
+    border: 1px solid rgba(192, 192, 192, 0.08);
+    border-radius: 12px;
+    transition: all 0.4s var(--ease-premium);
+    overflow: hidden;
+  }
+  .reward-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--amex-blue), transparent);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-smooth);
+  }
+  .reward-card:hover::before { opacity: 1; }
+  .reward-card:hover {
+    background: linear-gradient(135deg, rgba(0, 111, 207, 0.08) 0%, var(--white-faint) 100%);
+    border-color: rgba(0, 111, 207, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .reward-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--amex-blue), var(--amex-blue-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 16px rgba(0, 111, 207, 0.25);
+  }
+  .reward-icon svg {
+    width: 24px;
+    height: 24px;
+    color: var(--white);
+  }
+
+  .reward-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+  .reward-card p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--white-muted);
+    line-height: 1.7;
+  }
+
+  /* =============================================
+     STATS SECTION
+     ============================================= */
+  .stats-section {
+    position: relative;
+    padding: 6rem 2rem;
+    background: linear-gradient(180deg, var(--navy-deep) 0%, var(--navy-mid) 50%, var(--navy-deep) 100%);
+    overflow: hidden;
+  }
+
+  .stats-divider {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .stat-item {
+    position: relative;
+    padding: 2rem 1rem;
+  }
+  .stat-item::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    right: 0;
+    width: 1px;
+    height: 60%;
+    background: linear-gradient(to bottom, transparent, rgba(192, 192, 192, 0.15), transparent);
+  }
+  .stat-item:last-child::after { display: none; }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-weight: 700;
+    color: var(--amex-blue-light);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .stat-number .stat-suffix {
+    font-size: 0.6em;
+    font-weight: 400;
+    color: var(--amex-blue);
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white-muted);
+  }
+
+  /* =============================================
+     QUOTE / TAGLINE SECTION
+     ============================================= */
+  .quote-section {
+    position: relative;
+    padding: 8rem 2rem;
+    background: var(--navy-deep);
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .quote-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(ellipse at center,
+      rgba(0, 111, 207, 0.06) 0%,
+      transparent 60%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .quote-mark {
+    font-family: var(--font-display);
+    font-size: 5rem;
+    font-weight: 800;
+    color: var(--amex-blue);
+    opacity: 0.3;
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .quote-text {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.5vw, 2.75rem);
+    font-weight: 500;
+    font-style: italic;
+    color: var(--white);
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    line-height: 1.4;
+    position: relative;
+    z-index: 1;
+  }
+
+  .quote-attr {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--platinum);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* =============================================
+     FEATURES GRID
+     ============================================= */
+  .features-section {
+    position: relative;
+    padding: 8rem 2rem;
+    background: linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 100%);
+    overflow: hidden;
+  }
+
+  .features-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .feature-item {
+    position: relative;
+    padding: 2.25rem;
+    background: linear-gradient(135deg, var(--white-faint) 0%, transparent 100%);
+    border: 1px solid var(--white-faint);
+    border-radius: 12px;
+    transition: all 0.4s var(--ease-premium);
+  }
+  .feature-item:hover {
+    background: linear-gradient(135deg, rgba(0, 111, 207, 0.06) 0%, var(--white-faint) 100%);
+    border-color: rgba(0, 111, 207, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .feature-number {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--amex-blue);
+    opacity: 0.3;
+    margin-bottom: 1rem;
+  }
+
+  .feature-item h3 {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+  .feature-item p {
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--white-muted);
+    line-height: 1.7;
+  }
+
+  /* =============================================
+     CTA SECTION
+     ============================================= */
+  .cta-section {
+    position: relative;
+    padding: 8rem 2rem;
+    background: linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .cta-card {
+    position: relative;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 4rem 3rem;
+    background: linear-gradient(135deg,
+      rgba(0, 111, 207, 0.1) 0%,
+      rgba(0, 111, 207, 0.03) 50%,
+      rgba(192, 192, 192, 0.05) 100%);
+    border: 1px solid rgba(0, 111, 207, 0.15);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .cta-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent,
+      var(--amex-blue),
+      var(--platinum),
+      var(--amex-blue),
+      transparent);
+  }
+  .cta-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(192, 192, 192, 0.2),
+      transparent);
+  }
+
+  .cta-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
+  .cta-sub {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--white-soft);
+    max-width: 460px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.8;
+  }
+
+  /* =============================================
+     FOOTER
+     ============================================= */
+  .footer {
+    position: relative;
+    padding: 4rem 2rem 3rem;
+    background: var(--navy-deep);
+    border-top: 1px solid var(--white-faint);
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--amex-blue);
+  }
+
+  .footer-divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(192, 192, 192, 0.2);
+  }
+
+  .footer-tagline {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--white-muted);
+    font-style: italic;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .footer-links a {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white-muted);
+    text-decoration: none;
+    transition: color 0.3s var(--ease-smooth);
+  }
+  .footer-links a:hover { color: var(--amex-blue-light); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 2.5rem auto 0;
+    padding-top: 2rem;
+    border-top: 1px solid var(--white-faint);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-copy {
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: rgba(192, 192, 192, 0.35);
+    letter-spacing: 0.05em;
+  }
+
+  .footer-member {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .footer-member-dot {
+    width: 5px;
+    height: 5px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+
+  /* =============================================
+     RESPONSIVE — 768px
+     ============================================= */
+  @media (max-width: 768px) {
+    .nav {
+      padding: 1rem 1.25rem;
+    }
+
+    .hero {
+      padding: 7rem 1.5rem 5rem;
+      min-height: 90vh;
+    }
+    .hero-badge { margin-bottom: 2rem; }
+    .hero-sub { font-size: 0.95rem; }
+
+    .centurion-motif {
+      width: 300px;
+      height: 300px;
+    }
+
+    .card-showcase {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    .platinum-card {
+      max-width: 340px;
+      margin: 0 auto;
+      transform: perspective(800px) rotateY(0deg) rotateX(0deg);
+    }
+
+    .rewards-grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .stats-divider {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .stat-item:nth-child(2)::after { display: none; }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-card {
+      padding: 3rem 2rem;
+    }
+
+    .footer-inner {
+      flex-direction: column;
+      text-align: center;
+    }
+    .footer-links {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem 1.5rem;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+    }
+
+    .card-section,
+    .rewards-section,
+    .features-section,
+    .cta-section,
+    .quote-section {
+      padding: 5rem 1.5rem;
+    }
+
+    .hero-cta-group {
+      flex-direction: column;
+      align-items: center;
+    }
+    .btn-primary, .btn-outline {
+      width: 100%;
+      max-width: 280px;
+      justify-content: center;
+    }
+
+    .scroll-indicator { display: none; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ======= NAVIGATION ======= -->
+  <nav class="nav">
+    <a href="/index.html" class="nav-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      Back
+    </a>
+    <span class="nav-wordmark">KPT Collection</span>
+  </nav>
+
+  <!-- ======= HERO ======= -->
+  <section class="hero">
+    <div class="centurion-bg"></div>
+
+    <!-- Centurion Silhouette Watermark -->
+    <div class="centurion-motif">
+      <div class="centurion-shield"></div>
+    </div>
+
+    <div class="hero-badge reveal">
+      <span class="hero-badge-dot"></span>
+      Membership Has Its Privileges
+    </div>
+
+    <h1 class="hero-title reveal reveal-delay-1">KPT</h1>
+    <p class="hero-tagline reveal reveal-delay-2">Don't Leave Home Without It.</p>
+
+    <p class="hero-sub reveal reveal-delay-3">
+      The world-class platform built for those who demand premium performance,
+      exclusive access, and rewards that compound with every interaction.
+    </p>
+
+    <div class="hero-cta-group reveal reveal-delay-4">
+      <a href="#membership" class="btn-primary">
+        Apply Now
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#rewards" class="btn-outline">Explore Rewards</a>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Discover More</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ======= PLATINUM CARD SECTION ======= -->
+  <section class="card-section" id="membership">
+    <div class="centurion-bg"></div>
+    <div class="section-container">
+      <div class="card-showcase">
+        <div>
+          <p class="section-label reveal">The Platinum Standard</p>
+          <h2 class="section-title reveal reveal-delay-1">Engineered for<br>the Extraordinary</h2>
+          <p class="section-sub reveal reveal-delay-2">
+            Every detail refined. Every feature considered. KPT delivers an experience
+            worthy of the most discerning operators — forged in precision, backed by trust.
+          </p>
+          <div class="card-details">
+            <div class="card-feature reveal reveal-delay-2">
+              <div class="card-feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div>
+                <h4>Enterprise Security</h4>
+                <p>Bank-grade encryption and zero-trust architecture protect every transaction.</p>
+              </div>
+            </div>
+            <div class="card-feature reveal reveal-delay-3">
+              <div class="card-feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              </div>
+              <div>
+                <h4>Global Network</h4>
+                <p>Distributed infrastructure spanning 40+ regions for unmatched reliability.</p>
+              </div>
+            </div>
+            <div class="card-feature reveal reveal-delay-4">
+              <div class="card-feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              </div>
+              <div>
+                <h4>Premium API</h4>
+                <p>Concierge-level developer experience with dedicated support and SLA guarantees.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Platinum Card Visual -->
+        <div class="reveal reveal-delay-3" style="display:flex;justify-content:center;">
+          <div class="platinum-card">
+            <span class="card-logo">American Express</span>
+            <div class="card-chip"></div>
+            <span class="card-number">3782 822463 10005</span>
+            <span class="card-name">KPT Member</span>
+            <span class="card-type">Platinum</span>
+            <div class="card-centurion-mark"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= STATS ======= -->
+  <section class="stats-section">
+    <div class="stats-divider">
+      <div class="stat-item reveal">
+        <div class="stat-number">99.99<span class="stat-suffix">%</span></div>
+        <div class="stat-label">Uptime SLA</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-number">5M<span class="stat-suffix">+</span></div>
+        <div class="stat-label">Transactions Daily</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-number">40<span class="stat-suffix">+</span></div>
+        <div class="stat-label">Global Regions</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-number">&lt;12<span class="stat-suffix">ms</span></div>
+        <div class="stat-label">Avg Response</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= MEMBERSHIP REWARDS ======= -->
+  <section class="rewards-section" id="rewards">
+    <div class="centurion-bg"></div>
+    <div class="section-container">
+      <div class="features-header">
+        <p class="section-label reveal">Membership Rewards</p>
+        <h2 class="section-title reveal reveal-delay-1">Every Interaction<br>Earns Its Return</h2>
+        <p class="section-sub reveal reveal-delay-2" style="margin: 0 auto 0;">
+          Points that never expire. Benefits that compound. A rewards ecosystem
+          designed for those who operate at scale.
+        </p>
+      </div>
+
+      <div class="rewards-grid">
+        <div class="reward-card reveal">
+          <div class="reward-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3>5x Points on Compute</h3>
+          <p>Earn 5 points per dollar on all compute, storage, and infrastructure spend — no caps, no expiration.</p>
+        </div>
+
+        <div class="reward-card reveal reveal-delay-1">
+          <div class="reward-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <h3>Priority Processing</h3>
+          <p>Platinum members receive dedicated queue priority, ensuring your workloads always run first.</p>
+        </div>
+
+        <div class="reward-card reveal reveal-delay-2">
+          <div class="reward-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Centurion Concierge</h3>
+          <p>24/7 dedicated support with a named account manager. Average response time under 60 seconds.</p>
+        </div>
+
+        <div class="reward-card reveal reveal-delay-3">
+          <div class="reward-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h3>Purchase Protection</h3>
+          <p>Full cost coverage on service disruptions with automatic credits — no claims process needed.</p>
+        </div>
+
+        <div class="reward-card reveal reveal-delay-4">
+          <div class="reward-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h3>Gold Status Transfer</h3>
+          <p>Automatic elite status across partner platforms — your KPT tier unlocks benefits everywhere.</p>
+        </div>
+
+        <div class="reward-card reveal reveal-delay-5">
+          <div class="reward-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          </div>
+          <h3>Annual Credit</h3>
+          <p>$200 annual infrastructure credit applied automatically. Covers compute, bandwidth, and premium features.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= QUOTE ======= -->
+  <section class="quote-section">
+    <div class="quote-mark reveal">"</div>
+    <blockquote class="quote-text reveal reveal-delay-1">
+      Don't leave home without it.
+    </blockquote>
+    <p class="quote-attr reveal reveal-delay-2">The KPT Standard — Since Day One</p>
+  </section>
+
+  <!-- ======= FEATURES GRID ======= -->
+  <section class="features-section">
+    <div class="section-container">
+      <div class="features-header">
+        <p class="section-label reveal">Premium Features</p>
+        <h2 class="section-title reveal reveal-delay-1">Built Without<br>Compromise</h2>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-item reveal">
+          <div class="feature-number">01</div>
+          <h3>Zero-Trust Architecture</h3>
+          <p>Every request authenticated, every payload encrypted, every connection verified. Trust nothing, verify everything.</p>
+        </div>
+
+        <div class="feature-item reveal reveal-delay-1">
+          <div class="feature-number">02</div>
+          <h3>Intelligent Routing</h3>
+          <p>ML-powered traffic management routes requests to the optimal node in real-time, adapting to load patterns.</p>
+        </div>
+
+        <div class="feature-item reveal reveal-delay-2">
+          <div class="feature-number">03</div>
+          <h3>Automatic Scaling</h3>
+          <p>From zero to planetary scale in milliseconds. Pay only for what you use with no pre-provisioning required.</p>
+        </div>
+
+        <div class="feature-item reveal reveal-delay-3">
+          <div class="feature-number">04</div>
+          <h3>Compliance Suite</h3>
+          <p>SOC 2 Type II, HIPAA, PCI DSS, GDPR — compliance built into the foundation, not bolted on after.</p>
+        </div>
+
+        <div class="feature-item reveal reveal-delay-4">
+          <div class="feature-number">05</div>
+          <h3>Real-Time Analytics</h3>
+          <p>Sub-second dashboards with custom alerts, anomaly detection, and predictive cost modeling.</p>
+        </div>
+
+        <div class="feature-item reveal reveal-delay-5">
+          <div class="feature-number">06</div>
+          <h3>Edge Computing</h3>
+          <p>Deploy logic to 300+ edge locations worldwide. Bring computation to your users, not the other way around.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= CTA ======= -->
+  <section class="cta-section" id="apply">
+    <div class="cta-card reveal">
+      <p class="section-label">Exclusive Access</p>
+      <h2 class="cta-title">Become a<br>Cardmember</h2>
+      <p class="cta-sub">
+        Join the select few who operate with KPT Platinum.
+        Premium infrastructure, concierge support, and rewards
+        that never stop compounding.
+      </p>
+      <div class="hero-cta-group">
+        <a href="#" class="btn-primary">
+          Apply for Platinum
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#membership" class="btn-outline">Compare Cards</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">KPT</span>
+        <span class="footer-divider"></span>
+        <span class="footer-tagline">Membership Has Its Privileges</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#membership">Platinum</a></li>
+        <li><a href="#rewards">Rewards</a></li>
+        <li><a href="#apply">Apply</a></li>
+        <li><a href="/index.html">Collection</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 KPT. All rights reserved. Inspired by American Express brand identity.</span>
+      <span class="footer-member">
+        <span class="footer-member-dot"></span>
+        Member Since 2026
+      </span>
+    </div>
+  </footer>
+
+  <!-- ======= INTERSECTION OBSERVER ======= -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const reveals = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -60px 0px'
+      });
+      reveals.forEach(el => observer.observe(el));
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Bugatti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bugatti-blue: #003399;
+    --bugatti-blue-deep: #001a4d;
+    --bugatti-blue-light: #0055cc;
+    --bugatti-blue-glow: rgba(0, 51, 153, 0.5);
+    --black: #050508;
+    --black-rich: #0a0a10;
+    --red: #EB001B;
+    --red-dim: rgba(235, 0, 27, 0.15);
+    --red-glow: rgba(235, 0, 27, 0.4);
+    --chrome: #C0C0C0;
+    --chrome-bright: #E8E8E8;
+    --chrome-dark: #8A8A8A;
+    --gold: #B8860B;
+    --gold-light: #DAA520;
+    --white: #F5F5F5;
+    --text-primary: #EAEAEA;
+    --text-secondary: #9A9AB0;
+    --text-muted: #5A5A6E;
+    --border: rgba(0, 51, 153, 0.2);
+    --border-chrome: rgba(192, 192, 192, 0.15);
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --nav-height: 60px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ==============================
+     SCROLL REVEAL ANIMATIONS
+     ============================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.15s; }
+  .reveal-delay-2 { transition-delay: 0.3s; }
+  .reveal-delay-3 { transition-delay: 0.45s; }
+  .reveal-delay-4 { transition-delay: 0.6s; }
+
+  /* ==============================
+     ART DECO PATTERNS (SVG inline)
+     ============================== */
+  .deco-line {
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--chrome), transparent);
+    margin: 0 auto;
+  }
+  .deco-line-blue {
+    background: linear-gradient(90deg, transparent, var(--bugatti-blue-light), transparent);
+  }
+  .deco-diamond {
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--chrome);
+    transform: rotate(45deg);
+    margin: 16px auto;
+  }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 1000;
+    background: rgba(5, 5, 8, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-chrome);
+  }
+
+  .nav-back {
+    text-decoration: none;
+    color: var(--chrome);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-back:hover { color: var(--bugatti-blue-light); }
+  .nav-back svg { width: 16px; height: 16px; }
+
+  .nav-brand {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--text-primary);
+    letter-spacing: 4px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--chrome-bright); }
+
+  /* ==============================
+     HERO SECTION
+     ============================== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    padding: 0 20px;
+  }
+
+  /* Horseshoe grille background element */
+  .hero-grille {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 650px;
+    pointer-events: none;
+    opacity: 0.06;
+  }
+  .hero-grille svg { width: 100%; height: 100%; }
+
+  /* Animated gradient sweep */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 40%, rgba(0, 51, 153, 0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 50% 60%, rgba(0, 51, 153, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Art Deco corner ornaments */
+  .hero-corner {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-color: var(--chrome-dark);
+    opacity: 0.2;
+  }
+  .hero-corner--tl { top: 80px; left: 40px; border-top: 1px solid; border-left: 1px solid; }
+  .hero-corner--tr { top: 80px; right: 40px; border-top: 1px solid; border-right: 1px solid; }
+  .hero-corner--bl { bottom: 40px; left: 40px; border-bottom: 1px solid; border-left: 1px solid; }
+  .hero-corner--br { bottom: 40px; right: 40px; border-bottom: 1px solid; border-right: 1px solid; }
+
+  .hero-eyebrow {
+    font-family: var(--font-body);
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--chrome);
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(100px, 18vw, 220px);
+    font-weight: 400;
+    color: transparent;
+    background: linear-gradient(180deg, var(--chrome-bright) 0%, var(--bugatti-blue) 50%, var(--bugatti-blue-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    line-height: 0.85;
+    letter-spacing: 16px;
+    position: relative;
+    z-index: 2;
+    text-shadow: none;
+    filter: drop-shadow(0 0 60px rgba(0, 51, 153, 0.3));
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(18px, 3vw, 32px);
+    color: var(--chrome);
+    margin-top: 24px;
+    letter-spacing: 4px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-tagline {
+    font-size: 13px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 48px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Scrolling speed lines at bottom of hero */
+  .hero-speed-lines {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--bugatti-blue) 20%, var(--red) 50%, var(--bugatti-blue) 80%, transparent 100%);
+    opacity: 0.5;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 2;
+  }
+  .scroll-indicator span {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .scroll-indicator-line {
+    width: 1px;
+    height: 30px;
+    background: linear-gradient(to bottom, var(--bugatti-blue-light), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  /* ==============================
+     SECTION STYLING
+     ============================== */
+  section {
+    position: relative;
+    padding: 120px 40px;
+  }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .section-number {
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: var(--bugatti-blue-light);
+    letter-spacing: 4px;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(32px, 5vw, 56px);
+    color: var(--text-primary);
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  .section-desc {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.8;
+    letter-spacing: 0.3px;
+  }
+
+  /* ==============================
+     HERITAGE SECTION — Art Deco Cards
+     ============================== */
+  .heritage {
+    background: var(--black-rich);
+  }
+
+  .heritage-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .heritage-card {
+    position: relative;
+    padding: 60px 40px;
+    background: var(--black);
+    text-align: center;
+    overflow: hidden;
+    transition: background 0.5s;
+  }
+  .heritage-card:hover {
+    background: rgba(0, 51, 153, 0.05);
+  }
+
+  /* Horseshoe arch at top of each card */
+  .heritage-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 40px;
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 30px 30px;
+    transition: border-color 0.5s;
+  }
+  .heritage-card:hover::before {
+    border-color: var(--bugatti-blue-light);
+  }
+
+  .heritage-icon {
+    font-size: 40px;
+    margin-bottom: 24px;
+    display: block;
+    filter: grayscale(0.3);
+  }
+
+  .heritage-card h3 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+
+  .heritage-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  /* Art Deco divider between sections */
+  .deco-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 60px 0;
+  }
+  .deco-divider-line {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--chrome-dark));
+  }
+  .deco-divider-line:last-child {
+    background: linear-gradient(90deg, var(--chrome-dark), transparent);
+  }
+  .deco-divider-center {
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--chrome-dark);
+    transform: rotate(45deg);
+  }
+
+  /* ==============================
+     PERFORMANCE STATS SECTION
+     ============================== */
+  .performance {
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Faint blueprint grid */
+  .performance::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 51, 153, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 51, 153, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+
+  .stat-cell {
+    padding: 48px 32px;
+    text-align: center;
+    position: relative;
+    border-right: 1px solid var(--border);
+    transition: background 0.4s;
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-cell:hover { background: rgba(0, 51, 153, 0.06); }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5vw, 64px);
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-unit {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--bugatti-blue-light);
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 16px;
+  }
+
+  /* Red accent bar under active stat */
+  .stat-cell::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 40px;
+    height: 2px;
+    background: var(--red);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .stat-cell:hover::after {
+    transform: translateX(-50%) scaleX(1);
+  }
+
+  /* ==============================
+     PHILOSOPHY / FEATURES SECTION
+     ============================== */
+  .philosophy {
+    background: var(--black-rich);
+  }
+
+  .philosophy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .philosophy-visual {
+    position: relative;
+    aspect-ratio: 4/5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Large decorative horseshoe grille */
+  .grille-svg {
+    width: 100%;
+    max-width: 360px;
+    opacity: 0.7;
+  }
+
+  .philosophy-content h3 {
+    font-family: var(--font-display);
+    font-size: 14px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--bugatti-blue-light);
+    margin-bottom: 16px;
+  }
+
+  .philosophy-content h2 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 44px);
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+
+  .philosophy-content p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  .philosophy-list {
+    list-style: none;
+    margin-top: 32px;
+  }
+  .philosophy-list li {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border-chrome);
+    font-size: 14px;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .philosophy-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--bugatti-blue-light);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  /* ==============================
+     GALLERY / SHOWCASE SECTION
+     ============================== */
+  .showcase {
+    background: var(--black);
+    overflow: hidden;
+  }
+
+  .showcase-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .showcase-panel {
+    position: relative;
+    aspect-ratio: 16/10;
+    background: var(--black-rich);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .showcase-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0, 51, 153, 0.1) 0%, transparent 50%, rgba(0, 51, 153, 0.05) 100%);
+    transition: opacity 0.5s;
+  }
+  .showcase-panel:hover::before {
+    opacity: 0;
+  }
+
+  .showcase-panel-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 40px;
+  }
+
+  .showcase-panel-content h3 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .showcase-panel-content p {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Animated geometric pattern inside panels */
+  .geo-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+  .geo-pattern svg { width: 100%; height: 100%; }
+
+  /* ==============================
+     QUOTE / MANIFESTO SECTION
+     ============================== */
+  .manifesto {
+    background: var(--bugatti-blue-deep);
+    text-align: center;
+    padding: 140px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .manifesto::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0, 51, 153, 0.3) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .manifesto-quote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(24px, 4vw, 48px);
+    color: var(--text-primary);
+    max-width: 800px;
+    margin: 0 auto 32px;
+    line-height: 1.4;
+    position: relative;
+    z-index: 2;
+  }
+
+  .manifesto-attribution {
+    font-size: 13px;
+    color: var(--chrome);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  .cta {
+    background: var(--black);
+    text-align: center;
+    padding: 120px 40px;
+    position: relative;
+  }
+
+  .cta-badge {
+    width: 80px;
+    height: 80px;
+    border: 1px solid var(--chrome-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 40px;
+    position: relative;
+  }
+  .cta-badge::before {
+    content: 'EB';
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--chrome);
+    letter-spacing: 2px;
+  }
+  /* Outer ring */
+  .cta-badge::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border: 1px solid rgba(192, 192, 192, 0.15);
+    border-radius: 50%;
+  }
+
+  .cta h2 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4vw, 48px);
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+
+  .cta p {
+    font-size: 15px;
+    color: var(--text-muted);
+    max-width: 500px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 48px;
+    background: transparent;
+    border: 1px solid var(--chrome-dark);
+    color: var(--chrome-bright);
+    font-family: var(--font-body);
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--bugatti-blue);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: -1;
+  }
+  .cta-button:hover {
+    border-color: var(--bugatti-blue);
+    color: var(--white);
+  }
+  .cta-button:hover::before {
+    transform: scaleX(1);
+  }
+  .cta-button svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s;
+  }
+  .cta-button:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    border-top: 1px solid var(--border-chrome);
+    padding: 60px 40px;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--text-primary);
+    letter-spacing: 8px;
+    margin-bottom: 16px;
+  }
+
+  .footer-tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    list-style: none;
+    margin-bottom: 40px;
+  }
+  .footer-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .footer-links a:hover { color: var(--chrome-bright); }
+
+  .footer-deco {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .footer-deco-line {
+    width: 60px;
+    height: 1px;
+    background: var(--border-chrome);
+  }
+  .footer-deco-diamond {
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--chrome-dark);
+    transform: rotate(45deg);
+  }
+
+  .footer-copy {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* ==============================
+     RESPONSIVE — 768px
+     ============================== */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+
+    section { padding: 80px 20px; }
+
+    .hero-corner { display: none; }
+    .hero-grille { width: 300px; height: 400px; }
+
+    .heritage-grid {
+      grid-template-columns: 1fr;
+      gap: 1px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .stat-cell {
+      padding: 32px 20px;
+    }
+    .stat-cell:nth-child(2) { border-right: none; }
+    .stat-cell:nth-child(1),
+    .stat-cell:nth-child(2) { border-bottom: 1px solid var(--border); }
+
+    .philosophy-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .philosophy-visual { display: none; }
+
+    .showcase-strip {
+      grid-template-columns: 1fr;
+    }
+
+    .manifesto { padding: 100px 20px; }
+
+    .footer-links { flex-wrap: wrap; gap: 16px; }
+  }
+
+  /* ==============================
+     KEYFRAMES
+     ============================== */
+  @keyframes grillePulse {
+    0%, 100% { opacity: 0.05; }
+    50% { opacity: 0.08; }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow, .hero-title, .hero-subtitle, .hero-tagline {
+    animation: fadeInUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .hero-title { animation-delay: 0.2s; }
+  .hero-subtitle { animation-delay: 0.5s; }
+  .hero-tagline { animation-delay: 0.8s; }
+  .hero-grille { animation: grillePulse 6s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<!-- ======================== NAVIGATION ======================== -->
+<nav>
+  <a href="/index.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    Gallery
+  </a>
+  <div class="nav-brand">KPT</div>
+  <ul class="nav-links">
+    <li><a href="#heritage">Heritage</a></li>
+    <li><a href="#performance">Performance</a></li>
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#atelier">Atelier</a></li>
+  </ul>
+</nav>
+
+<!-- ======================== HERO ======================== -->
+<section class="hero">
+  <!-- Horseshoe grille silhouette -->
+  <div class="hero-grille">
+    <svg viewBox="0 0 400 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Outer horseshoe arch -->
+      <path d="M80 520 L80 200 Q80 40 200 40 Q320 40 320 200 L320 520" stroke="rgba(192,192,192,0.4)" stroke-width="1.5" fill="none"/>
+      <!-- Inner horseshoe arch -->
+      <path d="M120 520 L120 210 Q120 80 200 80 Q280 80 280 210 L280 520" stroke="rgba(192,192,192,0.25)" stroke-width="1" fill="none"/>
+      <!-- Vertical grille lines -->
+      <line x1="150" y1="520" x2="150" y2="130" stroke="rgba(192,192,192,0.1)" stroke-width="0.5"/>
+      <line x1="175" y1="520" x2="175" y2="105" stroke="rgba(192,192,192,0.1)" stroke-width="0.5"/>
+      <line x1="200" y1="520" x2="200" y2="95" stroke="rgba(192,192,192,0.15)" stroke-width="0.5"/>
+      <line x1="225" y1="520" x2="225" y2="105" stroke="rgba(192,192,192,0.1)" stroke-width="0.5"/>
+      <line x1="250" y1="520" x2="250" y2="130" stroke="rgba(192,192,192,0.1)" stroke-width="0.5"/>
+      <!-- Horizontal cross bars -->
+      <line x1="100" y1="200" x2="300" y2="200" stroke="rgba(192,192,192,0.08)" stroke-width="0.5"/>
+      <line x1="95" y1="280" x2="305" y2="280" stroke="rgba(192,192,192,0.08)" stroke-width="0.5"/>
+      <line x1="85" y1="360" x2="315" y2="360" stroke="rgba(192,192,192,0.08)" stroke-width="0.5"/>
+      <line x1="82" y1="440" x2="318" y2="440" stroke="rgba(192,192,192,0.08)" stroke-width="0.5"/>
+      <!-- EB badge circle at top -->
+      <circle cx="200" cy="170" r="30" stroke="rgba(192,192,192,0.2)" stroke-width="1" fill="none"/>
+      <circle cx="200" cy="170" r="24" stroke="rgba(192,192,192,0.12)" stroke-width="0.5" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="hero-corner hero-corner--tl"></div>
+  <div class="hero-corner hero-corner--tr"></div>
+  <div class="hero-corner hero-corner--bl"></div>
+  <div class="hero-corner hero-corner--br"></div>
+
+  <div class="hero-eyebrow">Art &middot; Forme &middot; Technique</div>
+  <h1 class="hero-title">KPT</h1>
+  <p class="hero-subtitle">Ettore's Dream</p>
+  <p class="hero-tagline">Where art becomes velocity</p>
+
+  <div class="hero-speed-lines"></div>
+
+  <div class="scroll-indicator">
+    <span>Discover</span>
+    <div class="scroll-indicator-line"></div>
+  </div>
+</section>
+
+<!-- ======================== ART DECO DIVIDER ======================== -->
+<div class="deco-divider">
+  <div class="deco-divider-line"></div>
+  <div class="deco-divider-center"></div>
+  <div class="deco-divider-line"></div>
+</div>
+
+<!-- ======================== HERITAGE SECTION ======================== -->
+<section class="heritage" id="heritage">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-number">I</div>
+      <h2 class="section-title">Heritage</h2>
+      <div class="deco-line"></div>
+      <div class="deco-diamond"></div>
+      <p class="section-desc">Born from the atelier in Molsheim, where Ettore Bugatti first forged the union of art and engineering. Every line drawn with purpose. Every curve, a sculpture.</p>
+    </div>
+
+    <div class="heritage-grid">
+      <div class="heritage-card reveal reveal-delay-1">
+        <span class="heritage-icon">&#9670;</span>
+        <h3>Precision</h3>
+        <p>Engineered to tolerances measured in microns. Perfection is the only acceptable standard.</p>
+      </div>
+      <div class="heritage-card reveal reveal-delay-2">
+        <span class="heritage-icon">&#9733;</span>
+        <h3>Artistry</h3>
+        <p>Each surface is a canvas. Form follows beauty. Beauty follows function.</p>
+      </div>
+      <div class="heritage-card reveal reveal-delay-3">
+        <span class="heritage-icon">&#9826;</span>
+        <h3>Legacy</h3>
+        <p>A century of unbroken lineage. From the Type 35 to the Chiron — excellence, uninterrupted.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== ART DECO DIVIDER ======================== -->
+<div class="deco-divider">
+  <div class="deco-divider-line"></div>
+  <div class="deco-divider-center"></div>
+  <div class="deco-divider-line"></div>
+</div>
+
+<!-- ======================== PERFORMANCE STATS ======================== -->
+<section class="performance" id="performance">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-number">II</div>
+      <h2 class="section-title">Performance</h2>
+      <div class="deco-line deco-line-blue"></div>
+      <div class="deco-diamond"></div>
+      <p class="section-desc">Numbers that defy the laws of physics. Power distilled to its most elegant expression.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-cell reveal reveal-delay-1">
+        <div class="stat-value">1,578</div>
+        <div class="stat-unit">HP</div>
+        <div class="stat-label">Peak Power</div>
+      </div>
+      <div class="stat-cell reveal reveal-delay-2">
+        <div class="stat-value">2.3</div>
+        <div class="stat-unit">seconds</div>
+        <div class="stat-label">0 &mdash; 100 km/h</div>
+      </div>
+      <div class="stat-cell reveal reveal-delay-3">
+        <div class="stat-value">304</div>
+        <div class="stat-unit">mph</div>
+        <div class="stat-label">V<sub>max</sub></div>
+      </div>
+      <div class="stat-cell reveal reveal-delay-4">
+        <div class="stat-value">16</div>
+        <div class="stat-unit">cylinders</div>
+        <div class="stat-label">W16 Quad Turbo</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== ART DECO DIVIDER ======================== -->
+<div class="deco-divider">
+  <div class="deco-divider-line"></div>
+  <div class="deco-divider-center"></div>
+  <div class="deco-divider-line"></div>
+</div>
+
+<!-- ======================== PHILOSOPHY SECTION ======================== -->
+<section class="philosophy" id="philosophy">
+  <div class="section-inner">
+    <div class="philosophy-grid">
+      <div class="philosophy-visual reveal">
+        <!-- Decorative horseshoe grille SVG -->
+        <svg class="grille-svg" viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer arch -->
+          <path d="M40 400 L40 160 Q40 20 150 20 Q260 20 260 160 L260 400" stroke="rgba(0,85,204,0.3)" stroke-width="1.5" fill="none"/>
+          <!-- Mid arch -->
+          <path d="M65 400 L65 170 Q65 50 150 50 Q235 50 235 170 L235 400" stroke="rgba(0,85,204,0.2)" stroke-width="1" fill="none"/>
+          <!-- Inner arch -->
+          <path d="M90 400 L90 180 Q90 80 150 80 Q210 80 210 180 L210 400" stroke="rgba(0,85,204,0.12)" stroke-width="0.75" fill="none"/>
+          <!-- Art Deco fan lines radiating from top -->
+          <line x1="150" y1="20" x2="40" y2="400" stroke="rgba(192,192,192,0.04)" stroke-width="0.5"/>
+          <line x1="150" y1="20" x2="100" y2="400" stroke="rgba(192,192,192,0.04)" stroke-width="0.5"/>
+          <line x1="150" y1="20" x2="150" y2="400" stroke="rgba(192,192,192,0.06)" stroke-width="0.5"/>
+          <line x1="150" y1="20" x2="200" y2="400" stroke="rgba(192,192,192,0.04)" stroke-width="0.5"/>
+          <line x1="150" y1="20" x2="260" y2="400" stroke="rgba(192,192,192,0.04)" stroke-width="0.5"/>
+          <!-- Badge -->
+          <ellipse cx="150" cy="140" rx="35" ry="38" stroke="rgba(0,85,204,0.25)" stroke-width="1" fill="none"/>
+          <text x="150" y="148" text-anchor="middle" font-family="'DM Serif Display', serif" font-size="20" fill="rgba(0,85,204,0.35)" letter-spacing="3">EB</text>
+          <!-- Deco horizontal accents -->
+          <line x1="60" y1="240" x2="240" y2="240" stroke="rgba(0,85,204,0.08)" stroke-width="0.5"/>
+          <line x1="50" y1="310" x2="250" y2="310" stroke="rgba(0,85,204,0.08)" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <div class="philosophy-content reveal reveal-delay-2">
+        <h3>La Philosophie</h3>
+        <h2>Nothing Is Too Beautiful.<br>Nothing Is Too Expensive.</h2>
+        <p>Ettore Bugatti believed that a machine could be a work of art. That speed and beauty were not opposing forces, but the same force expressed in different forms.</p>
+        <p>KPT carries this conviction into the digital age. Every system we build is engineered with the obsessive refinement of a Molsheim atelier.</p>
+        <ul class="philosophy-list">
+          <li>Hand-finished to the last pixel</li>
+          <li>Performance without compromise</li>
+          <li>Invisible complexity, effortless power</li>
+          <li>Built for the relentless few</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== MANIFESTO QUOTE ======================== -->
+<section class="manifesto">
+  <div class="reveal">
+    <div class="deco-line" style="margin-bottom: 40px;"></div>
+    <blockquote class="manifesto-quote">
+      "If comparable, it is no longer Bugatti."
+    </blockquote>
+    <p class="manifesto-attribution">Ettore Bugatti, 1881 &mdash; 1947</p>
+    <div class="deco-line" style="margin-top: 40px;"></div>
+  </div>
+</section>
+
+<!-- ======================== ATELIER / SHOWCASE ======================== -->
+<section class="showcase" id="atelier">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="section-number">III</div>
+      <h2 class="section-title">L'Atelier</h2>
+      <div class="deco-line"></div>
+      <div class="deco-diamond"></div>
+      <p class="section-desc">Three disciplines. One pursuit. The relentless refinement of every element until only the essential remains.</p>
+    </div>
+
+    <div class="showcase-strip">
+      <div class="showcase-panel reveal reveal-delay-1">
+        <!-- Geometric Art Deco pattern -->
+        <div class="geo-pattern">
+          <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+            <pattern id="deco1" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M0 20 L20 0 L40 20 L20 40 Z" stroke="rgba(0,85,204,1)" stroke-width="0.5" fill="none"/>
+            </pattern>
+            <rect width="400" height="250" fill="url(#deco1)"/>
+          </svg>
+        </div>
+        <div class="showcase-panel-content">
+          <h3>Architecture</h3>
+          <p>Structural elegance</p>
+        </div>
+      </div>
+      <div class="showcase-panel reveal reveal-delay-2">
+        <div class="geo-pattern">
+          <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+            <pattern id="deco2" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
+              <circle cx="15" cy="15" r="8" stroke="rgba(0,85,204,1)" stroke-width="0.5" fill="none"/>
+              <circle cx="15" cy="15" r="3" stroke="rgba(0,85,204,1)" stroke-width="0.3" fill="none"/>
+            </pattern>
+            <rect width="400" height="250" fill="url(#deco2)"/>
+          </svg>
+        </div>
+        <div class="showcase-panel-content">
+          <h3>Systems</h3>
+          <p>Mechanical symphony</p>
+        </div>
+      </div>
+      <div class="showcase-panel reveal reveal-delay-3">
+        <div class="geo-pattern">
+          <svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg">
+            <pattern id="deco3" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+              <path d="M0 0 L25 25 L50 0" stroke="rgba(0,85,204,1)" stroke-width="0.5" fill="none"/>
+              <path d="M0 25 L25 50 L50 25" stroke="rgba(0,85,204,1)" stroke-width="0.3" fill="none"/>
+            </pattern>
+            <rect width="400" height="250" fill="url(#deco3)"/>
+          </svg>
+        </div>
+        <div class="showcase-panel-content">
+          <h3>Interface</h3>
+          <p>Sculpted interaction</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== ART DECO DIVIDER ======================== -->
+<div class="deco-divider">
+  <div class="deco-divider-line"></div>
+  <div class="deco-divider-center"></div>
+  <div class="deco-divider-line"></div>
+</div>
+
+<!-- ======================== CTA SECTION ======================== -->
+<section class="cta">
+  <div class="reveal">
+    <div class="cta-badge"></div>
+    <h2>Enter the Atelier</h2>
+    <p>For those who accept nothing less than the absolute. Crafted without compromise. Delivered without apology.</p>
+    <a href="#" class="cta-button">
+      Commission
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </a>
+  </div>
+</section>
+
+<!-- ======================== FOOTER ======================== -->
+<footer>
+  <div class="footer-logo">KPT</div>
+  <div class="footer-tagline">Art, Forme, Technique</div>
+  <div class="footer-deco">
+    <div class="footer-deco-line"></div>
+    <div class="footer-deco-diamond"></div>
+    <div class="footer-deco-line"></div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#heritage">Heritage</a></li>
+    <li><a href="#performance">Performance</a></li>
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#atelier">Atelier</a></li>
+    <li><a href="/index.html">Gallery</a></li>
+  </ul>
+  <div class="footer-deco" style="margin-top: 32px;">
+    <div class="footer-deco-line"></div>
+    <div class="footer-deco-diamond"></div>
+    <div class="footer-deco-line"></div>
+  </div>
+  <p class="footer-copy">MMXXVI &middot; KPT &middot; Molsheim to the Machine</p>
+</footer>
+
+<!-- ======================== SCROLL REVEAL SCRIPT ======================== -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+    reveals.forEach(el => observer.observe(el));
+  });
+</script>
+
+</body>
+</html>

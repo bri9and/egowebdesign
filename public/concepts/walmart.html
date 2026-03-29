@@ -1,0 +1,1951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Save More. Build Better.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET & CUSTOM PROPERTIES
+   ============================================================ */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Brand — Walmart palette */
+  --blue: #0071DC;
+  --blue-dark: #004C91;
+  --blue-darker: #002D58;
+  --blue-light: #2E8CE6;
+  --blue-pale: #E6F1FB;
+
+  --yellow: #FFC220;
+  --yellow-light: #FFD666;
+  --yellow-dark: #E5A800;
+
+  --white: #FFFFFF;
+  --gray-50: #F8F9FA;
+  --gray-100: #F0F2F4;
+  --gray-200: #E0E4E8;
+  --gray-400: #9CA3AF;
+  --gray-600: #4B5563;
+  --gray-800: #1F2937;
+  --gray-900: #111827;
+
+  --green: #2D8C3C;
+  --red-rollback: #E02020;
+
+  /* Typography */
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Layout & motion */
+  --radius: 12px;
+  --radius-sm: 6px;
+  --radius-lg: 20px;
+  --max-w: 1280px;
+  --tr: 0.25s ease;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+  --shadow-card: 0 2px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--white);
+  color: var(--gray-900);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--blue);
+  text-decoration: none;
+  transition: color var(--tr);
+}
+a:hover {
+  color: var(--blue-dark);
+}
+
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ============================================================
+   BACK NAV
+   ============================================================ */
+.back-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: var(--blue-darker);
+  border-bottom: 3px solid var(--yellow);
+  padding: 0 24px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--tr);
+}
+.back-link:hover {
+  color: var(--yellow);
+}
+.back-link svg {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--tr);
+}
+.back-link:hover svg {
+  transform: translateX(-3px);
+}
+
+.nav-badge {
+  background: var(--yellow);
+  color: var(--blue-darker);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   SPARK SVG LOGO COMPONENT
+   ============================================================ */
+.spark {
+  display: inline-block;
+  position: relative;
+}
+
+.spark svg {
+  display: block;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  margin-top: 48px;
+  position: relative;
+  background: linear-gradient(175deg, var(--blue) 0%, var(--blue-dark) 55%, var(--blue-darker) 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-bg-sparks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-bg-sparks .bg-spark {
+  position: absolute;
+  opacity: 0.04;
+}
+
+.hero-bg-sparks .bg-spark:nth-child(1) {
+  top: 5%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
+  animation: floatSpark 20s ease-in-out infinite;
+}
+.hero-bg-sparks .bg-spark:nth-child(2) {
+  bottom: -10%;
+  right: -8%;
+  width: 600px;
+  height: 600px;
+  animation: floatSpark 25s ease-in-out infinite reverse;
+}
+.hero-bg-sparks .bg-spark:nth-child(3) {
+  top: 40%;
+  right: 15%;
+  width: 200px;
+  height: 200px;
+  animation: floatSpark 18s ease-in-out infinite 3s;
+}
+
+@keyframes floatSpark {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(20px, -30px) rotate(8deg); }
+  50% { transform: translate(-15px, 15px) rotate(-5deg); }
+  75% { transform: translate(10px, 25px) rotate(3deg); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 80px 24px;
+}
+
+.hero-spark-logo {
+  margin: 0 auto 32px;
+  animation: sparkRotateIn 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+}
+
+@keyframes sparkRotateIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-180deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.hero-title {
+  font-size: clamp(72px, 12vw, 160px);
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: -4px;
+  line-height: 0.9;
+  margin-bottom: 16px;
+  opacity: 0;
+  animation: heroSlideUp 0.8s ease-out 0.4s forwards;
+}
+
+.hero-title span {
+  color: var(--yellow);
+}
+
+.hero-tagline {
+  font-size: clamp(18px, 3vw, 28px);
+  color: rgba(255,255,255,0.85);
+  font-weight: 500;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: heroSlideUp 0.8s ease-out 0.6s forwards;
+}
+
+.hero-tagline strong {
+  color: var(--yellow);
+  font-weight: 700;
+}
+
+@keyframes heroSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-badges {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: heroSlideUp 0.8s ease-out 0.8s forwards;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 20px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.hero-badge--yellow {
+  background: var(--yellow);
+  color: var(--blue-darker);
+}
+
+.hero-badge--outline {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.3);
+  color: var(--white);
+}
+
+.hero-badge--rollback {
+  background: var(--red-rollback);
+  color: var(--white);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.hero-ctas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: heroSlideUp 0.8s ease-out 1s forwards;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 36px;
+  border-radius: 40px;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all var(--tr);
+  cursor: pointer;
+  border: none;
+  font-family: var(--font);
+}
+
+.btn--primary {
+  background: var(--yellow);
+  color: var(--blue-darker);
+  box-shadow: 0 4px 20px rgba(255,194,32,0.4);
+}
+.btn--primary:hover {
+  background: var(--yellow-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255,194,32,0.5);
+  color: var(--blue-darker);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--white);
+  border: 2px solid rgba(255,255,255,0.4);
+}
+.btn--ghost:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.7);
+  color: var(--white);
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.4);
+  animation: bounceDown 2s ease-in-out infinite;
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ============================================================
+   SECTION BASE
+   ============================================================ */
+section {
+  padding: 100px 0;
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--blue-pale);
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.section-subtitle {
+  font-size: 18px;
+  color: var(--gray-600);
+  max-width: 640px;
+  line-height: 1.7;
+}
+
+.section-subtitle--centered {
+  margin: 0 auto;
+}
+
+/* ============================================================
+   REVEAL ANIMATION
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ============================================================
+   EVERYDAY VALUE — FEATURE CARDS
+   ============================================================ */
+.value-section {
+  background: var(--gray-50);
+}
+
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+
+.value-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid var(--gray-200);
+}
+
+.value-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.value-card:hover::before {
+  transform: scaleX(1);
+}
+
+.value-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: transparent;
+}
+
+.value-card__price-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--yellow);
+  color: var(--blue-darker);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.value-card__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: var(--blue-pale);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: background 0.3s ease;
+}
+
+.value-card:hover .value-card__icon {
+  background: var(--blue);
+}
+
+.value-card:hover .value-card__icon svg {
+  color: var(--white);
+}
+
+.value-card__icon svg {
+  width: 28px;
+  height: 28px;
+  color: var(--blue);
+  transition: color 0.3s ease;
+}
+
+.value-card__title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: var(--gray-900);
+}
+
+.value-card__desc {
+  font-size: 15px;
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   ROLLBACK SECTION — PRICING/SAVINGS
+   ============================================================ */
+.rollback-section {
+  background: var(--blue);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+
+.rollback-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -20%;
+  width: 140%;
+  height: 200%;
+  background: radial-gradient(ellipse at center, rgba(255,194,32,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.rollback-header {
+  text-align: center;
+  margin-bottom: 64px;
+  position: relative;
+  z-index: 1;
+}
+
+.rollback-header .section-label {
+  background: rgba(255,255,255,0.15);
+  color: var(--yellow);
+}
+
+.rollback-header .section-title {
+  color: var(--white);
+}
+
+.rollback-header .section-subtitle {
+  color: rgba(255,255,255,0.75);
+}
+
+.rollback-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.rollback-card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.rollback-card:hover {
+  background: rgba(255,255,255,0.14);
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,0.25);
+}
+
+.rollback-card--featured {
+  background: rgba(255,194,32,0.12);
+  border-color: rgba(255,194,32,0.3);
+}
+
+.rollback-card--featured:hover {
+  background: rgba(255,194,32,0.2);
+  border-color: rgba(255,194,32,0.5);
+}
+
+.rollback-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--red-rollback);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 16px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.rollback-card__tier {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+.rollback-card__name {
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 24px;
+  color: var(--white);
+}
+
+.rollback-card__price {
+  margin-bottom: 32px;
+}
+
+.rollback-card__price-was {
+  font-size: 16px;
+  color: rgba(255,255,255,0.4);
+  text-decoration: line-through;
+  margin-bottom: 4px;
+}
+
+.rollback-card__price-now {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--yellow);
+  line-height: 1;
+}
+
+.rollback-card__price-now span {
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+}
+
+.rollback-card__features {
+  list-style: none;
+  text-align: left;
+  margin-bottom: 32px;
+}
+
+.rollback-card__features li {
+  padding: 8px 0;
+  font-size: 14px;
+  color: rgba(255,255,255,0.8);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.rollback-card__features li:last-child {
+  border-bottom: none;
+}
+
+.rollback-card__features li svg {
+  width: 18px;
+  height: 18px;
+  color: var(--yellow);
+  flex-shrink: 0;
+}
+
+.rollback-card__btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  transition: all var(--tr);
+  cursor: pointer;
+  border: none;
+  font-family: var(--font);
+}
+
+.rollback-card__btn--primary {
+  background: var(--yellow);
+  color: var(--blue-darker);
+}
+.rollback-card__btn--primary:hover {
+  background: var(--yellow-light);
+  color: var(--blue-darker);
+  transform: translateY(-2px);
+}
+
+.rollback-card__btn--outline {
+  background: transparent;
+  color: var(--white);
+  border: 2px solid rgba(255,255,255,0.25);
+}
+.rollback-card__btn--outline:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.5);
+  color: var(--white);
+}
+
+/* ============================================================
+   SCALE — STATS SECTION
+   ============================================================ */
+.scale-section {
+  background: var(--white);
+  text-align: center;
+}
+
+.scale-header {
+  margin-bottom: 64px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin-bottom: 64px;
+}
+
+.stat-card {
+  padding: 40px 20px;
+  border-radius: var(--radius-lg);
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  background: var(--blue);
+  border-color: var(--blue);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,113,220,0.3);
+}
+
+.stat-card__number {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--blue);
+  line-height: 1;
+  margin-bottom: 4px;
+  transition: color 0.3s ease;
+  font-family: var(--mono);
+}
+
+.stat-card:hover .stat-card__number {
+  color: var(--yellow);
+}
+
+.stat-card__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-600);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.stat-card:hover .stat-card__label {
+  color: rgba(255,255,255,0.8);
+}
+
+.stat-card__detail {
+  font-size: 13px;
+  color: var(--gray-400);
+  margin-top: 8px;
+  transition: color 0.3s ease;
+}
+
+.stat-card:hover .stat-card__detail {
+  color: rgba(255,255,255,0.5);
+}
+
+/* ============================================================
+   TECH STACK / DEPARTMENTS
+   ============================================================ */
+.departments-section {
+  background: var(--gray-50);
+}
+
+.dept-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 56px;
+}
+
+.dept-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  border: 1px solid var(--gray-200);
+  transition: all 0.3s ease;
+}
+
+.dept-card:hover {
+  border-color: var(--blue);
+  box-shadow: var(--shadow-card);
+  transform: translateY(-2px);
+}
+
+.dept-card__number {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--blue);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 900;
+  font-family: var(--mono);
+}
+
+.dept-card__title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: 6px;
+}
+
+.dept-card__desc {
+  font-size: 14px;
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+.dept-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.dept-card__tag {
+  background: var(--blue-pale);
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   TESTIMONIAL / QUOTE BANNER
+   ============================================================ */
+.quote-section {
+  background: var(--blue-darker);
+  color: var(--white);
+  text-align: center;
+  padding: 80px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.quote-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 50%, rgba(0,113,220,0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(255,194,32,0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.quote-icon {
+  color: var(--yellow);
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-text {
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 800;
+  line-height: 1.3;
+  max-width: 800px;
+  margin: 0 auto 24px;
+  letter-spacing: -0.5px;
+  position: relative;
+  z-index: 1;
+}
+
+.quote-text em {
+  color: var(--yellow);
+  font-style: normal;
+}
+
+.quote-author {
+  font-size: 16px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   ECOSYSTEM STRIP
+   ============================================================ */
+.ecosystem-section {
+  background: var(--white);
+  border-top: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.eco-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.eco-strip {
+  display: flex;
+  gap: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.eco-strip::before,
+.eco-strip::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  z-index: 2;
+  pointer-events: none;
+}
+.eco-strip::before {
+  left: 0;
+  background: linear-gradient(to right, var(--white), transparent);
+}
+.eco-strip::after {
+  right: 0;
+  background: linear-gradient(to left, var(--white), transparent);
+}
+
+.eco-track {
+  display: flex;
+  gap: 16px;
+  animation: scrollStrip 30s linear infinite;
+}
+
+@keyframes scrollStrip {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.eco-item {
+  flex-shrink: 0;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.eco-item:hover {
+  border-color: var(--blue);
+  background: var(--blue-pale);
+}
+
+.eco-item__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--blue);
+}
+
+.eco-item__dot--yellow { background: var(--yellow); }
+.eco-item__dot--green { background: var(--green); }
+
+.eco-item__name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-800);
+}
+
+/* ============================================================
+   CTA
+   ============================================================ */
+.cta-section {
+  background: var(--yellow);
+  text-align: center;
+  padding: 100px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 0%, rgba(255,255,255,0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 100%, rgba(0,113,220,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-spark {
+  margin: 0 auto 24px;
+}
+
+.cta-title {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 900;
+  color: var(--blue-darker);
+  letter-spacing: -2px;
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+
+.cta-desc {
+  font-size: 18px;
+  color: var(--blue-dark);
+  max-width: 560px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+.cta-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn--blue {
+  background: var(--blue);
+  color: var(--white);
+  box-shadow: 0 4px 20px rgba(0,113,220,0.4);
+}
+.btn--blue:hover {
+  background: var(--blue-dark);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,113,220,0.5);
+}
+
+.btn--dark {
+  background: var(--blue-darker);
+  color: var(--white);
+}
+.btn--dark:hover {
+  background: var(--gray-900);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  background: var(--blue-darker);
+  color: rgba(255,255,255,0.6);
+  padding: 64px 24px 32px;
+}
+
+.footer-grid {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+
+.footer-brand__logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.footer-brand__name {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: -1px;
+}
+
+.footer-brand__desc {
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 300px;
+  color: rgba(255,255,255,0.5);
+}
+
+.footer-col__title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 20px;
+}
+
+.footer-col__links {
+  list-style: none;
+}
+
+.footer-col__links li {
+  margin-bottom: 10px;
+}
+
+.footer-col__links a {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  transition: color var(--tr);
+}
+.footer-col__links a:hover {
+  color: var(--yellow);
+}
+
+.footer-bottom {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-bottom__copy {
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+}
+
+.footer-bottom__links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-bottom__links a {
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+  text-decoration: none;
+}
+.footer-bottom__links a:hover {
+  color: var(--yellow);
+}
+
+/* ============================================================
+   RESPONSIVE — 768px
+   ============================================================ */
+@media (max-width: 768px) {
+  .hero-content {
+    padding: 60px 16px;
+  }
+
+  .hero-title {
+    letter-spacing: -2px;
+  }
+
+  .hero-badges {
+    gap: 8px;
+  }
+
+  .hero-badge {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  section {
+    padding: 64px 0;
+  }
+
+  .value-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .rollback-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .rollback-card--featured {
+    order: -1;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .stat-card {
+    padding: 28px 16px;
+  }
+
+  .stat-card__number {
+    font-size: 36px;
+  }
+
+  .dept-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     BACK NAV
+     ============================================================ -->
+<nav class="back-nav">
+  <a href="/index.html" class="back-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    Gallery
+  </a>
+  <span class="nav-badge">Walmart Edition</span>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero">
+  <!-- Background decorative sparks -->
+  <div class="hero-bg-sparks">
+    <svg class="bg-spark" viewBox="0 0 200 200" fill="var(--yellow)">
+      <g transform="translate(100,100)">
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(60)"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(120)"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(180)"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(240)"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(300)"/>
+      </g>
+    </svg>
+    <svg class="bg-spark" viewBox="0 0 200 200" fill="var(--yellow)">
+      <g transform="translate(100,100)">
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(60)"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(120)"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(180)"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(240)"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(300)"/>
+      </g>
+    </svg>
+    <svg class="bg-spark" viewBox="0 0 200 200" fill="var(--yellow)">
+      <g transform="translate(100,100)">
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(60)"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(120)"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(180)"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(240)"/>
+        <rect x="-8" y="-80" width="16" height="60" rx="8" fill="currentColor" transform="rotate(300)"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <!-- Spark Logo -->
+    <div class="hero-spark-logo">
+      <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+        <g transform="translate(60,60)">
+          <!-- 6-point spark / sunburst -->
+          <rect x="-7" y="-52" width="14" height="40" rx="7" fill="#FFC220"/>
+          <rect x="-7" y="-52" width="14" height="40" rx="7" fill="#FFC220" transform="rotate(60)"/>
+          <rect x="-7" y="-52" width="14" height="40" rx="7" fill="#FFC220" transform="rotate(120)"/>
+          <rect x="-7" y="-52" width="14" height="40" rx="7" fill="#FFC220" transform="rotate(180)"/>
+          <rect x="-7" y="-52" width="14" height="40" rx="7" fill="#FFC220" transform="rotate(240)"/>
+          <rect x="-7" y="-52" width="14" height="40" rx="7" fill="#FFC220" transform="rotate(300)"/>
+          <circle cx="0" cy="0" r="10" fill="#FFC220"/>
+        </g>
+      </svg>
+    </div>
+
+    <h1 class="hero-title">K<span>P</span>T</h1>
+    <p class="hero-tagline"><strong>Save More.</strong> Build Better.</p>
+
+    <div class="hero-badges">
+      <span class="hero-badge hero-badge--yellow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Everyday Low Cost
+      </span>
+      <span class="hero-badge hero-badge--rollback">Rollback Pricing</span>
+      <span class="hero-badge hero-badge--outline">Enterprise Scale</span>
+    </div>
+
+    <div class="hero-ctas">
+      <a href="#value" class="btn btn--primary">Start Saving Today</a>
+      <a href="#scale" class="btn btn--ghost">See the Numbers</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll-hint">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/></svg>
+  </div>
+</section>
+
+<!-- ============================================================
+     EVERYDAY VALUE — FEATURE CARDS
+     ============================================================ -->
+<section id="value" class="value-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Everyday Value
+      </span>
+      <h2 class="section-title">Technology at<br>everyday low prices.</h2>
+      <p class="section-subtitle">Why pay more? KPT delivers enterprise-grade infrastructure at costs that make the competition sweat. No hidden fees. No surprise bills. Just value.</p>
+    </div>
+
+    <div class="value-grid">
+      <!-- Card 1 -->
+      <div class="value-card reveal reveal-delay-1">
+        <span class="value-card__price-tag">Low Price Leader</span>
+        <div class="value-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3 class="value-card__title">Compute Engine</h3>
+        <p class="value-card__desc">Massive parallel processing at a fraction of the cost. Auto-scaling that only charges for what you use. Every cent matters.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="value-card reveal reveal-delay-2">
+        <span class="value-card__price-tag">Best Seller</span>
+        <div class="value-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="value-card__title">Shield Security</h3>
+        <p class="value-card__desc">Enterprise security shouldn't cost enterprise prices. Zero-trust architecture, real-time threat detection, included free with every plan.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="value-card reveal reveal-delay-3">
+        <span class="value-card__price-tag">Rollback Special</span>
+        <div class="value-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3 class="value-card__title">Live Analytics</h3>
+        <p class="value-card__desc">Real-time dashboards, predictive insights, and AI-powered anomaly detection. See everything. Miss nothing. Pay less.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="value-card reveal reveal-delay-1">
+        <span class="value-card__price-tag">Great Value</span>
+        <div class="value-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        </div>
+        <h3 class="value-card__title">Global CDN</h3>
+        <p class="value-card__desc">290+ edge locations across 6 continents. Sub-20ms latency everywhere your customers are. Scale without the premium price tag.</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="value-card reveal reveal-delay-2">
+        <span class="value-card__price-tag">New Low Price</span>
+        <div class="value-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        </div>
+        <h3 class="value-card__title">Container Fleet</h3>
+        <p class="value-card__desc">Deploy thousands of containers in seconds. Kubernetes orchestration with zero management overhead. The fleet runs itself.</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="value-card reveal reveal-delay-3">
+        <span class="value-card__price-tag">Price Match</span>
+        <div class="value-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+        </div>
+        <h3 class="value-card__title">Smart Pipeline</h3>
+        <p class="value-card__desc">CI/CD that learns from your codebase. Automated testing, deployment gates, and rollback protection. Ship faster, break nothing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ROLLBACK PRICING
+     ============================================================ -->
+<section id="pricing" class="rollback-section">
+  <div class="container">
+    <div class="rollback-header reveal">
+      <span class="section-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        Rollback Pricing
+      </span>
+      <h2 class="section-title">Prices just dropped.<br>Again.</h2>
+      <p class="section-subtitle section-subtitle--centered">Every plan includes unlimited users, full API access, and 24/7 support. No surprise charges. Ever.</p>
+    </div>
+
+    <div class="rollback-grid">
+      <!-- Starter -->
+      <div class="rollback-card reveal reveal-delay-1">
+        <div class="rollback-card__tier">Starter</div>
+        <div class="rollback-card__name">Everyday</div>
+        <div class="rollback-card__price">
+          <div class="rollback-card__price-was">Was $49/mo</div>
+          <div class="rollback-card__price-now">$29<span>/mo</span></div>
+        </div>
+        <ul class="rollback-card__features">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            5 compute instances
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            100GB storage
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Basic analytics
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Community support
+          </li>
+        </ul>
+        <a href="#" class="rollback-card__btn rollback-card__btn--outline">Get Started</a>
+      </div>
+
+      <!-- Pro — Featured -->
+      <div class="rollback-card rollback-card--featured reveal reveal-delay-2">
+        <span class="rollback-badge">Biggest Savings</span>
+        <div class="rollback-card__tier">Professional</div>
+        <div class="rollback-card__name">Supercenter</div>
+        <div class="rollback-card__price">
+          <div class="rollback-card__price-was">Was $199/mo</div>
+          <div class="rollback-card__price-now">$99<span>/mo</span></div>
+        </div>
+        <ul class="rollback-card__features">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Unlimited compute
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            5TB storage
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Advanced AI analytics
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Priority 24/7 support
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Custom integrations
+          </li>
+        </ul>
+        <a href="#" class="rollback-card__btn rollback-card__btn--primary">Start Free Trial</a>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="rollback-card reveal reveal-delay-3">
+        <div class="rollback-card__tier">Enterprise</div>
+        <div class="rollback-card__name">Distribution</div>
+        <div class="rollback-card__price">
+          <div class="rollback-card__price-was">&nbsp;</div>
+          <div class="rollback-card__price-now" style="font-size:36px;">Custom</div>
+        </div>
+        <ul class="rollback-card__features">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Dedicated infrastructure
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Unlimited everything
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            White-glove onboarding
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            99.999% SLA guarantee
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Volume pricing
+          </li>
+        </ul>
+        <a href="#" class="rollback-card__btn rollback-card__btn--outline">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SCALE — STATS
+     ============================================================ -->
+<section id="scale" class="scale-section">
+  <div class="container">
+    <div class="scale-header reveal">
+      <span class="section-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+        Massive Scale
+      </span>
+      <h2 class="section-title">Built for the biggest<br>workloads on Earth.</h2>
+      <p class="section-subtitle section-subtitle--centered">When millions depend on your infrastructure, you need a platform that never blinks. KPT operates at Walmart-scale. Every single day.</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card reveal reveal-delay-1">
+        <div class="stat-card__number">2.4M</div>
+        <div class="stat-card__label">API Requests</div>
+        <div class="stat-card__detail">Per second, peak load</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2">
+        <div class="stat-card__number">99.99%</div>
+        <div class="stat-card__label">Uptime SLA</div>
+        <div class="stat-card__detail">Across all regions</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3">
+        <div class="stat-card__number">290+</div>
+        <div class="stat-card__label">Edge Locations</div>
+        <div class="stat-card__detail">6 continents covered</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-4">
+        <div class="stat-card__number">18ms</div>
+        <div class="stat-card__label">Avg Latency</div>
+        <div class="stat-card__detail">Global median P50</div>
+      </div>
+    </div>
+
+    <!-- Secondary row -->
+    <div class="stats-grid">
+      <div class="stat-card reveal reveal-delay-1">
+        <div class="stat-card__number">14K+</div>
+        <div class="stat-card__label">Customers</div>
+        <div class="stat-card__detail">Fortune 500 to startups</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2">
+        <div class="stat-card__number">8.2PB</div>
+        <div class="stat-card__label">Data Processed</div>
+        <div class="stat-card__detail">Daily throughput</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3">
+        <div class="stat-card__number">40%</div>
+        <div class="stat-card__label">Cost Savings</div>
+        <div class="stat-card__detail">Avg vs. competitors</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-4">
+        <div class="stat-card__number">3min</div>
+        <div class="stat-card__label">Deploy Time</div>
+        <div class="stat-card__detail">Zero-to-production</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     QUOTE BANNER
+     ============================================================ -->
+<section class="quote-section">
+  <div class="container">
+    <div class="reveal">
+      <div class="quote-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151C7.563 6.068 6 8.789 6 11h4v10H0z"/></svg>
+      </div>
+      <p class="quote-text">"KPT gave us <em>Walmart-level infrastructure</em> at startup prices. We scaled from 100 to 10 million users without changing a single config."</p>
+      <p class="quote-author">-- VP of Engineering, Fortune 100 Retailer</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     DEPARTMENTS / TECH STACK
+     ============================================================ -->
+<section class="departments-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        Departments
+      </span>
+      <h2 class="section-title">Every aisle of tech,<br>under one roof.</h2>
+      <p class="section-subtitle">Stop stitching together dozens of vendors. KPT is the one-stop-shop for your entire infrastructure.</p>
+    </div>
+
+    <div class="dept-grid">
+      <div class="dept-card reveal reveal-delay-1">
+        <div class="dept-card__number">01</div>
+        <div>
+          <div class="dept-card__title">Compute & Runtime</div>
+          <p class="dept-card__desc">VMs, containers, serverless functions, and GPU clusters. Pick your model, scale on demand, pay per second.</p>
+          <div class="dept-card__tags">
+            <span class="dept-card__tag">Auto-scaling</span>
+            <span class="dept-card__tag">GPU</span>
+            <span class="dept-card__tag">Serverless</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dept-card reveal reveal-delay-2">
+        <div class="dept-card__number">02</div>
+        <div>
+          <div class="dept-card__title">Data & Storage</div>
+          <p class="dept-card__desc">Object storage, relational databases, key-value stores, and data lakes. Petabyte-ready from day one.</p>
+          <div class="dept-card__tags">
+            <span class="dept-card__tag">SQL</span>
+            <span class="dept-card__tag">NoSQL</span>
+            <span class="dept-card__tag">Data Lake</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dept-card reveal reveal-delay-3">
+        <div class="dept-card__number">03</div>
+        <div>
+          <div class="dept-card__title">AI & Machine Learning</div>
+          <p class="dept-card__desc">Pre-trained models, training pipelines, inference endpoints, and vector databases. ML for everyone, not just PhDs.</p>
+          <div class="dept-card__tags">
+            <span class="dept-card__tag">LLM</span>
+            <span class="dept-card__tag">Vision</span>
+            <span class="dept-card__tag">Embeddings</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dept-card reveal reveal-delay-4">
+        <div class="dept-card__number">04</div>
+        <div>
+          <div class="dept-card__title">Security & Compliance</div>
+          <p class="dept-card__desc">Identity management, encryption, audit logs, and compliance reporting. SOC 2, HIPAA, GDPR out of the box.</p>
+          <div class="dept-card__tags">
+            <span class="dept-card__tag">Zero Trust</span>
+            <span class="dept-card__tag">SOC 2</span>
+            <span class="dept-card__tag">HIPAA</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dept-card reveal reveal-delay-5">
+        <div class="dept-card__number">05</div>
+        <div>
+          <div class="dept-card__title">DevOps & Tooling</div>
+          <p class="dept-card__desc">CI/CD pipelines, infrastructure-as-code, monitoring, and incident response. Ship daily with confidence.</p>
+          <div class="dept-card__tags">
+            <span class="dept-card__tag">CI/CD</span>
+            <span class="dept-card__tag">IaC</span>
+            <span class="dept-card__tag">Monitoring</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dept-card reveal reveal-delay-5">
+        <div class="dept-card__number">06</div>
+        <div>
+          <div class="dept-card__title">Networking & Edge</div>
+          <p class="dept-card__desc">Global load balancing, DNS, CDN, and edge compute. Your application, everywhere, instantly.</p>
+          <div class="dept-card__tags">
+            <span class="dept-card__tag">CDN</span>
+            <span class="dept-card__tag">DNS</span>
+            <span class="dept-card__tag">Edge</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ECOSYSTEM SCROLLING STRIP
+     ============================================================ -->
+<section class="ecosystem-section">
+  <div class="container">
+    <div class="eco-header reveal">
+      <span class="section-label">Ecosystem</span>
+      <h2 class="section-title">Integrates with everything.</h2>
+      <p class="section-subtitle section-subtitle--centered">Plug into the tools your teams already love. 200+ native integrations and counting.</p>
+    </div>
+  </div>
+  <div class="eco-strip">
+    <div class="eco-track">
+      <div class="eco-item"><span class="eco-item__dot"></span><span class="eco-item__name">GitHub</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--yellow"></span><span class="eco-item__name">Slack</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--green"></span><span class="eco-item__name">Terraform</span></div>
+      <div class="eco-item"><span class="eco-item__dot"></span><span class="eco-item__name">Kubernetes</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--yellow"></span><span class="eco-item__name">Datadog</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--green"></span><span class="eco-item__name">PagerDuty</span></div>
+      <div class="eco-item"><span class="eco-item__dot"></span><span class="eco-item__name">Jira</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--yellow"></span><span class="eco-item__name">Vercel</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--green"></span><span class="eco-item__name">Snowflake</span></div>
+      <div class="eco-item"><span class="eco-item__dot"></span><span class="eco-item__name">Grafana</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--yellow"></span><span class="eco-item__name">CircleCI</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--green"></span><span class="eco-item__name">MongoDB</span></div>
+      <!-- Duplicate for seamless scroll -->
+      <div class="eco-item"><span class="eco-item__dot"></span><span class="eco-item__name">GitHub</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--yellow"></span><span class="eco-item__name">Slack</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--green"></span><span class="eco-item__name">Terraform</span></div>
+      <div class="eco-item"><span class="eco-item__dot"></span><span class="eco-item__name">Kubernetes</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--yellow"></span><span class="eco-item__name">Datadog</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--green"></span><span class="eco-item__name">PagerDuty</span></div>
+      <div class="eco-item"><span class="eco-item__dot"></span><span class="eco-item__name">Jira</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--yellow"></span><span class="eco-item__name">Vercel</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--green"></span><span class="eco-item__name">Snowflake</span></div>
+      <div class="eco-item"><span class="eco-item__dot"></span><span class="eco-item__name">Grafana</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--yellow"></span><span class="eco-item__name">CircleCI</span></div>
+      <div class="eco-item"><span class="eco-item__dot eco-item__dot--green"></span><span class="eco-item__name">MongoDB</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CTA
+     ============================================================ -->
+<section class="cta-section">
+  <div class="cta-content reveal">
+    <div class="cta-spark">
+      <svg width="64" height="64" viewBox="0 0 120 120" fill="none">
+        <g transform="translate(60,60)">
+          <rect x="-6" y="-48" width="12" height="36" rx="6" fill="#002D58"/>
+          <rect x="-6" y="-48" width="12" height="36" rx="6" fill="#002D58" transform="rotate(60)"/>
+          <rect x="-6" y="-48" width="12" height="36" rx="6" fill="#002D58" transform="rotate(120)"/>
+          <rect x="-6" y="-48" width="12" height="36" rx="6" fill="#002D58" transform="rotate(180)"/>
+          <rect x="-6" y="-48" width="12" height="36" rx="6" fill="#002D58" transform="rotate(240)"/>
+          <rect x="-6" y="-48" width="12" height="36" rx="6" fill="#002D58" transform="rotate(300)"/>
+          <circle cx="0" cy="0" r="8" fill="#002D58"/>
+        </g>
+      </svg>
+    </div>
+    <h2 class="cta-title">Save More.<br>Build Better.</h2>
+    <p class="cta-desc">Join 14,000+ teams who switched to KPT and never looked back. Start free. Scale forever. Pay less than you thought possible.</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn btn--blue">Start Free Today</a>
+      <a href="#" class="btn btn--dark">Talk to Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-brand__logo">
+        <svg width="32" height="32" viewBox="0 0 120 120" fill="none">
+          <g transform="translate(60,60)">
+            <rect x="-5" y="-44" width="10" height="32" rx="5" fill="#FFC220"/>
+            <rect x="-5" y="-44" width="10" height="32" rx="5" fill="#FFC220" transform="rotate(60)"/>
+            <rect x="-5" y="-44" width="10" height="32" rx="5" fill="#FFC220" transform="rotate(120)"/>
+            <rect x="-5" y="-44" width="10" height="32" rx="5" fill="#FFC220" transform="rotate(180)"/>
+            <rect x="-5" y="-44" width="10" height="32" rx="5" fill="#FFC220" transform="rotate(240)"/>
+            <rect x="-5" y="-44" width="10" height="32" rx="5" fill="#FFC220" transform="rotate(300)"/>
+            <circle cx="0" cy="0" r="6" fill="#FFC220"/>
+          </g>
+        </svg>
+        <span class="footer-brand__name">KPT</span>
+      </div>
+      <p class="footer-brand__desc">Enterprise-grade technology at everyday low prices. Built for teams that refuse to overpay.</p>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-col__title">Platform</div>
+      <ul class="footer-col__links">
+        <li><a href="#">Compute</a></li>
+        <li><a href="#">Storage</a></li>
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">AI / ML</a></li>
+        <li><a href="#">Security</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-col__title">Company</div>
+      <ul class="footer-col__links">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <div class="footer-col__title">Resources</div>
+      <ul class="footer-col__links">
+        <li><a href="#">Documentation</a></li>
+        <li><a href="#">API Reference</a></li>
+        <li><a href="#">Status</a></li>
+        <li><a href="#">Changelog</a></li>
+        <li><a href="#">Community</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-bottom__copy">2026 KPT. All rights reserved.</span>
+    <div class="footer-bottom__links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     INTERSECTION OBSERVER — SCROLL REVEAL
+     ============================================================ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const reveals = document.querySelectorAll('.reveal');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Animated stat counters
+  const statNumbers = document.querySelectorAll('.stat-card__number');
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        statObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  statNumbers.forEach(el => statObserver.observe(el));
+
+  function animateCounter(el) {
+    const text = el.textContent;
+    const match = text.match(/^([\d.]+)/);
+    if (!match) return;
+
+    const target = parseFloat(match[1]);
+    const suffix = text.replace(match[1], '');
+    const hasDecimal = match[1].includes('.');
+    const duration = 1500;
+    const startTime = performance.now();
+
+    function tick(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = target * eased;
+
+      if (hasDecimal) {
+        const decimals = match[1].split('.')[1]?.length || 0;
+        el.textContent = current.toFixed(decimals) + suffix;
+      } else {
+        el.textContent = Math.round(current) + suffix;
+      }
+
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.textContent = text;
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      const target = document.querySelector(anchor.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — The Front Page of the Internet</title>
+<meta name="description" content="KPT — The front page of the internet. Community-powered technology, upvoted by the people who build it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   RESET & CUSTOM PROPERTIES
+   ================================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --orange: #FF4500;
+  --orange-hover: #FF5722;
+  --orange-dim: rgba(255, 69, 0, 0.12);
+  --orange-glow: rgba(255, 69, 0, 0.3);
+  --orange-deep: #CC3700;
+  --blue-vote: #5A75CC;
+  --blue-dim: rgba(90, 117, 204, 0.15);
+  --white: #FFFFFF;
+  --off-white: #F6F7F8;
+  --light-gray: #DAE0E6;
+  --gray-100: #F2F4F5;
+  --gray-200: #EDEFF1;
+  --gray-300: #D7DADC;
+  --gray-400: #A8AAAB;
+  --gray-500: #878A8C;
+  --gray-600: #7C7C7C;
+  --gray-700: #4F4F4F;
+  --dark: #1A1A1B;
+  --dark-hover: #272729;
+  --dark-card: #1E1E1F;
+  --dark-border: #343536;
+  --green-online: #46D160;
+  --gold-award: #FFD700;
+  --silver-award: #C0C0C0;
+  --platinum: #A0E8FF;
+
+  --font-display: 'Noto Sans', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', 'Noto Sans', system-ui, sans-serif;
+  --max-w: 1200px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.18);
+  --shadow-orange: 0 0 40px rgba(255,69,0,0.15);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--off-white);
+  color: var(--dark);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ================================================================
+   TYPOGRAPHY
+   ================================================================ */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--dark);
+}
+
+h1 { font-size: clamp(2.8rem, 6vw, 4.5rem); letter-spacing: -1.5px; }
+h2 { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.5px; }
+h3 { font-size: 1.35rem; font-weight: 700; }
+h4 { font-size: 1.1rem; font-weight: 700; }
+
+p { color: var(--gray-600); line-height: 1.7; }
+
+.section-label {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--orange);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-label::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  background: var(--orange);
+  border-radius: 1px;
+}
+
+/* ================================================================
+   LAYOUT
+   ================================================================ */
+.container {
+  width: 100%;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section { padding: 100px 0; }
+
+/* ================================================================
+   SCROLL ANIMATIONS
+   ================================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s var(--ease-snappy), transform 0.7s var(--ease-snappy);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ================================================================
+   BACK LINK
+   ================================================================ */
+.back-link {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gray-500);
+  letter-spacing: 0.5px;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--gray-200);
+  transition: all 0.25s var(--ease);
+  text-decoration: none;
+}
+.back-link:hover {
+  color: var(--orange);
+  border-color: var(--orange-dim);
+  background: var(--white);
+  transform: translateX(-2px);
+}
+
+/* ================================================================
+   NAVIGATION
+   ================================================================ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--gray-200);
+  transition: transform 0.3s var(--ease);
+}
+
+.nav-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--dark);
+}
+
+.nav-snoo {
+  width: 36px;
+  height: 36px;
+  background: var(--orange);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.nav-snoo::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 8px;
+  background: var(--orange);
+  border-radius: 2px;
+}
+
+.nav-snoo-face {
+  width: 26px;
+  height: 20px;
+  background: var(--white);
+  border-radius: 50%;
+  position: relative;
+}
+
+.nav-snoo-face::before,
+.nav-snoo-face::after {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: var(--orange);
+  border-radius: 50%;
+  top: 6px;
+}
+.nav-snoo-face::before { left: 5px; }
+.nav-snoo-face::after { right: 5px; }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-link {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gray-700);
+  border-radius: var(--radius-full);
+  transition: all 0.2s var(--ease);
+}
+.nav-link:hover {
+  background: var(--gray-100);
+  color: var(--dark);
+}
+
+.nav-cta {
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--orange);
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s var(--ease);
+}
+.nav-cta:hover {
+  background: var(--orange-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--orange-glow);
+}
+
+/* ================================================================
+   HERO
+   ================================================================ */
+.hero {
+  padding: 140px 0 100px;
+  background: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--orange), var(--orange-hover), var(--gold-award), var(--orange));
+  background-size: 300% 100%;
+  animation: heroGradient 6s ease infinite;
+}
+
+@keyframes heroGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.hero-inner {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+}
+
+.hero-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-visual {
+  flex: 0 0 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px 6px 8px;
+  background: var(--orange-dim);
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--orange);
+  margin-bottom: 24px;
+}
+
+.hero-badge-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--orange);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+.hero h1 {
+  margin-bottom: 20px;
+}
+
+.hero h1 .orange { color: var(--orange); }
+
+.hero-sub {
+  font-size: 1.2rem;
+  color: var(--gray-500);
+  max-width: 500px;
+  margin-bottom: 36px;
+  line-height: 1.7;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--orange);
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+  text-decoration: none;
+}
+.btn-primary:hover {
+  background: var(--orange-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--orange-glow);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--orange);
+  background: transparent;
+  border: 2px solid var(--orange);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+  text-decoration: none;
+}
+.btn-secondary:hover {
+  background: var(--orange-dim);
+  transform: translateY(-2px);
+}
+
+/* Hero Upvote Card Visual */
+.hero-card {
+  width: 360px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  position: relative;
+  animation: heroFloat 6s ease-in-out infinite;
+}
+
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-12px) rotate(1deg); }
+}
+
+.hero-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--gray-100);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.hero-card-sub {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, var(--orange), var(--orange-hover));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--white);
+}
+
+.hero-card-meta {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+}
+.hero-card-meta strong {
+  color: var(--dark);
+  font-weight: 700;
+}
+
+.hero-card-body {
+  display: flex;
+  gap: 0;
+}
+
+.hero-card-votes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 12px;
+  gap: 4px;
+  background: var(--gray-100);
+  border-right: 1px solid var(--gray-200);
+  min-width: 50px;
+}
+
+.vote-arrow {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+  border-radius: 4px;
+}
+
+.vote-arrow:hover { background: var(--gray-200); }
+
+.vote-up {
+  color: var(--gray-400);
+}
+.vote-up.active {
+  color: var(--orange);
+}
+
+.vote-up svg, .vote-down svg {
+  width: 20px;
+  height: 20px;
+}
+
+.vote-count {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--orange);
+  font-family: var(--font-display);
+}
+
+.vote-down {
+  color: var(--gray-400);
+}
+.vote-down.active {
+  color: var(--blue-vote);
+}
+
+.hero-card-content {
+  padding: 16px;
+  flex: 1;
+}
+
+.hero-card-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.hero-card-text {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.hero-card-actions {
+  display: flex;
+  gap: 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.hero-card-actions span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s var(--ease);
+}
+
+.hero-card-actions span:hover {
+  background: var(--gray-100);
+  color: var(--gray-600);
+}
+
+.hero-card-awards {
+  display: flex;
+  gap: 6px;
+  padding: 0 16px 14px;
+}
+
+.award {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+}
+.award-gold { background: rgba(255, 215, 0, 0.2); color: var(--gold-award); }
+.award-silver { background: rgba(192, 192, 192, 0.2); color: var(--silver-award); }
+.award-plat { background: rgba(160, 232, 255, 0.2); color: var(--platinum); }
+
+/* ================================================================
+   STATS BAR — Karma Style
+   ================================================================ */
+.stats-bar {
+  background: var(--dark);
+  padding: 48px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  text-align: center;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-karma {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-arrow {
+  color: var(--orange);
+  font-size: 0.9rem;
+  animation: statBounce 2s ease-in-out infinite;
+}
+
+@keyframes statBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.stat-number {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: -1px;
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.stat-flair {
+  display: inline-block;
+  padding: 2px 10px;
+  background: var(--orange-dim);
+  color: var(--orange);
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  margin-top: 4px;
+}
+
+/* ================================================================
+   FEATURES — Subreddit-Style Cards
+   ================================================================ */
+.features {
+  background: var(--off-white);
+}
+
+.features-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 60px;
+}
+
+.features-header p {
+  font-size: 1.1rem;
+  margin-top: 16px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.feature-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+  overflow: hidden;
+  transition: all 0.3s var(--ease);
+  cursor: default;
+}
+
+.feature-card:hover {
+  border-color: var(--orange);
+  box-shadow: var(--shadow-md), 0 0 0 1px var(--orange-dim);
+  transform: translateY(-4px);
+}
+
+.feature-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--gray-100);
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.feature-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.feature-icon-orange { background: var(--orange-dim); color: var(--orange); }
+.feature-icon-blue { background: var(--blue-dim); color: var(--blue-vote); }
+.feature-icon-gold { background: rgba(255, 215, 0, 0.12); color: var(--gold-award); }
+
+.feature-sub-name {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.feature-sub-members {
+  font-size: 0.72rem;
+  color: var(--gray-500);
+}
+
+.feature-sub-join {
+  margin-left: auto;
+  padding: 4px 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--orange);
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s var(--ease);
+}
+.feature-sub-join:hover {
+  background: var(--orange-hover);
+}
+
+.feature-card-body {
+  display: flex;
+  gap: 0;
+}
+
+.feature-votes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 10px;
+  gap: 2px;
+  min-width: 44px;
+  border-right: 1px solid var(--gray-200);
+}
+
+.feature-vote-arrow {
+  font-size: 0.75rem;
+  color: var(--gray-400);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 2px;
+  transition: color 0.15s var(--ease);
+}
+.feature-vote-arrow:hover { color: var(--orange); }
+.feature-vote-arrow.down:hover { color: var(--blue-vote); }
+
+.feature-vote-count {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--orange);
+}
+
+.feature-content {
+  padding: 16px;
+  flex: 1;
+}
+
+.feature-content h3 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: var(--dark);
+}
+
+.feature-content p {
+  font-size: 0.88rem;
+  color: var(--gray-500);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.feature-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.feature-tag {
+  padding: 3px 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: var(--gray-100);
+  color: var(--gray-600);
+  border-radius: var(--radius-full);
+}
+
+.feature-tag-hot {
+  background: var(--orange-dim);
+  color: var(--orange);
+}
+
+/* ================================================================
+   HOW IT WORKS — Thread Style
+   ================================================================ */
+.how-it-works {
+  background: var(--white);
+}
+
+.how-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 64px;
+}
+
+.how-header p {
+  font-size: 1.1rem;
+  margin-top: 16px;
+}
+
+.thread {
+  max-width: 700px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.thread::before {
+  content: '';
+  position: absolute;
+  left: 30px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--gray-200);
+}
+
+.thread-comment {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 0;
+  position: relative;
+  padding-bottom: 32px;
+}
+
+.thread-comment:last-child { padding-bottom: 0; }
+
+.thread-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--white);
+  flex-shrink: 0;
+  z-index: 1;
+  border: 3px solid var(--white);
+  box-shadow: var(--shadow-sm);
+}
+
+.thread-avatar-1 { background: var(--orange); }
+.thread-avatar-2 { background: var(--blue-vote); }
+.thread-avatar-3 { background: var(--green-online); }
+.thread-avatar-4 { background: var(--gold-award); }
+
+.thread-body {
+  flex: 1;
+  background: var(--gray-100);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  border: 1px solid var(--gray-200);
+  position: relative;
+}
+
+.thread-body::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 20px;
+  width: 16px;
+  height: 16px;
+  background: var(--gray-100);
+  border-left: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+  transform: rotate(45deg);
+}
+
+.thread-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.thread-username {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.thread-op {
+  padding: 1px 6px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--orange);
+  color: var(--white);
+  border-radius: 3px;
+}
+
+.thread-time {
+  font-size: 0.75rem;
+  color: var(--gray-400);
+}
+
+.thread-text {
+  font-size: 0.92rem;
+  color: var(--gray-700);
+  line-height: 1.6;
+}
+
+.thread-text strong { color: var(--dark); }
+
+.thread-footer {
+  display: flex;
+  gap: 14px;
+  margin-top: 12px;
+  font-size: 0.75rem;
+  color: var(--gray-400);
+  font-weight: 600;
+}
+
+.thread-footer span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: color 0.15s var(--ease);
+}
+.thread-footer span:hover { color: var(--orange); }
+
+.thread-step-num {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+/* ================================================================
+   COMMUNITY SECTION
+   ================================================================ */
+.community {
+  background: var(--off-white);
+}
+
+.community-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 60px;
+}
+
+.community-header p {
+  font-size: 1.1rem;
+  margin-top: 16px;
+}
+
+.community-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.community-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+  padding: 28px;
+  transition: all 0.3s var(--ease);
+}
+.community-card:hover {
+  border-color: var(--orange);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+.community-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.community-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.cci-orange { background: var(--orange-dim); }
+.cci-blue { background: var(--blue-dim); }
+.cci-gold { background: rgba(255, 215, 0, 0.12); }
+.cci-green { background: rgba(70, 209, 96, 0.12); }
+
+.community-card-info h4 {
+  font-size: 1rem;
+  color: var(--dark);
+}
+
+.community-card-info span {
+  font-size: 0.78rem;
+  color: var(--gray-500);
+}
+
+.community-card p {
+  font-size: 0.9rem;
+  color: var(--gray-600);
+  line-height: 1.6;
+}
+
+.community-card-bar {
+  margin-top: 16px;
+  height: 4px;
+  background: var(--gray-200);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.community-card-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 1.5s var(--ease);
+  width: 0;
+}
+
+.visible .community-card-bar-fill { width: var(--fill, 75%); }
+
+.bar-orange { background: var(--orange); }
+.bar-blue { background: var(--blue-vote); }
+.bar-gold { background: var(--gold-award); }
+.bar-green { background: var(--green-online); }
+
+/* ================================================================
+   CTA
+   ================================================================ */
+.cta {
+  background: var(--dark);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.cta::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--orange-glow), transparent 70%);
+  pointer-events: none;
+}
+
+.cta-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-snoo {
+  width: 80px;
+  height: 80px;
+  background: var(--orange);
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: ctaSnooWave 3s ease-in-out infinite;
+}
+
+@keyframes ctaSnooWave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  75% { transform: rotate(-5deg); }
+}
+
+.cta-snoo::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 14px;
+  background: var(--orange);
+  border-radius: 3px;
+}
+
+.cta-snoo-face {
+  width: 52px;
+  height: 40px;
+  background: var(--white);
+  border-radius: 50%;
+  position: relative;
+}
+
+.cta-snoo-face::before,
+.cta-snoo-face::after {
+  content: '';
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  background: var(--orange);
+  border-radius: 50%;
+  top: 12px;
+}
+.cta-snoo-face::before { left: 10px; }
+.cta-snoo-face::after { right: 10px; }
+
+.cta h2 {
+  color: var(--white);
+  margin-bottom: 16px;
+}
+
+.cta p {
+  color: var(--gray-500);
+  font-size: 1.15rem;
+  max-width: 500px;
+  margin: 0 auto 36px;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.cta .btn-secondary {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+}
+.cta .btn-secondary:hover {
+  border-color: var(--orange);
+  background: rgba(255, 69, 0, 0.1);
+  color: var(--orange);
+}
+
+.cta-upvote-bg {
+  position: absolute;
+  bottom: -40px;
+  right: 10%;
+  font-size: 16rem;
+  color: rgba(255, 69, 0, 0.04);
+  font-weight: 900;
+  pointer-events: none;
+  line-height: 1;
+  font-family: var(--font-display);
+}
+
+/* ================================================================
+   FOOTER
+   ================================================================ */
+footer {
+  background: var(--dark);
+  border-top: 1px solid var(--dark-border);
+  padding: 48px 0 32px;
+}
+
+.footer-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.footer-brand-snoo {
+  width: 28px;
+  height: 28px;
+  background: var(--orange);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-brand-face {
+  width: 18px;
+  height: 14px;
+  background: var(--white);
+  border-radius: 50%;
+}
+
+.footer-tagline {
+  font-size: 0.82rem;
+  color: var(--gray-500);
+  max-width: 260px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 48px;
+}
+
+.footer-col h5 {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 14px;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--gray-500);
+  margin-bottom: 8px;
+  transition: color 0.15s var(--ease);
+}
+.footer-col a:hover { color: var(--orange); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  border-top: 1px solid var(--dark-border);
+}
+
+.footer-copy {
+  font-size: 0.78rem;
+  color: var(--gray-500);
+}
+
+.footer-socials {
+  display: flex;
+  gap: 12px;
+}
+
+.footer-social {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dark-hover);
+  border-radius: 50%;
+  color: var(--gray-500);
+  font-size: 0.85rem;
+  transition: all 0.2s var(--ease);
+}
+.footer-social:hover {
+  background: var(--orange);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+
+  .hero { padding: 110px 0 60px; }
+  .hero-inner {
+    flex-direction: column;
+    gap: 40px;
+    text-align: center;
+  }
+  .hero-visual { flex: none; width: 100%; }
+  .hero-card {
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+  .hero-sub { margin: 0 auto 32px; }
+  .hero-actions { justify-content: center; }
+  .hero-badge { margin: 0 auto 24px; }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .thread::before { left: 24px; }
+  .thread-avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 1.1rem;
+  }
+  .thread-body { padding: 16px; }
+
+  .community-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section { padding: 64px 0; }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .footer-links {
+    flex-wrap: wrap;
+    gap: 32px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 2.2rem; }
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">&larr; KPT</a>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <div class="nav-snoo">
+        <div class="nav-snoo-face"></div>
+      </div>
+      KPT
+    </a>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Communities</a>
+      <a href="#how" class="nav-link">How It Works</a>
+      <a href="#community" class="nav-link">Explore</a>
+      <a href="#cta" class="nav-cta">Join Now</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge reveal">
+        <span class="hero-badge-dot"></span>
+        The Front Page of the Internet
+      </div>
+      <h1 class="reveal reveal-delay-1">
+        <span class="orange">KPT</span> — Where<br>Ideas Get<br>Upvoted
+      </h1>
+      <p class="hero-sub reveal reveal-delay-2">
+        Community-powered technology, built in the open. Every feature voted on, every decision transparent. The platform the internet actually deserves.
+      </p>
+      <div class="hero-actions reveal reveal-delay-3">
+        <a href="#cta" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L13 9H3L8 2Z" fill="currentColor"/></svg>
+          Create Account
+        </a>
+        <a href="#features" class="btn-secondary">Browse Communities</a>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal reveal-delay-2">
+      <div class="hero-card">
+        <div class="hero-card-header">
+          <div class="hero-card-sub">K</div>
+          <div>
+            <div class="hero-card-meta"><strong>r/KPT</strong> &middot; Posted by u/builder_one</div>
+            <div class="hero-card-meta">4 hours ago</div>
+          </div>
+        </div>
+        <div class="hero-card-body">
+          <div class="hero-card-votes">
+            <div class="vote-arrow vote-up active">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 3L17 12H3L10 3Z"/></svg>
+            </div>
+            <span class="vote-count">4.2k</span>
+            <div class="vote-arrow vote-down">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 17L3 8H17L10 17Z"/></svg>
+            </div>
+          </div>
+          <div class="hero-card-content">
+            <div class="hero-card-title">We just shipped v3.0 and it's the biggest update yet</div>
+            <div class="hero-card-text">
+              Community-voted features, fully open architecture, zero lock-in. This is what happens when you let users drive the roadmap.
+            </div>
+            <div class="hero-card-actions">
+              <span>&#128172; 847 Comments</span>
+              <span>&#8593; Share</span>
+              <span>&#9733; Award</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-card-awards">
+          <span class="award award-gold">&#9733;</span>
+          <span class="award award-silver">&#9670;</span>
+          <span class="award award-plat">&#9826;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Bar -->
+<section class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-karma">
+          <span class="stat-arrow">&#9650;</span>
+          <span class="stat-number">52M+</span>
+        </div>
+        <span class="stat-label">Daily Upvotes</span>
+        <span class="stat-flair">Verified</span>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-karma">
+          <span class="stat-arrow">&#9650;</span>
+          <span class="stat-number">2.8M</span>
+        </div>
+        <span class="stat-label">Communities</span>
+        <span class="stat-flair">Growing</span>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-karma">
+          <span class="stat-arrow">&#9650;</span>
+          <span class="stat-number">430K</span>
+        </div>
+        <span class="stat-label">Active Now</span>
+        <span class="stat-flair" style="background: rgba(70,209,96,0.15); color: #46D160;">Online</span>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-karma">
+          <span class="stat-arrow">&#9650;</span>
+          <span class="stat-number">99.9%</span>
+        </div>
+        <span class="stat-label">Uptime</span>
+        <span class="stat-flair" style="background: rgba(160,232,255,0.15); color: #A0E8FF;">Platinum</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features — Subreddit Cards -->
+<section id="features" class="section features">
+  <div class="container">
+    <div class="features-header reveal">
+      <span class="section-label">Communities</span>
+      <h2>Your Subreddits,<br>Your Rules</h2>
+      <p>Every feature lives in its own community. Subscribe to what matters, ignore what doesn't. Democracy at scale.</p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Card 1 -->
+      <div class="feature-card reveal">
+        <div class="feature-card-header">
+          <div class="feature-icon feature-icon-orange">&#9650;</div>
+          <div>
+            <div class="feature-sub-name">r/orchestration</div>
+            <div class="feature-sub-members">128k members &middot; 3.4k online</div>
+          </div>
+          <button class="feature-sub-join">Join</button>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-votes">
+            <span class="feature-vote-arrow">&#9650;</span>
+            <span class="feature-vote-count">9.1k</span>
+            <span class="feature-vote-arrow down">&#9660;</span>
+          </div>
+          <div class="feature-content">
+            <h3>AI Agent Orchestration</h3>
+            <p>Coordinate fleets of agents with strict role separation. Planner, implementer, reviewer, verifier — each in their lane.</p>
+            <div class="feature-tags">
+              <span class="feature-tag feature-tag-hot">Hot</span>
+              <span class="feature-tag">Multi-Agent</span>
+              <span class="feature-tag">Parallel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-card-header">
+          <div class="feature-icon feature-icon-blue">&#128274;</div>
+          <div>
+            <div class="feature-sub-name">r/security</div>
+            <div class="feature-sub-members">94k members &middot; 1.8k online</div>
+          </div>
+          <button class="feature-sub-join">Join</button>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-votes">
+            <span class="feature-vote-arrow">&#9650;</span>
+            <span class="feature-vote-count">7.3k</span>
+            <span class="feature-vote-arrow down">&#9660;</span>
+          </div>
+          <div class="feature-content">
+            <h3>Zero-Trust Security</h3>
+            <p>JWT rotation, row-level security, CORS lockdown, webhook signature verification. Secure by default, not by accident.</p>
+            <div class="feature-tags">
+              <span class="feature-tag">Encryption</span>
+              <span class="feature-tag">Auth</span>
+              <span class="feature-tag feature-tag-hot">Pinned</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-card-header">
+          <div class="feature-icon feature-icon-gold">&#9733;</div>
+          <div>
+            <div class="feature-sub-name">r/pipeline</div>
+            <div class="feature-sub-members">76k members &middot; 2.1k online</div>
+          </div>
+          <button class="feature-sub-join">Join</button>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-votes">
+            <span class="feature-vote-arrow">&#9650;</span>
+            <span class="feature-vote-count">5.8k</span>
+            <span class="feature-vote-arrow down">&#9660;</span>
+          </div>
+          <div class="feature-content">
+            <h3>Visual Pipeline Tracking</h3>
+            <p>Every task tracked from queued to completed. Real-time dashboard, ticket history, stage progression. Nothing falls through.</p>
+            <div class="feature-tags">
+              <span class="feature-tag">Dashboard</span>
+              <span class="feature-tag">Tickets</span>
+              <span class="feature-tag feature-tag-hot">Award</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-card-header">
+          <div class="feature-icon feature-icon-orange">&#128640;</div>
+          <div>
+            <div class="feature-sub-name">r/deployment</div>
+            <div class="feature-sub-members">61k members &middot; 1.2k online</div>
+          </div>
+          <button class="feature-sub-join">Join</button>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-votes">
+            <span class="feature-vote-arrow">&#9650;</span>
+            <span class="feature-vote-count">4.5k</span>
+            <span class="feature-vote-arrow down">&#9660;</span>
+          </div>
+          <div class="feature-content">
+            <h3>One-Click Deploy</h3>
+            <p>Ship to production in seconds. Native app bundles, Vercel edge, Docker containers. Build once, run everywhere.</p>
+            <div class="feature-tags">
+              <span class="feature-tag">Vercel</span>
+              <span class="feature-tag">Docker</span>
+              <span class="feature-tag">Edge</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-card-header">
+          <div class="feature-icon feature-icon-blue">&#128202;</div>
+          <div>
+            <div class="feature-sub-name">r/analytics</div>
+            <div class="feature-sub-members">53k members &middot; 980 online</div>
+          </div>
+          <button class="feature-sub-join">Join</button>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-votes">
+            <span class="feature-vote-arrow">&#9650;</span>
+            <span class="feature-vote-count">3.9k</span>
+            <span class="feature-vote-arrow down">&#9660;</span>
+          </div>
+          <div class="feature-content">
+            <h3>Karma Analytics</h3>
+            <p>Track contribution scores, engagement metrics, and community health. Data-driven decisions, community-validated outcomes.</p>
+            <div class="feature-tags">
+              <span class="feature-tag feature-tag-hot">New</span>
+              <span class="feature-tag">Metrics</span>
+              <span class="feature-tag">Insights</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-card-header">
+          <div class="feature-icon feature-icon-gold">&#129302;</div>
+          <div>
+            <div class="feature-sub-name">r/automation</div>
+            <div class="feature-sub-members">88k members &middot; 2.6k online</div>
+          </div>
+          <button class="feature-sub-join">Join</button>
+        </div>
+        <div class="feature-card-body">
+          <div class="feature-votes">
+            <span class="feature-vote-arrow">&#9650;</span>
+            <span class="feature-vote-count">6.2k</span>
+            <span class="feature-vote-arrow down">&#9660;</span>
+          </div>
+          <div class="feature-content">
+            <h3>Bot Automation</h3>
+            <p>AutoMod for your workflow. Set rules, triggers, and actions. Bots handle the repetitive work so humans can focus on what matters.</p>
+            <div class="feature-tags">
+              <span class="feature-tag">Rules</span>
+              <span class="feature-tag">Triggers</span>
+              <span class="feature-tag feature-tag-hot">Trending</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works — Thread Style -->
+<section id="how" class="section how-it-works">
+  <div class="container">
+    <div class="how-header reveal">
+      <span class="section-label">How It Works</span>
+      <h2>The Thread That<br>Builds Everything</h2>
+      <p>From idea to production in four comments. Every step transparent, every decision upvoted by the community.</p>
+    </div>
+
+    <div class="thread">
+      <!-- Step 1 -->
+      <div class="thread-comment reveal">
+        <div class="thread-avatar thread-avatar-1">1</div>
+        <div class="thread-body">
+          <div class="thread-user">
+            <span class="thread-username">u/you</span>
+            <span class="thread-op">OP</span>
+            <span class="thread-time">just now</span>
+          </div>
+          <div class="thread-step-num">Step 1 &mdash; Post</div>
+          <div class="thread-text">
+            <strong>Submit your idea.</strong> Describe the problem, propose a solution. The community sees it instantly. No gatekeepers, no approval queues. Your post goes live the moment you hit submit.
+          </div>
+          <div class="thread-footer">
+            <span>&#9650; 2.1k</span>
+            <span>&#128172; 142 replies</span>
+            <span>&#9733; 3 awards</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="thread-comment reveal reveal-delay-1">
+        <div class="thread-avatar thread-avatar-2">2</div>
+        <div class="thread-body">
+          <div class="thread-user">
+            <span class="thread-username">u/community</span>
+            <span class="thread-time">2 min ago</span>
+          </div>
+          <div class="thread-step-num">Step 2 &mdash; Vote</div>
+          <div class="thread-text">
+            <strong>The community weighs in.</strong> Upvotes surface the best ideas. Comments refine the approach. Cross-posting spreads it to related subreddits. Consensus emerges organically.
+          </div>
+          <div class="thread-footer">
+            <span>&#9650; 1.8k</span>
+            <span>&#128172; 89 replies</span>
+            <span>&#9733; 2 awards</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="thread-comment reveal reveal-delay-2">
+        <div class="thread-avatar thread-avatar-3">3</div>
+        <div class="thread-body">
+          <div class="thread-user">
+            <span class="thread-username">u/agents</span>
+            <span class="thread-time">8 min ago</span>
+          </div>
+          <div class="thread-step-num">Step 3 &mdash; Build</div>
+          <div class="thread-text">
+            <strong>Agents execute the plan.</strong> Orchestrated agents pick up the task. Planner architects, implementer codes, reviewer checks. Every step logged, every decision traceable.
+          </div>
+          <div class="thread-footer">
+            <span>&#9650; 3.4k</span>
+            <span>&#128172; 256 replies</span>
+            <span>&#9733; 5 awards</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="thread-comment reveal reveal-delay-3">
+        <div class="thread-avatar thread-avatar-4">4</div>
+        <div class="thread-body">
+          <div class="thread-user">
+            <span class="thread-username">u/verifier</span>
+            <span class="thread-time">15 min ago</span>
+          </div>
+          <div class="thread-step-num">Step 4 &mdash; Ship</div>
+          <div class="thread-text">
+            <strong>Verified and deployed.</strong> Tests pass, types check, security scans clear. The feature ships. Your karma goes up. The community celebrates with awards.
+          </div>
+          <div class="thread-footer">
+            <span>&#9650; 5.7k</span>
+            <span>&#128172; 412 replies</span>
+            <span>&#9733; 8 awards</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Community Section -->
+<section id="community" class="section community">
+  <div class="container">
+    <div class="community-header reveal">
+      <span class="section-label">Explore</span>
+      <h2>Trending<br>Communities</h2>
+      <p>The most active communities building the future. Find your people, earn your karma, ship your ideas.</p>
+    </div>
+
+    <div class="community-grid">
+      <div class="community-card reveal">
+        <div class="community-card-top">
+          <div class="community-card-icon cci-orange">&#128293;</div>
+          <div class="community-card-info">
+            <h4>r/hotfixes</h4>
+            <span>42k members &middot; Rapid response</span>
+          </div>
+        </div>
+        <p>Critical patches deployed in minutes, not days. Community-sourced fixes with automated verification and instant rollback capability.</p>
+        <div class="community-card-bar">
+          <div class="community-card-bar-fill bar-orange" style="--fill: 92%;"></div>
+        </div>
+      </div>
+
+      <div class="community-card reveal reveal-delay-1">
+        <div class="community-card-top">
+          <div class="community-card-icon cci-blue">&#128161;</div>
+          <div class="community-card-info">
+            <h4>r/ideation</h4>
+            <span>67k members &middot; Always brainstorming</span>
+          </div>
+        </div>
+        <p>Raw ideas get refined by thousands. Upvotes separate signal from noise. The best concepts graduate to r/implementation automatically.</p>
+        <div class="community-card-bar">
+          <div class="community-card-bar-fill bar-blue" style="--fill: 78%;"></div>
+        </div>
+      </div>
+
+      <div class="community-card reveal reveal-delay-2">
+        <div class="community-card-top">
+          <div class="community-card-icon cci-gold">&#127942;</div>
+          <div class="community-card-info">
+            <h4>r/awards</h4>
+            <span>31k members &middot; Recognition engine</span>
+          </div>
+        </div>
+        <p>Gold, silver, platinum, and custom awards for outstanding contributions. Karma isn't vanity — it's your track record, visible to everyone.</p>
+        <div class="community-card-bar">
+          <div class="community-card-bar-fill bar-gold" style="--fill: 65%;"></div>
+        </div>
+      </div>
+
+      <div class="community-card reveal reveal-delay-3">
+        <div class="community-card-top">
+          <div class="community-card-icon cci-green">&#9989;</div>
+          <div class="community-card-info">
+            <h4>r/shipped</h4>
+            <span>89k members &middot; Results only</span>
+          </div>
+        </div>
+        <p>The hall of fame. Every shipped feature, every deployed fix, every verified improvement. Proof that community-driven development works.</p>
+        <div class="community-card-bar">
+          <div class="community-card-bar-fill bar-green" style="--fill: 88%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta" class="section cta">
+  <div class="container cta-inner">
+    <div class="reveal">
+      <div class="cta-snoo">
+        <div class="cta-snoo-face"></div>
+      </div>
+    </div>
+    <h2 class="reveal reveal-delay-1">Ready to Join the<br>Front Page?</h2>
+    <p class="reveal reveal-delay-2">
+      Your ideas deserve upvotes. Your work deserves karma. Start building with the community that ships.
+    </p>
+    <div class="cta-buttons reveal reveal-delay-3">
+      <a href="#" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L13 9H3L8 2Z" fill="currentColor"/></svg>
+        Create Account
+      </a>
+      <a href="#features" class="btn-secondary">Explore Communities</a>
+    </div>
+    <div class="cta-upvote-bg">&#9650;</div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <div class="footer-brand-snoo">
+            <div class="footer-brand-face"></div>
+          </div>
+          KPT
+        </div>
+        <p class="footer-tagline">The front page of the internet. Community-powered technology, upvoted by the people who build it.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h5>Communities</h5>
+          <a href="#">r/orchestration</a>
+          <a href="#">r/security</a>
+          <a href="#">r/pipeline</a>
+          <a href="#">r/deployment</a>
+        </div>
+        <div class="footer-col">
+          <h5>Resources</h5>
+          <a href="#">Documentation</a>
+          <a href="#">API Reference</a>
+          <a href="#">Status Page</a>
+          <a href="#">Changelog</a>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <a href="#">About</a>
+          <a href="#">Careers</a>
+          <a href="#">Press</a>
+          <a href="#">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">&copy; 2026 KPT. All rights reserved.</span>
+      <div class="footer-socials">
+        <a href="#" class="footer-social" title="Twitter">&#120143;</a>
+        <a href="#" class="footer-social" title="GitHub">&#9830;</a>
+        <a href="#" class="footer-social" title="Reddit">&#9632;</a>
+        <a href="#" class="footer-social" title="YouTube">&#9654;</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // IntersectionObserver for scroll animations
+  document.addEventListener('DOMContentLoaded', () => {
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+    reveals.forEach(el => observer.observe(el));
+
+    // Nav hide/show on scroll
+    let lastScroll = 0;
+    const nav = document.querySelector('.nav');
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > lastScroll && currentScroll > 100) {
+        nav.style.transform = 'translateY(-100%)';
+        nav.style.transition = 'transform 0.3s ease';
+      } else {
+        nav.style.transform = 'translateY(0)';
+      }
+      lastScroll = currentScroll;
+    });
+
+    // Animate vote counts on hero card
+    const voteCount = document.querySelector('.vote-count');
+    if (voteCount) {
+      let count = 0;
+      const target = 4200;
+      const duration = 2000;
+      const start = performance.now();
+      const animate = (now) => {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        count = Math.floor(eased * target);
+        voteCount.textContent = count >= 1000 ? (count / 1000).toFixed(1) + 'k' : count;
+        if (progress < 1) requestAnimationFrame(animate);
+      };
+      requestAnimationFrame(animate);
+    }
+  });
+</script>
+</body>
+</html>

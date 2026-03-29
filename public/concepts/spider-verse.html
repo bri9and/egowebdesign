@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Spider-Verse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --spider-red: #FF3366;
+    --electric-blue: #3366FF;
+    --comic-yellow: #FFCC00;
+    --ink-black: #0A0A14;
+    --ink-dark: #111122;
+    --halftone-pink: #FF6B9D;
+    --dimension-purple: #9933FF;
+    --surface: #14142A;
+    --surface-raised: #1C1C3A;
+    --text-primary: #F5F5FF;
+    --text-secondary: #B8B8D0;
+    --text-muted: #6B6B88;
+    --border-comic: 3px solid var(--text-primary);
+    --border-thick: 4px solid var(--ink-black);
+    --font-heading: 'Bangers', cursive;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --max-width: 1200px;
+    --nav-height: 72px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink-black);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    line-height: 1.15;
+    letter-spacing: 1.5px;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ==============================
+     HALFTONE / BEN-DAY DOT PATTERNS
+     ============================== */
+  .halftone-bg {
+    position: relative;
+  }
+  .halftone-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle, var(--spider-red) 1px, transparent 1px),
+      radial-gradient(circle, var(--electric-blue) 1px, transparent 1px);
+    background-size: 20px 20px, 30px 30px;
+    background-position: 0 0, 10px 10px;
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .halftone-dense::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255, 51, 102, 0.15) 1.5px, transparent 1.5px);
+    background-size: 8px 8px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ==============================
+     CHROMATIC ABERRATION TEXT
+     ============================== */
+  .chromatic {
+    position: relative;
+    display: inline-block;
+  }
+  .chromatic::before,
+  .chromatic::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  .chromatic::before {
+    color: var(--spider-red);
+    z-index: -1;
+    clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+    transform: translate(-3px, -2px);
+    opacity: 0.7;
+  }
+  .chromatic::after {
+    color: var(--electric-blue);
+    z-index: -1;
+    clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+    transform: translate(3px, 2px);
+    opacity: 0.7;
+  }
+
+  /* ==============================
+     BACK LINK
+     ============================== */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 24px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.25s;
+    position: relative;
+    z-index: 1001;
+  }
+  .back-link:hover { color: var(--spider-red); }
+  .back-link span { transition: transform 0.2s; display: inline-block; }
+  .back-link:hover span { transform: translateX(-3px); }
+
+  /* ==============================
+     FIXED NAV — COMIC BOLD
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    background: rgba(10, 10, 20, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 3px solid var(--spider-red);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  nav .nav-inner {
+    max-width: var(--max-width);
+    width: 100%;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  nav .logo {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    letter-spacing: 4px;
+    color: var(--text-primary);
+    text-shadow: 2px 2px 0 var(--spider-red), -1px -1px 0 var(--electric-blue);
+  }
+
+  nav .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  nav .nav-links a {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+    transition: color 0.2s, text-shadow 0.2s;
+    text-transform: uppercase;
+  }
+
+  nav .nav-links a:hover {
+    color: var(--comic-yellow);
+    text-shadow: 1px 1px 0 var(--spider-red);
+  }
+
+  /* ==============================
+     HERO
+     ============================== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: calc(var(--nav-height) + 40px) 24px 80px;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle, rgba(255, 51, 102, 0.12) 2px, transparent 2px),
+      radial-gradient(circle, rgba(51, 102, 255, 0.08) 2px, transparent 2px);
+    background-size: 16px 16px, 24px 24px;
+    background-position: 0 0, 8px 8px;
+    z-index: 0;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 800px;
+    height: 800px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(153, 51, 255, 0.15) 0%, transparent 70%);
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+  }
+
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--spider-red);
+    margin-bottom: 24px;
+    display: inline-block;
+    border: 2px solid var(--spider-red);
+    padding: 6px 16px;
+    transform: rotate(-2deg);
+  }
+
+  .hero h1 {
+    font-size: clamp(56px, 10vw, 120px);
+    line-height: 0.95;
+    margin-bottom: 32px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+  }
+
+  /* Speech bubble for hero */
+  .speech-bubble-hero {
+    display: inline-block;
+    position: relative;
+    background: var(--comic-yellow);
+    color: var(--ink-black);
+    font-family: var(--font-heading);
+    font-size: clamp(18px, 3vw, 28px);
+    letter-spacing: 2px;
+    padding: 16px 32px;
+    border: 3px solid var(--ink-black);
+    border-radius: 20px;
+    margin-top: 16px;
+    transform: rotate(1deg);
+    box-shadow: 4px 4px 0 var(--ink-black);
+  }
+
+  .speech-bubble-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 50px;
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 20px solid var(--comic-yellow);
+    filter: drop-shadow(2px 2px 0 var(--ink-black));
+  }
+
+  .hero-description {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-top: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-cta-group {
+    margin-top: 40px;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ==============================
+     BUTTONS
+     ============================== */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-heading);
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--ink-black);
+    background: var(--spider-red);
+    padding: 14px 36px;
+    border: 3px solid var(--ink-black);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 4px 4px 0 var(--ink-black);
+    text-transform: uppercase;
+  }
+  .btn-primary:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--ink-black);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-heading);
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--text-primary);
+    background: transparent;
+    padding: 14px 36px;
+    border: 3px solid var(--text-primary);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+    box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.1);
+    text-transform: uppercase;
+  }
+  .btn-secondary:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* ==============================
+     SECTION SHARED
+     ============================== */
+  section {
+    padding: 100px 0;
+    position: relative;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--spider-red);
+    margin-bottom: 12px;
+  }
+
+  .section-heading {
+    font-size: clamp(36px, 5vw, 56px);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  .section-sub {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* Reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ==============================
+     PRODUCTS — COMIC CARDS
+     ============================== */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 32px;
+    margin-top: 56px;
+  }
+
+  .product-card {
+    position: relative;
+    border: 4px solid var(--text-primary);
+    border-radius: 8px;
+    padding: 40px 32px;
+    background: var(--surface);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 6px 6px 0 rgba(255, 51, 102, 0.3);
+  }
+
+  .product-card:nth-child(1) { transform: rotate(-1deg); }
+  .product-card:nth-child(2) { transform: rotate(1deg); }
+
+  .product-card:hover {
+    transform: rotate(0deg) translateY(-4px);
+    box-shadow: 8px 8px 0 var(--spider-red);
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255, 107, 157, 0.08) 1px, transparent 1px);
+    background-size: 10px 10px;
+    pointer-events: none;
+  }
+
+  .product-pow {
+    position: absolute;
+    top: -8px;
+    right: 16px;
+    font-family: var(--font-heading);
+    font-size: 28px;
+    color: var(--ink-black);
+    background: var(--comic-yellow);
+    padding: 6px 14px;
+    border: 3px solid var(--ink-black);
+    border-radius: 4px;
+    transform: rotate(6deg);
+    box-shadow: 3px 3px 0 var(--ink-black);
+    z-index: 2;
+    letter-spacing: 2px;
+  }
+
+  .product-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    border: 3px solid var(--text-primary);
+    position: relative;
+    z-index: 1;
+  }
+
+  .product-card:nth-child(1) .product-icon { background: rgba(255, 51, 102, 0.15); }
+  .product-card:nth-child(2) .product-icon { background: rgba(51, 102, 255, 0.15); }
+
+  .product-card h3 {
+    font-size: 32px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  .product-card p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    position: relative;
+    z-index: 1;
+    margin-bottom: 20px;
+  }
+
+  .product-features {
+    list-style: none;
+    position: relative;
+    z-index: 1;
+  }
+
+  .product-features li {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding: 6px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .product-features li::before {
+    content: '\2605';
+    color: var(--comic-yellow);
+    font-size: 14px;
+  }
+
+  /* ==============================
+     MULTIVERSE GRID
+     ============================== */
+  .multiverse-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 56px;
+  }
+
+  .dimension-card {
+    border: 3px solid var(--text-primary);
+    border-radius: 8px;
+    padding: 32px 28px;
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .dimension-card:hover {
+    transform: translateY(-4px) rotate(0deg);
+  }
+
+  .dimension-card:nth-child(1) { border-left: 6px solid var(--spider-red); transform: rotate(-0.5deg); }
+  .dimension-card:nth-child(1):hover { box-shadow: 5px 5px 0 var(--spider-red); }
+  .dimension-card:nth-child(2) { border-left: 6px solid var(--electric-blue); transform: rotate(0.5deg); }
+  .dimension-card:nth-child(2):hover { box-shadow: 5px 5px 0 var(--electric-blue); }
+  .dimension-card:nth-child(3) { border-left: 6px solid var(--comic-yellow); transform: rotate(-0.3deg); }
+  .dimension-card:nth-child(3):hover { box-shadow: 5px 5px 0 var(--comic-yellow); }
+  .dimension-card:nth-child(4) { border-left: 6px solid var(--dimension-purple); transform: rotate(0.3deg); }
+  .dimension-card:nth-child(4):hover { box-shadow: 5px 5px 0 var(--dimension-purple); }
+  .dimension-card:nth-child(5) { border-left: 6px solid var(--halftone-pink); transform: rotate(-0.5deg); }
+  .dimension-card:nth-child(5):hover { box-shadow: 5px 5px 0 var(--halftone-pink); }
+  .dimension-card:nth-child(6) { border-left: 6px solid #00FF88; transform: rotate(0.5deg); }
+  .dimension-card:nth-child(6):hover { box-shadow: 5px 5px 0 #00FF88; }
+
+  .dimension-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 12px 12px;
+    pointer-events: none;
+  }
+
+  .dimension-number {
+    font-family: var(--font-heading);
+    font-size: 48px;
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    opacity: 0.08;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+
+  .dimension-card h3 {
+    font-size: 26px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  .dimension-card p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    position: relative;
+    z-index: 1;
+  }
+
+  .dimension-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border: 2px solid;
+    border-radius: 3px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .dimension-card:nth-child(1) .dimension-tag { color: var(--spider-red); border-color: var(--spider-red); }
+  .dimension-card:nth-child(2) .dimension-tag { color: var(--electric-blue); border-color: var(--electric-blue); }
+  .dimension-card:nth-child(3) .dimension-tag { color: var(--comic-yellow); border-color: var(--comic-yellow); }
+  .dimension-card:nth-child(4) .dimension-tag { color: var(--dimension-purple); border-color: var(--dimension-purple); }
+  .dimension-card:nth-child(5) .dimension-tag { color: var(--halftone-pink); border-color: var(--halftone-pink); }
+  .dimension-card:nth-child(6) .dimension-tag { color: #00FF88; border-color: #00FF88; }
+
+  /* ==============================
+     STATS — COMIC PANELS
+     ============================== */
+  .stats-section {
+    background: var(--surface);
+    border-top: 4px solid var(--spider-red);
+    border-bottom: 4px solid var(--electric-blue);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 48px;
+  }
+
+  .stat-panel {
+    border: 3px solid var(--text-primary);
+    padding: 36px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+
+  .stat-panel:hover {
+    background: rgba(255, 51, 102, 0.05);
+  }
+
+  .stat-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255, 204, 0, 0.04) 1px, transparent 1px);
+    background-size: 8px 8px;
+    pointer-events: none;
+  }
+
+  .stat-panel:nth-child(1) { border-radius: 8px 0 0 8px; }
+  .stat-panel:nth-child(4) { border-radius: 0 8px 8px 0; }
+  .stat-panel + .stat-panel { border-left: none; }
+
+  .stat-number {
+    font-family: var(--font-heading);
+    font-size: clamp(40px, 5vw, 64px);
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 8px;
+    text-shadow: 2px 2px 0 var(--spider-red), -1px -1px 0 var(--electric-blue);
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ==============================
+     WORD BUBBLES — TESTIMONIALS
+     ============================== */
+  .bubbles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    margin-top: 56px;
+  }
+
+  .word-bubble {
+    position: relative;
+    background: var(--surface-raised);
+    border: 3px solid var(--text-primary);
+    border-radius: 24px;
+    padding: 32px 28px 28px;
+    transition: transform 0.2s;
+  }
+
+  .word-bubble:nth-child(1) { transform: rotate(-1deg); }
+  .word-bubble:nth-child(2) { transform: rotate(0.5deg); }
+  .word-bubble:nth-child(3) { transform: rotate(-0.5deg); }
+
+  .word-bubble:hover {
+    transform: rotate(0deg) translateY(-3px);
+  }
+
+  .word-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 40px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 18px solid transparent;
+    border-top: 18px solid var(--text-primary);
+  }
+
+  .word-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -13px;
+    left: 42px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 16px solid transparent;
+    border-top: 16px solid var(--surface-raised);
+    z-index: 1;
+  }
+
+  .word-bubble blockquote {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .word-bubble .bubble-author {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: var(--spider-red);
+  }
+
+  .word-bubble .bubble-role {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* ==============================
+     CTA — LEAP OF FAITH
+     ============================== */
+  .cta-section {
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle, rgba(255, 51, 102, 0.1) 2px, transparent 2px),
+      radial-gradient(circle, rgba(153, 51, 255, 0.06) 2px, transparent 2px);
+    background-size: 14px 14px, 22px 22px;
+    background-position: 0 0, 7px 7px;
+    pointer-events: none;
+  }
+
+  .cta-heading {
+    font-size: clamp(40px, 6vw, 72px);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .cta-sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .cta-form {
+    display: flex;
+    gap: 0;
+    max-width: 520px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-form input {
+    flex: 1;
+    font-family: var(--font-body);
+    font-size: 16px;
+    padding: 16px 20px;
+    background: var(--surface);
+    color: var(--text-primary);
+    border: 3px solid var(--text-primary);
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .cta-form input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .cta-form input:focus {
+    border-color: var(--spider-red);
+  }
+
+  .cta-form button {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--ink-black);
+    background: var(--spider-red);
+    border: 3px solid var(--text-primary);
+    border-radius: 0 4px 4px 0;
+    padding: 16px 28px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.2s, transform 0.15s;
+    white-space: nowrap;
+  }
+
+  .cta-form button:hover {
+    background: var(--halftone-pink);
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    padding: 48px 0;
+    border-top: 3px solid var(--text-primary);
+    position: relative;
+  }
+
+  footer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255, 51, 102, 0.04) 1px, transparent 1px);
+    background-size: 16px 16px;
+    pointer-events: none;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-logo {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--text-primary);
+    text-shadow: 2px 2px 0 var(--spider-red), -1px -1px 0 var(--electric-blue);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    transition: color 0.2s;
+    letter-spacing: 1px;
+  }
+
+  .footer-links a:hover { color: var(--spider-red); }
+
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 768px) {
+    nav .nav-links { display: none; }
+
+    .products-grid { grid-template-columns: 1fr; }
+    .product-card:nth-child(1),
+    .product-card:nth-child(2) { transform: rotate(0); }
+
+    .multiverse-grid { grid-template-columns: 1fr; }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .stat-panel:nth-child(1) { border-radius: 8px 0 0 0; }
+    .stat-panel:nth-child(2) { border-radius: 0 8px 0 0; border-left: none; }
+    .stat-panel:nth-child(3) { border-radius: 0 0 0 8px; border-top: none; }
+    .stat-panel:nth-child(4) { border-radius: 0 0 8px 0; border-left: none; border-top: none; }
+
+    .bubbles-grid { grid-template-columns: 1fr; }
+    .word-bubble:nth-child(1),
+    .word-bubble:nth-child(2),
+    .word-bubble:nth-child(3) { transform: rotate(0); }
+
+    .cta-form { flex-direction: column; }
+    .cta-form input { border-right: 3px solid var(--text-primary); border-radius: 4px; }
+    .cta-form input:focus { border-color: var(--spider-red); }
+    .cta-form button { border-radius: 4px; }
+
+    .footer-inner { flex-direction: column; text-align: center; }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .stat-panel { border-radius: 0 !important; }
+    .stat-panel + .stat-panel { border-left: 3px solid var(--text-primary); border-top: none; }
+  }
+
+  /* ==============================
+     COMIC BURST ACCENT
+     ============================== */
+  .comic-burst {
+    display: inline-block;
+    position: relative;
+    font-family: var(--font-heading);
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--ink-black);
+    background: var(--comic-yellow);
+    padding: 4px 12px;
+    border: 2px solid var(--ink-black);
+    transform: rotate(-3deg);
+    box-shadow: 2px 2px 0 var(--ink-black);
+  }
+
+  /* ==============================
+     GLITCH / DIMENSION FLASH
+     ============================== */
+  @keyframes glitch {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-2px, 1px); }
+    40% { transform: translate(2px, -1px); }
+    60% { transform: translate(-1px, -2px); }
+    80% { transform: translate(1px, 2px); }
+  }
+
+  @keyframes chromatic-shift {
+    0%, 100% { text-shadow: 2px 2px 0 var(--spider-red), -2px -2px 0 var(--electric-blue); }
+    25% { text-shadow: 3px 1px 0 var(--spider-red), -3px -1px 0 var(--electric-blue); }
+    50% { text-shadow: 1px 3px 0 var(--spider-red), -1px -3px 0 var(--electric-blue); }
+    75% { text-shadow: -2px 2px 0 var(--spider-red), 2px -2px 0 var(--electric-blue); }
+  }
+
+  .hero h1 {
+    animation: chromatic-shift 4s ease-in-out infinite;
+  }
+
+  @keyframes float-bubble {
+    0%, 100% { transform: rotate(-1deg); }
+    50% { transform: rotate(1deg) translateY(-4px); }
+  }
+
+  .speech-bubble-hero {
+    animation: float-bubble 3s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link"><span>&larr;</span> Back</a>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">KPT</div>
+    <ul class="nav-links">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#multiverse">Multiverse</a></li>
+      <li><a href="#stats">Stats</a></li>
+      <li><a href="#voices">Voices</a></li>
+      <li><a href="#leap">Leap</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero halftone-bg">
+  <div class="hero-content">
+    <div class="hero-label">Earth-616 &mdash; Brand Concept</div>
+    <h1 class="chromatic" data-text="Anyone Can Wear the Mask.">Anyone Can Wear the Mask.</h1>
+    <div class="speech-bubble-hero">AI Agents &amp; Web Design from Another Dimension!</div>
+    <p class="hero-description">KPT builds technology that breaks through dimensions. Voice agents that think on their feet. Websites that leap off the screen. Your origin story starts here.</p>
+    <div class="hero-cta-group">
+      <a href="#products" class="btn-primary">Explore Products</a>
+      <a href="#leap" class="btn-secondary">Take the Leap</a>
+    </div>
+  </div>
+</section>
+
+<!-- Products -->
+<section id="products" class="halftone-bg">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// Our Powers</div>
+      <h2 class="section-heading">Built Different.</h2>
+      <p class="section-sub">Two products. Two dimensions. One mission: give your business abilities it never knew it had.</p>
+    </div>
+    <div class="products-grid">
+
+      <div class="product-card reveal">
+        <div class="product-pow">POW!</div>
+        <div class="product-icon">&#x1F50A;</div>
+        <h3>KPT Agents</h3>
+        <p>AI voice agents with spider-sense. They answer calls, book appointments, qualify leads, and handle the chaos so you never miss a beat.</p>
+        <ul class="product-features">
+          <li>24/7 voice AI &mdash; never sleeps</li>
+          <li>Natural conversation flow</li>
+          <li>CRM integration built in</li>
+          <li>Multi-language web-slinging</li>
+          <li>Custom personality per dimension</li>
+        </ul>
+      </div>
+
+      <div class="product-card reveal">
+        <div class="product-pow">ZAP!</div>
+        <div class="product-icon">&#x1F578;</div>
+        <h3>KPT Designs</h3>
+        <p>Premium web design that leaps off the screen. Fast, responsive, pixel-perfect sites that make your competition look like they&rsquo;re from Earth-67.</p>
+        <ul class="product-features">
+          <li>Custom designs &mdash; no templates</li>
+          <li>Blazing fast performance</li>
+          <li>Mobile-first responsive</li>
+          <li>SEO-optimized architecture</li>
+          <li>Conversion-focused layouts</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Multiverse Grid -->
+<section id="multiverse">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// The Multiverse</div>
+      <h2 class="section-heading">Every Dimension Covered.</h2>
+      <p class="section-sub">Six capabilities. Six dimensions. Each one a different version of what your business can become.</p>
+    </div>
+    <div class="multiverse-grid">
+
+      <div class="dimension-card reveal">
+        <div class="dimension-number">01</div>
+        <div class="dimension-tag">Earth-616</div>
+        <h3>Voice Intelligence</h3>
+        <p>AI agents that understand context, intent, and nuance. They don't just hear words &mdash; they sense what callers need before they finish speaking.</p>
+      </div>
+
+      <div class="dimension-card reveal">
+        <div class="dimension-number">02</div>
+        <div class="dimension-tag">Earth-1610</div>
+        <h3>Design Systems</h3>
+        <p>Component-driven interfaces that scale across every screen. Consistent, accessible, and built to evolve with your brand across every dimension.</p>
+      </div>
+
+      <div class="dimension-card reveal">
+        <div class="dimension-number">03</div>
+        <div class="dimension-tag">Earth-65</div>
+        <h3>Lead Capture</h3>
+        <p>Every interaction is an opportunity. Our systems catch leads from voice, web, and chat, then route them to your pipeline instantly.</p>
+      </div>
+
+      <div class="dimension-card reveal">
+        <div class="dimension-number">04</div>
+        <div class="dimension-tag">Earth-928</div>
+        <h3>Analytics Engine</h3>
+        <p>Real-time dashboards that show you what&rsquo;s happening across every channel. Patterns emerge. Decisions get faster. Revenue follows.</p>
+      </div>
+
+      <div class="dimension-card reveal">
+        <div class="dimension-number">05</div>
+        <div class="dimension-tag">Earth-138</div>
+        <h3>Automation Hub</h3>
+        <p>Workflows that fire without human intervention. Follow-ups, scheduling, notifications &mdash; the boring stuff handled at superhero speed.</p>
+      </div>
+
+      <div class="dimension-card reveal">
+        <div class="dimension-number">06</div>
+        <div class="dimension-tag">Earth-2099</div>
+        <h3>Performance Web</h3>
+        <p>Sub-second load times. Perfect Lighthouse scores. Your site moves so fast, visitors feel the velocity before they see the content.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section id="stats" class="stats-section halftone-bg">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="section-label" style="text-align:center;">// By the Numbers</div>
+      <h2 class="section-heading">The Scoreboard.</h2>
+    </div>
+    <div class="stats-grid reveal">
+      <div class="stat-panel">
+        <div class="stat-number" data-target="99.7">99.7%</div>
+        <div class="stat-label">Uptime</div>
+      </div>
+      <div class="stat-panel">
+        <div class="stat-number" data-target="2.4">&lt;2.4s</div>
+        <div class="stat-label">Response Time</div>
+      </div>
+      <div class="stat-panel">
+        <div class="stat-number" data-target="12">12k+</div>
+        <div class="stat-label">Calls Handled</div>
+      </div>
+      <div class="stat-panel">
+        <div class="stat-number" data-target="47">47</div>
+        <div class="stat-label">Dimensions Served</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Word Bubbles (Testimonials) -->
+<section id="voices">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">// Word on the Street</div>
+      <h2 class="section-heading">The Multiverse Speaks.</h2>
+      <p class="section-sub">Voices from across dimensions who took the leap of faith.</p>
+    </div>
+    <div class="bubbles-grid">
+
+      <div class="word-bubble reveal">
+        <blockquote>&ldquo;Our phone used to ring into the void. Now KPT Agents catches every call, books every appointment. It&rsquo;s like having a spider-sense for our business.&rdquo;</blockquote>
+        <div class="bubble-author">Miles M.</div>
+        <div class="bubble-role">// Restaurant Owner, Earth-1610</div>
+      </div>
+
+      <div class="word-bubble reveal">
+        <blockquote>&ldquo;The website KPT built doesn&rsquo;t just look good &mdash; it converts. 40% more leads in the first month. It practically jumps off the screen.&rdquo;</blockquote>
+        <div class="bubble-author">Gwen S.</div>
+        <div class="bubble-role">// Golf Course Director, Earth-65</div>
+      </div>
+
+      <div class="word-bubble reveal">
+        <blockquote>&ldquo;I didn&rsquo;t think AI voice agents were ready. KPT proved me wrong. Callers can&rsquo;t tell the difference. It&rsquo;s from another dimension entirely.&rdquo;</blockquote>
+        <div class="bubble-author">Peter P.</div>
+        <div class="bubble-role">// Agency Founder, Earth-616</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="leap" class="cta-section halftone-bg">
+  <div class="container">
+    <div class="reveal">
+      <h2 class="cta-heading chromatic" data-text="Take a Leap of Faith.">Take a Leap of Faith.</h2>
+      <p class="cta-sub">The hardest part isn't the fall. It's letting go. Drop your email and we'll pull you into our dimension.</p>
+      <form class="cta-form" onsubmit="handleSubmit(event)">
+        <input type="email" placeholder="miles@earth-1610.com" required>
+        <button type="submit">THWIP!</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">KPT</div>
+      <ul class="footer-links">
+        <li><a href="#products">Products</a></li>
+        <li><a href="#multiverse">Multiverse</a></li>
+        <li><a href="#stats">Stats</a></li>
+        <li><a href="#voices">Voices</a></li>
+      </ul>
+      <div class="footer-copy">&copy; 2026 KPT &mdash; Across Every Dimension</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ==============================
+  // IntersectionObserver — Reveal on scroll
+  // ==============================
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach((el) => {
+    revealObserver.observe(el);
+  });
+
+  // ==============================
+  // Smooth scroll for nav links
+  // ==============================
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        const offset = 80;
+        const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // ==============================
+  // Nav background on scroll
+  // ==============================
+  const nav = document.querySelector('nav');
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    if (scrollY > 100) {
+      nav.style.borderBottomColor = 'var(--comic-yellow)';
+    } else {
+      nav.style.borderBottomColor = 'var(--spider-red)';
+    }
+    lastScroll = scrollY;
+  });
+
+  // ==============================
+  // CTA form handler
+  // ==============================
+  function handleSubmit(e) {
+    e.preventDefault();
+    const input = e.target.querySelector('input');
+    const button = e.target.querySelector('button');
+    const originalText = button.textContent;
+    button.textContent = 'THWIPPED!';
+    button.style.background = 'var(--comic-yellow)';
+    input.value = '';
+    setTimeout(() => {
+      button.textContent = originalText;
+      button.style.background = '';
+    }, 2000);
+  }
+
+  // ==============================
+  // Staggered reveal for grid items
+  // ==============================
+  const staggerObserver = new IntersectionObserver((entries) => {
+    const visibleEntries = entries.filter(e => e.isIntersecting);
+    visibleEntries.forEach((entry, i) => {
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+        staggerObserver.unobserve(entry.target);
+      }, i * 100);
+    });
+  }, {
+    threshold: 0.05,
+    rootMargin: '0px 0px -20px 0px'
+  });
+
+  document.querySelectorAll('.dimension-card.reveal, .word-bubble.reveal, .product-card.reveal').forEach((el) => {
+    revealObserver.unobserve(el);
+    staggerObserver.observe(el);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — The Goonies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Pirata+One&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #DAA520;
+    --gold-bright: #FFD700;
+    --gold-dim: rgba(218, 165, 32, 0.15);
+    --gold-glow: rgba(255, 215, 0, 0.4);
+    --cave-dark: #1A1410;
+    --cave-deep: #110E0A;
+    --teal: #20B2AA;
+    --teal-dim: rgba(32, 178, 170, 0.12);
+    --teal-glow: rgba(32, 178, 170, 0.4);
+    --brown: #5D4037;
+    --brown-light: #7B5B4C;
+    --parchment: #E8D5A8;
+    --parchment-dark: #C4AD7E;
+    --ruby: #9B1B30;
+    --ruby-glow: rgba(155, 27, 48, 0.4);
+    --bone: #F5F0E8;
+    --surface: #1E1914;
+    --surface-raised: #2A231C;
+    --text-primary: #F5F0E8;
+    --text-secondary: #C4AD7E;
+    --text-muted: #7B6B58;
+    --border: rgba(218, 165, 32, 0.15);
+    --border-hover: rgba(218, 165, 32, 0.4);
+    --font-heading: 'Pirata One', cursive;
+    --font-body: 'Lora', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --max-width: 1200px;
+    --nav-height: 72px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cave-deep);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+    line-height: 1.1;
+    font-weight: 400;
+  }
+
+  a { text-decoration: none; color: inherit; }
+  .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+
+  /* ==============================
+     PARCHMENT TEXTURE BACKGROUND
+     ============================== */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(218, 165, 32, 0.04) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(32, 178, 170, 0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(155, 27, 48, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ==============================
+     TREASURE MAP DOTTED TRAILS
+     ============================== */
+  @keyframes trailDash {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @keyframes compassSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes goldShimmer {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes coinFlip {
+    0% { transform: rotateY(0deg); }
+    50% { transform: rotateY(180deg); }
+    100% { transform: rotateY(360deg); }
+  }
+
+  @keyframes skullFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    z-index: 1000;
+    background: linear-gradient(180deg, rgba(26, 20, 16, 0.97) 0%, rgba(26, 20, 16, 0.92) 100%);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    transition: box-shadow 0.3s ease;
+  }
+
+  nav.scrolled { box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5); }
+
+  nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .nav-back {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 6px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-back:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .nav-logo {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px var(--gold-glow);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ==============================
+     HERO — TREASURE MAP
+     ============================== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: var(--nav-height);
+    overflow: hidden;
+  }
+
+  /* Map grid background */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(218, 165, 32, 0.06) 59px, rgba(218, 165, 32, 0.06) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(218, 165, 32, 0.06) 59px, rgba(218, 165, 32, 0.06) 60px);
+    pointer-events: none;
+  }
+
+  /* Parchment edge vignette */
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, var(--cave-deep) 100%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 800px;
+    padding: 0 24px;
+  }
+
+  .hero-compass {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 32px;
+    animation: compassSpin 30s linear infinite;
+  }
+
+  .hero-compass svg { width: 100%; height: 100%; }
+
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    opacity: 0.8;
+  }
+
+  .hero h1 {
+    font-size: clamp(48px, 8vw, 96px);
+    color: var(--gold-bright);
+    text-shadow: 0 0 40px var(--gold-glow), 0 2px 0 var(--brown);
+    margin-bottom: 8px;
+    letter-spacing: 3px;
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-heading);
+    font-size: clamp(20px, 3vw, 32px);
+    color: var(--parchment);
+    margin-bottom: 24px;
+    letter-spacing: 2px;
+  }
+
+  .hero-description {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 540px;
+    margin: 0 auto 40px;
+    line-height: 1.8;
+  }
+
+  /* X marks the spot */
+  .x-mark {
+    position: absolute;
+    font-family: var(--font-heading);
+    font-size: 120px;
+    color: var(--ruby);
+    opacity: 0.15;
+    text-shadow: 0 0 30px var(--ruby-glow);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .x-mark.x1 { top: 15%; left: 10%; transform: rotate(-15deg); }
+  .x-mark.x2 { bottom: 20%; right: 8%; transform: rotate(20deg); font-size: 80px; opacity: 0.1; }
+
+  /* Dotted trail SVG */
+  .hero-trail {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero-trail path {
+    stroke: var(--gold);
+    stroke-width: 2;
+    stroke-dasharray: 8 12;
+    stroke-dashoffset: 800;
+    fill: none;
+    opacity: 0.25;
+    animation: trailDash 8s linear forwards;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--cave-dark);
+    background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+    padding: 16px 36px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px var(--gold-glow);
+  }
+
+  .hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--gold-glow);
+  }
+
+  /* ==============================
+     SECTION SHARED
+     ============================== */
+  section {
+    position: relative;
+    padding: 120px 0;
+    z-index: 1;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: clamp(36px, 5vw, 56px);
+    margin-bottom: 20px;
+    color: var(--parchment);
+  }
+
+  .section-desc {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 560px;
+    line-height: 1.8;
+  }
+
+  /* ==============================
+     PRODUCTS — TREASURE CHESTS
+     ============================== */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    margin-top: 56px;
+  }
+
+  .chest-card {
+    position: relative;
+    background: linear-gradient(170deg, var(--surface-raised) 0%, var(--surface) 100%);
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 48px 36px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .chest-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-bright), var(--gold));
+  }
+
+  /* Parchment texture overlay */
+  .chest-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 70%, rgba(232, 213, 168, 0.04) 0%, transparent 50%),
+      radial-gradient(circle at 70% 30%, rgba(218, 165, 32, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .chest-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(218, 165, 32, 0.15);
+    border-color: var(--gold-bright);
+  }
+
+  .chest-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+  }
+
+  .chest-icon.agents {
+    background: var(--teal-dim);
+    color: var(--teal);
+    border-color: rgba(32, 178, 170, 0.2);
+  }
+
+  .chest-icon.designs {
+    background: var(--gold-dim);
+    color: var(--gold-bright);
+    border-color: rgba(218, 165, 32, 0.2);
+  }
+
+  .chest-card h3 {
+    font-size: 32px;
+    margin-bottom: 12px;
+    color: var(--parchment);
+  }
+
+  .chest-card p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .chest-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .chest-features li {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .chest-features li::before {
+    content: '⚓';
+    position: absolute;
+    left: 0;
+    font-size: 12px;
+  }
+
+  /* ==============================
+     THE MAP — FEATURE WAYPOINTS
+     ============================== */
+  .map-section {
+    position: relative;
+  }
+
+  .map-trail {
+    position: absolute;
+    left: 50%;
+    top: 200px;
+    bottom: 40px;
+    width: 2px;
+    transform: translateX(-50%);
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--gold) 0px,
+      var(--gold) 6px,
+      transparent 6px,
+      transparent 18px
+    );
+    opacity: 0.3;
+  }
+
+  .waypoints {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+    margin-top: 56px;
+    position: relative;
+  }
+
+  .waypoint {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .waypoint:nth-child(even) .wp-content { order: 3; text-align: left; }
+  .waypoint:nth-child(even) .wp-spacer { order: 1; }
+
+  .wp-marker {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 24px;
+    color: var(--gold-bright);
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 20px var(--gold-glow);
+  }
+
+  .wp-content h3 {
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: var(--parchment);
+  }
+
+  .wp-content p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .wp-content { text-align: right; }
+  .wp-spacer { }
+
+  /* ==============================
+     STATS — GOLD COINS
+     ============================== */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 56px;
+  }
+
+  .coin {
+    text-align: center;
+    padding: 40px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+    position: relative;
+    max-width: 200px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .coin::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+  }
+
+  .coin:hover::before { opacity: 0.7; }
+
+  .coin:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px var(--gold-glow);
+  }
+
+  .coin-value {
+    font-family: var(--font-heading);
+    font-size: 40px;
+    color: var(--gold-bright);
+    text-shadow: 0 0 15px var(--gold-glow);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .coin-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ==============================
+     BOOBY TRAPS — FAQ
+     ============================== */
+  .traps-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 56px;
+    max-width: 720px;
+  }
+
+  .trap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+  }
+
+  .trap:hover { border-color: var(--border-hover); }
+
+  .trap-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 20px 24px;
+    cursor: pointer;
+    user-select: none;
+    width: 100%;
+    background: none;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    text-align: left;
+  }
+
+  .trap-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(155, 27, 48, 0.1);
+    border-radius: 8px;
+    color: var(--ruby);
+  }
+
+  .trap-question {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--parchment);
+    flex: 1;
+  }
+
+  .trap-toggle {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    color: var(--gold);
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .trap.open .trap-toggle { transform: rotate(45deg); }
+
+  .trap-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .trap.open .trap-answer { max-height: 200px; }
+
+  .trap-answer-inner {
+    padding: 0 24px 20px 74px;
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  .cta-section {
+    text-align: center;
+    padding: 140px 0;
+  }
+
+  .cta-section .section-title {
+    font-size: clamp(32px, 4.5vw, 52px);
+    color: var(--gold-bright);
+    text-shadow: 0 0 30px var(--gold-glow);
+    margin-bottom: 16px;
+  }
+
+  .cta-quote {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--text-muted);
+    margin-bottom: 48px;
+  }
+
+  .cta-form {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .cta-input {
+    flex: 1;
+    padding: 14px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .cta-input::placeholder { color: var(--text-muted); }
+  .cta-input:focus { border-color: var(--gold); }
+
+  .cta-submit {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--cave-dark);
+    background: linear-gradient(135deg, var(--gold), var(--gold-bright));
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .cta-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px var(--gold-glow);
+  }
+
+  /* ==============================
+     FOOTER — PIRATE THEMED
+     ============================== */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 0;
+    position: relative;
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .skull-bones {
+    font-size: 28px;
+    animation: skullFloat 3s ease-in-out infinite;
+    line-height: 1;
+  }
+
+  .footer-brand-text {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    color: var(--gold);
+  }
+
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+  }
+
+  .footer-links a:hover { color: var(--gold); }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 900px) {
+    .products-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .waypoint {
+      grid-template-columns: 56px 1fr;
+      gap: 16px;
+    }
+    .wp-content { text-align: left !important; order: 2 !important; }
+    .wp-spacer { display: none; }
+    .wp-marker { margin: 0; }
+    .map-trail { left: 52px; }
+  }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hero h1 { font-size: 40px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .coin { max-width: 150px; }
+    .coin-value { font-size: 30px; }
+    .cta-form { flex-direction: column; }
+    .footer-inner { flex-direction: column; gap: 20px; text-align: center; }
+    .footer-links { justify-content: center; }
+    .chest-card { padding: 36px 24px; }
+    .x-mark { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ======== NAV ======== -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-brand">
+      <a href="/index.html" class="nav-back">&larr; Back</a>
+      <a href="#hero" class="nav-logo">KPT</a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#products">Treasure</a></li>
+      <li><a href="#map">The Map</a></li>
+      <li><a href="#stats">Loot</a></li>
+      <li><a href="#traps">Traps</a></li>
+      <li><a href="#cta">Join</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ======== HERO ======== -->
+<section class="hero" id="hero">
+  <!-- Dotted trail paths -->
+  <svg class="hero-trail" viewBox="0 0 1200 800" preserveAspectRatio="none">
+    <path d="M 100 200 Q 300 100 500 250 T 900 180 T 1100 300" />
+    <path d="M 150 600 Q 400 500 600 620 T 1050 550" />
+  </svg>
+
+  <!-- X marks the spot -->
+  <div class="x-mark x1">X</div>
+  <div class="x-mark x2">X</div>
+
+  <div class="hero-content">
+    <!-- Compass Rose SVG -->
+    <div class="hero-compass">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="46" stroke="#DAA520" stroke-width="1.5" opacity="0.4"/>
+        <circle cx="50" cy="50" r="38" stroke="#DAA520" stroke-width="0.5" opacity="0.25"/>
+        <!-- N -->
+        <polygon points="50,8 45,40 50,35 55,40" fill="#FFD700" opacity="0.9"/>
+        <!-- S -->
+        <polygon points="50,92 45,60 50,65 55,60" fill="#DAA520" opacity="0.5"/>
+        <!-- E -->
+        <polygon points="92,50 60,45 65,50 60,55" fill="#DAA520" opacity="0.5"/>
+        <!-- W -->
+        <polygon points="8,50 40,45 35,50 40,55" fill="#DAA520" opacity="0.5"/>
+        <!-- Center -->
+        <circle cx="50" cy="50" r="4" fill="#FFD700"/>
+        <circle cx="50" cy="50" r="2" fill="#1A1410"/>
+        <!-- Cardinal labels -->
+        <text x="50" y="22" text-anchor="middle" fill="#FFD700" font-size="7" font-family="'Pirata One', cursive">N</text>
+        <text x="50" y="84" text-anchor="middle" fill="#DAA520" font-size="6" font-family="'Pirata One', cursive" opacity="0.6">S</text>
+        <text x="80" y="53" text-anchor="middle" fill="#DAA520" font-size="6" font-family="'Pirata One', cursive" opacity="0.6">E</text>
+        <text x="20" y="53" text-anchor="middle" fill="#DAA520" font-size="6" font-family="'Pirata One', cursive" opacity="0.6">W</text>
+      </svg>
+    </div>
+
+    <div class="hero-label">Est. 2025 &mdash; Treasure Awaits</div>
+    <h1>KPT Never Says Die.</h1>
+    <div class="hero-subtitle">AI Agents & Premium Web Design</div>
+    <p class="hero-description">
+      Down here, it's <em>our</em> time. We build the voice agents that answer every call
+      and the websites that turn visitors into believers. This is the adventure of a lifetime.
+    </p>
+    <a href="#cta" class="hero-cta">Find the Treasure &darr;</a>
+  </div>
+</section>
+
+<!-- ======== PRODUCTS — TREASURE CHESTS ======== -->
+<section id="products">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">The Treasure</div>
+      <h2 class="section-title">Two Chests. Infinite Gold.</h2>
+      <p class="section-desc">
+        Every great adventure has its reward. Ours come in two forms &mdash;
+        voice agents that never sleep and websites that never fail to impress.
+      </p>
+    </div>
+
+    <div class="products-grid">
+      <div class="chest-card reveal">
+        <div class="chest-icon agents">&#9875;</div>
+        <h3>KPT Agents</h3>
+        <p>
+          AI voice agents that answer calls, book appointments, and handle customer
+          questions &mdash; 24 hours a day, seven days a week. No treasure left unclaimed.
+        </p>
+        <ul class="chest-features">
+          <li>24/7 inbound &amp; outbound calls</li>
+          <li>Appointment booking &amp; reminders</li>
+          <li>Multi-language support</li>
+          <li>CRM &amp; calendar integration</li>
+          <li>Call analytics dashboard</li>
+        </ul>
+      </div>
+
+      <div class="chest-card reveal">
+        <div class="chest-icon designs">&#9733;</div>
+        <h3>KPT Designs</h3>
+        <p>
+          Premium websites for businesses that refuse to blend in. Handcrafted,
+          fast, beautiful &mdash; built like a ship that sails through any storm.
+        </p>
+        <ul class="chest-features">
+          <li>Custom design &amp; development</li>
+          <li>Mobile-first, blazing fast</li>
+          <li>SEO &amp; analytics built in</li>
+          <li>Hosting &amp; domain management</li>
+          <li>Ongoing support &amp; updates</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== THE MAP — FEATURE WAYPOINTS ======== -->
+<section class="map-section" id="map">
+  <div class="container">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label">The Map</div>
+      <h2 class="section-title">Follow the Trail</h2>
+      <p class="section-desc" style="margin: 0 auto;">
+        Every adventure has a path. Here's yours &mdash; from first contact to digital treasure.
+      </p>
+    </div>
+
+    <div class="map-trail"></div>
+
+    <div class="waypoints">
+      <div class="waypoint reveal">
+        <div class="wp-content">
+          <h3>Discovery Call</h3>
+          <p>We chart the course together. Tell us your goals and we map out the journey ahead.</p>
+        </div>
+        <div class="wp-marker">I</div>
+        <div class="wp-spacer"></div>
+      </div>
+
+      <div class="waypoint reveal">
+        <div class="wp-content">
+          <h3>Strategy & Planning</h3>
+          <p>Like reading One-Eyed Willy's map, we decode your market and build the master plan.</p>
+        </div>
+        <div class="wp-marker">II</div>
+        <div class="wp-spacer"></div>
+      </div>
+
+      <div class="waypoint reveal">
+        <div class="wp-content">
+          <h3>Build & Launch</h3>
+          <p>Our crew gets to work. Agents deployed, sites launched &mdash; treasure secured.</p>
+        </div>
+        <div class="wp-marker">III</div>
+        <div class="wp-spacer"></div>
+      </div>
+
+      <div class="waypoint reveal">
+        <div class="wp-content">
+          <h3>Growth & Scale</h3>
+          <p>The adventure doesn't end at the treasure. We optimize, expand, and keep exploring.</p>
+        </div>
+        <div class="wp-marker">IV</div>
+        <div class="wp-spacer"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== STATS — GOLD COINS ======== -->
+<section id="stats">
+  <div class="container">
+    <div class="reveal" style="text-align: center;">
+      <div class="section-label">The Loot</div>
+      <h2 class="section-title">Treasure by the Numbers</h2>
+    </div>
+
+    <div class="stats-grid">
+      <div class="coin reveal">
+        <div class="coin-value">98%</div>
+        <div class="coin-label">Calls Answered</div>
+      </div>
+      <div class="coin reveal">
+        <div class="coin-value">3s</div>
+        <div class="coin-label">Avg Response</div>
+      </div>
+      <div class="coin reveal">
+        <div class="coin-value">24/7</div>
+        <div class="coin-label">Always On</div>
+      </div>
+      <div class="coin reveal">
+        <div class="coin-value">5x</div>
+        <div class="coin-label">ROI Average</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== BOOBY TRAPS — FAQ ======== -->
+<section id="traps">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Booby Traps</div>
+      <h2 class="section-title">Traps to Avoid</h2>
+      <p class="section-desc">
+        The caves are full of traps. Here are the ones we've already disarmed for you.
+      </p>
+    </div>
+
+    <div class="traps-grid">
+      <div class="trap reveal">
+        <button class="trap-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="trap-icon">&#9760;</span>
+          <span class="trap-question">"AI voice agents sound robotic and weird."</span>
+          <span class="trap-toggle">+</span>
+        </button>
+        <div class="trap-answer">
+          <div class="trap-answer-inner">
+            Not ours. KPT Agents use the latest conversational AI &mdash; natural tone,
+            real-time responses, and the ability to handle complex questions. Callers
+            won't know the difference.
+          </div>
+        </div>
+      </div>
+
+      <div class="trap reveal">
+        <button class="trap-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="trap-icon">&#9760;</span>
+          <span class="trap-question">"Custom websites are too expensive for small businesses."</span>
+          <span class="trap-toggle">+</span>
+        </button>
+        <div class="trap-answer">
+          <div class="trap-answer-inner">
+            We price 35% below market rates without cutting corners. Premium design
+            shouldn't be reserved for the big ships. Every business deserves treasure-quality work.
+          </div>
+        </div>
+      </div>
+
+      <div class="trap reveal">
+        <button class="trap-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="trap-icon">&#9760;</span>
+          <span class="trap-question">"What if the technology breaks or stops working?"</span>
+          <span class="trap-toggle">+</span>
+        </button>
+        <div class="trap-answer">
+          <div class="trap-answer-inner">
+            Goonies never say die &mdash; and neither does our support. Every deployment
+            comes with monitoring, backups, and a dedicated crew standing by.
+            We don't abandon the adventure.
+          </div>
+        </div>
+      </div>
+
+      <div class="trap reveal">
+        <button class="trap-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="trap-icon">&#9760;</span>
+          <span class="trap-question">"I don't have time to manage another tool."</span>
+          <span class="trap-toggle">+</span>
+        </button>
+        <div class="trap-answer">
+          <div class="trap-answer-inner">
+            That's the whole point. KPT Agents run autonomously &mdash; set it up once,
+            and the treasure keeps flowing. We handle the tech so you handle the business.
+          </div>
+        </div>
+      </div>
+
+      <div class="trap reveal">
+        <button class="trap-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="trap-icon">&#9760;</span>
+          <span class="trap-question">"How long until I see results?"</span>
+          <span class="trap-toggle">+</span>
+        </button>
+        <div class="trap-answer">
+          <div class="trap-answer-inner">
+            Voice agents go live within days. Websites launch in 2-4 weeks. Most clients
+            see measurable impact in the first month &mdash; the treasure is closer than you think.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== CTA ======== -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Join the Adventure</div>
+      <h2 class="section-title">"It's Our Time Down Here."</h2>
+      <p class="cta-quote">
+        Down here it's our time. It's our time down here. &mdash; Mikey Walsh
+      </p>
+      <form class="cta-form" onsubmit="event.preventDefault()">
+        <input type="email" class="cta-input" placeholder="your@email.com" aria-label="Email address" required>
+        <button type="submit" class="cta-submit">Claim Treasure</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ======== FOOTER ======== -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="skull-bones">&#9760;</div>
+        <div class="footer-brand-text">KPT</div>
+      </div>
+      <p class="footer-copy">&copy; 2025 KPT. Goonies never say die.</p>
+      <ul class="footer-links">
+        <li><a href="#products">Treasure</a></li>
+        <li><a href="#map">Map</a></li>
+        <li><a href="#traps">Traps</a></li>
+        <li><a href="#cta">Join</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<!-- ======== SCRIPTS ======== -->
+<script>
+  // Nav scroll shadow
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // IntersectionObserver for reveal animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+</script>
+</body>
+</html>

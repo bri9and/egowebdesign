@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Samsung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --samsung-blue: #1428A0;
+    --samsung-blue-deep: #0B1A6E;
+    --samsung-blue-light: #4A90E2;
+    --samsung-blue-bright: #6AB0FF;
+    --samsung-blue-vivid: #2979FF;
+    --samsung-blue-glow: rgba(74, 144, 226, 0.4);
+    --samsung-violet: #7C4DFF;
+    --samsung-cyan: #00E5FF;
+    --white: #FFFFFF;
+    --black: #000000;
+    --amoled: #000000;
+    --gray-50: #F8F9FA;
+    --gray-200: #E9ECEF;
+    --gray-400: #ADB5BD;
+    --gray-500: #868E96;
+    --gray-600: #495057;
+    --gray-700: #343A40;
+    --surface-dark: #060608;
+    --surface-card: #0E0E12;
+    --surface-card-hover: #14141A;
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --text-dark: #1A1A1A;
+    --text-light: #F5F5F5;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --max-width: 1200px;
+    --nav-height: 72px;
+    --radius-card: 24px;
+    --radius-pill: 100px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--amoled);
+    color: var(--text-light);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ANIMATED GRADIENT BACKGROUND */
+  .gradient-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .gradient-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.15;
+    animation: blobFloat 20s ease-in-out infinite;
+  }
+
+  .gradient-blob:nth-child(1) {
+    width: 800px; height: 800px;
+    background: var(--samsung-blue);
+    top: -200px; left: -200px;
+  }
+
+  .gradient-blob:nth-child(2) {
+    width: 600px; height: 600px;
+    background: var(--samsung-violet);
+    bottom: -100px; right: -100px;
+    animation-delay: -7s;
+    animation-duration: 25s;
+  }
+
+  .gradient-blob:nth-child(3) {
+    width: 500px; height: 500px;
+    background: var(--samsung-cyan);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: -14s;
+    animation-duration: 30s;
+    opacity: 0.08;
+  }
+
+  @keyframes blobFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(80px, -60px) scale(1.1); }
+    50% { transform: translate(-40px, 80px) scale(0.95); }
+    75% { transform: translate(60px, 40px) scale(1.05); }
+  }
+
+  /* NAVIGATION */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--nav-height);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    border-bottom: 1px solid var(--glass-border);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  nav.scrolled {
+    background: rgba(0, 0, 0, 0.85);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .back-link {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-500);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: var(--samsung-blue-bright); }
+
+  .nav-logo {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 8px;
+    background: linear-gradient(135deg, var(--samsung-blue-bright), var(--samsung-blue-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-400);
+    text-decoration: none;
+    transition: color 0.2s;
+    letter-spacing: 0.3px;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--white) !important;
+    background: var(--samsung-blue);
+    padding: 10px 24px;
+    border-radius: var(--radius-pill);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 0 20px rgba(20, 40, 160, 0.3);
+  }
+
+  .nav-cta:hover {
+    background: var(--samsung-blue-vivid);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 24px rgba(41, 121, 255, 0.5);
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 40px 80px;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .hero-rings {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px; height: 800px;
+    pointer-events: none;
+  }
+
+  .hero-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    border-radius: 50%;
+    border: 1px solid rgba(74, 144, 226, 0.06);
+  }
+
+  .hero-ring:nth-child(1) {
+    width: 300px; height: 300px;
+    transform: translate(-50%, -50%);
+    border-color: rgba(74, 144, 226, 0.12);
+    animation: ringPulse 4s ease-in-out infinite;
+  }
+
+  .hero-ring:nth-child(2) {
+    width: 500px; height: 500px;
+    transform: translate(-50%, -50%);
+    border-color: rgba(74, 144, 226, 0.08);
+    animation: ringPulse 4s ease-in-out infinite 1s;
+  }
+
+  .hero-ring:nth-child(3) {
+    width: 700px; height: 700px;
+    transform: translate(-50%, -50%);
+    border-color: rgba(74, 144, 226, 0.04);
+    animation: ringPulse 4s ease-in-out infinite 2s;
+  }
+
+  @keyframes ringPulse {
+    0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.02); }
+  }
+
+  .hero-orb {
+    position: absolute;
+    width: 500px; height: 500px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%,
+      rgba(106, 176, 255, 0.25) 0%,
+      rgba(41, 121, 255, 0.15) 20%,
+      rgba(20, 40, 160, 0.1) 40%,
+      rgba(124, 77, 255, 0.05) 60%,
+      transparent 70%
+    );
+    filter: blur(40px);
+    animation: orbBreathe 8s ease-in-out infinite;
+  }
+
+  @keyframes orbBreathe {
+    0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.1); }
+  }
+
+  .hero-particles {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--samsung-blue-bright);
+    border-radius: 50%;
+    animation: particleDrift linear infinite;
+  }
+
+  @keyframes particleDrift {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) translateX(50px); opacity: 0; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--samsung-blue-bright);
+    margin-bottom: 32px;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-badge-dot {
+    width: 6px; height: 6px;
+    background: var(--samsung-blue-bright);
+    border-radius: 50%;
+    animation: badgePulse 2s ease-in-out infinite;
+  }
+
+  @keyframes badgePulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(106, 176, 255, 0.4); }
+    50% { opacity: 0.6; box-shadow: 0 0 0 6px rgba(106, 176, 255, 0); }
+  }
+
+  .hero h1 {
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 0.95;
+    letter-spacing: -3px;
+    margin-bottom: 8px;
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+
+  .hero-kpt {
+    display: block;
+    font-size: clamp(80px, 14vw, 160px);
+    letter-spacing: 20px;
+    background: linear-gradient(
+      135deg,
+      var(--samsung-blue-bright) 0%,
+      var(--samsung-blue-light) 25%,
+      var(--white) 50%,
+      var(--samsung-blue-light) 75%,
+      var(--samsung-blue-bright) 100%
+    );
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 6s ease-in-out infinite;
+    filter: drop-shadow(0 0 60px rgba(74, 144, 226, 0.3));
+  }
+
+  @keyframes shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .hero-tagline {
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 300;
+    color: var(--gray-400);
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--gray-500);
+    line-height: 1.8;
+    max-width: 560px;
+    margin: 0 auto 48px;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 40px;
+    background: var(--samsung-blue);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-pill);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.5s;
+  }
+
+  .btn-primary:hover::before { left: 100%; }
+
+  .btn-primary:hover {
+    background: var(--samsung-blue-vivid);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(20, 40, 160, 0.5), 0 0 60px rgba(41, 121, 255, 0.2);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 40px;
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius-pill);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(10px);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--samsung-blue-light);
+    background: rgba(74, 144, 226, 0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-scroll-text {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-600);
+  }
+
+  .hero-scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--samsung-blue-light), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollLine {
+    0%, 100% { opacity: 1; transform: scaleY(1); }
+    50% { opacity: 0.3; transform: scaleY(0.5); transform-origin: top; }
+  }
+
+  /* SECTIONS COMMON */
+  section { position: relative; z-index: 1; }
+
+  .section-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    color: var(--samsung-blue-bright);
+  }
+
+  .section-title {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+    color: var(--white);
+  }
+
+  .section-desc {
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.8;
+    max-width: 600px;
+    color: var(--gray-500);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.15s; }
+  .reveal-delay-2 { transition-delay: 0.3s; }
+  .reveal-delay-3 { transition-delay: 0.45s; }
+
+  /* AGENTS SECTION */
+  #agents {
+    padding: 140px 40px;
+    background: var(--amoled);
+    position: relative;
+  }
+
+  #agents::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 60px;
+  }
+
+  .device-frame {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 9/16;
+    margin: 0 auto;
+    background: linear-gradient(145deg, #0a0a10, #12121a);
+    border-radius: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.03),
+      0 40px 80px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .device-screen {
+    position: absolute;
+    top: 8px; left: 8px; right: 8px; bottom: 8px;
+    border-radius: 34px;
+    background: var(--amoled);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .device-notch {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 24px;
+    background: #0a0a10;
+    border-radius: 12px;
+    z-index: 5;
+  }
+
+  .device-anim {
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%,
+      var(--samsung-blue-vivid),
+      var(--samsung-blue) 40%,
+      var(--samsung-violet) 70%,
+      transparent 100%
+    );
+    animation: devicePulse 3s ease-in-out infinite;
+    box-shadow: 0 0 80px rgba(41, 121, 255, 0.3);
+    position: relative;
+  }
+
+  .device-anim::after {
+    content: '';
+    position: absolute;
+    top: -20px; left: -20px; right: -20px; bottom: -20px;
+    border-radius: 50%;
+    border: 1px solid rgba(74, 144, 226, 0.15);
+    animation: deviceRing 3s ease-in-out infinite 0.5s;
+  }
+
+  @keyframes devicePulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 80px rgba(41, 121, 255, 0.3); }
+    50% { transform: scale(1.05); box-shadow: 0 0 120px rgba(41, 121, 255, 0.5); }
+  }
+
+  @keyframes deviceRing {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.15); opacity: 0; }
+  }
+
+  .device-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--samsung-blue-bright);
+    margin-top: 24px;
+    text-transform: uppercase;
+  }
+
+  .product-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-top: 36px;
+  }
+
+  .product-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    background: rgba(74, 144, 226, 0.08);
+    border: 1px solid rgba(74, 144, 226, 0.12);
+    transition: all 0.3s;
+  }
+
+  .product-features li:hover .feature-icon {
+    background: rgba(74, 144, 226, 0.15);
+    border-color: rgba(74, 144, 226, 0.3);
+    box-shadow: 0 0 20px rgba(41, 121, 255, 0.1);
+  }
+
+  .feature-text strong {
+    display: block;
+    color: var(--white);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .feature-text {
+    color: var(--gray-500);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* DESIGNS SECTION (white) */
+  #designs {
+    padding: 140px 40px;
+    background: var(--white);
+    position: relative;
+  }
+
+  #designs .section-label { color: var(--samsung-blue); }
+  #designs .section-title { color: var(--text-dark); }
+  #designs .section-desc { color: var(--gray-600); }
+
+  .design-showcase {
+    margin-top: 60px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .design-card {
+    background: var(--gray-50);
+    border-radius: 20px;
+    padding: 44px 32px;
+    border: 1px solid var(--gray-200);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .design-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--samsung-blue), var(--samsung-blue-light));
+    transform: scaleX(0);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: left;
+  }
+
+  .design-card:hover::before { transform: scaleX(1); }
+
+  .design-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.08);
+    border-color: rgba(20, 40, 160, 0.15);
+  }
+
+  .design-card-icon {
+    width: 64px; height: 64px;
+    margin: 0 auto 20px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(20, 40, 160, 0.06), rgba(74, 144, 226, 0.08));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    transition: all 0.3s;
+  }
+
+  .design-card:hover .design-card-icon {
+    background: linear-gradient(135deg, rgba(20, 40, 160, 0.1), rgba(74, 144, 226, 0.14));
+    transform: scale(1.05);
+  }
+
+  .design-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+  }
+
+  .design-card p {
+    font-size: 14px;
+    color: var(--gray-500);
+    line-height: 1.7;
+  }
+
+  /* INNOVATION / SPECS */
+  #innovation {
+    padding: 140px 40px;
+    background: var(--amoled);
+    position: relative;
+  }
+
+  .specs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+  }
+
+  .spec-item {
+    background: var(--surface-card);
+    padding: 48px 40px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .spec-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 40px; right: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.1), transparent);
+  }
+
+  .spec-item:hover {
+    background: var(--surface-card-hover);
+  }
+
+  .spec-icon {
+    font-size: 28px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .spec-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--samsung-blue-bright);
+    margin-bottom: 10px;
+  }
+
+  .spec-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .spec-desc {
+    font-size: 14px;
+    color: var(--gray-500);
+    line-height: 1.7;
+  }
+
+  /* STATS */
+  #stats {
+    padding: 120px 40px;
+    background: linear-gradient(135deg, var(--samsung-blue-deep), var(--samsung-blue), var(--samsung-blue-deep));
+    background-size: 200% 200%;
+    animation: statsGradient 10s ease-in-out infinite;
+    color: var(--white);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  @keyframes statsGradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  #stats::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse 600px 300px at 20% 50%, rgba(106, 176, 255, 0.15), transparent),
+      radial-gradient(ellipse 400px 400px at 80% 50%, rgba(124, 77, 255, 0.1), transparent);
+    pointer-events: none;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    margin-top: 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-item { position: relative; }
+
+  .stat-number {
+    font-size: clamp(44px, 5vw, 72px);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 12px;
+    letter-spacing: -2px;
+    text-shadow: 0 0 40px rgba(106, 176, 255, 0.3);
+  }
+
+  .stat-unit {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  .stat-divider {
+    position: absolute;
+    right: 0; top: 10%; bottom: 10%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* GALAXY ECOSYSTEM */
+  #galaxy {
+    padding: 140px 40px;
+    background: var(--amoled);
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .galaxy-visual {
+    position: relative;
+    width: 520px;
+    height: 520px;
+    margin: 80px auto 0;
+  }
+
+  .galaxy-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90px; height: 90px;
+    background: linear-gradient(135deg, var(--samsung-blue), var(--samsung-blue-vivid));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 16px;
+    color: var(--white);
+    letter-spacing: 4px;
+    box-shadow:
+      0 0 40px var(--samsung-blue-glow),
+      0 0 80px rgba(20, 40, 160, 0.2),
+      0 0 120px rgba(41, 121, 255, 0.1);
+    z-index: 3;
+  }
+
+  .orbit {
+    position: absolute;
+    border: 1px solid rgba(74, 144, 226, 0.08);
+    border-radius: 50%;
+    top: 50%; left: 50%;
+  }
+
+  .orbit-1 {
+    width: 200px; height: 200px;
+    transform: translate(-50%, -50%);
+    animation: orbitSpin 22s linear infinite;
+  }
+
+  .orbit-2 {
+    width: 340px; height: 340px;
+    transform: translate(-50%, -50%);
+    animation: orbitSpin 32s linear infinite reverse;
+  }
+
+  .orbit-3 {
+    width: 470px; height: 470px;
+    transform: translate(-50%, -50%);
+    animation: orbitSpin 42s linear infinite;
+    border-style: dashed;
+    border-color: rgba(74, 144, 226, 0.05);
+  }
+
+  @keyframes orbitSpin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  .orbit-node {
+    position: absolute;
+    width: 48px; height: 48px;
+    background: var(--surface-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    backdrop-filter: blur(10px);
+  }
+
+  .orbit-node.pos-right {
+    top: 50%; left: auto; right: -24px;
+    transform: translateY(-50%);
+  }
+
+  .orbit-node.pos-bottom {
+    top: auto; bottom: -24px; left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .orbit-node.pos-left {
+    top: 50%; left: -24px;
+    transform: translateY(-50%);
+  }
+
+  .orbit-1 .orbit-node { animation: orbitSpin 22s linear infinite reverse; }
+  .orbit-2 .orbit-node { animation: orbitSpin 32s linear infinite; }
+  .orbit-3 .orbit-node { animation: orbitSpin 42s linear infinite reverse; }
+
+  .galaxy-labels {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 60px;
+    flex-wrap: wrap;
+  }
+
+  .galaxy-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .galaxy-label-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--samsung-blue);
+  }
+
+  /* CTA */
+  #cta {
+    padding: 140px 40px;
+    text-align: center;
+    background: var(--surface-dark);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #cta::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle,
+      rgba(20, 40, 160, 0.12) 0%,
+      transparent 70%
+    );
+    pointer-events: none;
+  }
+
+  #cta .section-title { color: var(--white); }
+  #cta .section-desc {
+    color: var(--gray-400);
+    margin: 0 auto 48px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--amoled);
+    color: var(--gray-400);
+    padding: 80px 40px 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  footer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+  }
+
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+  }
+
+  .footer-brand {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 8px;
+    background: linear-gradient(135deg, var(--samsung-blue-bright), var(--samsung-blue-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .footer-tagline {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--gray-600);
+    max-width: 280px;
+  }
+
+  .footer-col h4 {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-col a {
+    font-size: 14px;
+    color: var(--gray-600);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover { color: var(--white); }
+
+  .footer-bottom {
+    max-width: var(--max-width);
+    margin: 48px auto 0;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--gray-700);
+  }
+
+  .footer-bottom a {
+    color: var(--gray-600);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-bottom a:hover { color: var(--white); }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .product-grid { grid-template-columns: 1fr; gap: 60px; }
+    .device-frame { max-width: 280px; }
+    .design-showcase { grid-template-columns: 1fr 1fr; }
+    .specs-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-divider { display: none; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+    .galaxy-visual { width: 400px; height: 400px; }
+    .orbit-3 { width: 370px; height: 370px; }
+  }
+
+  @media (max-width: 768px) {
+    section { padding: 100px 24px !important; }
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 24px 80px; min-height: 100svh; }
+    .hero-kpt { letter-spacing: 12px; }
+    .hero-tagline { letter-spacing: 4px; }
+    .hero-rings { width: 500px; height: 500px; }
+    .hero-ring:nth-child(3) { width: 480px; height: 480px; }
+    .hero-orb { width: 350px; height: 350px; }
+    .design-showcase { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .galaxy-visual { width: 300px; height: 300px; }
+    .orbit-2 { width: 240px; height: 240px; }
+    .orbit-3 { width: 280px; height: 280px; }
+    .footer-inner { grid-template-columns: 1fr; gap: 36px; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+    .galaxy-labels { gap: 20px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 { letter-spacing: -1px; }
+    .hero-kpt { letter-spacing: 8px; }
+    .hero-sub { font-size: 16px; }
+    .hero-buttons { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .galaxy-visual { width: 260px; height: 260px; }
+    .orbit-2 { width: 200px; height: 200px; }
+    .orbit-3 { width: 240px; height: 240px; }
+    .product-features li { gap: 14px; }
+    .feature-icon { width: 42px; height: 42px; min-width: 42px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="gradient-bg">
+  <div class="gradient-blob"></div>
+  <div class="gradient-blob"></div>
+  <div class="gradient-blob"></div>
+</div>
+
+<nav id="nav">
+  <div class="nav-left">
+    <a href="/index.html" class="back-link">&larr; Gallery</a>
+    <a href="#" class="nav-logo">KPT</a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#agents">Agents</a></li>
+    <li><a href="#designs">Designs</a></li>
+    <li><a href="#innovation">Innovation</a></li>
+    <li><a href="#galaxy">Ecosystem</a></li>
+    <li><a href="#cta" class="nav-cta">Get Started</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-rings">
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+    <div class="hero-ring"></div>
+  </div>
+  <div class="hero-orb"></div>
+  <div class="hero-particles" id="particles"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Galaxy Unpacked 2026
+    </div>
+    <h1>
+      <span class="hero-kpt">KPT</span>
+    </h1>
+    <p class="hero-tagline">Do What You Can't</p>
+    <p class="hero-sub">AI voice agents and premium web design, engineered with the precision of a flagship device. Technology that opens a galaxy of possibilities.</p>
+    <div class="hero-buttons">
+      <a href="#agents" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Explore Products
+      </a>
+      <a href="#innovation" class="btn-secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Our Technology
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span class="hero-scroll-text">Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<section id="agents">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">KPT Agents</p>
+      <h2 class="section-title">Intelligent Voice.<br>Always On.</h2>
+      <p class="section-desc">AI-powered voice agents that answer calls, book appointments, and handle customer inquiries 24/7 with natural conversation.</p>
+    </div>
+    <div class="product-grid">
+      <div class="reveal reveal-delay-1">
+        <div class="device-frame">
+          <div class="device-screen">
+            <div class="device-notch"></div>
+            <div class="device-anim"></div>
+            <p class="device-label">KPT Agent Active</p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <ul class="product-features">
+          <li>
+            <div class="feature-icon">&#x1F399;</div>
+            <div class="feature-text">
+              <strong>Natural Voice AI</strong>
+              Human-like conversations powered by advanced language models. Callers cannot tell the difference.
+            </div>
+          </li>
+          <li>
+            <div class="feature-icon">&#x1F4C5;</div>
+            <div class="feature-text">
+              <strong>Smart Scheduling</strong>
+              Integrates with your calendar to book, reschedule, and confirm appointments automatically.
+            </div>
+          </li>
+          <li>
+            <div class="feature-icon">&#x1F310;</div>
+            <div class="feature-text">
+              <strong>24/7 Availability</strong>
+              Never miss a call. Your AI agent handles inquiries around the clock, even on holidays.
+            </div>
+          </li>
+          <li>
+            <div class="feature-icon">&#x1F4CA;</div>
+            <div class="feature-text">
+              <strong>Analytics Dashboard</strong>
+              Real-time insights into call volume, sentiment, and conversion rates.
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="designs">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">KPT Designs</p>
+      <h2 class="section-title">Premium Web Design.<br>Built to Perform.</h2>
+      <p class="section-desc">Handcrafted websites that look stunning and convert visitors into customers. No templates. No compromises.</p>
+    </div>
+    <div class="design-showcase">
+      <div class="design-card reveal reveal-delay-1">
+        <div class="design-card-icon">&#x1F3A8;</div>
+        <h3>Custom Design</h3>
+        <p>Every pixel designed from scratch. Unique to your brand, optimized for your audience.</p>
+      </div>
+      <div class="design-card reveal reveal-delay-2">
+        <div class="design-card-icon">&#x26A1;</div>
+        <h3>Performance First</h3>
+        <p>Sub-second load times. Mobile-first architecture. Perfect Lighthouse scores.</p>
+      </div>
+      <div class="design-card reveal reveal-delay-3">
+        <div class="design-card-icon">&#x1F50D;</div>
+        <h3>SEO Engineered</h3>
+        <p>Built with search visibility in mind. Structured data, semantic HTML, fast indexing.</p>
+      </div>
+      <div class="design-card reveal reveal-delay-1">
+        <div class="design-card-icon">&#x1F4F1;</div>
+        <h3>Responsive</h3>
+        <p>Flawless across every device. Desktop, tablet, phone — no detail overlooked.</p>
+      </div>
+      <div class="design-card reveal reveal-delay-2">
+        <div class="design-card-icon">&#x1F6E1;</div>
+        <h3>Secure &amp; Reliable</h3>
+        <p>HTTPS, DDoS protection, automated backups. Enterprise-grade infrastructure.</p>
+      </div>
+      <div class="design-card reveal reveal-delay-3">
+        <div class="design-card-icon">&#x1F91D;</div>
+        <h3>Ongoing Support</h3>
+        <p>We do not disappear after launch. Continuous updates, monitoring, and optimization.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="innovation">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">Innovation</p>
+      <h2 class="section-title">Technology Specs</h2>
+      <p class="section-desc">The engineering behind the experience. Every detail considered, every component optimized.</p>
+    </div>
+    <div class="specs-grid reveal reveal-delay-1">
+      <div class="spec-item">
+        <span class="spec-icon">&#x1F9E0;</span>
+        <div class="spec-label">AI Engine</div>
+        <div class="spec-title">Multi-Model Architecture</div>
+        <div class="spec-desc">Dynamically selects the optimal AI model per task. Claude, GPT, Gemini — orchestrated for maximum accuracy.</div>
+      </div>
+      <div class="spec-item">
+        <span class="spec-icon">&#x1F50A;</span>
+        <div class="spec-label">Voice</div>
+        <div class="spec-title">Sub-300ms Latency</div>
+        <div class="spec-desc">Real-time voice processing with streaming responses. Conversations feel natural, not robotic.</div>
+      </div>
+      <div class="spec-item">
+        <span class="spec-icon">&#x1F3D7;</span>
+        <div class="spec-label">Infrastructure</div>
+        <div class="spec-title">Edge-First Deployment</div>
+        <div class="spec-desc">Globally distributed on Vercel and Cloudflare. Under 50ms TTFB from anywhere in the world.</div>
+      </div>
+      <div class="spec-item">
+        <span class="spec-icon">&#x1F512;</span>
+        <div class="spec-label">Security</div>
+        <div class="spec-title">Zero-Trust Framework</div>
+        <div class="spec-desc">End-to-end encryption, SOC 2 practices, automated vulnerability scanning. Your data stays yours.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="stats">
+  <div class="section-inner reveal">
+    <p class="section-label" style="color: rgba(255,255,255,0.5);">By The Numbers</p>
+    <h2 class="section-title" style="color: var(--white);">Proven Impact</h2>
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number" data-target="99.9%">0</div>
+        <div class="stat-unit">Uptime</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="2.4s">0</div>
+        <div class="stat-unit">Avg Response</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="50K+">0</div>
+        <div class="stat-unit">Calls Handled</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="4.9">0</div>
+        <div class="stat-unit">Client Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="galaxy">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">Ecosystem</p>
+      <h2 class="section-title">The KPT Galaxy</h2>
+      <p class="section-desc" style="margin: 0 auto 20px;">Every product connects. Every service amplifies the others. One ecosystem, infinite possibilities.</p>
+    </div>
+    <div class="galaxy-visual reveal reveal-delay-1">
+      <div class="galaxy-center">KPT</div>
+      <div class="orbit orbit-1">
+        <div class="orbit-node">&#x1F399;</div>
+        <div class="orbit-node pos-bottom">&#x1F3A8;</div>
+      </div>
+      <div class="orbit orbit-2">
+        <div class="orbit-node">&#x1F4CA;</div>
+        <div class="orbit-node pos-right">&#x1F512;</div>
+        <div class="orbit-node pos-bottom">&#x26A1;</div>
+      </div>
+      <div class="orbit orbit-3">
+        <div class="orbit-node">&#x1F310;</div>
+        <div class="orbit-node pos-right">&#x1F4F1;</div>
+        <div class="orbit-node pos-left">&#x1F91D;</div>
+      </div>
+    </div>
+    <div class="galaxy-labels reveal reveal-delay-2">
+      <div class="galaxy-label"><span class="galaxy-label-dot"></span>Voice AI</div>
+      <div class="galaxy-label"><span class="galaxy-label-dot" style="background: var(--samsung-blue-light);"></span>Web Design</div>
+      <div class="galaxy-label"><span class="galaxy-label-dot" style="background: var(--samsung-violet);"></span>Analytics</div>
+      <div class="galaxy-label"><span class="galaxy-label-dot" style="background: var(--samsung-cyan);"></span>Security</div>
+    </div>
+  </div>
+</section>
+
+<section id="cta">
+  <div class="section-inner reveal">
+    <p class="section-label">Ready to Start?</p>
+    <h2 class="section-title">Join the Galaxy</h2>
+    <p class="section-desc">Whether you need an AI voice agent, a premium website, or both — KPT has the technology to elevate your business.</p>
+    <a href="#hero" class="btn-primary" style="font-size: 16px; padding: 20px 48px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      Get Started Today
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">KPT</div>
+      <p class="footer-tagline">AI voice agents and premium web design. Technology engineered with precision, built for everyone.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Products</h4>
+      <ul>
+        <li><a href="#agents">KPT Agents</a></li>
+        <li><a href="#designs">KPT Designs</a></li>
+        <li><a href="#innovation">Technology</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 KPT Technology. All rights reserved.</span>
+    <a href="#hero">Back to top &uarr;</a>
+  </div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  // Generate floating particles
+  var pc = document.getElementById('particles');
+  if (pc) {
+    for (var i = 0; i < 30; i++) {
+      var p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.top = (60 + Math.random() * 40) + '%';
+      p.style.animationDuration = (8 + Math.random() * 12) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      p.style.opacity = (0.2 + Math.random() * 0.4).toString();
+      var size = (1 + Math.random() * 2) + 'px';
+      p.style.width = size;
+      p.style.height = size;
+      pc.appendChild(p);
+    }
+  }
+
+  // Nav scroll state
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 50) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  }, { passive: true });
+
+  // Hero entrance animations
+  var heroEls = [
+    { el: document.querySelector('.hero-badge'), delay: 300 },
+    { el: document.querySelector('.hero h1'), delay: 600 },
+    { el: document.querySelector('.hero-tagline'), delay: 900 },
+    { el: document.querySelector('.hero-sub'), delay: 1100 },
+    { el: document.querySelector('.hero-buttons'), delay: 1300 }
+  ];
+
+  heroEls.forEach(function(item) {
+    if (!item.el) return;
+    setTimeout(function() {
+      item.el.style.transition = 'opacity 1s cubic-bezier(0.4,0,0.2,1), transform 1s cubic-bezier(0.4,0,0.2,1)';
+      item.el.style.opacity = '1';
+      item.el.style.transform = item.el === document.querySelector('.hero h1')
+        ? 'translateY(0) scale(1)' : 'translateY(0)';
+    }, item.delay);
+  });
+
+  // IntersectionObserver for scroll reveals
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+    reveals.forEach(function(el) { obs.observe(el); });
+  } else {
+    reveals.forEach(function(el) { el.classList.add('visible'); });
+  }
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      var t = document.querySelector(this.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+
+  // Stat counter typewriter
+  var statsSection = document.getElementById('stats');
+  var statsAnimated = false;
+  function animateStats() {
+    if (statsAnimated) return;
+    statsAnimated = true;
+    document.querySelectorAll('.stat-number[data-target]').forEach(function(el) {
+      var target = el.getAttribute('data-target');
+      el.textContent = '';
+      target.split('').forEach(function(c, i) {
+        setTimeout(function() { el.textContent = target.substring(0, i + 1); }, 60 * i + 200);
+      });
+    });
+  }
+  if ('IntersectionObserver' in window && statsSection) {
+    var so = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { animateStats(); so.unobserve(e.target); }
+      });
+    }, { threshold: 0.3 });
+    so.observe(statsSection);
+  }
+
+  // Parallax on hero orb
+  var heroOrb = document.querySelector('.hero-orb');
+  if (heroOrb && window.innerWidth > 768) {
+    document.addEventListener('mousemove', function(e) {
+      var x = (e.clientX / window.innerWidth - 0.5) * 30;
+      var y = (e.clientY / window.innerHeight - 0.5) * 30;
+      heroOrb.style.transform = 'translate(calc(-50% + ' + x + 'px), calc(-50% + ' + y + 'px))';
+    }, { passive: true });
+  }
+})();
+</script>
+</body>
+</html>

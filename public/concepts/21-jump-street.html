@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — 21 Jump Street Division</title>
+<meta name="description" content="KPT. AI voice agents and premium web design. Going undercover in your industry. Nobody's gonna know.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --blue: #1565C0;
+    --blue-light: #1976D2;
+    --blue-dark: #0D47A1;
+    --gold: #FFB300;
+    --gold-light: #FFC107;
+    --gold-dim: rgba(255, 179, 0, 0.15);
+    --gold-glow: rgba(255, 193, 7, 0.3);
+    --red: #D32F2F;
+    --red-dim: rgba(211, 47, 47, 0.15);
+    --green: #4CAF50;
+    --green-dim: rgba(76, 175, 80, 0.12);
+    --gray: #757575;
+    --gray-light: #9E9E9E;
+    --gray-dark: #424242;
+    --white: #FFFFFF;
+    --off-white: #F5F5F5;
+    --black: #212121;
+    --surface: #1A237E;
+    --surface-dark: #0D1442;
+    --border: rgba(255, 179, 0, 0.2);
+    --border-hover: rgba(255, 193, 7, 0.5);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--surface-dark);
+    color: var(--off-white);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oswald', sans-serif;
+    line-height: 1.15;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .label, .mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Layout ───────────────────────────────────────────────── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .section {
+    padding: 100px 0;
+    position: relative;
+  }
+
+  /* ── Reveal Animation ─────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── Navigation ───────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(13, 20, 66, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 2px solid var(--gold);
+    padding: 0 24px;
+    transition: box-shadow 0.3s ease;
+  }
+  nav.scrolled {
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  }
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .nav-badge {
+    width: 36px;
+    height: 36px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 61% 11%, 98% 11%, 78% 38%, 88% 72%, 50% 55%, 12% 72%, 22% 38%, 2% 11%, 39% 11%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .nav-badge::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: var(--blue);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -8%);
+  }
+  .nav-dept {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .nav-dept span {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--gray-light);
+    font-weight: 500;
+    margin-top: -2px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.3s ease;
+    position: relative;
+  }
+  .nav-links a:hover {
+    color: var(--gold);
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover::after {
+    width: 100%;
+  }
+  .nav-back {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.4);
+    transition: color 0.3s ease;
+  }
+  .nav-back:hover { color: var(--gold); }
+
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .mobile-menu span {
+    width: 24px;
+    height: 2px;
+    background: var(--gold);
+    transition: all 0.3s ease;
+  }
+
+  /* ── Police Badge CSS Element ─────────────────────────────── */
+  .badge-container {
+    position: relative;
+    width: 260px;
+    height: 280px;
+    margin: 0 auto;
+  }
+  .badge-shield {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .badge-outer {
+    width: 220px;
+    height: 240px;
+    position: relative;
+  }
+  .badge-star {
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .badge-star::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, #FFD54F, #FFB300, #FF8F00);
+    clip-path: polygon(
+      50% 0%, 58% 16%, 79% 4%, 74% 25%, 97% 28%, 84% 44%,
+      100% 58%, 82% 62%, 88% 84%, 68% 74%, 62% 96%, 50% 80%,
+      38% 96%, 32% 74%, 12% 84%, 18% 62%, 0% 58%, 16% 44%,
+      3% 28%, 26% 25%, 21% 4%, 42% 16%
+    );
+    filter: drop-shadow(0 0 20px rgba(255, 179, 0, 0.4));
+  }
+  .badge-star::after {
+    content: '';
+    position: absolute;
+    inset: 18px;
+    background: linear-gradient(180deg, #1565C0, #0D47A1);
+    border-radius: 50%;
+    border: 3px solid #FFD54F;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.4);
+  }
+  .badge-text-wrap {
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    flex-direction: column;
+  }
+  .badge-top-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    margin-top: -8px;
+  }
+  .badge-kpt {
+    font-family: 'Oswald', sans-serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 8px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    line-height: 1;
+  }
+  .badge-bottom-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .badge-number {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, #FFD54F, #FFB300);
+    padding: 4px 20px;
+    border-radius: 4px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--blue-dark);
+    letter-spacing: 4px;
+    z-index: 3;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  @keyframes badgePulse {
+    0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 179, 0, 0.3)); }
+    50% { filter: drop-shadow(0 0 35px rgba(255, 179, 0, 0.5)); }
+  }
+  .badge-container {
+    animation: badgePulse 3s ease-in-out infinite;
+  }
+
+  /* ── Hero ──────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 64px;
+    background:
+      radial-gradient(ellipse at 50% 20%, rgba(21, 101, 192, 0.2), transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(211, 47, 47, 0.08), transparent 50%),
+      linear-gradient(180deg, var(--surface-dark), #0A0F2E);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.01) 2px,
+      rgba(255, 255, 255, 0.01) 4px
+    );
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--red);
+  }
+  .hero h1 {
+    font-size: clamp(42px, 7vw, 80px);
+    font-weight: 700;
+    letter-spacing: 4px;
+    margin: 28px 0 12px;
+    line-height: 1.05;
+  }
+  .hero h1 .gold { color: var(--gold); }
+  .hero h1 .white { color: var(--white); }
+  .hero-sub {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.5);
+    max-width: 540px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+  .hero-sub em {
+    color: var(--gold);
+    font-style: normal;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Buttons ───────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    border-radius: 6px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+  .btn-schmidt {
+    background: var(--blue);
+    color: var(--white);
+    border: 2px solid var(--blue-light);
+  }
+  .btn-schmidt:hover {
+    background: var(--blue-light);
+    box-shadow: 0 0 30px rgba(21, 101, 192, 0.4);
+    transform: translateY(-2px);
+  }
+  .btn-jenko {
+    background: var(--red);
+    color: var(--white);
+    border: 2px solid #E53935;
+  }
+  .btn-jenko:hover {
+    background: #E53935;
+    box-shadow: 0 0 30px rgba(211, 47, 47, 0.4);
+    transform: translateY(-2px);
+  }
+  .btn-gold {
+    background: var(--gold);
+    color: var(--black);
+    border: 2px solid var(--gold-light);
+    font-weight: 700;
+  }
+  .btn-gold:hover {
+    background: var(--gold-light);
+    box-shadow: 0 0 30px var(--gold-glow);
+    transform: translateY(-2px);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--gold);
+    border: 2px solid var(--border);
+  }
+  .btn-outline:hover {
+    border-color: var(--gold);
+    box-shadow: 0 0 20px var(--gold-dim);
+    transform: translateY(-2px);
+  }
+
+  /* ── Section Headers ──────────────────────────────────────── */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(32px, 4.5vw, 52px);
+    text-align: center;
+    margin-bottom: 16px;
+    color: var(--white);
+  }
+  .section-desc {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    max-width: 560px;
+    margin: 0 auto 60px;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── Buddy Cards (Products) ───────────────────────────────── */
+  #products {
+    background: linear-gradient(180deg, #0A0F2E, var(--surface-dark));
+  }
+  .buddy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .buddy-card {
+    border-radius: 16px;
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .buddy-card:hover {
+    transform: translateY(-6px);
+  }
+  .buddy-card.schmidt {
+    background: linear-gradient(145deg, #0D47A1, #1565C0);
+    border: 1px solid rgba(25, 118, 210, 0.4);
+  }
+  .buddy-card.schmidt:hover {
+    box-shadow: 0 20px 60px rgba(21, 101, 192, 0.3);
+  }
+  .buddy-card.jenko {
+    background: linear-gradient(145deg, #B71C1C, #D32F2F);
+    border: 1px solid rgba(229, 57, 53, 0.4);
+  }
+  .buddy-card.jenko:hover {
+    box-shadow: 0 20px 60px rgba(211, 47, 47, 0.3);
+  }
+  .buddy-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 70%);
+    pointer-events: none;
+  }
+  .buddy-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 8px;
+  }
+  .buddy-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  .buddy-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .buddy-persona {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: var(--gold-light);
+  }
+  .buddy-desc {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .buddy-traits {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .buddy-traits li {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .buddy-traits li::before {
+    content: '>';
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ── Case Files (Features) ────────────────────────────────── */
+  #case-files {
+    background: linear-gradient(180deg, var(--surface-dark), #0D1442);
+  }
+  .cases-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .case-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 32px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+  .case-card:hover {
+    border-color: var(--border-hover);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+  }
+  .case-stamp {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--red);
+    border: 2px solid var(--red);
+    padding: 3px 10px;
+    border-radius: 3px;
+    transform: rotate(12deg);
+    opacity: 0.7;
+  }
+  .case-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .case-icon {
+    font-size: 32px;
+    margin-bottom: 14px;
+  }
+  .case-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    color: var(--white);
+  }
+  .case-desc {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    line-height: 1.7;
+  }
+  .case-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .case-card:hover::after {
+    opacity: 0.5;
+  }
+
+  /* ── Stats (Police Report) ────────────────────────────────── */
+  #stats {
+    background: var(--blue-dark);
+    border-top: 3px solid var(--gold);
+    border-bottom: 3px solid var(--gold);
+  }
+  .stats-header {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .stats-header-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .stats-header-line {
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+  }
+  .report-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    padding: 40px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 24px;
+  }
+  .report-stat {
+    text-align: center;
+  }
+  .report-value {
+    font-family: 'Oswald', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .report-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .report-sublabel {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.3);
+    margin-top: 4px;
+  }
+  .report-footer {
+    text-align: center;
+    margin-top: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+  }
+
+  /* ── Yearbook (Testimonials) ──────────────────────────────── */
+  #yearbook {
+    background:
+      radial-gradient(ellipse at 30% 50%, rgba(76, 175, 80, 0.06), transparent 50%),
+      linear-gradient(180deg, #0D1442, var(--surface-dark));
+  }
+  .yearbook-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .yearbook-entry {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 32px 28px;
+    position: relative;
+    transition: all 0.4s ease;
+  }
+  .yearbook-entry:hover {
+    border-color: rgba(76, 175, 80, 0.3);
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-4px);
+  }
+  .yearbook-superlative {
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .yearbook-superlative::before {
+    content: '\2605';
+    color: var(--gold);
+  }
+  .yearbook-quote {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+    font-style: italic;
+    margin-bottom: 20px;
+    position: relative;
+    padding-left: 16px;
+    border-left: 2px solid var(--gold-dim);
+  }
+  .yearbook-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .yearbook-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    border: 2px solid var(--gold-dim);
+    flex-shrink: 0;
+  }
+  .yearbook-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--white);
+  }
+  .yearbook-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  /* ── CTA Section ──────────────────────────────────────────── */
+  #cta {
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(21, 101, 192, 0.2), transparent 60%),
+      linear-gradient(180deg, var(--surface-dark), #0A0F2E);
+    text-align: center;
+    padding: 120px 0;
+  }
+  .cta-headline {
+    font-size: clamp(28px, 4vw, 44px);
+    margin-bottom: 12px;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .cta-sub {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 40px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cta-form {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    max-width: 520px;
+    margin: 0 auto 20px;
+    flex-wrap: wrap;
+  }
+  .cta-input {
+    flex: 1;
+    min-width: 240px;
+    padding: 14px 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    color: var(--white);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 1px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .cta-input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+  .cta-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 20px var(--gold-dim);
+  }
+  .cta-disclaimer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.25);
+    margin-top: 16px;
+  }
+
+  /* ── Footer ───────────────────────────────────────────────── */
+  footer {
+    background: #060A1F;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 48px 24px 32px;
+  }
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .footer-badge {
+    width: 24px;
+    height: 24px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 61% 11%, 98% 11%, 78% 38%, 88% 72%, 50% 55%, 12% 72%, 22% 38%, 2% 11%, 39% 11%);
+  }
+  .footer-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+  .footer-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.3);
+    transition: color 0.3s ease;
+  }
+  .footer-links a:hover {
+    color: var(--gold);
+  }
+  .footer-copy {
+    width: 100%;
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.2);
+  }
+  .footer-copy .joke {
+    display: block;
+    margin-top: 6px;
+    color: rgba(255, 255, 255, 0.12);
+    font-size: 9px;
+  }
+
+  /* ── Locker Stripe Divider ────────────────────────────────── */
+  .locker-divider {
+    height: 6px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--gray) 0px,
+      var(--gray) 20px,
+      var(--gray-dark) 20px,
+      var(--gray-dark) 40px
+    );
+    opacity: 0.15;
+  }
+
+  /* ── Responsive ───────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .buddy-grid {
+      grid-template-columns: 1fr;
+      max-width: 480px;
+    }
+    .cases-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .yearbook-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .report-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+  }
+  @media (max-width: 640px) {
+    .section { padding: 72px 0; }
+    .nav-links { display: none; }
+    .mobile-menu { display: flex; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      background: rgba(13, 20, 66, 0.97);
+      padding: 20px 24px;
+      gap: 16px;
+      border-bottom: 2px solid var(--gold);
+    }
+    .cases-grid {
+      grid-template-columns: 1fr;
+    }
+    .yearbook-grid {
+      grid-template-columns: 1fr;
+    }
+    .report-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .badge-container {
+      width: 200px;
+      height: 220px;
+    }
+    .badge-star {
+      width: 170px;
+      height: 170px;
+    }
+    .badge-outer {
+      width: 170px;
+      height: 190px;
+    }
+    .badge-kpt {
+      font-size: 38px;
+      letter-spacing: 6px;
+    }
+    .buddy-card {
+      padding: 36px 28px;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 8vw, 60px);
+    }
+    .cta-form {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .cta-input {
+      min-width: unset;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAVIGATION
+     ═══════════════════════════════════════════════════════════ -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="/index.html" class="nav-back">&larr; Back</a>
+    <div class="nav-brand">
+      <div class="nav-badge"></div>
+      <div class="nav-dept">
+        KPT Department
+        <span>Jump Street Division</span>
+      </div>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#products">Partners</a></li>
+      <li><a href="#case-files">Cases</a></li>
+      <li><a href="#stats">Report</a></li>
+      <li><a href="#yearbook">Yearbook</a></li>
+      <li><a href="#cta">Enlist</a></li>
+    </ul>
+    <div class="mobile-menu" id="mobileMenu" onclick="document.getElementById('navLinks').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO
+     ═══════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-content container">
+    <div class="reveal">
+      <div class="hero-eyebrow">Classified Operation</div>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <div class="badge-container">
+        <div class="badge-shield">
+          <div class="badge-outer">
+            <div class="badge-star"></div>
+            <div class="badge-text-wrap">
+              <div class="badge-top-text">Department of</div>
+              <div class="badge-kpt">KPT</div>
+              <div class="badge-bottom-text">Est. 2024</div>
+            </div>
+            <div class="badge-number">21</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <h1><span class="white">Undercover</span><br><span class="gold">Excellence</span></h1>
+      <p class="hero-sub">We infiltrated your industry disguised as a tech company. Turns out <em>we actually are one</em>. Awkward.</p>
+    </div>
+
+    <div class="reveal reveal-delay-3 hero-ctas">
+      <a href="#products" class="btn btn-schmidt">Be Schmidt &mdash; Design</a>
+      <a href="#products" class="btn btn-jenko">Be Jenko &mdash; Agents</a>
+    </div>
+  </div>
+</section>
+
+<div class="locker-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PRODUCTS — BUDDY COP CARDS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="products">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Choose Your Partner</div>
+      <h2 class="section-title">The Buddy System</h2>
+      <p class="section-desc">Every great operation needs two halves. One does the thinking, the other does the talking. Together, they're unstoppable. Separately... well, Jenko tried going solo once. It didn't go well.</p>
+    </div>
+
+    <div class="buddy-grid">
+      <!-- Schmidt — KPT Designs -->
+      <div class="buddy-card schmidt reveal reveal-delay-1">
+        <div class="buddy-role">The Brains of the Operation</div>
+        <div class="buddy-icon">&#129504;</div>
+        <div class="buddy-name">KPT Designs</div>
+        <div class="buddy-persona">"The Smart One"</div>
+        <p class="buddy-desc">Analytical. Methodical. The kind of partner who color-codes the evidence board. Premium web design built with obsessive attention to detail &mdash; because Schmidt would have it no other way.</p>
+        <ul class="buddy-traits">
+          <li>Custom sites that actually convert visitors</li>
+          <li>Pixel-perfect responsive layouts</li>
+          <li>SEO-optimized architecture from day one</li>
+          <li>Performance that makes PageSpeed jealous</li>
+          <li>Strategy sessions (no yearbook photo required)</li>
+        </ul>
+      </div>
+
+      <!-- Jenko — KPT Agents -->
+      <div class="buddy-card jenko reveal reveal-delay-2">
+        <div class="buddy-role">The Muscle of the Operation</div>
+        <div class="buddy-icon">&#128170;</div>
+        <div class="buddy-name">KPT Agents</div>
+        <div class="buddy-persona">"The Cool One"</div>
+        <p class="buddy-desc">Bold. Charismatic. Walks into any room and owns it. AI voice agents that handle your calls with confidence &mdash; because Jenko never met a conversation he couldn't dominate.</p>
+        <ul class="buddy-traits">
+          <li>24/7 AI voice agents that never sleep</li>
+          <li>Natural conversations, not robot scripts</li>
+          <li>Books appointments while you're at the gym</li>
+          <li>Handles objections like a seasoned closer</li>
+          <li>Integrates with your CRM (effortlessly cool)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="locker-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CASE FILES — FEATURES
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="case-files">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Evidence Locker</div>
+      <h2 class="section-title">Active Case Files</h2>
+      <p class="section-desc">Each case file represents a proven capability. All evidence has been collected, verified, and occasionally redacted for dramatic effect.</p>
+    </div>
+
+    <div class="cases-grid">
+      <div class="case-card reveal">
+        <div class="case-stamp">Classified</div>
+        <div class="case-number">Case #001</div>
+        <div class="case-icon">&#128269;</div>
+        <div class="case-title">Deep Cover Design</div>
+        <p class="case-desc">Custom websites so seamlessly integrated into your brand, your competitors won't know what hit them. We go deep. Real deep.</p>
+      </div>
+
+      <div class="case-card reveal reveal-delay-1">
+        <div class="case-stamp">Active</div>
+        <div class="case-number">Case #002</div>
+        <div class="case-icon">&#127908;</div>
+        <div class="case-title">Voice Infiltration</div>
+        <p class="case-desc">AI agents that embed into your phone system and handle calls like they've worked there for years. The ultimate undercover operative.</p>
+      </div>
+
+      <div class="case-card reveal reveal-delay-2">
+        <div class="case-stamp">Priority</div>
+        <div class="case-number">Case #003</div>
+        <div class="case-icon">&#9889;</div>
+        <div class="case-title">Rapid Deployment</div>
+        <p class="case-desc">From concept to launch faster than Jenko can throw a punch. Speed without sacrificing quality &mdash; we've trained for this.</p>
+      </div>
+
+      <div class="case-card reveal reveal-delay-1">
+        <div class="case-stamp">Ongoing</div>
+        <div class="case-number">Case #004</div>
+        <div class="case-icon">&#128737;</div>
+        <div class="case-title">Perimeter Security</div>
+        <p class="case-desc">SSL, DDoS protection, security headers, and monitoring. Your site is locked down tighter than the evidence room. Nobody gets in uninvited.</p>
+      </div>
+
+      <div class="case-card reveal reveal-delay-2">
+        <div class="case-stamp">Sealed</div>
+        <div class="case-number">Case #005</div>
+        <div class="case-icon">&#128202;</div>
+        <div class="case-title">Surveillance Analytics</div>
+        <p class="case-desc">We track everything (legally). Conversion rates, call metrics, user behavior. Data-driven insights that would make Schmidt weep with joy.</p>
+      </div>
+
+      <div class="case-card reveal reveal-delay-3">
+        <div class="case-stamp">Top Secret</div>
+        <div class="case-number">Case #006</div>
+        <div class="case-icon">&#129309;</div>
+        <div class="case-title">Partner Integration</div>
+        <p class="case-desc">CRMs, payment systems, booking platforms &mdash; we integrate with everything. Like Jenko at the cool kids' table, we fit in everywhere.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     STATS — POLICE REPORT
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="stats">
+  <div class="container">
+    <div class="reveal">
+      <div class="stats-header">
+        <div class="stats-header-label">Official Police Report</div>
+        <div class="stats-header-line">KPT Department &mdash; Internal Affairs Division &mdash; Performance Review</div>
+      </div>
+    </div>
+
+    <div class="report-grid reveal reveal-delay-1">
+      <div class="report-stat">
+        <div class="report-value" data-target="99.9">0</div>
+        <div class="report-label">% Uptime Record</div>
+        <p class="report-sublabel">Not a single sick day</p>
+      </div>
+      <div class="report-stat">
+        <div class="report-value" data-target="500" data-suffix="+">0</div>
+        <div class="report-label">Calls Handled Daily</div>
+        <p class="report-sublabel">Per deployed agent</p>
+      </div>
+      <div class="report-stat">
+        <div class="report-value" data-target="3" data-suffix="s">0</div>
+        <div class="report-label">Avg Response Time</div>
+        <p class="report-sublabel">Faster than backup</p>
+      </div>
+      <div class="report-stat">
+        <div class="report-value" data-target="0">0</div>
+        <div class="report-label">Bad Websites Tolerated</div>
+        <p class="report-sublabel">Zero tolerance policy</p>
+      </div>
+    </div>
+
+    <div class="reveal reveal-delay-2">
+      <div class="report-footer">Filed by: Captain KPT &nbsp;|&nbsp; Badge #21 &nbsp;|&nbsp; Status: Exemplary &nbsp;|&nbsp; "These two are the best we've got. Don't tell them I said that."</div>
+    </div>
+  </div>
+</section>
+
+<div class="locker-divider"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     THE YEARBOOK — TESTIMONIALS
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="yearbook">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Class Superlatives</div>
+      <h2 class="section-title">The Yearbook</h2>
+      <p class="section-desc">Don't just take our word for it. Here's what the graduating class had to say. We definitely didn't write these ourselves. Probably.</p>
+    </div>
+
+    <div class="yearbook-grid">
+      <div class="yearbook-entry reveal">
+        <div class="yearbook-superlative">Most Likely to Succeed</div>
+        <p class="yearbook-quote">"They rebuilt our entire website in two weeks. Our traffic tripled. I'm still not sure how they did it &mdash; it felt like an undercover operation."</p>
+        <div class="yearbook-meta">
+          <div class="yearbook-avatar">MR</div>
+          <div>
+            <div class="yearbook-name">Marcus Reed</div>
+            <div class="yearbook-title">CEO, Riverstone Properties</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="yearbook-entry reveal reveal-delay-1">
+        <div class="yearbook-superlative">Best Dynamic Duo</div>
+        <p class="yearbook-quote">"The AI voice agent handles our after-hours calls so well, customers think it's a real person. It's like having a secret agent on the team."</p>
+        <div class="yearbook-meta">
+          <div class="yearbook-avatar">SK</div>
+          <div>
+            <div class="yearbook-name">Sarah Kim</div>
+            <div class="yearbook-title">Director, Apex Dental Group</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="yearbook-entry reveal reveal-delay-2">
+        <div class="yearbook-superlative">Class Clown (Complimentary)</div>
+        <p class="yearbook-quote">"Working with KPT is refreshingly fun. They don't take themselves too seriously, but the work? Dead serious. Best combo since Schmidt and Jenko."</p>
+        <div class="yearbook-meta">
+          <div class="yearbook-avatar">DL</div>
+          <div>
+            <div class="yearbook-name">David Langston</div>
+            <div class="yearbook-title">Founder, TurboFit Gyms</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="yearbook-entry reveal reveal-delay-1">
+        <div class="yearbook-superlative">Most Improved</div>
+        <p class="yearbook-quote">"Our old site was a crime scene. KPT came in, secured the perimeter, and built something that actually makes us money. Case closed."</p>
+        <div class="yearbook-meta">
+          <div class="yearbook-avatar">JP</div>
+          <div>
+            <div class="yearbook-name">Jennifer Park</div>
+            <div class="yearbook-title">Owner, Greenleaf Landscaping</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="yearbook-entry reveal reveal-delay-2">
+        <div class="yearbook-superlative">Best Personality</div>
+        <p class="yearbook-quote">"The voice agent they set up for us answers questions I didn't even think to prepare for. It's like it went through detective training."</p>
+        <div class="yearbook-meta">
+          <div class="yearbook-avatar">TW</div>
+          <div>
+            <div class="yearbook-name">Tyler Walsh</div>
+            <div class="yearbook-title">GM, Summit Auto Group</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="yearbook-entry reveal reveal-delay-3">
+        <div class="yearbook-superlative">Most Athletic</div>
+        <p class="yearbook-quote">"Fast, agile, and they never skip leg day. Okay maybe that's weird for a tech company review but their turnaround time is genuinely insane."</p>
+        <div class="yearbook-meta">
+          <div class="yearbook-avatar">RH</div>
+          <div>
+            <div class="yearbook-name">Rachel Huang</div>
+            <div class="yearbook-title">COO, Pacific Realty</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CTA
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section" id="cta">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Join the Operation</div>
+      <h2 class="cta-headline">Infiltrate the Dealer...<br>of Bad Websites.</h2>
+      <p class="cta-sub">We're going undercover on your next project. Drop your email and we'll make contact. Discreetly.</p>
+    </div>
+
+    <div class="reveal reveal-delay-1">
+      <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='BADGE ISSUED'; this.querySelector('input').value='';">
+        <input type="email" class="cta-input" placeholder="your.alias@email.com" required>
+        <button type="submit" class="btn btn-gold">Get Your Badge</button>
+      </form>
+      <p class="cta-disclaimer">No spam. We're undercover, not annoying. Unsubscribe anytime.</p>
+    </div>
+
+    <div class="reveal reveal-delay-2" style="margin-top: 48px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+      <a href="#products" class="btn btn-outline">Review Partners</a>
+      <a href="#case-files" class="btn btn-outline">Open Case Files</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-badge"></div>
+      <span class="footer-name">KPT Department</span>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#products">Partners</a></li>
+      <li><a href="#case-files">Cases</a></li>
+      <li><a href="#yearbook">Yearbook</a></li>
+      <li><a href="#cta">Enlist</a></li>
+    </ul>
+    <div class="footer-copy">
+      &copy; 2024 KPT. All rights reserved. Badge #21.
+      <span class="joke">"My name is Jeff." &mdash; Jenko, probably talking about our servers.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════════════════════ -->
+<script>
+  /* ── Intersection Observer for reveals ─────────────────────── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ── Navbar scroll effect ──────────────────────────────────── */
+  const navbar = document.getElementById('navbar');
+  let lastScroll = 0;
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    if (currentScroll > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+    lastScroll = currentScroll;
+  }, { passive: true });
+
+  /* ── Counter animation for stats ───────────────────────────── */
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const counters = entry.target.querySelectorAll('.report-value[data-target]');
+        counters.forEach(counter => {
+          const target = parseFloat(counter.dataset.target);
+          const suffix = counter.dataset.suffix || '';
+          const isDecimal = target % 1 !== 0;
+          const duration = 2000;
+          const startTime = performance.now();
+
+          function updateCounter(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = target * eased;
+
+            if (isDecimal) {
+              counter.textContent = current.toFixed(1) + suffix;
+            } else {
+              counter.textContent = Math.round(current) + suffix;
+            }
+
+            if (progress < 1) {
+              requestAnimationFrame(updateCounter);
+            } else {
+              if (isDecimal) {
+                counter.textContent = target.toFixed(1) + suffix;
+              } else {
+                counter.textContent = target + suffix;
+              }
+            }
+          }
+          requestAnimationFrame(updateCounter);
+        });
+        statsObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const reportGrid = document.querySelector('.report-grid');
+  if (reportGrid) statsObserver.observe(reportGrid);
+
+  /* ── Smooth scroll for anchor links ────────────────────────── */
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        const navHeight = navbar.offsetHeight;
+        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+        /* Close mobile menu if open */
+        document.getElementById('navLinks').classList.remove('open');
+      }
+    });
+  });
+
+  /* ── Parallax badge effect on hero ─────────────────────────── */
+  const badgeEl = document.querySelector('.badge-container');
+  if (badgeEl) {
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      if (scrolled < window.innerHeight) {
+        badgeEl.style.transform = 'translateY(' + (scrolled * 0.15) + 'px)';
+      }
+    }, { passive: true });
+  }
+</script>
+
+</body>
+</html>

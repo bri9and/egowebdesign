@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Tesla</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #000000;
+    --white: #FFFFFF;
+    --red: #CC0000;
+    --red-dim: rgba(204, 0, 0, 0.15);
+    --red-glow: rgba(204, 0, 0, 0.4);
+    --dark-gray: #171A20;
+    --silver: #E0E0E0;
+    --mid-gray: #393C41;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A0A0A0;
+    --text-muted: #5C5E62;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.2);
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --nav-height: 56px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    background: transparent;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease;
+  }
+
+  nav.scrolled {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .nav-back {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-back:hover { color: var(--white); }
+
+  .nav-back svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s;
+  }
+
+  .nav-back:hover svg { transform: translateX(-3px); }
+
+  .nav-logo {
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: var(--white);
+    text-transform: uppercase;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.3px;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  /* ==============================
+     SECTIONS — FULL VIEWPORT
+     ============================== */
+  section {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    scroll-snap-align: start;
+    overflow: hidden;
+  }
+
+  /* ==============================
+     SECTION CONTENT WRAPPER
+     ============================== */
+  .section-content {
+    text-align: center;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .section-content.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section-bottom {
+    position: absolute;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.8s ease 0.3s;
+  }
+
+  .section-bottom.visible { opacity: 1; }
+
+  /* ==============================
+     HEADINGS
+     ============================== */
+  .headline {
+    font-family: var(--font-body);
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: 2px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .subline {
+    font-family: var(--font-body);
+    font-size: clamp(14px, 1.8vw, 18px);
+    font-weight: 300;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* ==============================
+     CTA BUTTONS — TESLA STYLE
+     ============================== */
+  .cta-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 260px;
+    height: 40px;
+    padding: 0 32px;
+    border-radius: 4px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--dark-gray);
+  }
+
+  .btn-primary:hover {
+    background: var(--white);
+  }
+
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .btn-red {
+    background: var(--red);
+    color: var(--white);
+  }
+
+  .btn-red:hover {
+    background: #E00000;
+    box-shadow: 0 0 30px var(--red-dim);
+  }
+
+  /* ==============================
+     SCROLL INDICATOR
+     ============================== */
+  .scroll-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: scrollBounce 2s ease-in-out infinite;
+  }
+
+  .scroll-indicator span {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .scroll-indicator svg {
+    width: 20px;
+    height: 20px;
+    color: var(--text-muted);
+  }
+
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  /* ==============================
+     HERO — KPT AGENTS
+     ============================== */
+  #hero {
+    background: var(--black);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--red-dim) 0%, transparent 70%);
+    opacity: 0.4;
+    animation: heroPulse 6s ease-in-out infinite;
+  }
+
+  @keyframes heroPulse {
+    0%, 100% { opacity: 0.3; transform: translateX(-50%) scale(1); }
+    50% { opacity: 0.5; transform: translateX(-50%) scale(1.05); }
+  }
+
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 24px;
+  }
+
+  /* ==============================
+     DESIGNS SECTION
+     ============================== */
+  #designs {
+    background: var(--dark-gray);
+  }
+
+  .designs-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .designs-bg::before {
+    content: '';
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+  }
+
+  .designs-grid-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.6;
+  }
+
+  .designs-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--silver);
+    margin-bottom: 24px;
+    opacity: 0.6;
+  }
+
+  /* ==============================
+     STATS SECTION
+     ============================== */
+  #stats {
+    background: var(--black);
+  }
+
+  .stats-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .stats-bg::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(204,0,0,0.15), transparent);
+  }
+
+  .stats-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 64px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px;
+    width: 100%;
+    max-width: 1000px;
+    padding: 0 24px;
+    z-index: 2;
+  }
+
+  .stat-item {
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .stat-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stat-number {
+    font-family: var(--font-body);
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .stat-number .stat-accent { color: var(--red); }
+
+  .stat-unit {
+    font-family: var(--font-mono);
+    font-size: clamp(10px, 1.2vw, 13px);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .stat-divider {
+    width: 24px;
+    height: 1px;
+    background: var(--mid-gray);
+    margin: 16px auto 12px;
+  }
+
+  .stat-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    max-width: 200px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  /* ==============================
+     FEATURES SECTION
+     ============================== */
+  #features {
+    background: var(--dark-gray);
+  }
+
+  .features-content {
+    text-align: center;
+    z-index: 2;
+    width: 100%;
+    max-width: 1100px;
+    padding: 0 24px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .features-content.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .features-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .features-headline {
+    font-family: var(--font-body);
+    font-size: clamp(28px, 3.5vw, 40px);
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 64px;
+    letter-spacing: 1px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .feature-card {
+    background: var(--dark-gray);
+    padding: 48px 32px;
+    text-align: left;
+    transition: background 0.3s ease;
+  }
+
+  .feature-card:hover {
+    background: #1E2128;
+  }
+
+  .feature-icon {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .feature-icon::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border: 1.5px solid var(--red);
+    display: inline-block;
+  }
+
+  .feature-title {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 12px;
+    letter-spacing: 0.3px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  #cta {
+    background: var(--black);
+  }
+
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .cta-bg::before {
+    content: '';
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--red-dim) 0%, transparent 70%);
+    opacity: 0.3;
+  }
+
+  .cta-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .cta-headline {
+    font-family: var(--font-body);
+    font-size: clamp(40px, 5.5vw, 64px);
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+
+  .cta-subline {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    margin-bottom: 48px;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    padding: 32px 40px;
+    scroll-snap-align: end;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-logo {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+    transition: color 0.3s;
+  }
+
+  .footer-links a:hover { color: var(--text-secondary); }
+
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* ==============================
+     SECTION DOT NAV
+     ============================== */
+  .section-nav {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .section-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--mid-gray);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 0;
+  }
+
+  .section-dot.active {
+    background: var(--white);
+    box-shadow: 0 0 8px rgba(255,255,255,0.3);
+  }
+
+  .section-dot:hover {
+    background: var(--text-secondary);
+  }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 900px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px 24px;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .nav-links { display: none; }
+
+    .section-nav { display: none; }
+
+    .btn { min-width: 200px; }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 20px; }
+
+    .stats-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px 16px;
+    }
+
+    .stat-number {
+      font-size: 42px;
+    }
+
+    .feature-card {
+      padding: 32px 24px;
+    }
+
+    .cta-row {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .btn { min-width: 280px; }
+
+    .footer-inner {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .footer-links { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================================
+     NAVIGATION
+     ================================ -->
+<nav id="navbar">
+  <a href="/index.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    Back
+  </a>
+  <span class="nav-logo">KPT</span>
+  <ul class="nav-links">
+    <li><a href="#hero">Agents</a></li>
+    <li><a href="#designs">Designs</a></li>
+    <li><a href="#stats">Metrics</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#cta">Start</a></li>
+  </ul>
+</nav>
+
+<!-- ================================
+     SECTION DOT NAV
+     ================================ -->
+<div class="section-nav" id="sectionNav">
+  <button class="section-dot active" data-target="hero" aria-label="Hero"></button>
+  <button class="section-dot" data-target="designs" aria-label="Designs"></button>
+  <button class="section-dot" data-target="stats" aria-label="Stats"></button>
+  <button class="section-dot" data-target="features" aria-label="Features"></button>
+  <button class="section-dot" data-target="cta" aria-label="Call to action"></button>
+</div>
+
+<!-- ================================
+     SECTION 1 — HERO / KPT AGENTS
+     ================================ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="section-content" data-animate>
+    <div class="hero-label">Artificial Intelligence</div>
+    <h1 class="headline">KPT Agents</h1>
+    <p class="subline">Voice agents that answer, qualify, and convert. Every call handled with precision, 24 hours a day.</p>
+  </div>
+  <div class="section-bottom" data-animate-bottom>
+    <div class="cta-row">
+      <a href="#cta" class="btn btn-primary">Order Now</a>
+      <a href="#features" class="btn btn-secondary">Learn More</a>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ================================
+     SECTION 2 — KPT DESIGNS
+     ================================ -->
+<section id="designs">
+  <div class="designs-bg"></div>
+  <div class="designs-grid-bg"></div>
+  <div class="section-content" data-animate>
+    <div class="designs-label">Premium Web Design</div>
+    <h2 class="headline">KPT Designs</h2>
+    <p class="subline">Websites engineered for performance. Custom builds that load fast, convert visitors, and define brands.</p>
+  </div>
+  <div class="section-bottom" data-animate-bottom>
+    <div class="cta-row">
+      <a href="#cta" class="btn btn-primary">Get Started</a>
+      <a href="#features" class="btn btn-secondary">View Work</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================================
+     SECTION 3 — STATS
+     ================================ -->
+<section id="stats">
+  <div class="stats-bg"></div>
+  <div class="section-content" data-animate style="width:100%; display:flex; flex-direction:column; align-items:center;">
+    <div class="stats-label">By the Numbers</div>
+    <div class="stats-grid">
+      <div class="stat-item" data-stat>
+        <div class="stat-number">99<span class="stat-accent">%</span></div>
+        <div class="stat-unit">Uptime</div>
+        <div class="stat-divider"></div>
+        <div class="stat-desc">Always on, always answering</div>
+      </div>
+      <div class="stat-item" data-stat>
+        <div class="stat-number">&lt;1<span class="stat-accent">s</span></div>
+        <div class="stat-unit">Response</div>
+        <div class="stat-divider"></div>
+        <div class="stat-desc">Sub-second voice latency</div>
+      </div>
+      <div class="stat-item" data-stat>
+        <div class="stat-number">3<span class="stat-accent">x</span></div>
+        <div class="stat-unit">Conversion</div>
+        <div class="stat-divider"></div>
+        <div class="stat-desc">Lead capture rate increase</div>
+      </div>
+      <div class="stat-item" data-stat>
+        <div class="stat-number">24<span class="stat-accent">/7</span></div>
+        <div class="stat-unit">Coverage</div>
+        <div class="stat-divider"></div>
+        <div class="stat-desc">No missed calls, ever</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================
+     SECTION 4 — FEATURES GRID
+     ================================ -->
+<section id="features">
+  <div class="features-content" data-animate>
+    <div class="features-label">Capabilities</div>
+    <h2 class="features-headline">Built Different</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">01</div>
+        <div class="feature-title">Voice AI Agents</div>
+        <div class="feature-desc">Natural-sounding agents that handle inbound and outbound calls. They book, qualify, and follow up autonomously.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">02</div>
+        <div class="feature-title">Custom Web Design</div>
+        <div class="feature-desc">Performance-first websites. Hand-coded, fully responsive, optimized for speed scores above 95.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">03</div>
+        <div class="feature-title">Lead Conversion</div>
+        <div class="feature-desc">Every touchpoint engineered to convert. From first ring to final click, nothing is left to chance.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">04</div>
+        <div class="feature-title">Analytics Dashboard</div>
+        <div class="feature-desc">Real-time call metrics, lead tracking, and performance data. Full visibility into every interaction.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">05</div>
+        <div class="feature-title">CRM Integration</div>
+        <div class="feature-desc">Seamless connection to your existing tools. Salesforce, HubSpot, or custom pipelines.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">06</div>
+        <div class="feature-title">White Glove Launch</div>
+        <div class="feature-desc">Full deployment handled by our team. Training, testing, and go-live in under two weeks.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================
+     SECTION 5 — CTA
+     ================================ -->
+<section id="cta">
+  <div class="cta-bg"></div>
+  <div class="section-content" data-animate>
+    <div class="cta-label">The Future Is Here</div>
+    <h2 class="cta-headline">Experience KPT</h2>
+    <p class="cta-subline">AI voice agents and premium web design, built for businesses that refuse to settle.</p>
+    <div class="cta-row">
+      <a href="#" class="btn btn-red">Order Now</a>
+      <a href="#hero" class="btn btn-secondary">Learn More</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================================
+     FOOTER
+     ================================ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">KPT</div>
+    <ul class="footer-links">
+      <li><a href="#hero">Agents</a></li>
+      <li><a href="#designs">Designs</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Terms</a></li>
+    </ul>
+    <div class="footer-copy">&copy; 2026 KPT</div>
+  </div>
+</footer>
+
+<!-- ================================
+     JAVASCRIPT
+     ================================ -->
+<script>
+(function() {
+  'use strict';
+
+  /* ----- Nav scroll state ----- */
+  const nav = document.getElementById('navbar');
+  const onScroll = () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* ----- IntersectionObserver: section content ----- */
+  const animateEls = document.querySelectorAll('[data-animate]');
+  const bottomEls = document.querySelectorAll('[data-animate-bottom]');
+  const statEls = document.querySelectorAll('[data-stat]');
+
+  const contentObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  animateEls.forEach(el => contentObserver.observe(el));
+
+  const bottomObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  bottomEls.forEach(el => bottomObserver.observe(el));
+
+  /* ----- IntersectionObserver: staggered stats ----- */
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const items = entry.target.querySelectorAll
+          ? [entry.target]
+          : [];
+        const idx = Array.from(statEls).indexOf(entry.target);
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, idx * 150);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  statEls.forEach(el => statsObserver.observe(el));
+
+  /* ----- Section dot navigation ----- */
+  const sections = document.querySelectorAll('section');
+  const dots = document.querySelectorAll('.section-dot');
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        dots.forEach(dot => {
+          dot.classList.toggle('active', dot.dataset.target === id);
+        });
+      }
+    });
+  }, { threshold: 0.5 });
+
+  sections.forEach(s => sectionObserver.observe(s));
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const target = document.getElementById(dot.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  /* ----- Smooth scroll for anchor links ----- */
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (href === '#') return;
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

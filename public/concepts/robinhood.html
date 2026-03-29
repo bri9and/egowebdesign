@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Robinhood</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --green: #00C805;
+    --green-dim: rgba(0, 200, 5, 0.15);
+    --green-glow: rgba(0, 200, 5, 0.4);
+    --green-dark: #00A004;
+    --black: #1E2124;
+    --black-deep: #0D0F10;
+    --white: #FFFFFF;
+    --mint: #E8FFF3;
+    --mint-dim: rgba(232, 255, 243, 0.06);
+    --gray-100: #F5F5F5;
+    --gray-400: #9AA0A6;
+    --gray-600: #6B7280;
+    --gray-800: #2D3134;
+    --text-primary: #FFFFFF;
+    --text-secondary: #9AA0A6;
+    --text-muted: #5C6068;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.2);
+    --font-body: 'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'Inter', monospace;
+    --nav-height: 64px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--black-deep);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    background: transparent;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease;
+  }
+
+  nav.scrolled {
+    background: rgba(13, 15, 16, 0.92);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-back {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.3px;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-back:hover { color: var(--green); }
+
+  .nav-back svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s;
+  }
+
+  .nav-back:hover svg { transform: translateX(-3px); }
+
+  .nav-logo {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: var(--white);
+    text-transform: uppercase;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.3px;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--green); }
+
+  /* ==============================
+     HERO SECTION
+     ============================== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 0 24px;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-bg canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Radial glow behind hero */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(0, 200, 5, 0.08) 0%, transparent 70%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    text-align: center;
+    z-index: 2;
+    position: relative;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 100px;
+    border: 1px solid var(--green-dim);
+    background: rgba(0, 200, 5, 0.05);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 32px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-badge .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  .hero-title {
+    font-size: clamp(64px, 12vw, 140px);
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 12px;
+    line-height: 1;
+    margin-bottom: 8px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s ease 0.4s forwards;
+    position: relative;
+  }
+
+  /* Feather motif — positioned next to the title */
+  .feather-icon {
+    position: absolute;
+    top: -24px;
+    right: -56px;
+    width: 48px;
+    height: 48px;
+    opacity: 0.7;
+    animation: featherFloat 4s ease-in-out infinite;
+  }
+
+  .hero-tagline {
+    font-size: clamp(20px, 3vw, 32px);
+    font-weight: 300;
+    color: var(--green);
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-sub {
+    font-size: clamp(15px, 2vw, 18px);
+    font-weight: 400;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s ease 1s forwards;
+  }
+
+  /* Stock chart SVG behind hero */
+  .hero-chart {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    z-index: 1;
+    opacity: 0.12;
+    pointer-events: none;
+  }
+
+  .hero-chart svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.4s forwards;
+  }
+
+  .scroll-hint span {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .scroll-hint .arrow {
+    width: 20px;
+    height: 20px;
+    color: var(--text-muted);
+    animation: scrollBounce 2s ease-in-out infinite;
+  }
+
+  /* ==============================
+     BUTTONS
+     ============================== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    padding: 0 36px;
+    border-radius: 100px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-green {
+    background: var(--green);
+    color: var(--black);
+  }
+
+  .btn-green:hover {
+    background: #00E006;
+    box-shadow: 0 0 40px var(--green-dim);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(0, 200, 5, 0.05);
+  }
+
+  /* ==============================
+     SECTION LAYOUT
+     ============================== */
+  section {
+    padding: 120px 24px;
+    position: relative;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--green);
+  }
+
+  .section-title {
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+
+  .section-desc {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 56px;
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ==============================
+     PHILOSOPHY (Mission Statement)
+     ============================== */
+  .philosophy {
+    background: var(--black);
+    text-align: center;
+  }
+
+  .philosophy .section-desc {
+    margin: 0 auto 56px;
+  }
+
+  .philosophy-quote {
+    font-size: clamp(24px, 4vw, 42px);
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1.4;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    padding: 48px 0;
+  }
+
+  .philosophy-quote::before,
+  .philosophy-quote::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+  }
+
+  .philosophy-quote::before { top: 0; }
+  .philosophy-quote::after { bottom: 0; }
+
+  .philosophy-quote em {
+    color: var(--green);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* ==============================
+     FEATURES GRID
+     ============================== */
+  .features {
+    background: var(--black-deep);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .feature-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 32px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(0, 200, 5, 0.2);
+    background: rgba(0, 200, 5, 0.03);
+    transform: translateY(-4px);
+  }
+
+  .feature-card:hover::before {
+    opacity: 1;
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: var(--green-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .feature-icon svg {
+    width: 24px;
+    height: 24px;
+    color: var(--green);
+  }
+
+  .feature-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .feature-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* ==============================
+     STATS BAR
+     ============================== */
+  .stats {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 24px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .stat-item {
+    position: relative;
+  }
+
+  .stat-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 48px;
+    background: var(--border);
+  }
+
+  .stat-number {
+    font-size: clamp(36px, 5vw, 52px);
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* Counter animation */
+  .stat-number[data-target] {
+    transition: color 0.3s;
+  }
+
+  /* ==============================
+     CHART SHOWCASE
+     ============================== */
+  .showcase {
+    background: var(--black-deep);
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .showcase .section-desc {
+    margin: 0 auto 64px;
+  }
+
+  .chart-window {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .chart-ticker {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .chart-ticker h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .chart-ticker .price {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--green);
+  }
+
+  .chart-ticker .change {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--green);
+    background: var(--green-dim);
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .chart-tabs {
+    display: flex;
+    gap: 4px;
+  }
+
+  .chart-tab {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: none;
+    border: none;
+    font-family: var(--font-body);
+  }
+
+  .chart-tab.active {
+    color: var(--green);
+    background: var(--green-dim);
+  }
+
+  .chart-body {
+    padding: 32px;
+    height: 320px;
+    position: relative;
+  }
+
+  .chart-body canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  .cta-section {
+    background: var(--black);
+    text-align: center;
+    padding: 140px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0, 200, 5, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-section .section-title {
+    margin-bottom: 16px;
+  }
+
+  .cta-section .section-desc {
+    margin: 0 auto 40px;
+    text-align: center;
+  }
+
+  /* Feather watermark */
+  .cta-feather {
+    position: absolute;
+    bottom: -40px;
+    right: -40px;
+    width: 280px;
+    height: 280px;
+    opacity: 0.03;
+    pointer-events: none;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: var(--black-deep);
+    border-top: 1px solid var(--border);
+    padding: 64px 48px 32px;
+  }
+
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: 0 auto 48px;
+  }
+
+  .footer-brand h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .footer-brand p {
+    font-size: 13px;
+    color: var(--text-muted);
+    max-width: 280px;
+    line-height: 1.6;
+  }
+
+  .footer-cols {
+    display: flex;
+    gap: 64px;
+  }
+
+  .footer-col h4 {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+  }
+
+  .footer-col li {
+    margin-bottom: 10px;
+  }
+
+  .footer-col a {
+    font-size: 13px;
+    color: var(--text-muted);
+    transition: color 0.3s;
+  }
+
+  .footer-col a:hover { color: var(--green); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-bottom p {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .footer-legal {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-legal a {
+    font-size: 12px;
+    color: var(--text-muted);
+    transition: color 0.3s;
+  }
+
+  .footer-legal a:hover { color: var(--text-secondary); }
+
+  /* ==============================
+     ANIMATIONS
+     ============================== */
+  @keyframes fadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  @keyframes featherFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(3deg); }
+  }
+
+  @keyframes drawLine {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @keyframes tickerScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ==============================
+     TICKER TAPE
+     ============================== */
+  .ticker-tape {
+    background: rgba(0, 200, 5, 0.04);
+    border-top: 1px solid rgba(0, 200, 5, 0.1);
+    border-bottom: 1px solid rgba(0, 200, 5, 0.1);
+    overflow: hidden;
+    padding: 14px 0;
+    position: relative;
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 48px;
+    animation: tickerScroll 30s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .ticker-item .symbol {
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .ticker-item .up {
+    color: var(--green);
+  }
+
+  .ticker-item .down {
+    color: #FF5252;
+  }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 768px) {
+    nav {
+      padding: 0 20px;
+    }
+
+    .nav-links { display: none; }
+
+    .nav-logo {
+      position: static;
+      transform: none;
+    }
+
+    .hero-title {
+      letter-spacing: 6px;
+    }
+
+    .feather-icon {
+      right: -32px;
+      top: -16px;
+      width: 32px;
+      height: 32px;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .feature-card {
+      padding: 28px 24px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px 24px;
+    }
+
+    .stat-item:not(:last-child)::after {
+      display: none;
+    }
+
+    .chart-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px 20px;
+    }
+
+    .chart-body {
+      padding: 20px;
+      height: 240px;
+    }
+
+    .footer-top {
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .footer-cols {
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .cta-feather {
+      width: 160px;
+      height: 160px;
+    }
+
+    section {
+      padding: 80px 20px;
+    }
+
+    .stats {
+      padding: 60px 20px;
+    }
+
+    footer {
+      padding: 48px 20px 24px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==============================
+     NAVIGATION
+     ============================== -->
+<nav id="nav">
+  <a href="/index.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    All Concepts
+  </a>
+  <span class="nav-logo">KPT</span>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#stats">Stats</a></li>
+    <li><a href="#chart">Chart</a></li>
+    <li><a href="#cta">Start</a></li>
+  </ul>
+</nav>
+
+<!-- ==============================
+     HERO SECTION
+     ============================== -->
+<section class="hero">
+  <!-- Animated chart background -->
+  <div class="hero-bg">
+    <canvas id="heroCanvas"></canvas>
+  </div>
+
+  <!-- Stock line SVG behind content -->
+  <div class="hero-chart">
+    <svg viewBox="0 0 1440 400" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#00C805" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#00C805" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path id="heroChartFill" fill="url(#chartGrad)" opacity="0.5"/>
+      <path id="heroChartLine" fill="none" stroke="#00C805" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Investing for Everyone
+    </div>
+
+    <h1 class="hero-title">
+      KPT
+      <!-- Feather / hat motif -->
+      <svg class="feather-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M32 4C32 4 18 16 14 32C10 48 16 56 24 58C32 60 38 52 38 52C38 52 28 56 24 48C20 40 22 28 32 16C42 4 56 8 56 8C56 8 48 4 32 4Z" fill="#00C805" opacity="0.9"/>
+        <path d="M32 16C32 16 30 32 32 42C34 52 38 52 38 52" stroke="#00A004" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>
+    </h1>
+
+    <p class="hero-tagline">Democratize Your Future</p>
+
+    <p class="hero-sub">Commission-free investing, built for a new generation. Your portfolio, your rules, zero barriers.</p>
+
+    <div class="hero-cta">
+      <a href="#cta" class="btn btn-green">Get Started Free</a>
+      <a href="#features" class="btn btn-outline">Explore Features</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M19 12l-7 7-7-7"/></svg>
+  </div>
+</section>
+
+<!-- ==============================
+     TICKER TAPE
+     ============================== -->
+<div class="ticker-tape">
+  <div class="ticker-track" id="tickerTrack">
+    <div class="ticker-item"><span class="symbol">KPT</span> $247.83 <span class="up">+12.4%</span></div>
+    <div class="ticker-item"><span class="symbol">AAPL</span> $198.11 <span class="up">+1.2%</span></div>
+    <div class="ticker-item"><span class="symbol">TSLA</span> $342.50 <span class="down">-0.8%</span></div>
+    <div class="ticker-item"><span class="symbol">MSFT</span> $451.20 <span class="up">+0.6%</span></div>
+    <div class="ticker-item"><span class="symbol">NVDA</span> $892.40 <span class="up">+3.1%</span></div>
+    <div class="ticker-item"><span class="symbol">AMZN</span> $201.75 <span class="up">+1.8%</span></div>
+    <div class="ticker-item"><span class="symbol">GOOG</span> $175.33 <span class="down">-0.3%</span></div>
+    <div class="ticker-item"><span class="symbol">META</span> $523.60 <span class="up">+2.4%</span></div>
+    <div class="ticker-item"><span class="symbol">BTC</span> $94,250 <span class="up">+4.7%</span></div>
+    <div class="ticker-item"><span class="symbol">ETH</span> $3,845 <span class="up">+2.1%</span></div>
+    <!-- Duplicated for seamless loop -->
+    <div class="ticker-item"><span class="symbol">KPT</span> $247.83 <span class="up">+12.4%</span></div>
+    <div class="ticker-item"><span class="symbol">AAPL</span> $198.11 <span class="up">+1.2%</span></div>
+    <div class="ticker-item"><span class="symbol">TSLA</span> $342.50 <span class="down">-0.8%</span></div>
+    <div class="ticker-item"><span class="symbol">MSFT</span> $451.20 <span class="up">+0.6%</span></div>
+    <div class="ticker-item"><span class="symbol">NVDA</span> $892.40 <span class="up">+3.1%</span></div>
+    <div class="ticker-item"><span class="symbol">AMZN</span> $201.75 <span class="up">+1.8%</span></div>
+    <div class="ticker-item"><span class="symbol">GOOG</span> $175.33 <span class="down">-0.3%</span></div>
+    <div class="ticker-item"><span class="symbol">META</span> $523.60 <span class="up">+2.4%</span></div>
+    <div class="ticker-item"><span class="symbol">BTC</span> $94,250 <span class="up">+4.7%</span></div>
+    <div class="ticker-item"><span class="symbol">ETH</span> $3,845 <span class="up">+2.1%</span></div>
+  </div>
+</div>
+
+<!-- ==============================
+     PHILOSOPHY / MISSION
+     ============================== -->
+<section class="philosophy" id="mission">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Our Mission</div>
+      <div class="section-title">Investing for Everyone</div>
+    </div>
+    <div class="philosophy-quote reveal reveal-delay-1">
+      We believe the financial system should work for <em>everyone</em>, not just a few. By removing barriers and simplifying complexity, we're building a world where <em>every person</em> has equal access to opportunity.
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     FEATURES
+     ============================== -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Features</div>
+      <div class="section-title">Everything you need.<br>Nothing you don't.</div>
+      <p class="section-desc">Built from the ground up with simplicity and power in equal measure. No hidden fees, no complexity theater.</p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Card 1 -->
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <h3>Commission-Free</h3>
+        <p>Trade stocks, ETFs, options, and crypto without paying a single cent in commission. Your money stays where it belongs.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>Real-Time Data</h3>
+        <p>Live market data streaming directly to your screen. Never miss a move with instant quotes and dynamic charts.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Fractional Shares</h3>
+        <p>Own a piece of any company. Invest with as little as $1 and build your portfolio one dollar at a time.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Bank-Level Security</h3>
+        <p>256-bit encryption, biometric auth, and SIPC protection. Your investments are safeguarded at every layer.</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Instant Deposits</h3>
+        <p>Access up to $5,000 instantly. No more waiting days for funds to settle. Opportunity waits for no one.</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        </div>
+        <h3>Learn & Earn</h3>
+        <p>Educational content woven into every experience. Understand what you own and why. Knowledge is the best investment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     STATS
+     ============================== -->
+<section class="stats" id="stats">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-number" data-target="24" data-suffix="M+">0</div>
+      <div class="stat-label">Active Users</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-number" data-target="0" data-suffix="" data-display="$0">$0</div>
+      <div class="stat-label">Commissions</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-number" data-target="5000" data-prefix="$" data-suffix="+">0</div>
+      <div class="stat-label">Assets Available</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-number" data-target="1" data-prefix="$" data-suffix="">0</div>
+      <div class="stat-label">Minimum Investment</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     CHART SHOWCASE
+     ============================== -->
+<section class="showcase" id="chart">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Live View</div>
+      <div class="section-title">Watch your portfolio grow</div>
+      <p class="section-desc">Beautiful, real-time charts that make monitoring your investments a pleasure, not a chore.</p>
+    </div>
+
+    <div class="chart-window reveal reveal-delay-1">
+      <div class="chart-header">
+        <div class="chart-ticker">
+          <h3>KPT</h3>
+          <span class="price">$247.83</span>
+          <span class="change">+$27.42 (12.4%)</span>
+        </div>
+        <div class="chart-tabs">
+          <button class="chart-tab">1D</button>
+          <button class="chart-tab">1W</button>
+          <button class="chart-tab active">1M</button>
+          <button class="chart-tab">3M</button>
+          <button class="chart-tab">1Y</button>
+          <button class="chart-tab">ALL</button>
+        </div>
+      </div>
+      <div class="chart-body">
+        <canvas id="showcaseChart"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     CTA SECTION
+     ============================== -->
+<section class="cta-section" id="cta">
+  <div class="container" style="position:relative; z-index:2;">
+    <div class="reveal">
+      <div class="section-label">Get Started</div>
+      <div class="section-title">Claim your financial<br>freedom today</div>
+      <p class="section-desc">Join millions who've already taken control of their financial future. No minimums. No barriers. Just opportunity.</p>
+    </div>
+    <div class="reveal reveal-delay-1" style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a href="#" class="btn btn-green">Sign Up Free</a>
+      <a href="#features" class="btn btn-outline">Learn More</a>
+    </div>
+  </div>
+
+  <!-- Feather watermark -->
+  <svg class="cta-feather" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M32 4C32 4 18 16 14 32C10 48 16 56 24 58C32 60 38 52 38 52C38 52 28 56 24 48C20 40 22 28 32 16C42 4 56 8 56 8C56 8 48 4 32 4Z" fill="#00C805"/>
+    <path d="M32 16C32 16 30 32 32 42C34 52 38 52 38 52" stroke="#00A004" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </svg>
+</section>
+
+<!-- ==============================
+     FOOTER
+     ============================== -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h3>KPT</h3>
+      <p>Democratizing finance for the next generation. Commission-free trading, built with care.</p>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#features">Stocks & ETFs</a></li>
+          <li><a href="#features">Options</a></li>
+          <li><a href="#features">Crypto</a></li>
+          <li><a href="#features">Cash Card</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Learn</h4>
+        <ul>
+          <li><a href="#mission">Investing Basics</a></li>
+          <li><a href="#mission">Market News</a></li>
+          <li><a href="#mission">Snacks Newsletter</a></li>
+          <li><a href="#mission">Podcast</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#mission">About</a></li>
+          <li><a href="#mission">Careers</a></li>
+          <li><a href="#mission">Blog</a></li>
+          <li><a href="/index.html">All Concepts</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 KPT. Robinhood concept. All rights reserved.</p>
+    <div class="footer-legal">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Disclosures</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ==============================
+     SCRIPTS
+     ============================== -->
+<script>
+  // ── Nav scroll effect ──
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── IntersectionObserver scroll animations ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Counter animation for stats ──
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.dataset.target);
+        const prefix = el.dataset.prefix || '';
+        const suffix = el.dataset.suffix || '';
+        const display = el.dataset.display;
+
+        if (display) {
+          el.textContent = display;
+          statObserver.unobserve(el);
+          return;
+        }
+
+        const duration = 2000;
+        const start = performance.now();
+
+        function update(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.round(eased * target);
+
+          if (target >= 1000) {
+            el.textContent = prefix + current.toLocaleString() + suffix;
+          } else {
+            el.textContent = prefix + current + suffix;
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          }
+        }
+
+        requestAnimationFrame(update);
+        statObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.stat-number[data-target]').forEach(el => statObserver.observe(el));
+
+  // ── Hero background canvas — floating particles ──
+  (function() {
+    const canvas = document.getElementById('heroCanvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, particles;
+
+    function resize() {
+      w = canvas.width = canvas.offsetWidth * devicePixelRatio;
+      h = canvas.height = canvas.offsetHeight * devicePixelRatio;
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+    }
+
+    function init() {
+      resize();
+      particles = [];
+      const count = Math.min(60, Math.floor(w / 25));
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * (w / devicePixelRatio),
+          y: Math.random() * (h / devicePixelRatio),
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          r: Math.random() * 1.5 + 0.5,
+          alpha: Math.random() * 0.3 + 0.05
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w / devicePixelRatio, h / devicePixelRatio);
+
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        const ww = w / devicePixelRatio;
+        const hh = h / devicePixelRatio;
+
+        if (p.x < 0) p.x = ww;
+        if (p.x > ww) p.x = 0;
+        if (p.y < 0) p.y = hh;
+        if (p.y > hh) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 200, 5, ${p.alpha})`;
+        ctx.fill();
+      });
+
+      // Draw connections
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(0, 200, 5, ${0.06 * (1 - dist / 120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    init();
+    draw();
+    window.addEventListener('resize', () => {
+      resize();
+    });
+  })();
+
+  // ── Hero chart SVG — animated stock line ──
+  (function() {
+    const lineEl = document.getElementById('heroChartLine');
+    const fillEl = document.getElementById('heroChartFill');
+    const w = 1440;
+    const h = 400;
+
+    // Generate an upward-trending line with natural variance
+    const points = [];
+    const segments = 60;
+    let y = h * 0.75;
+    for (let i = 0; i <= segments; i++) {
+      const x = (i / segments) * w;
+      // Trend upward
+      y += (Math.random() - 0.42) * 18;
+      y = Math.max(h * 0.15, Math.min(h * 0.85, y));
+      // Overall upward bias
+      if (i > segments * 0.3) y -= 1.5;
+      points.push({ x, y });
+    }
+
+    const linePath = points.map((p, i) => (i === 0 ? `M${p.x},${p.y}` : `L${p.x},${p.y}`)).join(' ');
+    const fillPath = linePath + ` L${w},${h} L0,${h} Z`;
+
+    lineEl.setAttribute('d', linePath);
+    fillEl.setAttribute('d', fillPath);
+
+    // Animate the line drawing
+    const length = lineEl.getTotalLength();
+    lineEl.style.strokeDasharray = length;
+    lineEl.style.strokeDashoffset = length;
+    lineEl.style.animation = `drawLine 3s ease-out 0.5s forwards`;
+  })();
+
+  // ── Showcase chart canvas ──
+  (function() {
+    const canvas = document.getElementById('showcaseChart');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width * devicePixelRatio;
+      canvas.height = rect.height * devicePixelRatio;
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+    }
+
+    // Generate price data — uptrend with realistic variance
+    function generateData(count) {
+      const data = [];
+      let price = 180;
+      for (let i = 0; i < count; i++) {
+        price += (Math.random() - 0.38) * 4;
+        price = Math.max(140, Math.min(260, price));
+        data.push(price);
+      }
+      return data;
+    }
+
+    let data = generateData(90);
+    let animProgress = 0;
+    let animating = false;
+
+    function draw() {
+      const w = canvas.width / devicePixelRatio;
+      const h = canvas.height / devicePixelRatio;
+      ctx.clearRect(0, 0, w, h);
+
+      const padding = { top: 20, bottom: 40, left: 0, right: 0 };
+      const chartW = w - padding.left - padding.right;
+      const chartH = h - padding.top - padding.bottom;
+
+      const min = Math.min(...data) - 5;
+      const max = Math.max(...data) + 5;
+
+      const visibleCount = Math.floor(animProgress * data.length);
+      if (visibleCount < 2) return;
+
+      const stepX = chartW / (data.length - 1);
+
+      // Grid lines
+      ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 5; i++) {
+        const gy = padding.top + (chartH / 4) * i;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, gy);
+        ctx.lineTo(w - padding.right, gy);
+        ctx.stroke();
+
+        // Price label
+        const priceLabel = (max - (i / 4) * (max - min)).toFixed(0);
+        ctx.fillStyle = 'rgba(255,255,255,0.15)';
+        ctx.font = '11px DM Sans, Inter, sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('$' + priceLabel, w - 4, gy - 4);
+      }
+
+      // Gradient fill
+      const gradient = ctx.createLinearGradient(0, padding.top, 0, h - padding.bottom);
+      gradient.addColorStop(0, 'rgba(0, 200, 5, 0.2)');
+      gradient.addColorStop(1, 'rgba(0, 200, 5, 0)');
+
+      ctx.beginPath();
+      for (let i = 0; i < visibleCount; i++) {
+        const x = padding.left + i * stepX;
+        const y = padding.top + chartH - ((data[i] - min) / (max - min)) * chartH;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      // Fill
+      const lastX = padding.left + (visibleCount - 1) * stepX;
+      const lastY = padding.top + chartH - ((data[visibleCount - 1] - min) / (max - min)) * chartH;
+      ctx.lineTo(lastX, h - padding.bottom);
+      ctx.lineTo(padding.left, h - padding.bottom);
+      ctx.closePath();
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      // Line
+      ctx.beginPath();
+      for (let i = 0; i < visibleCount; i++) {
+        const x = padding.left + i * stepX;
+        const y = padding.top + chartH - ((data[i] - min) / (max - min)) * chartH;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = '#00C805';
+      ctx.lineWidth = 2.5;
+      ctx.lineJoin = 'round';
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // Dot at end
+      ctx.beginPath();
+      ctx.arc(lastX, lastY, 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#00C805';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(lastX, lastY, 8, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0, 200, 5, 0.2)';
+      ctx.fill();
+    }
+
+    function animate() {
+      if (animProgress < 1) {
+        animProgress += 0.015;
+        draw();
+        requestAnimationFrame(animate);
+      } else {
+        animProgress = 1;
+        draw();
+      }
+    }
+
+    // Start animation when visible
+    const chartObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !animating) {
+          animating = true;
+          resize();
+          animate();
+          chartObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    chartObserver.observe(canvas.closest('.chart-window'));
+
+    window.addEventListener('resize', () => {
+      if (animating) {
+        resize();
+        draw();
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

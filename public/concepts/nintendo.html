@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Nintendo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Poppins:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --nintendo-red: #E60012;
+    --nintendo-red-dark: #B8000E;
+    --nintendo-red-glow: rgba(230, 0, 18, 0.4);
+    --joycon-blue: #0AB9E6;
+    --joycon-blue-dark: #0899BF;
+    --joycon-blue-glow: rgba(10, 185, 230, 0.35);
+    --joycon-red: #FF3C28;
+    --joycon-red-glow: rgba(255, 60, 40, 0.35);
+    --white: #FFFFFF;
+    --off-white: #F8F9FA;
+    --light-gray: #E9ECEF;
+    --mid-gray: #CED4DA;
+    --text-dark: #212529;
+    --text-mid: #495057;
+    --text-light: #868E96;
+    --surface: #FFFFFF;
+    --surface-raised: #F1F3F5;
+    --border: rgba(0, 0, 0, 0.08);
+    --border-hover: rgba(0, 0, 0, 0.15);
+    --font-heading: 'Nunito', sans-serif;
+    --font-body: 'Poppins', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --max-width: 1200px;
+    --nav-height: 72px;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--off-white);
+    color: var(--text-mid);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    color: var(--text-dark);
+    line-height: 1.2;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+
+  /* ==============================
+     ANIMATIONS
+     ============================== */
+  @keyframes joyconBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes joyconRock {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0.6); opacity: 0; }
+    60% { transform: scale(1.08); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @keyframes coinSpin {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px var(--nintendo-red-glow), 0 4px 20px rgba(0,0,0,0.1); }
+    50% { box-shadow: 0 0 35px var(--nintendo-red-glow), 0 4px 30px rgba(0,0,0,0.15); }
+  }
+
+  @keyframes dpadPress {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(0.92); }
+  }
+
+  @keyframes slideInLeft {
+    0% { transform: translateX(-60px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes slideInRight {
+    0% { transform: translateX(60px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes starBurst {
+    0% { transform: scale(0) rotate(0deg); opacity: 1; }
+    100% { transform: scale(1.5) rotate(180deg); opacity: 0; }
+  }
+
+  /* ==============================
+     SCROLL REVEAL
+     ============================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ==============================
+     BACK LINK
+     ============================== */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 24px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.25s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+  }
+  .back-link:hover { color: var(--nintendo-red); }
+  .back-link span { transition: transform 0.2s; display: inline-block; }
+  .back-link:hover span { transform: translateX(-3px); }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(20px) saturate(1.6);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+
+  nav.scrolled {
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+  }
+
+  nav .nav-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--font-heading);
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--nintendo-red);
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-logo .logo-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--joycon-blue);
+    display: inline-block;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.25s;
+    font-family: var(--font-heading);
+  }
+
+  .nav-links a:hover { color: var(--nintendo-red); }
+
+  /* ==============================
+     FLOATING DECORATIONS
+     ============================== */
+  .floating-shapes {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.04;
+  }
+
+  .shape-1 {
+    width: 400px;
+    height: 400px;
+    background: var(--joycon-blue);
+    top: -100px;
+    right: -100px;
+    animation: joyconBounce 6s ease-in-out infinite;
+  }
+
+  .shape-2 {
+    width: 300px;
+    height: 300px;
+    background: var(--joycon-red);
+    bottom: -50px;
+    left: -80px;
+    animation: joyconBounce 8s ease-in-out infinite 1s;
+  }
+
+  .shape-3 {
+    width: 200px;
+    height: 200px;
+    background: var(--nintendo-red);
+    top: 40%;
+    left: 60%;
+    animation: joyconBounce 5s ease-in-out infinite 0.5s;
+  }
+
+  /* ==============================
+     HERO
+     ============================== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: calc(var(--nav-height) + 40px) 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(230, 0, 18, 0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(10, 185, 230, 0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(255, 60, 40, 0.05) 0%, transparent 60%);
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: var(--white);
+    border: 2px solid var(--nintendo-red);
+    border-radius: 50px;
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--nintendo-red);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    animation: popIn 0.6s ease-out;
+    box-shadow: 0 4px 20px rgba(230, 0, 18, 0.12);
+  }
+
+  .hero-badge .badge-icon {
+    font-size: 16px;
+  }
+
+  .hero-title {
+    font-size: clamp(56px, 10vw, 110px);
+    font-weight: 900;
+    letter-spacing: -2px;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+
+  .hero-title .letter-k {
+    color: var(--joycon-blue);
+    display: inline-block;
+    animation: joyconRock 3s ease-in-out infinite;
+  }
+
+  .hero-title .letter-p {
+    color: var(--nintendo-red);
+    display: inline-block;
+    animation: joyconBounce 2.5s ease-in-out infinite 0.3s;
+  }
+
+  .hero-title .letter-t {
+    color: var(--joycon-red);
+    display: inline-block;
+    animation: joyconRock 3.5s ease-in-out infinite 0.6s;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-heading);
+    font-size: clamp(18px, 3vw, 28px);
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: floatUp 0.8s ease-out 0.3s forwards;
+  }
+
+  .hero-subtitle {
+    font-size: 17px;
+    color: var(--text-light);
+    max-width: 540px;
+    margin: 0 auto 40px;
+    opacity: 0;
+    animation: floatUp 0.8s ease-out 0.5s forwards;
+    line-height: 1.8;
+  }
+
+  /* Joy-Con visual */
+  .joycon-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: floatUp 0.8s ease-out 0.2s forwards;
+  }
+
+  .joycon {
+    width: 42px;
+    height: 120px;
+    border-radius: 21px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .joycon-left {
+    background: var(--joycon-blue);
+    box-shadow: 0 8px 30px var(--joycon-blue-glow), inset 0 1px 0 rgba(255,255,255,0.25);
+    animation: joyconRock 4s ease-in-out infinite;
+  }
+
+  .joycon-right {
+    background: var(--joycon-red);
+    box-shadow: 0 8px 30px var(--joycon-red-glow), inset 0 1px 0 rgba(255,255,255,0.25);
+    animation: joyconRock 4s ease-in-out infinite 0.5s;
+  }
+
+  .joycon-screen {
+    width: 90px;
+    height: 64px;
+    background: var(--text-dark);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  .joycon-screen-text {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, var(--joycon-blue), var(--white), var(--joycon-red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .joycon-btn {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    border: 1.5px solid rgba(255,255,255,0.4);
+  }
+
+  .joycon-stick {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.2);
+    border: 2px solid rgba(255,255,255,0.2);
+  }
+
+  .hero-cta-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: floatUp 0.8s ease-out 0.7s forwards;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 36px;
+    background: var(--nintendo-red);
+    color: var(--white);
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 800;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 20px var(--nintendo-red-glow);
+    letter-spacing: 0.5px;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 35px var(--nintendo-red-glow);
+    background: var(--nintendo-red-dark);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 36px;
+    background: var(--white);
+    color: var(--text-dark);
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 50px;
+    border: 2px solid var(--light-gray);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-secondary:hover {
+    transform: translateY(-3px);
+    border-color: var(--joycon-blue);
+    color: var(--joycon-blue);
+    box-shadow: 0 8px 30px var(--joycon-blue-glow);
+  }
+
+  /* ==============================
+     SECTION SHARED
+     ============================== */
+  section {
+    padding: 100px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--nintendo-red);
+    margin-bottom: 16px;
+  }
+
+  .section-label::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 3px;
+    background: var(--nintendo-red);
+    border-radius: 2px;
+  }
+
+  .section-title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 900;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+  }
+
+  .section-subtitle {
+    font-size: 17px;
+    color: var(--text-light);
+    max-width: 560px;
+    line-height: 1.8;
+  }
+
+  /* ==============================
+     FEATURES (POWER-UPS)
+     ============================== */
+  .features {
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .features-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .features-header .section-subtitle {
+    margin: 0 auto;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .feature-card {
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 28px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--card-accent, var(--nintendo-red));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .feature-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    border-color: var(--border-hover);
+  }
+
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 20px;
+    background: var(--icon-bg, rgba(230, 0, 18, 0.08));
+  }
+
+  .feature-card h3 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .feature-card p {
+    font-size: 14px;
+    color: var(--text-light);
+    line-height: 1.7;
+  }
+
+  .feature-card .feature-tag {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 20px;
+    background: var(--tag-bg, rgba(230, 0, 18, 0.08));
+    color: var(--tag-color, var(--nintendo-red));
+  }
+
+  /* Card accent colors */
+  .feature-card:nth-child(1) { --card-accent: var(--nintendo-red); --icon-bg: rgba(230,0,18,0.08); --tag-bg: rgba(230,0,18,0.08); --tag-color: var(--nintendo-red); }
+  .feature-card:nth-child(2) { --card-accent: var(--joycon-blue); --icon-bg: rgba(10,185,230,0.08); --tag-bg: rgba(10,185,230,0.08); --tag-color: var(--joycon-blue-dark); }
+  .feature-card:nth-child(3) { --card-accent: var(--joycon-red); --icon-bg: rgba(255,60,40,0.08); --tag-bg: rgba(255,60,40,0.08); --tag-color: var(--joycon-red); }
+  .feature-card:nth-child(4) { --card-accent: #7C3AED; --icon-bg: rgba(124,58,237,0.08); --tag-bg: rgba(124,58,237,0.08); --tag-color: #7C3AED; }
+  .feature-card:nth-child(5) { --card-accent: #F59E0B; --icon-bg: rgba(245,158,11,0.08); --tag-bg: rgba(245,158,11,0.08); --tag-color: #D97706; }
+  .feature-card:nth-child(6) { --card-accent: #10B981; --icon-bg: rgba(16,185,129,0.08); --tag-bg: rgba(16,185,129,0.08); --tag-color: #059669; }
+
+  /* ==============================
+     STATS (HIGH SCORES)
+     ============================== */
+  .stats {
+    background: var(--text-dark);
+    color: var(--white);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .stats::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 50% 80% at 0% 50%, rgba(10, 185, 230, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 80% at 100% 50%, rgba(255, 60, 40, 0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .stats-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .stats-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .stats-header h2 {
+    color: var(--white);
+  }
+
+  .stats-header .section-subtitle {
+    color: rgba(255,255,255,0.5);
+    margin: 0 auto;
+  }
+
+  .stats-header .section-label {
+    color: var(--joycon-blue);
+  }
+
+  .stats-header .section-label::before {
+    background: var(--joycon-blue);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+
+  .stat-card {
+    text-align: center;
+    padding: 40px 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--stat-accent, var(--nintendo-red));
+    opacity: 0;
+    transition: opacity 0.3s, width 0.4s;
+  }
+
+  .stat-card:hover::after {
+    opacity: 1;
+    width: 60px;
+  }
+
+  .stat-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-4px);
+  }
+
+  .stat-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .stat-number {
+    font-family: var(--font-heading);
+    font-size: 44px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.45);
+    font-weight: 500;
+  }
+
+  .stat-card:nth-child(1) { --stat-accent: var(--nintendo-red); }
+  .stat-card:nth-child(2) { --stat-accent: var(--joycon-blue); }
+  .stat-card:nth-child(3) { --stat-accent: var(--joycon-red); }
+  .stat-card:nth-child(4) { --stat-accent: #F59E0B; }
+
+  /* ==============================
+     SHOWCASE (GAME MODES)
+     ============================== */
+  .showcase {
+    background: var(--white);
+    border-top: 1px solid var(--border);
+  }
+
+  .showcase-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .showcase-header .section-subtitle {
+    margin: 0 auto;
+  }
+
+  .showcase-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    margin-bottom: 80px;
+  }
+
+  .showcase-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .showcase-row.reverse {
+    direction: rtl;
+  }
+
+  .showcase-row.reverse > * {
+    direction: ltr;
+  }
+
+  .showcase-visual {
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .showcase-visual-1 {
+    background: linear-gradient(135deg, #E8F4FD, #F0E6FF);
+    border: 1px solid rgba(10, 185, 230, 0.15);
+  }
+
+  .showcase-visual-2 {
+    background: linear-gradient(135deg, #FFF0F0, #FFF8E6);
+    border: 1px solid rgba(255, 60, 40, 0.15);
+  }
+
+  .showcase-visual-3 {
+    background: linear-gradient(135deg, #E8FFF0, #E6F0FF);
+    border: 1px solid rgba(16, 185, 129, 0.15);
+  }
+
+  .visual-icon {
+    font-size: 80px;
+    opacity: 0.7;
+  }
+
+  .visual-label {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    padding: 6px 14px;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(8px);
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dark);
+  }
+
+  .showcase-text h3 {
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 16px;
+  }
+
+  .showcase-text p {
+    font-size: 15px;
+    color: var(--text-light);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .showcase-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .showcase-tag {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    border-radius: 20px;
+    background: var(--off-white);
+    color: var(--text-mid);
+    border: 1px solid var(--border);
+  }
+
+  /* ==============================
+     CTA (GAME OVER / CONTINUE?)
+     ============================== */
+  .cta {
+    text-align: center;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 100%, rgba(230, 0, 18, 0.06) 0%, transparent 70%);
+  }
+
+  .cta-card {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 64px 48px;
+    background: var(--white);
+    border: 2px solid var(--light-gray);
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.04);
+  }
+
+  .cta-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--joycon-blue), var(--nintendo-red), var(--joycon-red));
+  }
+
+  .cta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    background: rgba(230, 0, 18, 0.06);
+    border-radius: 50px;
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--nintendo-red);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .cta h2 {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 900;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .cta p {
+    font-size: 16px;
+    color: var(--text-light);
+    max-width: 440px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+  }
+
+  .cta-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .cta-note {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-top: 20px;
+  }
+
+  .cta-note span {
+    color: var(--nintendo-red);
+    font-weight: 700;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: var(--text-dark);
+    color: rgba(255, 255, 255, 0.4);
+    padding: 60px 0 40px;
+    border-top: 4px solid var(--nintendo-red);
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  .footer-brand .footer-logo {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .footer-brand .footer-logo .fl-blue { color: var(--joycon-blue); }
+  .footer-brand .footer-logo .fl-red { color: var(--joycon-red); }
+
+  .footer-brand p {
+    font-size: 14px;
+    max-width: 280px;
+    line-height: 1.7;
+  }
+
+  .footer-tagline {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--nintendo-red);
+    margin-top: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .footer-links-group h4 {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 16px;
+  }
+
+  .footer-links-group ul {
+    list-style: none;
+  }
+
+  .footer-links-group li {
+    margin-bottom: 10px;
+  }
+
+  .footer-links-group a {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.35);
+    transition: color 0.25s;
+  }
+
+  .footer-links-group a:hover {
+    color: var(--white);
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-bottom p {
+    font-size: 13px;
+  }
+
+  .footer-joycons {
+    display: flex;
+    gap: 6px;
+  }
+
+  .footer-joycon-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+
+  .footer-joycon-dot:hover { opacity: 1; }
+  .fjd-blue { background: var(--joycon-blue); }
+  .fjd-red { background: var(--nintendo-red); }
+  .fjd-orange { background: var(--joycon-red); }
+  .fjd-gray { background: var(--mid-gray); }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 768px) {
+    nav {
+      padding: 0 16px;
+    }
+
+    .nav-links {
+      display: none;
+    }
+
+    .hero {
+      padding: calc(var(--nav-height) + 20px) 16px 60px;
+    }
+
+    .hero-title {
+      letter-spacing: -1px;
+    }
+
+    .joycon-display {
+      transform: scale(0.85);
+    }
+
+    .hero-cta-group {
+      flex-direction: column;
+    }
+
+    .btn-primary, .btn-secondary {
+      width: 100%;
+      justify-content: center;
+    }
+
+    section {
+      padding: 64px 0;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .stat-number {
+      font-size: 32px;
+    }
+
+    .showcase-row,
+    .showcase-row.reverse {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      direction: ltr;
+    }
+
+    .showcase-visual {
+      aspect-ratio: 16/10;
+    }
+
+    .cta-card {
+      padding: 40px 24px;
+    }
+
+    .cta-actions {
+      flex-direction: column;
+    }
+
+    .cta-actions .btn-primary,
+    .cta-actions .btn-secondary {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .footer-inner {
+      flex-direction: column;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating shapes -->
+<div class="floating-shapes">
+  <div class="shape shape-1"></div>
+  <div class="shape shape-2"></div>
+  <div class="shape shape-3"></div>
+</div>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link"><span>&larr;</span> Back</a>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <span class="logo-dot"></span>
+      KPT
+    </div>
+    <ul class="nav-links">
+      <li><a href="#features">Power-Ups</a></li>
+      <li><a href="#stats">High Scores</a></li>
+      <li><a href="#showcase">Game Modes</a></li>
+      <li><a href="#cta">Play Now</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ==============================
+     HERO
+     ============================== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-icon">&#127918;</span>
+      Now You're Playing With Power
+    </div>
+
+    <div class="joycon-display">
+      <div class="joycon joycon-left">
+        <div class="joycon-stick"></div>
+        <div class="joycon-btn"></div>
+        <div class="joycon-btn"></div>
+      </div>
+      <div class="joycon-screen">
+        <span class="joycon-screen-text">KPT</span>
+      </div>
+      <div class="joycon joycon-right">
+        <div class="joycon-btn"></div>
+        <div class="joycon-btn"></div>
+        <div class="joycon-stick"></div>
+      </div>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="letter-k">K</span><span class="letter-p">P</span><span class="letter-t">T</span>
+    </h1>
+
+    <p class="hero-tagline">Level up your workflow. Game on.</p>
+
+    <p class="hero-subtitle">
+      A playful productivity platform built for teams who believe great work should feel as fun as your favorite game.
+    </p>
+
+    <div class="hero-cta-group">
+      <a href="#cta" class="btn-primary">
+        &#9654; Start Playing
+      </a>
+      <a href="#features" class="btn-secondary">
+        &#128190; Explore Power-Ups
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     FEATURES (POWER-UPS)
+     ============================== -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="features-header">
+      <div class="section-label reveal">Power-Ups</div>
+      <h2 class="section-title reveal reveal-delay-1">Your Inventory of Awesome</h2>
+      <p class="section-subtitle reveal reveal-delay-2">
+        Every great adventure needs the right gear. These power-ups keep your team performing at their best.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">&#127775;</div>
+        <h3>Star Power</h3>
+        <p>Invincible analytics dashboards that give you real-time visibility into every metric that matters.</p>
+        <span class="feature-tag">Analytics</span>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">&#128268;</div>
+        <h3>Link Cable</h3>
+        <p>Seamless integrations that connect your favorite tools into one unified multiplayer experience.</p>
+        <span class="feature-tag">Integrations</span>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">&#127942;</div>
+        <h3>Trophy Room</h3>
+        <p>Achievement tracking that celebrates wins, milestones, and team accomplishments in real time.</p>
+        <span class="feature-tag">Gamification</span>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">&#128302;</div>
+        <h3>Magic Shield</h3>
+        <p>Enterprise-grade security that protects your data with encryption, SSO, and role-based access controls.</p>
+        <span class="feature-tag">Security</span>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">&#9889;</div>
+        <h3>Speed Boost</h3>
+        <p>Lightning-fast performance with sub-100ms response times and edge-cached content delivery worldwide.</p>
+        <span class="feature-tag">Performance</span>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">&#127756;</div>
+        <h3>World Map</h3>
+        <p>Bird's eye project views that let you zoom between high-level strategy and granular task details.</p>
+        <span class="feature-tag">Planning</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     STATS (HIGH SCORES)
+     ============================== -->
+<section class="stats" id="stats">
+  <div class="container stats-inner">
+    <div class="stats-header">
+      <div class="section-label reveal">High Scores</div>
+      <h2 class="section-title reveal reveal-delay-1">Leaderboard Numbers</h2>
+      <p class="section-subtitle reveal reveal-delay-2">
+        The stats speak for themselves. Here's what the community has unlocked.
+      </p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card reveal reveal-delay-1">
+        <span class="stat-icon">&#127918;</span>
+        <div class="stat-number">50K+</div>
+        <div class="stat-label">Active Players</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-2">
+        <span class="stat-icon">&#11088;</span>
+        <div class="stat-number">99.9%</div>
+        <div class="stat-label">Uptime Score</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-3">
+        <span class="stat-icon">&#128640;</span>
+        <div class="stat-number">2.4M</div>
+        <div class="stat-label">Tasks Completed</div>
+      </div>
+      <div class="stat-card reveal reveal-delay-4">
+        <span class="stat-icon">&#127941;</span>
+        <div class="stat-number">4.9/5</div>
+        <div class="stat-label">Player Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     SHOWCASE (GAME MODES)
+     ============================== -->
+<section class="showcase" id="showcase">
+  <div class="container">
+    <div class="showcase-header">
+      <div class="section-label reveal">Game Modes</div>
+      <h2 class="section-title reveal reveal-delay-1">Choose Your Play Style</h2>
+      <p class="section-subtitle reveal reveal-delay-2">
+        Whether you're going solo or teaming up, KPT adapts to how you work best.
+      </p>
+    </div>
+
+    <div class="showcase-row reveal">
+      <div class="showcase-visual showcase-visual-1">
+        <span class="visual-icon">&#128101;</span>
+        <div class="visual-label">Co-op Mode</div>
+      </div>
+      <div class="showcase-text">
+        <h3>Multiplayer Collaboration</h3>
+        <p>Real-time teamwork that feels effortless. Share boards, assign quests, and watch progress bars fill up together. No lag, no desync &mdash; just smooth cooperative play.</p>
+        <div class="showcase-tags">
+          <span class="showcase-tag">Real-time sync</span>
+          <span class="showcase-tag">Shared boards</span>
+          <span class="showcase-tag">Live cursors</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="showcase-row reverse reveal">
+      <div class="showcase-visual showcase-visual-2">
+        <span class="visual-icon">&#127919;</span>
+        <div class="visual-label">Campaign Mode</div>
+      </div>
+      <div class="showcase-text">
+        <h3>Project Campaigns</h3>
+        <p>Map out your product roadmap like an epic quest line. Set milestones as boss battles, track side-quests, and celebrate when your team clears each chapter.</p>
+        <div class="showcase-tags">
+          <span class="showcase-tag">Roadmaps</span>
+          <span class="showcase-tag">Milestones</span>
+          <span class="showcase-tag">Timelines</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="showcase-row reveal">
+      <div class="showcase-visual showcase-visual-3">
+        <span class="visual-icon">&#128200;</span>
+        <div class="visual-label">Arena Mode</div>
+      </div>
+      <div class="showcase-text">
+        <h3>Performance Arena</h3>
+        <p>Sprint reviews that feel like tournament brackets. Stack-rank priorities, compete for velocity records, and keep the scoreboard updated with automated metrics.</p>
+        <div class="showcase-tags">
+          <span class="showcase-tag">Sprint tracking</span>
+          <span class="showcase-tag">Velocity charts</span>
+          <span class="showcase-tag">Leaderboards</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     CTA
+     ============================== -->
+<section class="cta" id="cta">
+  <div class="container">
+    <div class="cta-card reveal-scale">
+      <div class="cta-badge">&#128171; Continue?</div>
+      <h2>Ready to Press Start?</h2>
+      <p>
+        Join thousands of teams already playing smarter. Free to start, built to scale.
+      </p>
+      <div class="cta-actions">
+        <a href="#" class="btn-primary">
+          &#9654; Start Free Trial
+        </a>
+        <a href="#" class="btn-secondary">
+          &#128196; View Pricing
+        </a>
+      </div>
+      <p class="cta-note">No credit card required. <span>14-day free trial.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     FOOTER
+     ============================== -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span class="fl-blue">K</span>P<span class="fl-red">T</span>
+        </div>
+        <p>A playful approach to productivity. Built for teams who take fun seriously.</p>
+        <div class="footer-tagline">Now You're Playing With Power.</div>
+      </div>
+      <div class="footer-links-group">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Integrations</a></li>
+          <li><a href="#">Changelog</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-group">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-group">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">API Reference</a></li>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 KPT. All rights reserved.</p>
+      <div class="footer-joycons">
+        <span class="footer-joycon-dot fjd-blue"></span>
+        <span class="footer-joycon-dot fjd-red"></span>
+        <span class="footer-joycon-dot fjd-orange"></span>
+        <span class="footer-joycon-dot fjd-gray"></span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ==============================
+     SCRIPTS
+     ============================== -->
+<script>
+  // ---- Scroll Reveal via IntersectionObserver ----
+  const revealEls = document.querySelectorAll('.reveal, .reveal-scale');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // ---- Nav scroll effect ----
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // ---- Smooth scroll for anchor links ----
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ---- Stat counter animation ----
+  const statNumbers = document.querySelectorAll('.stat-number');
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        statObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  statNumbers.forEach(el => statObserver.observe(el));
+
+  function animateCounter(el) {
+    const text = el.textContent;
+    const suffix = text.replace(/[\d.]/g, '');
+    const numStr = text.replace(/[^\d.]/g, '');
+    const target = parseFloat(numStr);
+    const isDecimal = numStr.includes('.');
+    const duration = 1200;
+    const start = performance.now();
+
+    function tick(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = target * eased;
+
+      if (isDecimal) {
+        el.textContent = current.toFixed(1) + suffix;
+      } else {
+        if (target >= 1000) {
+          el.textContent = (current / 1000).toFixed(current >= target ? (target % 1000 === 0 ? 0 : 1) : 1) + suffix;
+        } else {
+          el.textContent = Math.floor(current) + suffix;
+        }
+      }
+
+      if (progress < 1) requestAnimationFrame(tick);
+      else el.textContent = text;
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  // ---- Button press haptic effect ----
+  document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+    btn.addEventListener('mousedown', () => {
+      btn.style.transform = 'translateY(0) scale(0.96)';
+    });
+    btn.addEventListener('mouseup', () => {
+      btn.style.transform = '';
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — McLaren</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --papaya: #FF8000;
+    --papaya-dim: rgba(255, 128, 0, 0.12);
+    --papaya-glow: rgba(255, 128, 0, 0.4);
+    --papaya-bright: #FF9933;
+    --black: #000000;
+    --carbon: #0A0A0A;
+    --carbon-mid: #1A1A1A;
+    --carbon-light: #2A2A2A;
+    --white: #FFFFFF;
+    --white-off: #F0F0F0;
+    --gray-900: #111111;
+    --gray-800: #1C1C1C;
+    --gray-700: #2D2D2D;
+    --gray-600: #3D3D3D;
+    --gray-500: #555555;
+    --gray-400: #888888;
+    --gray-300: #AAAAAA;
+    --text-primary: #FFFFFF;
+    --text-secondary: #999999;
+    --text-muted: #555555;
+    --border: rgba(255, 255, 255, 0.06);
+    --border-hover: rgba(255, 128, 0, 0.3);
+    --font-body: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --nav-height: 52px;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ==============================
+     CARBON FIBER TEXTURE
+     ============================== */
+  .carbon-bg {
+    background-image:
+      radial-gradient(ellipse 1.2px 1.6px at 3px 3px, rgba(255,255,255,0.03) 50%, transparent 50%),
+      radial-gradient(ellipse 1.2px 1.6px at 9px 9px, rgba(255,255,255,0.03) 50%, transparent 50%);
+    background-size: 12px 12px;
+  }
+
+  .carbon-weave {
+    background-image:
+      linear-gradient(45deg, rgba(255,255,255,0.015) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.015) 50%, rgba(255,255,255,0.015) 75%, transparent 75%),
+      linear-gradient(-45deg, rgba(255,255,255,0.015) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.015) 50%, rgba(255,255,255,0.015) 75%, transparent 75%);
+    background-size: 8px 8px;
+  }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 1000;
+  }
+
+  .nav-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--gray-400);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .nav-back:hover { color: var(--papaya); }
+
+  .nav-back svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+  }
+
+  .nav-logo {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: var(--papaya);
+    text-transform: uppercase;
+  }
+
+  .nav-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gray-500);
+    letter-spacing: 1px;
+  }
+
+  /* ==============================
+     REVEAL ANIMATIONS
+     ============================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ==============================
+     HERO SECTION
+     ============================== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: var(--nav-height);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 40%, rgba(255, 128, 0, 0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 80% 60% at 30% 80%, rgba(255, 128, 0, 0.03) 0%, transparent 50%),
+      linear-gradient(180deg, var(--black) 0%, var(--carbon) 100%);
+    z-index: 0;
+  }
+
+  /* Wind tunnel streamlines */
+  .streamlines {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    opacity: 0.4;
+  }
+
+  .streamline {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--papaya) 40%, transparent 100%);
+    opacity: 0;
+    animation: streamflow 4s ease-in-out infinite;
+  }
+
+  @keyframes streamflow {
+    0% { opacity: 0; transform: translateX(-100%); }
+    20% { opacity: 0.6; }
+    80% { opacity: 0.6; }
+    100% { opacity: 0; transform: translateX(100vw); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  .hero-pre {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 24px;
+  }
+
+  .hero-pre span {
+    color: var(--papaya);
+    opacity: 0.8;
+  }
+
+  .hero-title {
+    font-size: clamp(80px, 15vw, 200px);
+    font-weight: 700;
+    letter-spacing: clamp(12px, 3vw, 40px);
+    color: var(--white);
+    line-height: 0.9;
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-title::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--papaya);
+    box-shadow: 0 0 20px var(--papaya-glow), 0 0 60px rgba(255, 128, 0, 0.15);
+  }
+
+  .hero-tagline {
+    font-size: clamp(16px, 2.5vw, 24px);
+    font-weight: 300;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gray-300);
+    margin-top: 32px;
+  }
+
+  .hero-tagline em {
+    font-style: normal;
+    color: var(--papaya);
+    font-weight: 500;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    margin-top: 48px;
+    flex-wrap: wrap;
+  }
+
+  .hero-meta-item {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: pulse-scroll 2s ease-in-out infinite;
+  }
+
+  .hero-scroll span {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-600);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(180deg, var(--papaya), transparent);
+    opacity: 0.4;
+  }
+
+  @keyframes pulse-scroll {
+    0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+    50% { opacity: 1; transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ==============================
+     SECTION COMMON
+     ============================== */
+  section {
+    padding: 120px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .section-header {
+    margin-bottom: 80px;
+  }
+
+  .section-number {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--papaya);
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+    display: block;
+    opacity: 0.7;
+  }
+
+  .section-title {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 2px;
+    line-height: 1.1;
+  }
+
+  .section-subtitle {
+    font-size: 15px;
+    color: var(--gray-400);
+    margin-top: 16px;
+    max-width: 500px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .section-divider {
+    width: 40px;
+    height: 2px;
+    background: var(--papaya);
+    margin-top: 24px;
+    opacity: 0.6;
+  }
+
+  /* ==============================
+     PHILOSOPHY SECTION
+     ============================== */
+  .philosophy {
+    border-top: 1px solid var(--border);
+  }
+
+  .phil-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .phil-text {
+    font-size: 18px;
+    color: var(--gray-300);
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  .phil-text strong {
+    color: var(--papaya);
+    font-weight: 500;
+  }
+
+  .phil-quote {
+    position: relative;
+    padding: 40px;
+    background: var(--carbon-mid);
+    border-left: 2px solid var(--papaya);
+  }
+
+  .phil-quote blockquote {
+    font-size: 16px;
+    color: var(--gray-300);
+    font-style: italic;
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  .phil-quote cite {
+    display: block;
+    margin-top: 20px;
+    font-size: 11px;
+    font-style: normal;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--papaya);
+    opacity: 0.7;
+  }
+
+  /* ==============================
+     FEATURES / AERO CARDS
+     ============================== */
+  .features {
+    border-top: 1px solid var(--border);
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .feature-card {
+    background: var(--carbon);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid transparent;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--papaya);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .feature-card:hover {
+    background: var(--carbon-mid);
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+
+  .feature-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    position: relative;
+  }
+
+  .feature-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--papaya);
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  .feature-icon::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border: 1px solid var(--papaya-dim);
+    border-radius: 2px;
+  }
+
+  .feature-number {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gray-600);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .feature-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .feature-desc {
+    font-size: 13px;
+    color: var(--gray-400);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .feature-spec {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gray-500);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ==============================
+     TELEMETRY / STATS
+     ============================== */
+  .telemetry {
+    border-top: 1px solid var(--border);
+    padding-top: 120px;
+  }
+
+  .telem-panel {
+    background: var(--carbon);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .telem-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border);
+    background: var(--carbon-mid);
+  }
+
+  .telem-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .telem-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--papaya);
+    animation: telempulse 2s ease-in-out infinite;
+  }
+
+  @keyframes telempulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; box-shadow: 0 0 8px var(--papaya-glow); }
+  }
+
+  .telem-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+  }
+
+  .telem-status {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--papaya);
+    letter-spacing: 1px;
+    opacity: 0.7;
+  }
+
+  .telem-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  .telem-cell {
+    padding: 40px 32px;
+    border-right: 1px solid var(--border);
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .telem-cell:last-child { border-right: none; }
+
+  .telem-cell:hover {
+    background: rgba(255, 128, 0, 0.03);
+  }
+
+  .telem-cell-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 16px;
+  }
+
+  .telem-cell-value {
+    font-family: var(--font-body);
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .telem-cell-value .unit {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--papaya);
+    margin-left: 4px;
+    letter-spacing: 1px;
+  }
+
+  .telem-cell-bar {
+    margin-top: 20px;
+    height: 2px;
+    background: var(--gray-800);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .telem-cell-bar-fill {
+    height: 100%;
+    background: var(--papaya);
+    border-radius: 1px;
+    width: 0%;
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .telem-cell.visible .telem-cell-bar-fill {
+    width: var(--bar-width);
+  }
+
+  .telem-cell-sub {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gray-600);
+    margin-top: 12px;
+    letter-spacing: 1px;
+  }
+
+  /* Telemetry trace visualization */
+  .telem-trace {
+    padding: 32px;
+    border-top: 1px solid var(--border);
+    position: relative;
+    height: 120px;
+    overflow: hidden;
+  }
+
+  .trace-canvas {
+    position: absolute;
+    inset: 0;
+  }
+
+  .trace-line {
+    position: absolute;
+    bottom: 30px;
+    left: 32px;
+    right: 32px;
+    height: 60px;
+  }
+
+  .trace-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .trace-path {
+    fill: none;
+    stroke: var(--papaya);
+    stroke-width: 1.5;
+    opacity: 0.6;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    transition: stroke-dashoffset 3s ease-out;
+  }
+
+  .telem-panel.visible .trace-path {
+    stroke-dashoffset: 0;
+  }
+
+  .trace-fill {
+    fill: url(#traceGrad);
+    opacity: 0.15;
+  }
+
+  .trace-label-left, .trace-label-right {
+    position: absolute;
+    bottom: 8px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--gray-600);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .trace-label-left { left: 32px; }
+  .trace-label-right { right: 32px; }
+
+  /* ==============================
+     HERITAGE STRIP
+     ============================== */
+  .heritage {
+    border-top: 1px solid var(--border);
+  }
+
+  .heritage-items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+  }
+
+  .heritage-item {
+    padding: 48px 36px;
+    border-right: 1px solid var(--border);
+    position: relative;
+    transition: background 0.4s;
+  }
+
+  .heritage-item:last-child { border-right: none; }
+
+  .heritage-item:hover {
+    background: rgba(255, 128, 0, 0.03);
+  }
+
+  .heritage-year {
+    font-family: var(--font-mono);
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--papaya);
+    opacity: 0.3;
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  .heritage-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .heritage-detail {
+    font-size: 13px;
+    color: var(--gray-400);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  .cta-section {
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 160px 40px;
+  }
+
+  .cta-pre {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 24px;
+  }
+
+  .cta-title {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 3px;
+    margin-bottom: 24px;
+  }
+
+  .cta-subtitle {
+    font-size: 16px;
+    color: var(--gray-400);
+    max-width: 480px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 40px;
+    background: var(--papaya);
+    color: var(--black);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+  }
+
+  .btn-primary:hover {
+    background: var(--papaya-bright);
+    box-shadow: 0 0 40px rgba(255, 128, 0, 0.3), 0 0 80px rgba(255, 128, 0, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:hover::before {
+    transform: translateX(100%);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 40px;
+    background: transparent;
+    color: var(--gray-300);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--gray-700);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--papaya);
+    color: var(--papaya);
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 60px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 8px;
+    color: var(--papaya);
+  }
+
+  .footer-tagline {
+    font-size: 12px;
+    color: var(--gray-600);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 40px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    margin-bottom: 16px;
+  }
+
+  .footer-col a {
+    display: block;
+    font-size: 13px;
+    color: var(--gray-400);
+    text-decoration: none;
+    margin-bottom: 8px;
+    transition: color 0.3s;
+    font-weight: 300;
+  }
+
+  .footer-col a:hover { color: var(--papaya); }
+
+  .footer-bottom {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gray-600);
+    letter-spacing: 1px;
+  }
+
+  .footer-specs {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-specs span {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--gray-600);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* ==============================
+     COUNTER ANIMATION
+     ============================== */
+  .counter {
+    display: inline-block;
+  }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+
+    section { padding: 80px 20px; }
+
+    .phil-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .feature-grid {
+      grid-template-columns: 1fr;
+      gap: 1px;
+    }
+
+    .telem-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .telem-cell {
+      border-bottom: 1px solid var(--border);
+      padding: 28px 24px;
+    }
+
+    .telem-cell:nth-child(even) { border-right: none; }
+
+    .telem-cell-value { font-size: 32px; }
+
+    .heritage-items {
+      grid-template-columns: 1fr;
+    }
+
+    .heritage-item {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      padding: 36px 24px;
+    }
+
+    .heritage-item:last-child { border-bottom: none; }
+
+    .cta-section { padding: 100px 20px; }
+
+    .footer-inner { flex-direction: column; }
+
+    .footer-links { flex-direction: column; gap: 32px; }
+
+    .footer-bottom { flex-direction: column; text-align: center; }
+
+    .footer-specs { flex-wrap: wrap; justify-content: center; }
+
+    .hero-meta { gap: 12px; }
+
+    .hero-meta-item { font-size: 9px; padding: 5px 10px; }
+
+    .telem-header { padding: 16px 20px; }
+
+    .telem-trace { height: 80px; }
+  }
+
+  @media (max-width: 480px) {
+    .telem-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .telem-cell { border-right: none; }
+
+    .hero-title { letter-spacing: 8px; }
+
+    .hero-tagline { letter-spacing: 3px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== NAVIGATION ==================== -->
+<nav>
+  <a href="/index.html" class="nav-back">
+    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    Gallery
+  </a>
+  <span class="nav-logo">KPT</span>
+  <span class="nav-tag">MCL / 001</span>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<div class="hero carbon-bg">
+  <div class="hero-bg"></div>
+
+  <!-- Wind tunnel streamlines -->
+  <div class="streamlines" aria-hidden="true">
+    <div class="streamline" style="top: 18%; width: 40%; left: 5%; animation-delay: 0s; animation-duration: 3.2s;"></div>
+    <div class="streamline" style="top: 25%; width: 55%; left: -5%; animation-delay: 0.6s; animation-duration: 3.8s;"></div>
+    <div class="streamline" style="top: 35%; width: 35%; left: 10%; animation-delay: 1.2s; animation-duration: 3s;"></div>
+    <div class="streamline" style="top: 45%; width: 60%; left: -10%; animation-delay: 0.3s; animation-duration: 4.2s;"></div>
+    <div class="streamline" style="top: 55%; width: 45%; left: 0%; animation-delay: 1.8s; animation-duration: 3.5s;"></div>
+    <div class="streamline" style="top: 65%; width: 50%; left: 8%; animation-delay: 0.9s; animation-duration: 3.7s;"></div>
+    <div class="streamline" style="top: 72%; width: 38%; left: -3%; animation-delay: 2.1s; animation-duration: 4s;"></div>
+    <div class="streamline" style="top: 80%; width: 55%; left: 5%; animation-delay: 1.5s; animation-duration: 3.3s;"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-pre reveal">
+      <span>//</span> Technology Centre <span>//</span> Woking, Surrey
+    </div>
+    <h1 class="hero-title reveal reveal-delay-1">KPT</h1>
+    <p class="hero-tagline reveal reveal-delay-2">Fearlessly <em>Forward</em></p>
+    <div class="hero-meta reveal reveal-delay-3">
+      <span class="hero-meta-item">Est. 2024</span>
+      <span class="hero-meta-item">Precision Engineering</span>
+      <span class="hero-meta-item">Zero Compromise</span>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- ==================== PHILOSOPHY ==================== -->
+<section class="philosophy">
+  <div class="section-header reveal">
+    <span class="section-number">01 / Philosophy</span>
+    <h2 class="section-title">Built to Win</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="phil-grid">
+    <div class="phil-text reveal reveal-delay-1">
+      Every surface is deliberate. Every gram is justified. We build technology the way McLaren builds cars &mdash; by questioning everything, measuring twice, and <strong>removing everything that doesn&rsquo;t make it faster</strong>.
+      <br><br>
+      There is no ornamentation. No compromise. Only the relentless pursuit of the optimal solution. <strong>Lightweight. Aerodynamic. Ruthlessly efficient.</strong>
+    </div>
+    <div class="phil-quote reveal reveal-delay-2">
+      <blockquote>
+        &ldquo;To achieve anything in this game, you must be prepared to dabble on the boundary of disaster.&rdquo;
+      </blockquote>
+      <cite>&mdash; Sir Stirling Moss</cite>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FEATURES ==================== -->
+<section class="features">
+  <div class="section-header reveal">
+    <span class="section-number">02 / Systems</span>
+    <h2 class="section-title">Aero Package</h2>
+    <p class="section-subtitle">Six systems. Zero drag. Every component engineered for one thing &mdash; absolute performance under pressure.</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="feature-grid">
+    <div class="feature-card reveal carbon-weave">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+      </div>
+      <span class="feature-number">SYS_01</span>
+      <h3 class="feature-name">Velocity Core</h3>
+      <p class="feature-desc">Sub-millisecond response architecture. Every request path optimized like a Monza qualifying lap &mdash; no wasted cycles, no excess load.</p>
+      <div class="feature-spec">Latency &lt; 0.8ms &middot; P99</div>
+    </div>
+
+    <div class="feature-card reveal reveal-delay-1 carbon-weave">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+      </div>
+      <span class="feature-number">SYS_02</span>
+      <h3 class="feature-name">Carbon Shield</h3>
+      <p class="feature-desc">Multi-layer defense monocoque. Like the carbon fiber survival cell in an F1 car &mdash; designed to protect what matters at any speed.</p>
+      <div class="feature-spec">256-bit AES &middot; Zero Trust</div>
+    </div>
+
+    <div class="feature-card reveal reveal-delay-2 carbon-weave">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+      </div>
+      <span class="feature-number">SYS_03</span>
+      <h3 class="feature-name">Ground Effect</h3>
+      <p class="feature-desc">Global edge distribution that generates downforce &mdash; the closer to the user, the more grip. 194 points of presence, zero turbulence.</p>
+      <div class="feature-spec">194 PoPs &middot; 99.999% Uptime</div>
+    </div>
+
+    <div class="feature-card reveal carbon-weave">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+      </div>
+      <span class="feature-number">SYS_04</span>
+      <h3 class="feature-name">Neural ECU</h3>
+      <p class="feature-desc">AI-driven orchestration engine. Reads conditions, adapts strategy, deploys resources &mdash; like a race engineer with infinite bandwidth.</p>
+      <div class="feature-spec">Adaptive &middot; ML-Driven</div>
+    </div>
+
+    <div class="feature-card reveal reveal-delay-1 carbon-weave">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+      </div>
+      <span class="feature-number">SYS_05</span>
+      <h3 class="feature-name">Pit Wall</h3>
+      <p class="feature-desc">Real-time telemetry and observability. Every metric, every trace, every anomaly &mdash; visible on a single pane of glass, updated every 100ms.</p>
+      <div class="feature-spec">100ms Refresh &middot; Full Stack</div>
+    </div>
+
+    <div class="feature-card reveal reveal-delay-2 carbon-weave">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+      </div>
+      <span class="feature-number">SYS_06</span>
+      <h3 class="feature-name">Monocoque</h3>
+      <p class="feature-desc">Unified infrastructure shell. No bolted-on components &mdash; everything integrated into one structural unit. Maximum rigidity, minimum weight.</p>
+      <div class="feature-spec">Single Binary &middot; 12MB</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TELEMETRY ==================== -->
+<section class="telemetry">
+  <div class="section-header reveal">
+    <span class="section-number">03 / Telemetry</span>
+    <h2 class="section-title">Live Data</h2>
+    <p class="section-subtitle">Performance metrics streaming from the pit wall. Every number earned on track.</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="telem-panel reveal">
+    <div class="telem-header">
+      <div class="telem-header-left">
+        <div class="telem-dot"></div>
+        <span class="telem-label">System Telemetry</span>
+      </div>
+      <span class="telem-status">LIVE &bull; ALL SYSTEMS NOMINAL</span>
+    </div>
+
+    <div class="telem-grid">
+      <div class="telem-cell" style="--bar-width: 92%">
+        <div class="telem-cell-label">Throughput</div>
+        <div class="telem-cell-value"><span class="counter" data-target="2.4">0</span><span class="unit">M/s</span></div>
+        <div class="telem-cell-bar"><div class="telem-cell-bar-fill"></div></div>
+        <div class="telem-cell-sub">+12.3% vs baseline</div>
+      </div>
+
+      <div class="telem-cell" style="--bar-width: 88%">
+        <div class="telem-cell-label">Latency P99</div>
+        <div class="telem-cell-value"><span class="counter" data-target="0.7">0</span><span class="unit">ms</span></div>
+        <div class="telem-cell-bar"><div class="telem-cell-bar-fill"></div></div>
+        <div class="telem-cell-sub">Target &lt; 1.0ms</div>
+      </div>
+
+      <div class="telem-cell" style="--bar-width: 99%">
+        <div class="telem-cell-label">Uptime</div>
+        <div class="telem-cell-value"><span class="counter" data-target="99.99">0</span><span class="unit">%</span></div>
+        <div class="telem-cell-bar"><div class="telem-cell-bar-fill"></div></div>
+        <div class="telem-cell-sub">365-day rolling</div>
+      </div>
+
+      <div class="telem-cell" style="--bar-width: 76%">
+        <div class="telem-cell-label">Efficiency</div>
+        <div class="telem-cell-value"><span class="counter" data-target="94">0</span><span class="unit">%</span></div>
+        <div class="telem-cell-bar"><div class="telem-cell-bar-fill"></div></div>
+        <div class="telem-cell-sub">Resource utilization</div>
+      </div>
+    </div>
+
+    <!-- Telemetry trace line -->
+    <div class="telem-trace">
+      <div class="trace-line">
+        <svg class="trace-svg" viewBox="0 0 1000 60" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="traceGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#FF8000" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#FF8000" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path class="trace-fill" d="M0,60 L0,35 Q50,38 100,30 Q150,22 200,28 Q250,34 300,20 Q350,6 400,15 Q450,24 500,12 Q550,0 600,8 Q650,16 700,10 Q750,4 800,18 Q850,32 900,22 Q950,12 1000,25 L1000,60 Z"/>
+          <path class="trace-path" d="M0,35 Q50,38 100,30 Q150,22 200,28 Q250,34 300,20 Q350,6 400,15 Q450,24 500,12 Q550,0 600,8 Q650,16 700,10 Q750,4 800,18 Q850,32 900,22 Q950,12 1000,25"/>
+        </svg>
+      </div>
+      <span class="trace-label-left">T-60s</span>
+      <span class="trace-label-right">Now</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== HERITAGE ==================== -->
+<section class="heritage">
+  <div class="section-header reveal">
+    <span class="section-number">04 / Heritage</span>
+    <h2 class="section-title">Racing DNA</h2>
+    <p class="section-subtitle">Champions are not born. They are engineered.</p>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="heritage-items">
+    <div class="heritage-item reveal">
+      <div class="heritage-year">1988</div>
+      <h3 class="heritage-name">Senna &amp; Prost</h3>
+      <p class="heritage-detail">15 wins from 16 races. The MP4/4 didn&rsquo;t just dominate &mdash; it redefined what domination meant. Two titans, one machine, zero equal.</p>
+    </div>
+    <div class="heritage-item reveal reveal-delay-1">
+      <div class="heritage-year">2012</div>
+      <h3 class="heritage-name">The P1 Era</h3>
+      <p class="heritage-detail">903 horsepower. Carbon monocoque. Active aero. McLaren proved that the future of speed is hybrid &mdash; electric torque meets combustion fury.</p>
+    </div>
+    <div class="heritage-item reveal reveal-delay-2">
+      <div class="heritage-year">2024</div>
+      <h3 class="heritage-name">KPT Launches</h3>
+      <p class="heritage-detail">Same obsession. New medium. We took McLaren&rsquo;s engineering philosophy and applied it to technology &mdash; surgical precision, relentless optimization, papaya orange.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+<section class="cta-section">
+  <div class="cta-pre reveal">Ready to deploy</div>
+  <h2 class="cta-title reveal reveal-delay-1">Enter the <span style="color: var(--papaya)">Pit Lane</span></h2>
+  <p class="cta-subtitle reveal reveal-delay-2">Join the teams already running at full throttle. No waiting. No warm-up laps. Lights out and away we go.</p>
+  <div class="cta-buttons reveal reveal-delay-3">
+    <a href="#" class="btn-primary">
+      Deploy Now
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+    </a>
+    <a href="#" class="btn-secondary">View Specs</a>
+  </div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">KPT</div>
+      <div class="footer-tagline">Fearlessly Forward</div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="#">Velocity Core</a>
+        <a href="#">Carbon Shield</a>
+        <a href="#">Ground Effect</a>
+        <a href="#">Pit Wall</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="#">Documentation</a>
+        <a href="#">API Reference</a>
+        <a href="#">Status</a>
+        <a href="#">Changelog</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Careers</a>
+        <a href="#">Contact</a>
+        <a href="/index.html">Gallery</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">&copy; 2024 KPT. All rights reserved.</span>
+    <div class="footer-specs">
+      <span>McLaren Concept</span>
+      <span>Papaya Orange</span>
+      <span>Carbon Fiber</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ==================== SCRIPTS ==================== -->
+<script>
+  // Intersection Observer for reveal animations
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  };
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Don't unobserve — keeps bars and counters working
+      }
+    });
+  }, observerOptions);
+
+  // Observe all reveal elements
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // Observe telemetry cells for bar animation
+  document.querySelectorAll('.telem-cell').forEach(el => revealObserver.observe(el));
+
+  // Observe telemetry panel for trace animation
+  document.querySelectorAll('.telem-panel').forEach(el => revealObserver.observe(el));
+
+  // Counter animation
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const counter = entry.target;
+        const target = parseFloat(counter.dataset.target);
+        const duration = 2000;
+        const startTime = performance.now();
+        const isDecimal = target % 1 !== 0;
+        const decimalPlaces = isDecimal ? (target.toString().split('.')[1] || '').length : 0;
+
+        function updateCounter(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = target * eased;
+
+          if (isDecimal) {
+            counter.textContent = current.toFixed(decimalPlaces);
+          } else {
+            counter.textContent = Math.round(current);
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+          } else {
+            if (isDecimal) {
+              counter.textContent = target.toFixed(decimalPlaces);
+            } else {
+              counter.textContent = target;
+            }
+          }
+        }
+
+        requestAnimationFrame(updateCounter);
+        counterObserver.unobserve(counter);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (href === '#') { e.preventDefault(); return; }
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>

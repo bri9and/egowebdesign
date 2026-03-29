@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — NFL</title>
+<meta name="description" content="KPT. AI voice agents and premium web design. Built with the power, precision, and championship drive of the NFL.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --nfl-blue: #003069;
+    --nfl-blue-light: #0A4A8A;
+    --nfl-blue-dark: #001A3A;
+    --nfl-blue-deep: #000E22;
+    --nfl-red: #D50A0A;
+    --nfl-red-dim: rgba(213, 10, 10, 0.15);
+    --nfl-red-glow: rgba(213, 10, 10, 0.5);
+    --white: #FFFFFF;
+    --silver: #A5ACAF;
+    --silver-light: #C8CDD0;
+    --silver-dark: #6C7476;
+    --chrome: #D8DDE0;
+    --field-green: #1A6B37;
+    --field-green-dim: rgba(26, 107, 55, 0.15);
+    --turf-line: rgba(255, 255, 255, 0.12);
+    --dark-surface: #0A1628;
+    --dark-card: #0F1D30;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A0B4C8;
+    --text-muted: #5A6E82;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.2);
+    --font-heading: 'Bebas Neue', Impact, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --nav-height: 64px;
+    --stadium-glow: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(213, 10, 10, 0.08) 0%, transparent 60%);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    background: var(--nfl-blue-deep);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  /* ==============================
+     SCROLL ANIMATIONS
+     ============================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    background: transparent;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  nav.scrolled {
+    background: rgba(0, 14, 34, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+    border-bottom: 2px solid var(--nfl-red);
+  }
+
+  .nav-logo {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    color: var(--white);
+    letter-spacing: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-logo .shield {
+    width: 28px;
+    height: 32px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-logo .shield svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    letter-spacing: 2px;
+    color: var(--silver-light);
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    background: var(--nfl-red) !important;
+    color: var(--white) !important;
+    padding: 8px 20px;
+    border-radius: 2px;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease !important;
+  }
+
+  .nav-cta:hover {
+    background: #E81818 !important;
+    transform: translateY(-1px);
+  }
+
+  .back-link {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--silver);
+    transition: color 0.3s ease;
+  }
+
+  .back-link:hover { color: var(--nfl-red); }
+
+  /* ==============================
+     YARD LINE DECORATIONS
+     ============================== */
+  .yard-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .yard-lines::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    width: 1px;
+    height: 100%;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--turf-line) 0px,
+      var(--turf-line) 20px,
+      transparent 20px,
+      transparent 40px
+    );
+  }
+
+  .yard-lines::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 10%;
+    width: 1px;
+    height: 100%;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--turf-line) 0px,
+      var(--turf-line) 20px,
+      transparent 20px,
+      transparent 40px
+    );
+  }
+
+  /* ==============================
+     HERO SECTION
+     ============================== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  /* Stadium lights effect */
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140%;
+    height: 60%;
+    background: radial-gradient(ellipse 50% 70% at 50% 0%, rgba(213, 10, 10, 0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 30% 60% at 30% 0%, rgba(0, 48, 105, 0.2) 0%, transparent 60%),
+                radial-gradient(ellipse 30% 60% at 70% 0%, rgba(0, 48, 105, 0.2) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Field gradient at bottom */
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to top, var(--nfl-blue-deep), transparent);
+    pointer-events: none;
+  }
+
+  /* Horizontal yard lines in hero */
+  .hero-field-lines {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    pointer-events: none;
+    opacity: 0.06;
+  }
+
+  .hero-field-lines .line {
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    height: 1px;
+    background: var(--white);
+  }
+
+  .hero-field-lines .line:nth-child(1) { bottom: 20%; }
+  .hero-field-lines .line:nth-child(2) { bottom: 40%; }
+  .hero-field-lines .line:nth-child(3) { bottom: 60%; }
+  .hero-field-lines .line:nth-child(4) { bottom: 80%; }
+
+  .hero-field-lines .hash {
+    position: absolute;
+    width: 12px;
+    height: 1px;
+    background: var(--white);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--nfl-red-dim);
+    border: 1px solid rgba(213, 10, 10, 0.3);
+    padding: 8px 20px;
+    border-radius: 2px;
+    margin-bottom: 32px;
+    font-family: var(--font-heading);
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: var(--nfl-red);
+  }
+
+  .hero-badge .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--nfl-red);
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  .hero-shield {
+    width: 80px;
+    height: 92px;
+    margin: 0 auto 32px;
+    position: relative;
+  }
+
+  .hero-shield svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 30px rgba(213, 10, 10, 0.3));
+  }
+
+  .hero-title {
+    font-family: var(--font-heading);
+    font-size: clamp(80px, 15vw, 180px);
+    color: var(--white);
+    line-height: 0.9;
+    letter-spacing: 8px;
+    margin-bottom: 16px;
+    text-shadow: 0 0 60px rgba(0, 48, 105, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero-title .red { color: var(--nfl-red); }
+
+  .hero-subtitle {
+    font-family: var(--font-heading);
+    font-size: clamp(20px, 3vw, 32px);
+    color: var(--silver-light);
+    letter-spacing: 6px;
+    margin-bottom: 24px;
+  }
+
+  .hero-desc {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .hero-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--nfl-red);
+    color: var(--white);
+    font-family: var(--font-heading);
+    font-size: 18px;
+    letter-spacing: 3px;
+    padding: 16px 40px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+  }
+
+  .btn-primary:hover {
+    background: #E81818;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(213, 10, 10, 0.4);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: var(--silver-light);
+    font-family: var(--font-heading);
+    font-size: 18px;
+    letter-spacing: 3px;
+    padding: 16px 40px;
+    border: 2px solid var(--silver-dark);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+    text-decoration: none;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--white);
+    color: var(--white);
+    transform: translateY(-2px);
+  }
+
+  /* Scroll indicator */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .scroll-indicator span {
+    font-family: var(--font-heading);
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--silver-dark);
+  }
+
+  .scroll-indicator .arrow {
+    width: 16px;
+    height: 16px;
+    border-right: 2px solid var(--silver-dark);
+    border-bottom: 2px solid var(--silver-dark);
+    transform: rotate(45deg);
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(10px); }
+  }
+
+  /* ==============================
+     SECTION COMMON
+     ============================== */
+  section {
+    position: relative;
+    padding: 100px 24px;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-tag {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    letter-spacing: 4px;
+    color: var(--nfl-red);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-tag::before {
+    content: '';
+    width: 30px;
+    height: 2px;
+    background: var(--nfl-red);
+  }
+
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(40px, 6vw, 64px);
+    color: var(--white);
+    letter-spacing: 3px;
+    line-height: 1.05;
+    margin-bottom: 20px;
+  }
+
+  .section-desc {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* ==============================
+     FEATURES — PLAYBOOK SECTION
+     ============================== */
+  .features {
+    background: var(--dark-surface);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .features::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      repeating-linear-gradient(
+        to right,
+        transparent,
+        transparent calc(20% - 1px),
+        var(--turf-line) calc(20% - 1px),
+        var(--turf-line) 20%
+      );
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  /* Yard numbers along lines */
+  .yard-number {
+    position: absolute;
+    font-family: var(--font-heading);
+    font-size: 120px;
+    color: rgba(255, 255, 255, 0.02);
+    pointer-events: none;
+    letter-spacing: 8px;
+  }
+  .yard-number.yn-10 { top: 10%; left: 18%; }
+  .yard-number.yn-20 { top: 30%; left: 38%; }
+  .yard-number.yn-30 { top: 55%; left: 58%; }
+  .yard-number.yn-40 { top: 75%; left: 78%; }
+
+  .features-header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+
+  .features-header .section-tag { justify-content: center; }
+  .features-header .section-desc { margin: 0 auto; text-align: center; }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .feature-card {
+    background: rgba(15, 29, 48, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 40px 32px;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--nfl-red), var(--nfl-blue));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-hover);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  }
+
+  .feature-card:hover::before { opacity: 1; }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 4px;
+    background: var(--nfl-red-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+
+  .feature-number {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-family: var(--font-heading);
+    font-size: 48px;
+    color: rgba(255, 255, 255, 0.03);
+    letter-spacing: 2px;
+  }
+
+  .feature-card h3 {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    color: var(--white);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .feature-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* ==============================
+     SCOREBOARD — STATS SECTION
+     ============================== */
+  .scoreboard {
+    background: var(--nfl-blue-deep);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scoreboard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--stadium-glow);
+    pointer-events: none;
+  }
+
+  .scoreboard-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+
+  .scoreboard-header .section-tag { justify-content: center; }
+  .scoreboard-header .section-desc { margin: 0 auto; text-align: center; }
+
+  .scoreboard-board {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(180deg, #0A1628 0%, #0D1E35 100%);
+    border: 2px solid rgba(165, 172, 175, 0.15);
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 1000px;
+    margin: 0 auto;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .scoreboard-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    background: linear-gradient(90deg, var(--nfl-blue), var(--nfl-blue-dark));
+    border-bottom: 2px solid var(--nfl-red);
+    gap: 16px;
+  }
+
+  .scoreboard-top .game-label {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    letter-spacing: 4px;
+    color: var(--white);
+  }
+
+  .scoreboard-top .quarter {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--nfl-red);
+    background: var(--nfl-red-dim);
+    padding: 4px 12px;
+    border-radius: 2px;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+
+  .stat-cell {
+    padding: 40px 24px;
+    text-align: center;
+    border-right: 1px solid rgba(165, 172, 175, 0.08);
+    position: relative;
+  }
+
+  .stat-cell:last-child { border-right: none; }
+
+  .stat-value {
+    font-family: var(--font-heading);
+    font-size: clamp(48px, 6vw, 72px);
+    color: var(--white);
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 8px;
+    text-shadow: 0 0 20px rgba(213, 10, 10, 0.2);
+  }
+
+  .stat-value .unit {
+    font-size: 0.4em;
+    color: var(--nfl-red);
+    vertical-align: super;
+    margin-left: 2px;
+  }
+
+  .stat-label {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: var(--silver);
+  }
+
+  .stat-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .scoreboard-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 32px;
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(165, 172, 175, 0.08);
+    gap: 24px;
+  }
+
+  .scoreboard-bottom span {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+  }
+
+  .scoreboard-bottom .live-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--nfl-red);
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: pulse-dot 1.5s ease-in-out infinite;
+  }
+
+  /* ==============================
+     DRIVE SECTION — PROCESS
+     ============================== */
+  .drive {
+    background: var(--dark-surface);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .drive-header {
+    margin-bottom: 64px;
+  }
+
+  .drive-plays {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Vertical yard line connector */
+  .drive-plays::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 40px;
+    width: 3px;
+    height: 100%;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--nfl-red) 0px,
+      var(--nfl-red) 8px,
+      transparent 8px,
+      transparent 16px
+    );
+    opacity: 0.3;
+  }
+
+  .play-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 32px;
+    padding: 32px 0;
+    position: relative;
+  }
+
+  .play-marker {
+    width: 80px;
+    min-width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .play-marker .circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--nfl-blue);
+    border: 3px solid var(--nfl-red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: 1px;
+    box-shadow: 0 0 20px rgba(213, 10, 10, 0.2);
+  }
+
+  .play-content h3 {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    color: var(--white);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .play-content .down-distance {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--nfl-red);
+    margin-bottom: 8px;
+  }
+
+  .play-content p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 500px;
+  }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  .cta {
+    background: var(--nfl-blue-deep);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 120px 24px;
+  }
+
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  /* Stadium spotlights */
+  .cta-bg::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120%;
+    height: 80%;
+    background: radial-gradient(ellipse 40% 50% at 50% 0%, rgba(213, 10, 10, 0.1) 0%, transparent 70%);
+  }
+
+  /* Red endzone stripe */
+  .cta-bg::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--nfl-red), transparent);
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .cta .section-tag { justify-content: center; margin-bottom: 24px; }
+
+  .cta-title {
+    font-family: var(--font-heading);
+    font-size: clamp(48px, 8vw, 80px);
+    color: var(--white);
+    letter-spacing: 4px;
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .cta-title .red { color: var(--nfl-red); }
+
+  .cta-desc {
+    font-size: 18px;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    line-height: 1.7;
+  }
+
+  .cta-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: #000810;
+    border-top: 1px solid var(--border);
+    padding: 60px 24px 40px;
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  .footer-brand {
+    max-width: 300px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    color: var(--white);
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+  }
+
+  .footer-brand p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 64px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    letter-spacing: 3px;
+    color: var(--silver);
+    margin-bottom: 16px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-col a {
+    font-size: 14px;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+  }
+
+  .footer-col a:hover { color: var(--nfl-red); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-bottom p {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  .footer-bottom .shield-mini {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .footer-bottom .shield-mini svg {
+    width: 16px;
+    height: 18px;
+    opacity: 0.4;
+  }
+
+  /* ==============================
+     RESPONSIVE — 768px
+     ============================== */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+
+    .nav-links { display: none; }
+
+    .hero { padding: 100px 20px 80px; min-height: 100svh; }
+
+    .hero-shield { width: 60px; height: 69px; margin-bottom: 24px; }
+
+    .hero-title { letter-spacing: 4px; }
+
+    .hero-desc { font-size: 16px; }
+
+    .hero-buttons { flex-direction: column; width: 100%; }
+
+    .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+
+    section { padding: 72px 20px; }
+
+    .features-grid { grid-template-columns: 1fr; gap: 16px; }
+
+    .feature-card { padding: 32px 24px; }
+
+    .scoreboard-board { border-radius: 4px; }
+
+    .scoreboard-top { padding: 12px 16px; flex-wrap: wrap; }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-cell {
+      padding: 28px 16px;
+      border-bottom: 1px solid rgba(165, 172, 175, 0.08);
+    }
+
+    .stat-cell:nth-child(odd) { border-right: 1px solid rgba(165, 172, 175, 0.08); }
+    .stat-cell:nth-child(even) { border-right: none; }
+    .stat-cell:nth-last-child(-n+2) { border-bottom: none; }
+
+    .play-card { gap: 20px; }
+
+    .play-marker { width: 56px; min-width: 56px; height: 56px; }
+
+    .play-marker .circle { width: 44px; height: 44px; font-size: 18px; }
+
+    .drive-plays::before { left: 28px; }
+
+    .play-content h3 { font-size: 22px; }
+
+    .footer-content { flex-direction: column; }
+
+    .footer-links { flex-direction: column; gap: 32px; }
+
+    .footer-bottom { flex-direction: column; text-align: center; }
+
+    .yard-lines::before { left: 5%; }
+    .yard-lines::after { right: 5%; }
+
+    .yard-number { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav id="nav">
+  <a href="/index.html" class="back-link">&larr; BACK</a>
+  <div class="nav-logo">
+    <span class="shield">
+      <svg viewBox="0 0 40 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 0L40 10V28C40 38 30 44 20 46C10 44 0 38 0 28V10L20 0Z" fill="#003069"/>
+        <path d="M20 3L37 11.5V28C37 36.5 28.5 41.5 20 43.5C11.5 41.5 3 36.5 3 28V11.5L20 3Z" fill="#D50A0A"/>
+        <path d="M20 8L14 20H18V34L26 22H22V8Z" fill="white"/>
+      </svg>
+    </span>
+    KPT
+  </div>
+  <ul class="nav-links">
+    <li><a href="#features">PLAYBOOK</a></li>
+    <li><a href="#scoreboard">STATS</a></li>
+    <li><a href="#drive">PROCESS</a></li>
+    <li><a href="#cta" class="nav-cta">DRAFT US</a></li>
+  </ul>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-field-lines">
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
+  <div class="yard-lines"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge reveal">
+      <span class="dot"></span>
+      GAME DAY — NOW LIVE
+    </div>
+
+    <div class="hero-shield reveal reveal-delay-1">
+      <svg viewBox="0 0 40 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 0L40 10V28C40 38 30 44 20 46C10 44 0 38 0 28V10L20 0Z" fill="#003069"/>
+        <path d="M20 3L37 11.5V28C37 36.5 28.5 41.5 20 43.5C11.5 41.5 3 36.5 3 28V11.5L20 3Z" fill="#D50A0A"/>
+        <path d="M20 8L14 20H18V34L26 22H22V8Z" fill="white"/>
+      </svg>
+    </div>
+
+    <h1 class="hero-title reveal reveal-delay-2">K<span class="red">P</span>T</h1>
+    <p class="hero-subtitle reveal reveal-delay-2">THE CHAMPIONSHIP STANDARD</p>
+    <p class="hero-desc reveal reveal-delay-3">
+      AI voice agents and premium web design built with the precision of a two-minute drill and the power of a playoff run. No timeouts. No huddles. Pure execution.
+    </p>
+
+    <div class="hero-buttons reveal reveal-delay-4">
+      <a href="#cta" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        GET IN THE GAME
+      </a>
+      <a href="#features" class="btn-secondary">VIEW PLAYBOOK</a>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>SCROLL</span>
+    <div class="arrow"></div>
+  </div>
+</section>
+
+<!-- Features — Playbook Section -->
+<section class="features" id="features">
+  <div class="yard-number yn-10">10</div>
+  <div class="yard-number yn-20">20</div>
+  <div class="yard-number yn-30">30</div>
+  <div class="yard-number yn-40">40</div>
+
+  <div class="container">
+    <div class="features-header">
+      <div class="section-tag reveal">THE PLAYBOOK</div>
+      <h2 class="section-title reveal reveal-delay-1">CHAMPIONSHIP<br>CAPABILITIES</h2>
+      <p class="section-desc reveal reveal-delay-2">Every play designed for maximum yardage. Every feature engineered for the win.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-number">01</div>
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D50A0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+        </div>
+        <h3>AI VOICE AGENTS</h3>
+        <p>Intelligent voice systems that call audibles in real-time. 24/7 coverage, zero missed opportunities. Your AI quarterback never throws an interception.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-number">02</div>
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D50A0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3>PREMIUM WEB DESIGN</h3>
+        <p>Stadium-quality digital experiences that dominate the field. Fast, responsive, built to convert. Every pixel in formation, every interaction a first down.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-number">03</div>
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D50A0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h3>SPEED TO MARKET</h3>
+        <p>From snap to score in record time. Our no-huddle offense gets your project live while competitors are still in the draft. Two-week sprints, guaranteed.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-number">04</div>
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D50A0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>IRONCLAD SECURITY</h3>
+        <p>Defense wins championships. Enterprise-grade protection, encrypted data, and impenetrable security protocols. Your digital fortress, fully staffed.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-number">05</div>
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D50A0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>24/7 OPERATIONS</h3>
+        <p>The game never stops, and neither do we. Round-the-clock monitoring, instant response times, and a bench depth that keeps you covered every quarter.</p>
+      </div>
+
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-number">06</div>
+        <div class="feature-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D50A0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>ANALYTICS & ROI</h3>
+        <p>Film study for your business. Real-time dashboards, conversion tracking, and performance metrics that tell you exactly where to run the next play.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Scoreboard — Stats Section -->
+<section class="scoreboard" id="scoreboard">
+  <div class="container">
+    <div class="scoreboard-header">
+      <div class="section-tag reveal">THE SCOREBOARD</div>
+      <h2 class="section-title reveal reveal-delay-1">GAME-WINNING<br>NUMBERS</h2>
+      <p class="section-desc reveal reveal-delay-2">Our stats speak louder than any highlight reel.</p>
+    </div>
+
+    <div class="scoreboard-board reveal reveal-delay-2">
+      <div class="scoreboard-top">
+        <span class="game-label">KPT PERFORMANCE STATS</span>
+        <span class="quarter">LIVE</span>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-cell">
+          <div class="stat-value" data-count="99">0<span class="unit">%</span></div>
+          <div class="stat-label">UPTIME</div>
+          <div class="stat-sub">Season record</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-value" data-count="150">0<span class="unit">+</span></div>
+          <div class="stat-label">PROJECTS SHIPPED</div>
+          <div class="stat-sub">All-time</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-value" data-count="14">0</div>
+          <div class="stat-label">DAY DELIVERY</div>
+          <div class="stat-sub">Average drive time</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-value" data-count="4">0<span class="unit">.9</span></div>
+          <div class="stat-label">CLIENT RATING</div>
+          <div class="stat-sub">Out of 5.0</div>
+        </div>
+      </div>
+
+      <div class="scoreboard-bottom">
+        <span><span class="live-dot"></span>REAL-TIME STATS</span>
+        <span>|</span>
+        <span>UPDATED CONTINUOUSLY</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Drive — Process Section -->
+<section class="drive" id="drive">
+  <div class="container">
+    <div class="drive-header">
+      <div class="section-tag reveal">THE DRIVE</div>
+      <h2 class="section-title reveal reveal-delay-1">FROM KICKOFF<br>TO TOUCHDOWN</h2>
+      <p class="section-desc reveal reveal-delay-2">Four plays. One scoring drive. Here's how we move the chains.</p>
+    </div>
+
+    <div class="drive-plays">
+      <div class="play-card reveal">
+        <div class="play-marker">
+          <div class="circle">1ST</div>
+        </div>
+        <div class="play-content">
+          <div class="down-distance">1ST &amp; 10 &mdash; YOUR 20</div>
+          <h3>THE KICKOFF CALL</h3>
+          <p>We study your game film. Deep-dive discovery into your business, audience, and competition. No generic playbooks — this is a custom game plan built for your field.</p>
+        </div>
+      </div>
+
+      <div class="play-card reveal reveal-delay-1">
+        <div class="play-marker">
+          <div class="circle">2ND</div>
+        </div>
+        <div class="play-content">
+          <div class="down-distance">1ST &amp; 10 &mdash; THE 45</div>
+          <h3>DRAW UP THE PLAY</h3>
+          <p>Architecture, wireframes, and strategy locked in. We design the X's and O's — every route, every block, every contingency. You approve the formation before we snap.</p>
+        </div>
+      </div>
+
+      <div class="play-card reveal reveal-delay-2">
+        <div class="play-marker">
+          <div class="circle">3RD</div>
+        </div>
+        <div class="play-content">
+          <div class="down-distance">1ST &amp; GOAL &mdash; THE 8</div>
+          <h3>EXECUTE THE DRIVE</h3>
+          <p>No-huddle development. Code ships fast, tests run clean, and every sprint moves us closer to the end zone. You get weekly film reviews on progress.</p>
+        </div>
+      </div>
+
+      <div class="play-card reveal reveal-delay-3">
+        <div class="play-marker">
+          <div class="circle">TD</div>
+        </div>
+        <div class="play-content">
+          <div class="down-distance">TOUCHDOWN &mdash; END ZONE</div>
+          <h3>SCORE & CELEBRATE</h3>
+          <p>Launch day. Your product hits the field, fully tested, production-ready, and built to dominate. Then we kick the extra point — ongoing support and optimization.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta" id="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-content">
+    <div class="section-tag reveal">READY TO WIN</div>
+    <h2 class="cta-title reveal reveal-delay-1">DRAFT <span class="red">KPT</span><br>TODAY</h2>
+    <p class="cta-desc reveal reveal-delay-2">
+      Every championship team starts with the right draft pick. Get KPT on your roster and start winning where it matters — online.
+    </p>
+    <div class="cta-buttons reveal reveal-delay-3">
+      <a href="#" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        CALL AN AUDIBLE
+      </a>
+      <a href="#features" class="btn-secondary">REVIEW PLAYBOOK</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-content">
+    <div class="footer-brand">
+      <div class="footer-logo">KPT</div>
+      <p>AI voice agents and premium web design, built with championship-caliber precision. Every project is a Super Bowl performance.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>PLAYS</h4>
+        <ul>
+          <li><a href="#features">Playbook</a></li>
+          <li><a href="#scoreboard">Stats</a></li>
+          <li><a href="#drive">Process</a></li>
+          <li><a href="#cta">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>LEAGUE</h4>
+        <ul>
+          <li><a href="#">About KPT</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 KPT. ALL RIGHTS RESERVED. BUILT FOR WINNERS.</p>
+    <div class="shield-mini">
+      <svg viewBox="0 0 40 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 0L40 10V28C40 38 30 44 20 46C10 44 0 38 0 28V10L20 0Z" fill="#003069"/>
+        <path d="M20 3L37 11.5V28C37 36.5 28.5 41.5 20 43.5C11.5 41.5 3 36.5 3 28V11.5L20 3Z" fill="#D50A0A"/>
+        <path d="M20 8L14 20H18V34L26 22H22V8Z" fill="white"/>
+      </svg>
+      <span style="font-size:12px; letter-spacing:2px; color:var(--text-muted);">KPT LEAGUE</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* ==============================
+     NAV SCROLL EFFECT
+     ============================== */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  /* ==============================
+     INTERSECTION OBSERVER — REVEALS
+     ============================== */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  /* ==============================
+     SCOREBOARD COUNTER ANIMATION
+     ============================== */
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.dataset.count, 10);
+        const unitSpan = el.querySelector('.unit');
+        const unitText = unitSpan ? unitSpan.outerHTML : '';
+        const duration = 2000;
+        const start = performance.now();
+
+        function tick(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.round(eased * target);
+          el.innerHTML = current + unitText;
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+
+        requestAnimationFrame(tick);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.stat-value[data-count]').forEach(el => counterObserver.observe(el));
+
+  /* ==============================
+     SMOOTH SCROLL FOR NAV LINKS
+     ============================== */
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

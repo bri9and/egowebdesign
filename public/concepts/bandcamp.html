@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Discover Amazing New Music</title>
+<meta name="description" content="KPT — Fan-powered music. Direct artist support. No middlemen, no algorithms, just real music from independent artists.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bc-blue: #1DA0C3;
+    --bc-blue-dim: rgba(29, 160, 195, 0.12);
+    --bc-blue-glow: rgba(29, 160, 195, 0.35);
+    --bc-blue-dark: #178BA8;
+    --bc-teal: #17B8A0;
+    --bc-teal-dim: rgba(23, 184, 160, 0.12);
+    --bc-teal-glow: rgba(23, 184, 160, 0.3);
+    --dark: #333333;
+    --dark-deep: #1A1A1A;
+    --dark-mid: #2A2A2A;
+    --dark-surface: #3A3A3A;
+    --dark-hover: #444444;
+    --white: #FFFFFF;
+    --off-white: #F5F5F5;
+    --grey-light: #CCCCCC;
+    --grey-mid: #999999;
+    --grey-muted: #777777;
+    --text-primary: #FFFFFF;
+    --text-secondary: #BBBBBB;
+    --text-muted: #888888;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(29, 160, 195, 0.4);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark-deep);
+    color: var(--text-secondary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.2;
+    color: var(--text-primary);
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ── Layout ───────────────────────────────────────────────── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .section { padding: 100px 0; }
+
+  /* ── Scroll Animations ─────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ── Back Link ────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    font-family: 'Inter', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--grey-mid);
+    letter-spacing: 0.5px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: rgba(26, 26, 26, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    transition: all 0.25s ease;
+  }
+  .back-link:hover {
+    color: var(--bc-blue);
+    border-color: var(--border-hover);
+    background: var(--bc-blue-dim);
+  }
+
+  /* ── Nav ──────────────────────────────────────────────────── */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .nav-inner {
+    max-width: 1100px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: var(--bc-blue);
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+    letter-spacing: 0.3px;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--bc-blue);
+    color: var(--white) !important;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.2s ease;
+  }
+  .nav-cta:hover {
+    background: var(--bc-blue-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(29, 160, 195, 0.3);
+  }
+
+  /* ── Hero ─────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: var(--dark-deep);
+  }
+
+  /* Album art grid background */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .album-square {
+    position: absolute;
+    border-radius: 4px;
+    opacity: 0.04;
+    animation: drift 30s ease-in-out infinite;
+  }
+  .album-square:nth-child(1)  { background: var(--bc-blue); width: 80px; height: 80px; top: 8%; left: 5%; animation-delay: 0s; animation-duration: 25s; }
+  .album-square:nth-child(2)  { background: var(--bc-teal); width: 60px; height: 60px; top: 15%; right: 10%; animation-delay: -4s; animation-duration: 28s; }
+  .album-square:nth-child(3)  { background: #E85D75; width: 100px; height: 100px; bottom: 25%; left: 8%; animation-delay: -8s; animation-duration: 32s; }
+  .album-square:nth-child(4)  { background: #F2A93B; width: 50px; height: 50px; top: 35%; right: 6%; animation-delay: -2s; animation-duration: 22s; }
+  .album-square:nth-child(5)  { background: var(--bc-blue); width: 70px; height: 70px; bottom: 10%; right: 15%; animation-delay: -12s; animation-duration: 27s; }
+  .album-square:nth-child(6)  { background: #9B59B6; width: 55px; height: 55px; top: 55%; left: 3%; animation-delay: -6s; animation-duration: 24s; }
+  .album-square:nth-child(7)  { background: var(--bc-teal); width: 90px; height: 90px; bottom: 40%; right: 3%; animation-delay: -10s; animation-duration: 30s; }
+  .album-square:nth-child(8)  { background: var(--bc-blue); width: 45px; height: 45px; top: 5%; left: 45%; animation-delay: -15s; animation-duration: 26s; }
+  .album-square:nth-child(9)  { background: #E85D75; width: 65px; height: 65px; bottom: 5%; left: 30%; animation-delay: -3s; animation-duration: 29s; }
+  .album-square:nth-child(10) { background: #F2A93B; width: 75px; height: 75px; top: 70%; right: 25%; animation-delay: -9s; animation-duration: 23s; }
+
+  @keyframes drift {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-15px) rotate(2deg); }
+    66% { transform: translateY(-8px) rotate(-1.5deg); }
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, rgba(29, 160, 195, 0.1) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 760px;
+    padding: 0 24px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--bc-teal);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 28px;
+    padding: 6px 16px;
+    background: var(--bc-teal-dim);
+    border-radius: 4px;
+    border: 1px solid rgba(23, 184, 160, 0.2);
+  }
+  .badge-icon {
+    width: 6px;
+    height: 6px;
+    background: var(--bc-teal);
+    border-radius: 50%;
+  }
+
+  .hero-kpt {
+    font-size: clamp(80px, 14vw, 160px);
+    font-weight: 900;
+    letter-spacing: 8px;
+    color: var(--bc-blue);
+    line-height: 1;
+    margin-bottom: 20px;
+    text-shadow: 0 0 80px rgba(29, 160, 195, 0.25);
+  }
+
+  .hero-tagline {
+    font-size: clamp(22px, 3.5vw, 36px);
+    font-weight: 300;
+    color: var(--off-white);
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    background: var(--bc-blue);
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.3px;
+  }
+  .btn-primary:hover {
+    background: var(--bc-blue-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(29, 160, 195, 0.3);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-secondary:hover {
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  /* ── Manifesto Strip ────────────────────────────────────────── */
+  .manifesto {
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 0;
+    text-align: center;
+  }
+  .manifesto-text {
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-weight: 300;
+    color: var(--grey-light);
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.8;
+    letter-spacing: -0.2px;
+  }
+  .manifesto-text em {
+    color: var(--bc-blue);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* ── Features ──────────────────────────────────────────────── */
+  .features-section {
+    background: var(--dark-deep);
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--bc-teal);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+  .section-desc {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 56px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .feature-card {
+    background: var(--dark-mid);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px 28px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--bc-blue);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .feature-card:hover::before {
+    transform: scaleX(1);
+  }
+  .feature-card:hover {
+    border-color: rgba(29, 160, 195, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  }
+  .feature-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bc-blue-dim);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+  .feature-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--white);
+  }
+  .feature-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  /* ── Album Showcase ──────────────────────────────────────── */
+  .showcase-section {
+    background: var(--dark);
+    position: relative;
+    overflow: hidden;
+  }
+  .showcase-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(23, 184, 160, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .showcase-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .album-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    position: relative;
+  }
+  .album-card {
+    position: relative;
+    aspect-ratio: 1;
+    background: var(--dark-mid);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .album-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(29, 160, 195, 0.3);
+  }
+  .album-art {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .album-art-inner {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    opacity: 0.15;
+  }
+  .album-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+  }
+  .album-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+  .album-artist {
+    font-size: 11px;
+    color: var(--grey-mid);
+  }
+  .album-price {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--bc-teal);
+    background: rgba(26, 26, 26, 0.85);
+    padding: 3px 8px;
+    border-radius: 3px;
+    backdrop-filter: blur(8px);
+  }
+
+  .album-1 .album-art { background: linear-gradient(135deg, #1DA0C3 0%, #0D5E73 100%); }
+  .album-2 .album-art { background: linear-gradient(135deg, #E85D75 0%, #8B2040 100%); }
+  .album-3 .album-art { background: linear-gradient(135deg, #17B8A0 0%, #0A6B5C 100%); }
+  .album-4 .album-art { background: linear-gradient(135deg, #F2A93B 0%, #8F6420 100%); }
+  .album-5 .album-art { background: linear-gradient(135deg, #9B59B6 0%, #5B2D6E 100%); }
+  .album-6 .album-art { background: linear-gradient(135deg, #333 0%, #111 100%); }
+  .album-7 .album-art { background: linear-gradient(135deg, #2ECC71 0%, #1A7A42 100%); }
+  .album-8 .album-art { background: linear-gradient(135deg, #E74C3C 0%, #8B2E25 100%); }
+
+  .play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 44px;
+    height: 44px;
+    background: var(--bc-blue);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 2;
+  }
+  .play-btn::after {
+    content: '';
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 7px 0 7px 12px;
+    border-color: transparent transparent transparent var(--white);
+    margin-left: 2px;
+  }
+  .album-card:hover .play-btn {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  /* ── Stats ─────────────────────────────────────────────────── */
+  .stats-section {
+    background: var(--dark-deep);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    text-align: center;
+  }
+  .stat-item {
+    padding: 20px 0;
+  }
+  .stat-number {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 900;
+    color: var(--bc-blue);
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .stat-number .teal { color: var(--bc-teal); }
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── How It Works ─────────────────────────────────────────── */
+  .how-section {
+    background: var(--dark);
+  }
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-top: 48px;
+  }
+  .how-step {
+    text-align: center;
+    position: relative;
+  }
+  .step-number {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--bc-blue);
+    background: var(--bc-blue-dim);
+    border-radius: 50%;
+    border: 2px solid rgba(29, 160, 195, 0.2);
+  }
+  .how-step h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .how-step p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  .step-connector {
+    display: none;
+  }
+
+  /* ── CTA ───────────────────────────────────────────────────── */
+  .cta-section {
+    background: var(--dark-deep);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    bottom: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(29, 160, 195, 0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cta-content {
+    position: relative;
+    z-index: 2;
+  }
+  .cta-kpt {
+    font-size: 56px;
+    font-weight: 900;
+    letter-spacing: 6px;
+    color: var(--bc-blue);
+    margin-bottom: 20px;
+    opacity: 0.12;
+  }
+  .cta-title {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+  .cta-desc {
+    font-size: 16px;
+    color: var(--text-muted);
+    max-width: 500px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+  }
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Vinyl record decoration */
+  .vinyl-decor {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 1px solid rgba(29, 160, 195, 0.06);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .vinyl-decor::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 1px solid rgba(29, 160, 195, 0.08);
+  }
+  .vinyl-decor::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(29, 160, 195, 0.1);
+  }
+  .vinyl-left {
+    top: 50%;
+    left: -100px;
+    transform: translateY(-50%);
+    animation: spin-slow 40s linear infinite;
+  }
+  .vinyl-right {
+    top: 30%;
+    right: -120px;
+    transform: translateY(-50%);
+    animation: spin-slow 50s linear infinite reverse;
+  }
+  @keyframes spin-slow {
+    from { transform: translateY(-50%) rotate(0deg); }
+    to { transform: translateY(-50%) rotate(360deg); }
+  }
+
+  /* ── Footer ────────────────────────────────────────────────── */
+  .footer {
+    background: var(--dark-deep);
+    border-top: 1px solid var(--border);
+    padding: 48px 0 32px;
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  .footer-brand {
+    max-width: 260px;
+  }
+  .footer-logo {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--bc-blue);
+    margin-bottom: 12px;
+  }
+  .footer-brand p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .footer-cols {
+    display: flex;
+    gap: 56px;
+  }
+  .footer-col h4 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--grey-mid);
+    margin-bottom: 16px;
+  }
+  .footer-col ul {
+    list-style: none;
+  }
+  .footer-col li {
+    margin-bottom: 10px;
+  }
+  .footer-col a {
+    font-size: 13px;
+    color: var(--text-muted);
+    transition: color 0.2s ease;
+  }
+  .footer-col a:hover {
+    color: var(--bc-blue);
+  }
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-copy {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .footer-tagline {
+    font-size: 12px;
+    color: var(--grey-muted);
+    font-weight: 500;
+  }
+  .footer-tagline span {
+    color: var(--bc-blue);
+  }
+
+  /* ── Waveform decoration ─────────────────────────────────── */
+  .waveform {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 24px;
+  }
+  .waveform-bar {
+    width: 3px;
+    background: var(--bc-blue);
+    border-radius: 1px;
+    animation: wave 1.4s ease-in-out infinite;
+    opacity: 0.5;
+  }
+  .waveform-bar:nth-child(1) { height: 8px; animation-delay: 0s; }
+  .waveform-bar:nth-child(2) { height: 16px; animation-delay: 0.1s; }
+  .waveform-bar:nth-child(3) { height: 10px; animation-delay: 0.2s; }
+  .waveform-bar:nth-child(4) { height: 20px; animation-delay: 0.3s; }
+  .waveform-bar:nth-child(5) { height: 14px; animation-delay: 0.15s; }
+  .waveform-bar:nth-child(6) { height: 22px; animation-delay: 0.25s; }
+  .waveform-bar:nth-child(7) { height: 12px; animation-delay: 0.35s; }
+  .waveform-bar:nth-child(8) { height: 18px; animation-delay: 0.05s; }
+
+  @keyframes wave {
+    0%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(0.4); }
+  }
+
+  /* ── Responsive ────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+
+    .hero { min-height: 90vh; }
+    .hero-kpt { letter-spacing: 4px; }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .album-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .how-grid {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .footer-inner {
+      flex-direction: column;
+    }
+    .footer-cols {
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+    }
+
+    .vinyl-decor { display: none; }
+
+    .section { padding: 72px 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">&larr; Back</a>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">KPT</div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#discover">Discover</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#join" class="nav-cta">Start Listening</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="album-square"></div>
+    <div class="album-square"></div>
+    <div class="album-square"></div>
+    <div class="album-square"></div>
+    <div class="album-square"></div>
+    <div class="album-square"></div>
+    <div class="album-square"></div>
+    <div class="album-square"></div>
+    <div class="album-square"></div>
+    <div class="album-square"></div>
+  </div>
+  <div class="vinyl-decor vinyl-left"></div>
+  <div class="vinyl-decor vinyl-right"></div>
+  <div class="hero-content">
+    <div class="hero-badge reveal">
+      <span class="badge-icon"></span>
+      Fan-Powered Music
+    </div>
+    <div class="hero-kpt reveal reveal-delay-1">KPT</div>
+    <h1 class="hero-tagline reveal reveal-delay-2">Discover amazing new music.</h1>
+    <p class="hero-sub reveal reveal-delay-3">
+      A direct line between artists and fans. No algorithms. No middlemen.
+      Just music, the way it was meant to be heard.
+    </p>
+    <div class="hero-actions reveal reveal-delay-4">
+      <a href="#discover" class="btn-primary">
+        <span class="waveform">
+          <span class="waveform-bar"></span>
+          <span class="waveform-bar"></span>
+          <span class="waveform-bar"></span>
+          <span class="waveform-bar"></span>
+          <span class="waveform-bar"></span>
+          <span class="waveform-bar"></span>
+          <span class="waveform-bar"></span>
+          <span class="waveform-bar"></span>
+        </span>
+        Explore Music
+      </a>
+      <a href="#how" class="btn-secondary">For Artists</a>
+    </div>
+  </div>
+</section>
+
+<!-- Manifesto -->
+<section class="manifesto">
+  <div class="container">
+    <p class="manifesto-text reveal">
+      We believe music should be a <em>fair exchange</em> between the people who make it
+      and the people who love it. When you buy on KPT, <em>82% goes directly to the artist</em>.
+      That is the whole point.
+    </p>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features" class="section features-section">
+  <div class="container">
+    <div class="section-label reveal">Why KPT</div>
+    <h2 class="section-title reveal reveal-delay-1">Built for independent music.</h2>
+    <p class="section-desc reveal reveal-delay-2">
+      No playlists curated by engagement metrics. No AI-generated recommendations.
+      Real music, chosen by real fans.
+    </p>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">&#9835;</div>
+        <h3>Direct Support</h3>
+        <p>Your money goes to the artist. Not to shareholders, not to algorithms, not to a corporate machine. To the person who made the music.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">&#9783;</div>
+        <h3>Name Your Price</h3>
+        <p>Pay what you want, or pay more than the asking price. Fans regularly pay above the minimum because they believe in the work.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">&#8734;</div>
+        <h3>Own Your Music</h3>
+        <p>Download in any format: FLAC, WAV, MP3, AAC, Ogg. No DRM. No subscriptions. Buy it once, keep it forever.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">&#9881;</div>
+        <h3>Full Artist Control</h3>
+        <p>Artists set their own prices, design their pages, choose their release schedule. Complete creative and commercial autonomy.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">&#9734;</div>
+        <h3>Fan Collections</h3>
+        <p>Build a collection that reflects who you are. Your library is a record of the artists you have supported and the music that matters to you.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon">&#9830;</div>
+        <h3>Vinyl & Merch</h3>
+        <p>Physical releases, limited pressings, hand-printed merch. Artists sell directly to fans with no warehouse middlemen skimming off the top.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Album Showcase -->
+<section id="discover" class="section showcase-section">
+  <div class="container">
+    <div class="showcase-header">
+      <div class="section-label reveal">Now Playing</div>
+      <h2 class="section-title reveal reveal-delay-1">Fresh off the press.</h2>
+      <p class="section-desc reveal reveal-delay-2" style="margin: 0 auto 56px;">
+        The latest releases from independent artists around the world.
+        Every purchase directly funds the next record.
+      </p>
+    </div>
+    <div class="album-grid">
+      <div class="album-card album-1 reveal">
+        <div class="album-art"><div class="album-art-inner">&#9835;</div></div>
+        <div class="play-btn"></div>
+        <div class="album-price">$8</div>
+        <div class="album-info">
+          <div class="album-title">Midnight Frequencies</div>
+          <div class="album-artist">Neon Drifter</div>
+        </div>
+      </div>
+      <div class="album-card album-2 reveal reveal-delay-1">
+        <div class="album-art"><div class="album-art-inner">&#9836;</div></div>
+        <div class="play-btn"></div>
+        <div class="album-price">$10</div>
+        <div class="album-info">
+          <div class="album-title">Velvet Rust</div>
+          <div class="album-artist">The Glass House</div>
+        </div>
+      </div>
+      <div class="album-card album-3 reveal reveal-delay-2">
+        <div class="album-art"><div class="album-art-inner">&#9833;</div></div>
+        <div class="play-btn"></div>
+        <div class="album-price">$7</div>
+        <div class="album-info">
+          <div class="album-title">Analog Prayers</div>
+          <div class="album-artist">Slow Meridian</div>
+        </div>
+      </div>
+      <div class="album-card album-4 reveal reveal-delay-3">
+        <div class="album-art"><div class="album-art-inner">&#9839;</div></div>
+        <div class="play-btn"></div>
+        <div class="album-price">$12</div>
+        <div class="album-info">
+          <div class="album-title">Dust Bowl Radio</div>
+          <div class="album-artist">Canyon Electric</div>
+        </div>
+      </div>
+      <div class="album-card album-5 reveal">
+        <div class="album-art"><div class="album-art-inner">&#9837;</div></div>
+        <div class="play-btn"></div>
+        <div class="album-price">$9</div>
+        <div class="album-info">
+          <div class="album-title">Purple Satellite</div>
+          <div class="album-artist">Cosma Ray</div>
+        </div>
+      </div>
+      <div class="album-card album-6 reveal reveal-delay-1">
+        <div class="album-art"><div class="album-art-inner">&#9834;</div></div>
+        <div class="play-btn"></div>
+        <div class="album-price">$6</div>
+        <div class="album-info">
+          <div class="album-title">Dark Room Sessions</div>
+          <div class="album-artist">Monochrome Tape</div>
+        </div>
+      </div>
+      <div class="album-card album-7 reveal reveal-delay-2">
+        <div class="album-art"><div class="album-art-inner">&#9835;</div></div>
+        <div class="play-btn"></div>
+        <div class="album-price">$11</div>
+        <div class="album-info">
+          <div class="album-title">Emerald Frequency</div>
+          <div class="album-artist">Forest Floor</div>
+        </div>
+      </div>
+      <div class="album-card album-8 reveal reveal-delay-3">
+        <div class="album-art"><div class="album-art-inner">&#9836;</div></div>
+        <div class="play-btn"></div>
+        <div class="album-price">$8</div>
+        <div class="album-info">
+          <div class="album-title">Burning Chrome</div>
+          <div class="album-artist">Red Signal</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="section stats-section" style="padding: 72px 0;">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-number">$1.2B</div>
+        <div class="stat-label">Paid to Artists</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-number"><span class="teal">14M</span></div>
+        <div class="stat-label">Albums Released</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-number">8M</div>
+        <div class="stat-label">Active Fans</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-number"><span class="teal">82%</span></div>
+        <div class="stat-label">Revenue to Artists</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section id="how" class="section how-section">
+  <div class="container">
+    <div style="text-align: center;">
+      <div class="section-label reveal">How It Works</div>
+      <h2 class="section-title reveal reveal-delay-1">Three steps. Zero friction.</h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-step reveal">
+        <div class="step-number">1</div>
+        <h3>Discover</h3>
+        <p>Browse by genre, tag, or editorial picks. Listen to full albums instantly, no signup required.</p>
+      </div>
+      <div class="how-step reveal reveal-delay-1">
+        <div class="step-number">2</div>
+        <h3>Support</h3>
+        <p>Buy the album. Name your price. Your payment goes directly to the artist — 82 cents of every dollar.</p>
+      </div>
+      <div class="how-step reveal reveal-delay-2">
+        <div class="step-number">3</div>
+        <h3>Collect</h3>
+        <p>Download in any format. Build your collection. Physical merch and vinyl ship directly from the artist.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="join" class="section cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <div class="cta-kpt reveal">KPT</div>
+      <h2 class="cta-title reveal reveal-delay-1">Music deserves better.</h2>
+      <p class="cta-desc reveal reveal-delay-2">
+        Join millions of fans who support independent artists directly.
+        Every purchase is a vote for a better music industry.
+      </p>
+      <div class="cta-buttons reveal reveal-delay-3">
+        <a href="#" class="btn-primary">Start Discovering</a>
+        <a href="#" class="btn-secondary">Sell Your Music</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">KPT</div>
+        <p>Fan-powered music. Direct artist support. No middlemen, no algorithms, just real music from independent artists.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Discover</h4>
+          <ul>
+            <li><a href="#">New Releases</a></li>
+            <li><a href="#">Best Sellers</a></li>
+            <li><a href="#">Genres</a></li>
+            <li><a href="#">Staff Picks</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Artists</h4>
+          <ul>
+            <li><a href="#">Start Selling</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Artist Guide</a></li>
+            <li><a href="#">Merch Tools</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Community</h4>
+          <ul>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">The Daily</a></li>
+            <li><a href="#">Fair Trade Music</a></li>
+            <li><a href="#">About</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">&copy; 2026 KPT. All rights reserved.</div>
+      <div class="footer-tagline">Built by fans, <span>for fans</span>.</div>
+    </div>
+  </div>
+</footer>
+
+<!-- IntersectionObserver Scroll Animations -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  });
+</script>
+
+</body>
+</html>

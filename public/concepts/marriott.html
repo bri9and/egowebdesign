@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Marriott</title>
+<meta name="description" content="KPT. Inspired by Marriott's global hospitality legacy. Premium yet accessible — where every journey finds its home.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* =============================================
+     RESET & CUSTOM PROPERTIES
+     ============================================= */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --marriott-red: #A4343A;
+    --marriott-red-light: #C44950;
+    --marriott-red-dark: #8A2A2F;
+    --marriott-red-dim: rgba(164, 52, 58, 0.12);
+    --marriott-red-glow: rgba(164, 52, 58, 0.25);
+    --dark: #1A1A2E;
+    --dark-soft: #22223A;
+    --dark-surface: #2A2A44;
+    --white: #FFFFFF;
+    --white-off: #F8F7F5;
+    --white-warm: #FAF9F7;
+    --gold: #B8860B;
+    --gold-light: #D4A529;
+    --gold-dim: rgba(184, 134, 11, 0.15);
+    --gold-glow: rgba(184, 134, 11, 0.08);
+    --gray-100: #F0EDE8;
+    --gray-200: #DDD8D0;
+    --gray-400: #9A9490;
+    --gray-600: #6B6560;
+    --gray-800: #3A3530;
+
+    --font-sans: 'DM Sans', 'Helvetica Neue', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+    --ease-elegant: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--dark);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--marriott-red);
+    color: var(--white);
+  }
+
+  img { display: block; max-width: 100%; }
+
+  /* =============================================
+     SCROLL ANIMATIONS
+     ============================================= */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s var(--ease-reveal), transform 0.9s var(--ease-reveal);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-60px);
+    transition: opacity 0.9s var(--ease-reveal), transform 0.9s var(--ease-reveal);
+  }
+
+  .reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(60px);
+    transition: opacity 0.9s var(--ease-reveal), transform 0.9s var(--ease-reveal);
+  }
+
+  .reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 1s var(--ease-reveal), transform 1s var(--ease-reveal);
+  }
+
+  .reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* =============================================
+     NAVIGATION
+     ============================================= */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: rgba(26, 26, 46, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0);
+    transition: all 0.6s var(--ease-elegant);
+    padding: 0;
+  }
+
+  nav.scrolled {
+    background: rgba(26, 26, 46, 0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .nav-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 28px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: padding 0.6s var(--ease-elegant);
+  }
+
+  nav.scrolled .nav-inner {
+    padding: 16px 60px;
+  }
+
+  .nav-back {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.4s var(--ease-elegant);
+    min-width: 120px;
+  }
+
+  .nav-back:hover { color: var(--gold); }
+
+  .nav-logo {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 14px;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: letter-spacing 0.6s var(--ease-elegant);
+  }
+
+  nav.scrolled .nav-logo { letter-spacing: 10px; }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    min-width: 120px;
+    justify-content: flex-end;
+  }
+
+  .nav-links a {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.4s var(--ease-elegant);
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--marriott-red);
+    transition: width 0.4s var(--ease-elegant);
+  }
+
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* =============================================
+     HERO
+     ============================================= */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    background: var(--dark);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(164, 52, 58, 0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 70% 60%, rgba(184, 134, 11, 0.06) 0%, transparent 60%),
+      linear-gradient(180deg, var(--dark) 0%, #16162A 50%, var(--dark) 100%);
+    z-index: 0;
+  }
+
+  .hero-pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 80px 80px;
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    padding: 0 40px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--marriott-red-dim);
+    border: 1px solid rgba(164, 52, 58, 0.25);
+    border-radius: 100px;
+    padding: 8px 24px;
+    margin-bottom: 40px;
+    animation: fadeInDown 1s var(--ease-reveal) 0.2s both;
+  }
+
+  .hero-badge span {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--marriott-red-light);
+  }
+
+  .hero-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--marriott-red);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  .hero-monogram {
+    font-family: var(--font-sans);
+    font-size: 160px;
+    font-weight: 800;
+    letter-spacing: -4px;
+    line-height: 1;
+    margin-bottom: 24px;
+    animation: fadeInUp 1s var(--ease-reveal) 0.4s both;
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-monogram .letter-k { color: var(--white); }
+  .hero-monogram .letter-p { color: var(--marriott-red); }
+  .hero-monogram .letter-t { color: var(--gold); }
+
+  .hero-monogram::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--marriott-red), var(--gold));
+    border-radius: 2px;
+  }
+
+  .hero-title {
+    font-family: var(--font-sans);
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 24px;
+    animation: fadeInUp 1s var(--ease-reveal) 0.6s both;
+  }
+
+  .hero-subtitle {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.45);
+    max-width: 600px;
+    margin: 0 auto 48px;
+    animation: fadeInUp 1s var(--ease-reveal) 0.8s both;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    animation: fadeInUp 1s var(--ease-reveal) 1s both;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--marriott-red);
+    border: none;
+    border-radius: 4px;
+    padding: 16px 40px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.4s var(--ease-elegant);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(255,255,255,0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-elegant);
+  }
+
+  .btn-primary:hover {
+    background: var(--marriott-red-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px var(--marriott-red-glow);
+  }
+
+  .btn-primary:hover::before { opacity: 1; }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    padding: 15px 36px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.4s var(--ease-elegant);
+  }
+
+  .btn-secondary:hover {
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    animation: fadeInUp 1s var(--ease-reveal) 1.4s both;
+  }
+
+  .hero-scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent);
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-scroll-line::after {
+    content: '';
+    position: absolute;
+    top: -48px;
+    left: 0;
+    width: 1px;
+    height: 48px;
+    background: var(--marriott-red);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollLine {
+    0% { top: -48px; }
+    100% { top: 48px; }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* =============================================
+     SECTION COMMON
+     ============================================= */
+  section {
+    padding: 120px 60px;
+  }
+
+  .section-header {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 80px;
+  }
+
+  .section-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--marriott-red);
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-family: var(--font-sans);
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  .section-desc {
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* =============================================
+     BONVOY RIBBON (Brand Divider)
+     ============================================= */
+  .bonvoy-ribbon {
+    background: linear-gradient(135deg, var(--marriott-red) 0%, var(--marriott-red-dark) 100%);
+    padding: 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bonvoy-ribbon::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 100% at 20% 50%, rgba(184, 134, 11, 0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 100% at 80% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+  }
+
+  .bonvoy-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .bonvoy-eyebrow {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 12px;
+  }
+
+  .bonvoy-title {
+    font-family: var(--font-sans);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .bonvoy-sub {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* =============================================
+     FEATURES GRID
+     ============================================= */
+  .features {
+    background: var(--dark);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .feature-card {
+    background: var(--dark-soft);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 48px 36px;
+    transition: all 0.5s var(--ease-elegant);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--marriott-red), var(--gold));
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-elegant);
+  }
+
+  .feature-card:hover {
+    border-color: rgba(164, 52, 58, 0.2);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  .feature-card:hover::before { opacity: 1; }
+
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: var(--marriott-red-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    font-size: 24px;
+    transition: background 0.5s var(--ease-elegant);
+  }
+
+  .feature-card:hover .feature-icon {
+    background: var(--marriott-red-glow);
+  }
+
+  .feature-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--marriott-red-light);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .feature-title {
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 14px;
+  }
+
+  .feature-desc {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  /* =============================================
+     STATS
+     ============================================= */
+  .stats {
+    background: var(--dark-soft);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(184, 134, 11, 0.04) 0%, transparent 70%);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .stat-number {
+    font-family: var(--font-sans);
+    font-size: 56px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-unit {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 8px;
+  }
+
+  .stat-desc {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.35);
+    line-height: 1.6;
+  }
+
+  /* =============================================
+     EXPERIENCE SECTION (Two-column)
+     ============================================= */
+  .experience {
+    background: var(--dark);
+  }
+
+  .experience-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .experience-visual {
+    position: relative;
+  }
+
+  .experience-card-main {
+    background: linear-gradient(135deg, var(--marriott-red) 0%, var(--marriott-red-dark) 100%);
+    border-radius: 16px;
+    padding: 60px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .experience-card-main::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(184, 134, 11, 0.2) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 40%);
+  }
+
+  .experience-card-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .experience-card-m {
+    font-family: var(--font-sans);
+    font-size: 120px;
+    font-weight: 800;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.08);
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    z-index: 0;
+  }
+
+  .experience-card-label {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 16px;
+  }
+
+  .experience-card-title {
+    font-family: var(--font-sans);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .experience-card-desc {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.7;
+  }
+
+  .experience-card-accent {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    width: 120px;
+    height: 120px;
+    border-radius: 16px;
+    background: var(--gold);
+    opacity: 0.12;
+    transform: rotate(12deg);
+  }
+
+  .experience-text h3 {
+    font-family: var(--font-sans);
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+
+  .experience-text h3 em {
+    font-style: italic;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .experience-text p {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 32px;
+  }
+
+  .experience-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .experience-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.6;
+  }
+
+  .experience-list li .check {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 50%;
+    background: var(--marriott-red-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  .experience-list li .check svg {
+    width: 10px;
+    height: 10px;
+    stroke: var(--marriott-red-light);
+    fill: none;
+    stroke-width: 2;
+  }
+
+  /* =============================================
+     TIERS (Loyalty Tiers)
+     ============================================= */
+  .tiers {
+    background: var(--dark-soft);
+  }
+
+  .tiers-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .tier-card {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 44px 32px;
+    text-align: center;
+    transition: all 0.5s var(--ease-elegant);
+    position: relative;
+    overflow: hidden;
+    background: var(--dark);
+  }
+
+  .tier-card.featured {
+    border-color: rgba(184, 134, 11, 0.3);
+    background: linear-gradient(180deg, var(--dark-surface), var(--dark));
+  }
+
+  .tier-card.featured::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  }
+
+  .tier-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  .tier-level {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 8px;
+  }
+
+  .tier-card.featured .tier-level { color: var(--gold); }
+
+  .tier-name {
+    font-family: var(--font-sans);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .tier-price {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 28px;
+  }
+
+  .tier-divider {
+    width: 40px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 auto 28px;
+  }
+
+  .tier-card.featured .tier-divider {
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .tier-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .tier-features li {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .tier-btn {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.4s var(--ease-elegant);
+    cursor: pointer;
+  }
+
+  .tier-btn-outline {
+    color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: transparent;
+  }
+
+  .tier-btn-outline:hover {
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .tier-btn-gold {
+    color: var(--dark);
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    border: 1px solid transparent;
+  }
+
+  .tier-btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--gold-dim);
+  }
+
+  .tier-btn-red {
+    color: var(--white);
+    background: var(--marriott-red);
+    border: 1px solid transparent;
+  }
+
+  .tier-btn-red:hover {
+    background: var(--marriott-red-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--marriott-red-glow);
+  }
+
+  /* =============================================
+     CTA SECTION
+     ============================================= */
+  .cta {
+    background: var(--dark);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 140px 60px;
+  }
+
+  .cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 60%, rgba(164, 52, 58, 0.1) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 30% 40%, rgba(184, 134, 11, 0.05) 0%, transparent 60%);
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .cta-monogram {
+    font-family: var(--font-sans);
+    font-size: 64px;
+    font-weight: 800;
+    color: var(--marriott-red);
+    margin-bottom: 32px;
+    letter-spacing: -1px;
+  }
+
+  .cta-title {
+    font-family: var(--font-sans);
+    font-size: 44px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--white);
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  .cta-desc {
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.45);
+    margin-bottom: 48px;
+  }
+
+  .cta-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  /* =============================================
+     FOOTER
+     ============================================= */
+  footer {
+    background: #12121F;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    padding: 80px 60px 40px;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 64px;
+  }
+
+  .footer-brand-name {
+    font-family: var(--font-sans);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .footer-brand-desc {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.35);
+    max-width: 300px;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 20px;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-col a {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.35);
+    text-decoration: none;
+    transition: color 0.3s var(--ease-elegant);
+  }
+
+  .footer-col a:hover { color: var(--marriott-red-light); }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .footer-copy {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .footer-legal {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-legal a {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.25);
+    text-decoration: none;
+    transition: color 0.3s var(--ease-elegant);
+  }
+
+  .footer-legal a:hover { color: rgba(255, 255, 255, 0.5); }
+
+  /* =============================================
+     RESPONSIVE — 768px
+     ============================================= */
+  @media (max-width: 768px) {
+    section { padding: 80px 24px; }
+
+    .nav-inner { padding: 20px 24px; }
+    nav.scrolled .nav-inner { padding: 14px 24px; }
+    .nav-links { display: none; }
+    .nav-logo { font-size: 16px; letter-spacing: 8px; }
+    nav.scrolled .nav-logo { letter-spacing: 6px; }
+
+    .hero-monogram { font-size: 96px; }
+    .hero-title { font-size: 16px; letter-spacing: 5px; }
+    .hero-subtitle { font-size: 15px; }
+    .hero-cta-group { flex-direction: column; gap: 14px; }
+    .hero-cta-group .btn-primary,
+    .hero-cta-group .btn-secondary { width: 100%; justify-content: center; max-width: 300px; }
+
+    .bonvoy-ribbon { padding: 40px 24px; }
+    .bonvoy-title { font-size: 22px; letter-spacing: 1px; }
+
+    .section-title { font-size: 30px; }
+    .section-desc { font-size: 15px; }
+    .section-header { margin-bottom: 48px; }
+
+    .features-grid { grid-template-columns: 1fr; gap: 20px; }
+    .feature-card { padding: 36px 28px; }
+
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .stat-number { font-size: 40px; }
+
+    .experience-grid { grid-template-columns: 1fr; gap: 48px; }
+    .experience-text h3 { font-size: 28px; }
+
+    .tiers-row { grid-template-columns: 1fr; gap: 20px; max-width: 400px; }
+
+    .cta { padding: 100px 24px; }
+    .cta-monogram { font-size: 48px; }
+    .cta-title { font-size: 30px; }
+    .cta-buttons { flex-direction: column; gap: 14px; }
+    .cta-buttons .btn-primary,
+    .cta-buttons .btn-secondary { width: 100%; justify-content: center; max-width: 300px; }
+
+    footer { padding: 60px 24px 32px; }
+    .footer-top { grid-template-columns: 1fr; gap: 36px; }
+    .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    .footer-legal { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ─── NAVIGATION ──────────────────────────────────── -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="/index.html" class="nav-back">&larr; All Concepts</a>
+      <a href="#" class="nav-logo">KPT</a>
+      <ul class="nav-links">
+        <li><a href="#features">Portfolio</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#tiers">Tiers</a></li>
+        <li><a href="#cta">Connect</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-pattern"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        <span>Global Hospitality Scale</span>
+      </div>
+      <div class="hero-monogram">
+        <span class="letter-k">K</span><span class="letter-p">P</span><span class="letter-t">T</span>
+      </div>
+      <h1 class="hero-title">Where Every Journey Finds Home</h1>
+      <p class="hero-subtitle">Premium web design and AI voice agents, delivered with the warmth of world-class hospitality and the precision of global scale.</p>
+      <div class="hero-cta-group">
+        <a href="#cta" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          Start Your Stay
+        </a>
+        <a href="#features" class="btn-secondary">Explore Portfolio</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ─── BONVOY RIBBON ───────────────────────────────── -->
+  <div class="bonvoy-ribbon">
+    <div class="bonvoy-content reveal">
+      <div class="bonvoy-eyebrow">Loyalty Program</div>
+      <div class="bonvoy-title">KPT Bonvoy</div>
+      <div class="bonvoy-sub">Every project earns points. Every relationship builds status. Brilliance travels with you.</div>
+    </div>
+  </div>
+
+  <!-- ─── FEATURES ────────────────────────────────────── -->
+  <section class="features" id="features">
+    <div class="section-header reveal">
+      <div class="section-label">Our Portfolio of Brands</div>
+      <h2 class="section-title">Crafted for Every Destination</h2>
+      <p class="section-desc">From boutique landing pages to enterprise platforms, every project is treated with the care of a flagship property.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal" style="transition-delay: 0.05s;">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3 class="feature-title">Web Design</h3>
+        <p class="feature-desc">Stunning, responsive websites that welcome visitors like a grand lobby. Clean architecture, intuitive navigation, lasting impressions.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay: 0.15s;">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </div>
+        <h3 class="feature-title">AI Voice Agents</h3>
+        <p class="feature-desc">Intelligent concierge-level AI that answers calls, books appointments, and nurtures leads around the clock. Your 24/7 front desk.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay: 0.25s;">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <h3 class="feature-title">Full-Stack Apps</h3>
+        <p class="feature-desc">Custom platforms built to scale globally. From authentication to analytics, every system is engineered for reliability.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay: 0.35s;">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3 class="feature-title">Global Reach</h3>
+        <p class="feature-desc">Deployed across worldwide CDN networks. Sub-second load times from Tokyo to Toronto. Your brand, everywhere.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay: 0.45s;">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="feature-title">Security First</h3>
+        <p class="feature-desc">Enterprise-grade protection at every layer. SSL, authentication, data encryption, and compliance built in from day one.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay: 0.55s;">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <h3 class="feature-title">Concierge Support</h3>
+        <p class="feature-desc">White-glove service throughout your journey. Dedicated point of contact, proactive updates, and swift resolutions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── STATS ───────────────────────────────────────── -->
+  <section class="stats" id="stats">
+    <div class="section-header reveal">
+      <div class="section-label">By the Numbers</div>
+      <h2 class="section-title">Global Scale, Personal Touch</h2>
+      <p class="section-desc">Metrics that reflect our commitment to excellence across every project and partnership.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-item reveal" style="transition-delay: 0.05s;">
+        <div class="stat-number">139</div>
+        <div class="stat-unit">Countries</div>
+        <div class="stat-desc">Edge nodes serving your content worldwide</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay: 0.15s;">
+        <div class="stat-number">99.9</div>
+        <div class="stat-unit">% Uptime</div>
+        <div class="stat-desc">Reliability you can stake your brand on</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay: 0.25s;">
+        <div class="stat-number">8.4K</div>
+        <div class="stat-unit">Properties</div>
+        <div class="stat-desc">Pages, apps, and components delivered</div>
+      </div>
+      <div class="stat-item reveal" style="transition-delay: 0.35s;">
+        <div class="stat-number">30</div>
+        <div class="stat-unit">Brands</div>
+        <div class="stat-desc">Distinct design systems under one portfolio</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── EXPERIENCE ──────────────────────────────────── -->
+  <section class="experience" id="experience">
+    <div class="experience-grid">
+      <div class="experience-visual reveal-left">
+        <div class="experience-card-main">
+          <div class="experience-card-m">M</div>
+          <div class="experience-card-content">
+            <div class="experience-card-label">The KPT Experience</div>
+            <h3 class="experience-card-title">Premium Without<br>the Premium Price</h3>
+            <p class="experience-card-desc">World-class design that does not require a world-class budget. Accessible luxury for businesses of every size.</p>
+          </div>
+          <div class="experience-card-accent"></div>
+        </div>
+      </div>
+      <div class="experience-text reveal-right">
+        <h3>Hospitality-grade craft,<br><em>startup-speed delivery</em></h3>
+        <p>Like Marriott transformed travel by making premium accessible at global scale, KPT brings enterprise-quality digital experiences to businesses that refuse to compromise on quality but demand efficiency.</p>
+        <ul class="experience-list">
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+            Pixel-perfect design with obsessive attention to detail
+          </li>
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+            AI agents that learn and adapt to your brand voice
+          </li>
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+            Delivered in weeks, not months — no compromise on craft
+          </li>
+          <li>
+            <span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+            Ongoing loyalty rewards for returning partners
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TIERS ───────────────────────────────────────── -->
+  <section class="tiers" id="tiers">
+    <div class="section-header reveal">
+      <div class="section-label">Membership Tiers</div>
+      <h2 class="section-title">Choose Your Experience</h2>
+      <p class="section-desc">Every tier delivers excellence. Higher tiers unlock deeper partnership, priority access, and exclusive rewards.</p>
+    </div>
+    <div class="tiers-row">
+      <div class="tier-card reveal" style="transition-delay: 0.05s;">
+        <div class="tier-level">Silver</div>
+        <h3 class="tier-name">Essential</h3>
+        <div class="tier-price">Starting at $2,500</div>
+        <div class="tier-divider"></div>
+        <ul class="tier-features">
+          <li>Custom landing page</li>
+          <li>Mobile-responsive design</li>
+          <li>SEO foundations</li>
+          <li>2 rounds of revision</li>
+          <li>30-day support window</li>
+        </ul>
+        <a href="#cta" class="tier-btn tier-btn-outline">Get Started</a>
+      </div>
+      <div class="tier-card featured reveal" style="transition-delay: 0.15s;">
+        <div class="tier-level">Gold Elite</div>
+        <h3 class="tier-name">Premium</h3>
+        <div class="tier-price">Starting at $5,000</div>
+        <div class="tier-divider"></div>
+        <ul class="tier-features">
+          <li>Multi-page website + CMS</li>
+          <li>AI voice agent integration</li>
+          <li>Analytics dashboard</li>
+          <li>Unlimited revisions</li>
+          <li>90-day priority support</li>
+        </ul>
+        <a href="#cta" class="tier-btn tier-btn-gold">Select Gold</a>
+      </div>
+      <div class="tier-card reveal" style="transition-delay: 0.25s;">
+        <div class="tier-level">Platinum</div>
+        <h3 class="tier-name">Enterprise</h3>
+        <div class="tier-price">Custom engagement</div>
+        <div class="tier-divider"></div>
+        <ul class="tier-features">
+          <li>Full-stack application</li>
+          <li>Dedicated AI concierge</li>
+          <li>White-label solutions</li>
+          <li>SLA-backed uptime</li>
+          <li>Lifetime partnership tier</li>
+        </ul>
+        <a href="#cta" class="tier-btn tier-btn-red">Contact Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ─────────────────────────────────────────── -->
+  <section class="cta" id="cta">
+    <div class="cta-content">
+      <div class="cta-monogram reveal">KPT</div>
+      <h2 class="cta-title reveal" style="transition-delay: 0.1s;">Your Next Chapter<br>Starts Here</h2>
+      <p class="cta-desc reveal" style="transition-delay: 0.2s;">Join a portfolio of brands that demand excellence. Premium design, intelligent automation, and a partnership built to last.</p>
+      <div class="cta-buttons reveal" style="transition-delay: 0.3s;">
+        <a href="#" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Book a Consultation
+        </a>
+        <a href="#features" class="btn-secondary">View Portfolio</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ──────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-brand-name">KPT</div>
+          <p class="footer-brand-desc">Premium web design and AI voice agents. Where every journey finds its home — and every brand finds its voice.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#features">Web Design</a></li>
+            <li><a href="#features">AI Voice Agents</a></li>
+            <li><a href="#features">Full-Stack Apps</a></li>
+            <li><a href="#features">Consulting</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Partners</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">GitHub</a></li>
+            <li><a href="#">Email</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">&copy; 2026 KPT. All rights reserved.</div>
+        <div class="footer-legal">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+          <a href="#">Cookies</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── SCRIPTS ─────────────────────────────────────── -->
+  <script>
+    /* ── Scroll-based nav styling ─── */
+    const nav = document.getElementById('nav');
+    const onScroll = () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    /* ── IntersectionObserver scroll animations ─── */
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach(el => observer.observe(el));
+
+    /* ── Smooth scroll for anchor links ─── */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

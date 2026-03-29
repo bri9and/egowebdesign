@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Fantastic Mr. Fox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #E67E22;
+    --orange-deep: #D35400;
+    --orange-dim: rgba(230, 126, 34, 0.12);
+    --mustard: #F1C40F;
+    --mustard-warm: #E8A900;
+    --mustard-dim: rgba(241, 196, 15, 0.15);
+    --brown: #8B5E3C;
+    --brown-dark: #6D4C41;
+    --brown-dim: rgba(139, 94, 60, 0.12);
+    --cream: #FFF8E7;
+    --cream-dark: #F5E6C8;
+    --parchment: #FDF5E6;
+    --green: #2E7D32;
+    --green-forest: #4A7C59;
+    --green-dim: rgba(46, 125, 50, 0.10);
+    --rust: #C0392B;
+    --rust-dim: rgba(192, 57, 43, 0.10);
+    --fox-amber: #D4870E;
+    --text-heading: #5C3A1E;
+    --text-body: #6D4C41;
+    --text-muted: #9C7A5A;
+    --border-hand: #C4956A;
+    --border-dashed: #B8860B;
+    --font-heading: 'Amatic SC', cursive;
+    --font-body: 'Lora', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --max-width: 1080px;
+    --nav-height: 68px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text-body);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Paper grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  /* ==============================
+     TYPOGRAPHY
+     ============================== */
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    color: var(--text-heading);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  h1 { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.1; }
+  h2 { font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.15; }
+  h3 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); line-height: 1.2; }
+  h4 { font-size: clamp(1.3rem, 2.5vw, 1.8rem); line-height: 1.25; }
+
+  p { max-width: 640px; margin-inline: auto; }
+
+  .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fox-amber);
+  }
+
+  /* ==============================
+     LAYOUT
+     ============================== */
+  .container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  section {
+    padding: 80px 0;
+    text-align: center;
+  }
+
+  /* ==============================
+     DECORATIVE BORDERS & FRAMES
+     ============================== */
+  .frame-border {
+    border: 3px solid var(--brown);
+    border-radius: 4px;
+    position: relative;
+  }
+
+  .frame-border::before,
+  .frame-border::after {
+    content: '';
+    position: absolute;
+    border: 1px dashed var(--border-dashed);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  .frame-border::before {
+    inset: 6px;
+  }
+
+  .frame-border::after {
+    inset: 10px;
+    border-style: dotted;
+    border-color: var(--border-hand);
+    opacity: 0.5;
+  }
+
+  .hand-rule {
+    border: none;
+    height: 2px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--border-hand) 0px,
+      var(--border-hand) 8px,
+      transparent 8px,
+      transparent 14px,
+      var(--brown) 14px,
+      var(--brown) 16px,
+      transparent 16px,
+      transparent 22px
+    );
+    margin: 32px auto;
+    max-width: 200px;
+    opacity: 0.6;
+  }
+
+  .ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 24px 0;
+    color: var(--fox-amber);
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    opacity: 0.7;
+  }
+
+  .ornament::before,
+  .ornament::after {
+    content: '';
+    flex: 1;
+    max-width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-hand), transparent);
+  }
+
+  /* ==============================
+     ANIMATIONS
+     ============================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.12s; }
+  .reveal-delay-2 { transition-delay: 0.24s; }
+  .reveal-delay-3 { transition-delay: 0.36s; }
+  .reveal-delay-4 { transition-delay: 0.48s; }
+
+  /* ==============================
+     NAV
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    height: var(--nav-height);
+    background: var(--cream);
+    border-bottom: 2px solid var(--brown);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.3s ease;
+  }
+
+  nav.scrolled {
+    box-shadow: 0 2px 20px rgba(139, 94, 60, 0.1);
+  }
+
+  .nav-inner {
+    max-width: var(--max-width);
+    width: 100%;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .nav-back {
+    position: absolute;
+    left: 24px;
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--brown);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-back:hover { color: var(--orange); }
+
+  .nav-brand {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--orange-deep);
+    letter-spacing: 0.04em;
+  }
+
+  .nav-links {
+    position: absolute;
+    right: 24px;
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--brown);
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--orange);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--orange); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ==============================
+     HERO
+     ============================== */
+  .hero {
+    padding: calc(var(--nav-height) + 60px) 0 80px;
+    background: var(--parchment);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-frame {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 56px 48px;
+    position: relative;
+  }
+
+  .hero-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 3px solid var(--brown);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+
+  .hero-frame::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1.5px dashed var(--border-dashed);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  .hero .label { margin-bottom: 16px; }
+
+  .hero h1 {
+    margin-bottom: 20px;
+    color: var(--orange-deep);
+  }
+
+  .hero h1 span { color: var(--fox-amber); }
+
+  .hero p {
+    font-size: 1.05rem;
+    color: var(--text-body);
+    margin-bottom: 36px;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    padding: 14px 36px;
+    border-radius: 4px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary {
+    background: var(--orange);
+    color: var(--cream);
+    border-color: var(--orange-deep);
+  }
+
+  .btn-primary:hover {
+    background: var(--orange-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(211, 84, 0, 0.25);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--green);
+    border-color: var(--green);
+  }
+
+  .btn-secondary:hover {
+    background: var(--green-dim);
+    transform: translateY(-2px);
+  }
+
+  /* Woodland decorative corners for hero */
+  .hero-corner {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    opacity: 0.35;
+  }
+
+  .hero-corner svg { width: 100%; height: 100%; }
+
+  .hero-corner.tl { top: 16px; left: 16px; }
+  .hero-corner.tr { top: 16px; right: 16px; transform: scaleX(-1); }
+  .hero-corner.bl { bottom: 16px; left: 16px; transform: scaleY(-1); }
+  .hero-corner.br { bottom: 16px; right: 16px; transform: scale(-1, -1); }
+
+  /* ==============================
+     PRODUCTS
+     ============================== */
+  .products { background: var(--cream); }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    max-width: 900px;
+    margin: 48px auto 0;
+  }
+
+  .product-card {
+    background: var(--parchment);
+    padding: 44px 32px 36px;
+    border: 2.5px solid var(--brown);
+    border-radius: 4px;
+    position: relative;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    inset: 7px;
+    border: 1.5px dashed var(--border-hand);
+    border-radius: 2px;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(139, 94, 60, 0.12);
+  }
+
+  .product-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 2rem;
+  }
+
+  .product-card.orange-card .product-icon {
+    background: var(--orange-dim);
+    color: var(--orange);
+    border: 2px dashed var(--orange);
+  }
+
+  .product-card.green-card .product-icon {
+    background: var(--green-dim);
+    color: var(--green);
+    border: 2px dashed var(--green);
+  }
+
+  .product-card h3 { margin-bottom: 12px; }
+  .product-card.orange-card h3 { color: var(--orange-deep); }
+  .product-card.green-card h3 { color: var(--green); }
+
+  .product-card p {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .product-features {
+    list-style: none;
+    text-align: left;
+    padding: 0 8px;
+  }
+
+  .product-features li {
+    font-size: 0.88rem;
+    padding: 6px 0;
+    border-bottom: 1px dotted var(--border-hand);
+    color: var(--text-body);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .product-features li:last-child { border-bottom: none; }
+
+  .product-features li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .orange-card .product-features li::before { background: var(--orange); }
+  .green-card .product-features li::before { background: var(--green); }
+
+  .storybook-page {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    position: absolute;
+    bottom: 12px;
+    right: 16px;
+    opacity: 0.5;
+  }
+
+  /* ==============================
+     THE PLAN (Heist Steps)
+     ============================== */
+  .plan {
+    background: var(--parchment);
+    position: relative;
+  }
+
+  .plan::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--brown) 0px,
+      var(--brown) 10px,
+      transparent 10px,
+      transparent 16px
+    );
+  }
+
+  .plan-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    max-width: 960px;
+    margin: 48px auto 0;
+    position: relative;
+  }
+
+  /* Connecting dotted line */
+  .plan-grid::before {
+    content: '';
+    position: absolute;
+    top: 44px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    border-top: 2.5px dashed var(--border-dashed);
+    opacity: 0.4;
+    z-index: 0;
+  }
+
+  .plan-step {
+    text-align: center;
+    padding: 0 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .plan-number {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--cream);
+    position: relative;
+  }
+
+  .plan-step:nth-child(1) .plan-number { background: var(--orange); }
+  .plan-step:nth-child(2) .plan-number { background: var(--brown); }
+  .plan-step:nth-child(3) .plan-number { background: var(--rust); }
+  .plan-step:nth-child(4) .plan-number { background: var(--green); }
+
+  .plan-number::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 2px dashed currentColor;
+    opacity: 0.3;
+  }
+
+  .plan-step:nth-child(1) .plan-number::after { border-color: var(--orange); }
+  .plan-step:nth-child(2) .plan-number::after { border-color: var(--brown); }
+  .plan-step:nth-child(3) .plan-number::after { border-color: var(--rust); }
+  .plan-step:nth-child(4) .plan-number::after { border-color: var(--green); }
+
+  .plan-phase {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .plan-step h4 {
+    margin-bottom: 10px;
+    font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  }
+
+  .plan-step p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ==============================
+     STATS
+     ============================== */
+  .stats { background: var(--cream); }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    max-width: 800px;
+    margin: 48px auto 0;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 24px 16px;
+    position: relative;
+  }
+
+  .stat-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 20%;
+    height: 60%;
+    width: 2px;
+    background: repeating-linear-gradient(
+      180deg,
+      var(--border-hand) 0px,
+      var(--border-hand) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+    opacity: 0.5;
+  }
+
+  .stat-number {
+    font-family: var(--font-heading);
+    font-size: clamp(2.8rem, 5vw, 4rem);
+    font-weight: 700;
+    color: var(--orange-deep);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ==============================
+     UNDERGROUND CROSS-SECTION
+     ============================== */
+  .underground {
+    background: var(--parchment);
+    padding: 80px 0 100px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .underground::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--brown) 0px,
+      var(--brown) 10px,
+      transparent 10px,
+      transparent 16px
+    );
+  }
+
+  .cross-section {
+    max-width: 860px;
+    margin: 48px auto 0;
+    position: relative;
+  }
+
+  /* Above ground */
+  .above-ground {
+    background: linear-gradient(180deg, #D4E6B5 0%, #B8D492 60%, var(--green-forest) 100%);
+    border: 2.5px solid var(--brown);
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    padding: 36px 40px 20px;
+    position: relative;
+    min-height: 160px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 60px;
+    text-align: center;
+  }
+
+  .above-ground::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    inset-block-end: 0;
+    border: 1px dashed rgba(255,255,255,0.3);
+    border-bottom: none;
+    border-radius: 2px 2px 0 0;
+    pointer-events: none;
+  }
+
+  .above-item {
+    color: #2D4A1A;
+  }
+
+  .above-item h4 {
+    color: #2D4A1A;
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+  }
+
+  .above-item p {
+    font-size: 0.82rem;
+    color: #3D5A2A;
+    opacity: 0.9;
+  }
+
+  .above-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+
+  /* Ground line */
+  .ground-line {
+    height: 8px;
+    background: var(--brown);
+    position: relative;
+    border-left: 2.5px solid var(--brown);
+    border-right: 2.5px solid var(--brown);
+  }
+
+  .ground-label {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--brown);
+    color: var(--cream);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 2px 16px;
+    white-space: nowrap;
+  }
+
+  /* Below ground */
+  .below-ground {
+    background: linear-gradient(180deg, #8B6914 0%, #6D4C41 30%, #5D4037 100%);
+    border: 2.5px solid var(--brown);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    padding: 32px 40px 40px;
+    position: relative;
+    min-height: 220px;
+  }
+
+  .below-ground::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    inset-block-start: 0;
+    border: 1px dashed rgba(255,248,231,0.15);
+    border-top: none;
+    border-radius: 0 0 2px 2px;
+    pointer-events: none;
+  }
+
+  .tunnel-system {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    position: relative;
+  }
+
+  /* Tunnel connecting lines */
+  .tunnel-system::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    border-top: 2px dashed rgba(255, 248, 231, 0.2);
+  }
+
+  .tunnel-node {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tunnel-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    border: 2px dashed rgba(255, 248, 231, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    background: rgba(255, 248, 231, 0.08);
+  }
+
+  .tunnel-node h4 {
+    color: var(--cream-dark);
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+  }
+
+  .tunnel-node p {
+    font-size: 0.78rem;
+    color: rgba(255, 248, 231, 0.55);
+    line-height: 1.5;
+  }
+
+  /* Decorative dirt dots */
+  .below-ground .dirt-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background-image: radial-gradient(circle 2px, rgba(255,248,231,0.06) 100%, transparent 100%);
+    background-size: 16px 16px;
+    pointer-events: none;
+  }
+
+  /* ==============================
+     CTA
+     ============================== */
+  .cta-section {
+    background: var(--cream);
+    padding: 80px 0;
+  }
+
+  .cta-frame {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 52px 48px;
+    text-align: center;
+    position: relative;
+  }
+
+  .cta-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 3px solid var(--orange-deep);
+    border-radius: 4px;
+    pointer-events: none;
+  }
+
+  .cta-frame::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1.5px dashed var(--fox-amber);
+    border-radius: 2px;
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .cta-section h2 {
+    color: var(--orange-deep);
+    margin-bottom: 16px;
+  }
+
+  .cta-section p {
+    margin-bottom: 32px;
+    color: var(--text-body);
+    font-size: 1.02rem;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: var(--cream);
+    border-top: 2px solid var(--brown);
+    padding: 40px 0;
+    text-align: center;
+  }
+
+  .footer-fox {
+    display: block;
+    margin: 0 auto 16px;
+    opacity: 0.5;
+  }
+
+  .footer-brand {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--orange-deep);
+    margin-bottom: 8px;
+  }
+
+  footer p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 16px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--brown);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--orange); }
+
+  .footer-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--border-hand);
+    margin: 16px auto;
+    opacity: 0.4;
+  }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-back { font-size: 1.2rem; }
+
+    .products-grid {
+      grid-template-columns: 1fr;
+      max-width: 440px;
+    }
+
+    .plan-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .plan-grid::before { display: none; }
+
+    .stats-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .stat-item:nth-child(2)::after { display: none; }
+
+    .above-ground {
+      flex-direction: column;
+      gap: 24px;
+      padding: 28px 24px 16px;
+    }
+
+    .tunnel-system {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .tunnel-system::before { display: none; }
+
+    .hero-frame { padding: 40px 24px; }
+    .cta-frame { padding: 40px 24px; }
+
+    section { padding: 60px 0; }
+  }
+
+  @media (max-width: 480px) {
+    .plan-grid { grid-template-columns: 1fr; }
+
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+
+    .stat-item::after { display: none !important; }
+
+    .hero-frame::before,
+    .hero-frame::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a href="/index.html" class="nav-back">&larr; Back</a>
+    <div class="nav-brand">KPT</div>
+    <ul class="nav-links">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#plan">The Plan</a></li>
+      <li><a href="#underground">Infrastructure</a></li>
+      <li><a href="#cta">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-frame">
+      <!-- Decorative corner flourishes -->
+      <div class="hero-corner tl">
+        <svg viewBox="0 0 40 40" fill="none" stroke="#8B5E3C" stroke-width="1.5">
+          <path d="M2 38 L2 8 Q2 2 8 2 L38 2" fill="none"/>
+          <path d="M8 30 L8 14 Q8 8 14 8 L30 8" fill="none" opacity="0.4"/>
+          <circle cx="2" cy="38" r="2" fill="#8B5E3C" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="hero-corner tr">
+        <svg viewBox="0 0 40 40" fill="none" stroke="#8B5E3C" stroke-width="1.5">
+          <path d="M2 38 L2 8 Q2 2 8 2 L38 2" fill="none"/>
+          <path d="M8 30 L8 14 Q8 8 14 8 L30 8" fill="none" opacity="0.4"/>
+          <circle cx="2" cy="38" r="2" fill="#8B5E3C" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="hero-corner bl">
+        <svg viewBox="0 0 40 40" fill="none" stroke="#8B5E3C" stroke-width="1.5">
+          <path d="M2 38 L2 8 Q2 2 8 2 L38 2" fill="none"/>
+          <path d="M8 30 L8 14 Q8 8 14 8 L30 8" fill="none" opacity="0.4"/>
+          <circle cx="2" cy="38" r="2" fill="#8B5E3C" opacity="0.3"/>
+        </svg>
+      </div>
+      <div class="hero-corner br">
+        <svg viewBox="0 0 40 40" fill="none" stroke="#8B5E3C" stroke-width="1.5">
+          <path d="M2 38 L2 8 Q2 2 8 2 L38 2" fill="none"/>
+          <path d="M8 30 L8 14 Q8 8 14 8 L30 8" fill="none" opacity="0.4"/>
+          <circle cx="2" cy="38" r="2" fill="#8B5E3C" opacity="0.3"/>
+        </svg>
+      </div>
+
+      <div class="label reveal">A Wes Anderson Production</div>
+      <h1 class="reveal reveal-delay-1">What's Your Favorite Phrase?<br><span>KPT.</span></h1>
+      <p class="reveal reveal-delay-2">Clever technology. Handcrafted design. We dig deeper so your business can rise above. AI voice agents and premium web design, delivered with stop-motion precision.</p>
+      <div class="hero-buttons reveal reveal-delay-3">
+        <a href="#products" class="btn btn-primary">Meet the Agents</a>
+        <a href="#plan" class="btn btn-secondary">See the Plan</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRODUCTS ============ -->
+<section class="products" id="products">
+  <div class="container">
+    <div class="label reveal">Chapter One</div>
+    <div class="ornament reveal">&#10045;</div>
+    <h2 class="reveal">Two Divisions, One Fox</h2>
+    <p class="reveal">Every great operation has its specialists. Ours come in two varieties &mdash; equally cunning, entirely complementary.</p>
+
+    <div class="products-grid">
+      <!-- KPT Agents Card -->
+      <div class="product-card orange-card frame-border reveal reveal-delay-1">
+        <div class="product-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <ellipse cx="16" cy="22" rx="10" ry="7" stroke="currentColor" stroke-width="2"/>
+            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+            <circle cx="20" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M8 8 L6 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M24 8 L26 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>KPT Agents</h3>
+        <p>AI voice agents that handle calls with the cleverness of a fox. Never miss a lead, always on the prowl.</p>
+        <ul class="product-features">
+          <li>24/7 intelligent call handling</li>
+          <li>Natural language understanding</li>
+          <li>CRM integration & lead capture</li>
+          <li>Custom voice & personality</li>
+          <li>Real-time call analytics</li>
+        </ul>
+        <div class="storybook-page">pg. 12</div>
+      </div>
+
+      <!-- KPT Designs Card -->
+      <div class="product-card green-card frame-border reveal reveal-delay-2">
+        <div class="product-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M16 4 L16 28" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M16 10 L8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 10 L24 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 16 L7 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 16 L25 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 22 L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 22 L23 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h3>KPT Designs</h3>
+        <p>Premium web design with Wes Anderson-level attention to detail. Every pixel placed with purpose.</p>
+        <ul class="product-features">
+          <li>Bespoke responsive design</li>
+          <li>Performance-first architecture</li>
+          <li>SEO & conversion optimization</li>
+          <li>Brand identity integration</li>
+          <li>Ongoing support & iteration</li>
+        </ul>
+        <div class="storybook-page">pg. 27</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE PLAN ============ -->
+<section class="plan" id="plan">
+  <div class="container">
+    <div class="label reveal">Chapter Two</div>
+    <div class="ornament reveal">&#10043;</div>
+    <h2 class="reveal">The Master Plan</h2>
+    <p class="reveal">Every heist needs a plan. Ours is methodical, tested, and&nbsp;&mdash;&nbsp;dare&nbsp;we&nbsp;say&nbsp;&mdash;&nbsp;fantastic.</p>
+
+    <div class="plan-grid">
+      <div class="plan-step reveal reveal-delay-1">
+        <div class="plan-number">1</div>
+        <div class="plan-phase">Phase 1</div>
+        <h4>Reconnaissance</h4>
+        <p>We study the terrain. Your business, your market, your competitors. Nothing moves until we understand the landscape.</p>
+      </div>
+
+      <div class="plan-step reveal reveal-delay-2">
+        <div class="plan-number">2</div>
+        <div class="plan-phase">Phase 2</div>
+        <h4>The Dig</h4>
+        <p>We tunnel in. Strategy sessions, wireframes, voice scripts. Building the infrastructure that makes everything possible.</p>
+      </div>
+
+      <div class="plan-step reveal reveal-delay-3">
+        <div class="plan-number">3</div>
+        <div class="plan-phase">Phase 3</div>
+        <h4>The Heist</h4>
+        <p>Execution day. We launch your agents, deploy your site, flip every switch with coordinated precision.</p>
+      </div>
+
+      <div class="plan-step reveal reveal-delay-4">
+        <div class="plan-number">4</div>
+        <div class="plan-phase">Phase 4</div>
+        <h4>The Feast</h4>
+        <p>The results roll in. Leads captured, calls answered, visitors converted. We optimize, iterate, and celebrate.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="stats" id="stats">
+  <div class="container">
+    <div class="label reveal">By the Numbers</div>
+    <div class="ornament reveal">&#10047;</div>
+    <h2 class="reveal">The Stockpile</h2>
+    <p class="reveal">Proof that the plan works. Results from our growing burrow of satisfied clients.</p>
+
+    <div class="stats-grid">
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-number">98%</div>
+        <div class="stat-label">Call Answer Rate</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-number">3.2s</div>
+        <div class="stat-label">Avg Response Time</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-number">47%</div>
+        <div class="stat-label">Lead Conversion</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-4">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Always Digging</div>
+      </div>
+    </div>
+
+    <hr class="hand-rule reveal">
+  </div>
+</section>
+
+<!-- ============ UNDERGROUND ============ -->
+<section class="underground" id="underground">
+  <div class="container">
+    <div class="label reveal">Chapter Three</div>
+    <div class="ornament reveal">&#10053;</div>
+    <h2 class="reveal">The Tunnel System</h2>
+    <p class="reveal">What your customers see is just the surface. Underneath, an entire operation keeps everything running.</p>
+
+    <div class="cross-section reveal">
+      <!-- Above Ground -->
+      <div class="above-ground">
+        <div class="above-item">
+          <div class="above-icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <rect x="4" y="12" width="28" height="20" rx="2" stroke="#2D4A1A" stroke-width="2"/>
+              <path d="M12 12 V8 Q12 4 18 4 Q24 4 24 8 V12" stroke="#2D4A1A" stroke-width="2" fill="none"/>
+              <circle cx="18" cy="22" r="3" stroke="#2D4A1A" stroke-width="2"/>
+            </svg>
+          </div>
+          <h4>Your Website</h4>
+          <p>Beautiful, fast, perfectly crafted</p>
+        </div>
+        <div class="above-item">
+          <div class="above-icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <path d="M18 4 L18 10" stroke="#2D4A1A" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="18" cy="18" r="10" stroke="#2D4A1A" stroke-width="2"/>
+              <path d="M18 14 V18 L22 22" stroke="#2D4A1A" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h4>Your Voice Agent</h4>
+          <p>Always answering, always charming</p>
+        </div>
+        <div class="above-item">
+          <div class="above-icon">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <path d="M6 28 L18 8 L30 28 Z" stroke="#2D4A1A" stroke-width="2" fill="none"/>
+              <circle cx="18" cy="20" r="3" stroke="#2D4A1A" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <h4>Your Brand</h4>
+          <p>Consistent, memorable, trusted</p>
+        </div>
+      </div>
+
+      <!-- Ground Line -->
+      <div class="ground-line">
+        <div class="ground-label">Ground Level</div>
+      </div>
+
+      <!-- Below Ground -->
+      <div class="below-ground">
+        <div class="tunnel-system">
+          <div class="tunnel-node">
+            <div class="tunnel-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5E6C8" stroke-width="1.5">
+                <rect x="2" y="3" width="20" height="18" rx="2"/>
+                <path d="M8 7h8M8 11h8M8 15h5"/>
+              </svg>
+            </div>
+            <h4>AI Engine</h4>
+            <p>Natural language processing, voice synthesis, intent recognition</p>
+          </div>
+          <div class="tunnel-node">
+            <div class="tunnel-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5E6C8" stroke-width="1.5">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 2v4M12 18v4M2 12h4M18 12h4"/>
+                <path d="M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+              </svg>
+            </div>
+            <h4>Infrastructure</h4>
+            <p>Edge servers, CDN, monitoring, automated scaling</p>
+          </div>
+          <div class="tunnel-node">
+            <div class="tunnel-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5E6C8" stroke-width="1.5">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <h4>Analytics</h4>
+            <p>Call tracking, visitor data, conversion funnels, reporting</p>
+          </div>
+        </div>
+        <div class="dirt-dots"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section" id="cta">
+  <div class="container">
+    <div class="cta-frame reveal">
+      <div class="label">The Final Chapter</div>
+      <div class="ornament">&#10048;</div>
+      <h2>Are You Ready to Be Fantastic?</h2>
+      <p>Every clever fox knows when to make a move. Your customers are calling &mdash; literally. Let us answer them with charm, precision, and a touch of the extraordinary.</p>
+      <a href="#hero" class="btn btn-primary">Start the Heist</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <!-- Fox silhouette -->
+    <svg class="footer-fox" width="40" height="28" viewBox="0 0 40 28" fill="#8B5E3C" opacity="0.4">
+      <path d="M4 24 L0 4 L8 12 L14 0 L18 10 L22 10 L26 0 L32 12 L40 4 L36 24 Q34 28 20 28 Q6 28 4 24Z"/>
+      <circle cx="14" cy="16" r="2" fill="#FFF8E7"/>
+      <circle cx="26" cy="16" r="2" fill="#FFF8E7"/>
+      <ellipse cx="20" cy="20" rx="3" ry="2" fill="#D35400"/>
+    </svg>
+    <div class="footer-brand">KPT</div>
+    <p>Clever technology &middot; Handcrafted design</p>
+    <div class="footer-divider"></div>
+    <ul class="footer-links">
+      <li><a href="#products">Products</a></li>
+      <li><a href="#plan">The Plan</a></li>
+      <li><a href="#underground">Infrastructure</a></li>
+      <li><a href="#cta">Contact</a></li>
+    </ul>
+    <div class="footer-divider"></div>
+    <p style="font-size: 0.75rem; opacity: 0.6;">&copy; 2026 KPT. All rights reserved. &mdash; "Why a fox? Why not a fox."</p>
+  </div>
+</footer>
+
+<script>
+  /* ==============================
+     INTERSECTION OBSERVER
+     ============================== */
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  /* ==============================
+     NAV SCROLL SHADOW
+     ============================== */
+  const nav = document.getElementById('nav');
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        nav.classList.toggle('scrolled', window.scrollY > 20);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  /* ==============================
+     SMOOTH SCROLL FOR NAV LINKS
+     ============================== */
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height'));
+        const top = target.getBoundingClientRect().top + window.scrollY - navH - 12;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

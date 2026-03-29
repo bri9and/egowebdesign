@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — The Beautiful Game of Building</title>
+<meta name="description" content="KPT. AI voice agents and premium web design. World-class execution. Championship results.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --fifa-blue: #326295;
+    --fifa-blue-deep: #1B3A5C;
+    --fifa-blue-dark: #0F2440;
+    --gold: #B8860B;
+    --gold-light: #DAA520;
+    --gold-bright: #FFD700;
+    --green: #2E8B57;
+    --green-dark: #1A5C38;
+    --green-pitch: #3AA066;
+    --white: #FFFFFF;
+    --off-white: #F0F4F8;
+    --gray-100: #E8ECF0;
+    --gray-300: #B0BBC8;
+    --gray-500: #6B7A8D;
+    --gray-700: #3A4A5C;
+    --gray-900: #0C1824;
+    --surface: #162A42;
+    --border: rgba(255, 255, 255, 0.1);
+    --border-gold: rgba(184, 134, 11, 0.3);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--gray-900);
+    color: var(--white);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  .font-display { font-family: 'Montserrat', sans-serif; }
+
+  /* ── Scroll Animations ───────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── Back Link ───────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    z-index: 1000;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-300);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s ease;
+  }
+  .back-link:hover { color: var(--gold-light); }
+  .back-link svg { width: 16px; height: 16px; }
+
+  /* ── Navigation ──────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: rgba(12, 24, 36, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 6px;
+    color: var(--gold-light);
+    text-decoration: none;
+  }
+
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-300);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+
+  /* ── Hero Section ────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    overflow: hidden;
+  }
+
+  /* Pitch lines background */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      /* Center circle */
+      radial-gradient(circle at 50% 55%, transparent 140px, rgba(255,255,255,0.04) 140px, rgba(255,255,255,0.04) 142px, transparent 142px),
+      /* Center line */
+      linear-gradient(to right, transparent calc(50% - 1px), rgba(255,255,255,0.04) calc(50% - 1px), rgba(255,255,255,0.04) calc(50% + 1px), transparent calc(50% + 1px)),
+      /* Pitch gradient */
+      linear-gradient(180deg, var(--green-dark) 0%, #1A4A30 40%, var(--fifa-blue-dark) 100%);
+    z-index: 0;
+  }
+
+  /* Subtle stripe pattern like a real pitch */
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 80px,
+      rgba(255,255,255,0.015) 80px,
+      rgba(255,255,255,0.015) 160px
+    );
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+  }
+
+  /* Trophy-style emblem */
+  .trophy-emblem {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 40px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .trophy-emblem::before {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    animation: emblem-pulse 3s ease-in-out infinite;
+  }
+
+  .trophy-emblem::after {
+    content: '';
+    position: absolute;
+    width: 96px;
+    height: 96px;
+    border: 1px solid rgba(184, 134, 11, 0.4);
+    border-radius: 50%;
+  }
+
+  .trophy-emblem svg {
+    width: 56px;
+    height: 56px;
+    color: var(--gold-bright);
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+  }
+
+  @keyframes emblem-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+  }
+
+  .hero-edition {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    display: inline-block;
+    padding: 6px 20px;
+    border: 1px solid var(--border-gold);
+    border-radius: 2px;
+  }
+
+  .hero-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(72px, 12vw, 140px);
+    letter-spacing: 16px;
+    line-height: 0.9;
+    margin-bottom: 8px;
+    background: linear-gradient(180deg, var(--gold-bright) 0%, var(--gold) 50%, #8B6914 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 4px 30px rgba(184, 134, 11, 0.25));
+  }
+
+  .hero-year {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: clamp(20px, 3vw, 32px);
+    letter-spacing: 20px;
+    color: var(--gray-300);
+    margin-bottom: 32px;
+  }
+
+  .hero-tagline {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: clamp(16px, 2.2vw, 24px);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--gray-300);
+    max-width: 560px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--gray-900);
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(184, 134, 11, 0.4);
+  }
+
+  .btn-secondary {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    background: transparent;
+    color: var(--white);
+    border: 2px solid var(--border);
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+  }
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
+
+  /* ── Divider ─────────────────────────────────────────────── */
+  .section-divider {
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.3;
+  }
+
+  /* ── Stats Bar (Tournament style) ────────────────────────── */
+  .stats-bar {
+    background: var(--fifa-blue-deep);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 24px;
+  }
+
+  .stats-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+  }
+
+  .stat-item { padding: 16px; }
+
+  .stat-number {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--gold-bright);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-300);
+  }
+
+  /* ── Features Section ────────────────────────────────────── */
+  .features {
+    padding: 100px 24px;
+    background: var(--gray-900);
+    position: relative;
+  }
+
+  .features::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(180deg, var(--gold), transparent);
+    opacity: 0.3;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 64px;
+    padding-top: 40px;
+  }
+
+  .section-badge {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 4vw, 42px);
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .section-sub {
+    font-size: 16px;
+    color: var(--gray-500);
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .features-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 40px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--fifa-blue), var(--gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .feature-card:hover {
+    border-color: var(--border-gold);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .feature-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--fifa-blue), var(--fifa-blue-deep));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    border: 1px solid rgba(50, 98, 149, 0.4);
+  }
+
+  .feature-icon svg {
+    width: 22px;
+    height: 22px;
+    color: var(--gold-light);
+  }
+
+  .feature-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    color: var(--gray-500);
+    line-height: 1.7;
+  }
+
+  /* ── Tournament Bracket Section ──────────────────────────── */
+  .bracket-section {
+    padding: 100px 24px;
+    background: linear-gradient(180deg, var(--fifa-blue-dark), var(--gray-900));
+    position: relative;
+  }
+
+  .bracket-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .bracket-round {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    flex: 1;
+  }
+
+  .bracket-round-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .bracket-match {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .bracket-match:hover {
+    border-color: var(--border-gold);
+  }
+
+  .bracket-team {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-300);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .bracket-team:last-child { border-bottom: none; }
+
+  .bracket-team.winner {
+    color: var(--white);
+    background: rgba(184, 134, 11, 0.08);
+  }
+
+  .bracket-team .score {
+    font-weight: 700;
+    color: var(--gold-light);
+    min-width: 20px;
+    text-align: right;
+  }
+
+  .bracket-connector {
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-700);
+    font-size: 20px;
+  }
+
+  .bracket-final {
+    flex: 0 0 auto;
+  }
+
+  .bracket-final .bracket-match {
+    border-color: var(--gold);
+    box-shadow: 0 0 30px rgba(184, 134, 11, 0.15);
+  }
+
+  .bracket-champion {
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .bracket-champion-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .bracket-champion-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    color: var(--gold-bright);
+  }
+
+  /* ── Process Section ─────────────────────────────────────── */
+  .process {
+    padding: 100px 24px;
+    background: var(--gray-900);
+  }
+
+  .process-timeline {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .process-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 32px;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, var(--gold), var(--fifa-blue), var(--green), var(--gold));
+    opacity: 0.3;
+  }
+
+  .process-step {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .process-step:last-child { margin-bottom: 0; }
+
+  .process-marker {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    color: var(--gold-light);
+    position: relative;
+    z-index: 1;
+  }
+
+  .process-content {
+    padding-top: 12px;
+  }
+
+  .process-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .process-desc {
+    font-size: 14px;
+    color: var(--gray-500);
+    line-height: 1.7;
+  }
+
+  /* ── CTA Section ─────────────────────────────────────────── */
+  .cta {
+    padding: 100px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--green-dark), var(--fifa-blue-dark));
+  }
+
+  /* Pitch lines in CTA */
+  .cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 50% 50%, transparent 100px, rgba(255,255,255,0.03) 100px, rgba(255,255,255,0.03) 102px, transparent 102px),
+      repeating-linear-gradient(90deg, transparent, transparent 100px, rgba(255,255,255,0.01) 100px, rgba(255,255,255,0.01) 200px);
+    z-index: 0;
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .cta-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(28px, 4vw, 44px);
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .cta-sub {
+    font-size: 16px;
+    color: var(--gray-300);
+    margin-bottom: 40px;
+    line-height: 1.7;
+  }
+
+  /* ── Footer ──────────────────────────────────────────────── */
+  footer {
+    background: #060E18;
+    border-top: 1px solid var(--border);
+    padding: 48px 24px;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: 6px;
+    color: var(--gold);
+  }
+
+  .footer-tagline {
+    font-size: 12px;
+    color: var(--gray-500);
+    letter-spacing: 1px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-links a {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-links a:hover { color: var(--gold-light); }
+
+  .footer-copy {
+    text-align: center;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-copy p {
+    font-size: 11px;
+    color: var(--gray-700);
+    letter-spacing: 1px;
+  }
+
+  /* ── Responsive ──────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+
+    .hero { padding: 100px 20px 60px; }
+    .hero-title { letter-spacing: 8px; }
+    .hero-year { letter-spacing: 10px; }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .bracket-container {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .bracket-connector {
+      width: auto;
+      height: 24px;
+      transform: rotate(90deg);
+    }
+
+    .process-timeline::before { left: 24px; }
+    .process-marker { width: 48px; height: 48px; font-size: 16px; }
+    .process-step { gap: 20px; }
+
+    .hero-cta-group { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-secondary { width: 100%; max-width: 300px; text-align: center; }
+
+    .footer-inner { flex-direction: column; gap: 24px; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+
+    .back-link { top: 16px; left: 16px; }
+  }
+
+  /* ── Floating particles (stadium confetti) ───────────────── */
+  .particles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    opacity: 0;
+    animation: float-up 6s ease-in-out infinite;
+  }
+
+  @keyframes float-up {
+    0% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+    20% { opacity: 0.6; }
+    80% { opacity: 0.3; }
+    100% { opacity: 0; transform: translateY(-100px) rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  KPT
+</a>
+
+<!-- Navigation -->
+<nav>
+  <a href="#" class="nav-logo">KPT</a>
+  <div class="nav-links">
+    <a href="#features">Services</a>
+    <a href="#bracket">Results</a>
+    <a href="#process">Process</a>
+    <a href="#cta">Contact</a>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="particles" id="particles"></div>
+  <div class="hero-content">
+    <div class="trophy-emblem reveal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+        <path d="M4 22h16"/>
+        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22"/>
+        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22"/>
+        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+      </svg>
+    </div>
+    <div class="hero-edition reveal reveal-delay-1">World Class Digital</div>
+    <h1 class="hero-title reveal reveal-delay-2">KPT</h1>
+    <div class="hero-year reveal reveal-delay-2">2 0 2 6</div>
+    <p class="hero-tagline reveal reveal-delay-3">The Beautiful Game of Building</p>
+    <p class="hero-sub reveal reveal-delay-3">
+      Championship-level web design and AI voice agents. Every project executed
+      with the precision, passion, and global ambition of the world's greatest tournament.
+    </p>
+    <div class="hero-cta-group reveal reveal-delay-4">
+      <a href="#cta" class="btn-primary">Kick Off Your Project</a>
+      <a href="#features" class="btn-secondary">View Lineup</a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Bar -->
+<div class="section-divider"></div>
+<section class="stats-bar">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-number">48</div>
+      <div class="stat-label">Projects Delivered</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-number">99%</div>
+      <div class="stat-label">Uptime Record</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-number">0.8s</div>
+      <div class="stat-label">Avg Load Time</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-number">24/7</div>
+      <div class="stat-label">Global Support</div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features" id="features">
+  <div class="section-header reveal">
+    <span class="section-badge">Starting Lineup</span>
+    <h2 class="section-title">World-Class Services</h2>
+    <p class="section-sub">Every position covered. Every detail executed. A squad built to win.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <h3 class="feature-title">Premium Web Design</h3>
+      <p class="feature-desc">Bespoke websites built with modern frameworks. Fast, responsive, and designed to convert visitors into loyal fans.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-1">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+      </div>
+      <h3 class="feature-title">AI Voice Agents</h3>
+      <p class="feature-desc">Intelligent voice systems that handle calls, book appointments, and engage customers around the clock.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h3 class="feature-title">Global Reach</h3>
+      <p class="feature-desc">Multi-language support, international hosting, and designs that resonate across cultures and markets.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-1">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <h3 class="feature-title">Lightning Performance</h3>
+      <p class="feature-desc">Optimized for speed. Every millisecond counts when your audience spans the globe.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3 class="feature-title">Ironclad Security</h3>
+      <p class="feature-desc">Enterprise-grade protection. Your data defended like a world-class goalkeeper.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-3">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </div>
+      <h3 class="feature-title">Continuous Deployment</h3>
+      <p class="feature-desc">Ship updates in real time. No downtime, no delays. Always match-ready.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Tournament Bracket Section -->
+<section class="bracket-section" id="bracket">
+  <div class="section-header reveal">
+    <span class="section-badge">Tournament of Results</span>
+    <h2 class="section-title">Every Round, We Advance</h2>
+    <p class="section-sub">From kickoff to trophy lift. Watch your project climb the bracket.</p>
+  </div>
+  <div class="bracket-container reveal">
+    <!-- Round 1 -->
+    <div class="bracket-round">
+      <div class="bracket-round-label">Quarter Final</div>
+      <div class="bracket-match">
+        <div class="bracket-team winner"><span>Strategy</span><span class="score">3</span></div>
+        <div class="bracket-team"><span>Guesswork</span><span class="score">0</span></div>
+      </div>
+      <div class="bracket-match">
+        <div class="bracket-team winner"><span>Design</span><span class="score">4</span></div>
+        <div class="bracket-team"><span>Templates</span><span class="score">1</span></div>
+      </div>
+    </div>
+
+    <div class="bracket-connector">&#9654;</div>
+
+    <!-- Semi Final -->
+    <div class="bracket-round">
+      <div class="bracket-round-label">Semi Final</div>
+      <div class="bracket-match">
+        <div class="bracket-team winner"><span>Development</span><span class="score">2</span></div>
+        <div class="bracket-team"><span>No-Code</span><span class="score">0</span></div>
+      </div>
+      <div class="bracket-match">
+        <div class="bracket-team winner"><span>AI Integration</span><span class="score">3</span></div>
+        <div class="bracket-team"><span>Manual Work</span><span class="score">1</span></div>
+      </div>
+    </div>
+
+    <div class="bracket-connector">&#9654;</div>
+
+    <!-- Final -->
+    <div class="bracket-round bracket-final">
+      <div class="bracket-round-label">Final</div>
+      <div class="bracket-match">
+        <div class="bracket-team winner"><span>KPT</span><span class="score">5</span></div>
+        <div class="bracket-team"><span>The Competition</span><span class="score">0</span></div>
+      </div>
+      <div class="bracket-champion">
+        <div class="bracket-champion-label">Champion</div>
+        <div class="bracket-champion-name">KPT</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Process Section -->
+<section class="process" id="process">
+  <div class="section-header reveal">
+    <span class="section-badge">Match Plan</span>
+    <h2 class="section-title">From Whistle to Trophy</h2>
+    <p class="section-sub">A disciplined four-phase approach. No wasted passes.</p>
+  </div>
+  <div class="process-timeline">
+    <div class="process-step reveal">
+      <div class="process-marker">1</div>
+      <div class="process-content">
+        <h3 class="process-title">Scouting Report</h3>
+        <p class="process-desc">We study your business, audience, and competition. Deep analysis before a single line of code. Every winning campaign starts with intelligence.</p>
+      </div>
+    </div>
+    <div class="process-step reveal reveal-delay-1">
+      <div class="process-marker">2</div>
+      <div class="process-content">
+        <h3 class="process-title">Formation &amp; Tactics</h3>
+        <p class="process-desc">Architecture, wireframes, and design systems. We build the playbook that will carry your project through every stage.</p>
+      </div>
+    </div>
+    <div class="process-step reveal reveal-delay-2">
+      <div class="process-marker">3</div>
+      <div class="process-content">
+        <h3 class="process-title">Match Day Execution</h3>
+        <p class="process-desc">Full-stack development with AI integration. Every component tested, every endpoint secured. We build like champions play.</p>
+      </div>
+    </div>
+    <div class="process-step reveal reveal-delay-3">
+      <div class="process-marker">4</div>
+      <div class="process-content">
+        <h3 class="process-title">Trophy Lift</h3>
+        <p class="process-desc">Launch, monitor, and celebrate. Continuous support ensures your site stays at peak performance long after the final whistle.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<div class="section-divider"></div>
+<section class="cta" id="cta">
+  <div class="cta-content">
+    <div class="trophy-emblem reveal" style="margin-bottom: 32px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+        <path d="M4 22h16"/>
+        <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22"/>
+        <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22"/>
+        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+      </svg>
+    </div>
+    <h2 class="cta-title reveal">Ready to Compete<br>at the Highest Level?</h2>
+    <p class="cta-sub reveal reveal-delay-1">
+      The pitch is set. The squad is ready. Join the teams who chose
+      world-class execution over settling for a draw.
+    </p>
+    <div class="hero-cta-group reveal reveal-delay-2">
+      <a href="#" class="btn-primary">Start Your Campaign</a>
+      <a href="#features" class="btn-secondary">Review the Squad</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">KPT</span>
+      <span class="footer-tagline">The Beautiful Game of Building</span>
+    </div>
+    <div class="footer-links">
+      <a href="#features">Services</a>
+      <a href="#bracket">Results</a>
+      <a href="#process">Process</a>
+      <a href="#cta">Contact</a>
+    </div>
+  </div>
+  <div class="footer-copy">
+    <p>&copy; 2026 KPT. All rights reserved. Built with championship precision.</p>
+  </div>
+</footer>
+
+<script>
+  // ── IntersectionObserver scroll animations ──────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ── Stadium confetti particles ─────────────────────────────
+    const container = document.getElementById('particles');
+    if (container) {
+      const colors = ['#FFD700', '#B8860B', '#326295', '#FFFFFF', '#2E8B57'];
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        p.style.animationDelay = Math.random() * 6 + 's';
+        p.style.animationDuration = (4 + Math.random() * 4) + 's';
+        p.style.width = (2 + Math.random() * 4) + 'px';
+        p.style.height = p.style.width;
+        container.appendChild(p);
+      }
+    }
+
+    // ── Smooth scroll for anchor links ─────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

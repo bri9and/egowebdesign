@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Amazon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --orange: #FF9900;
+    --orange-hover: #FFB340;
+    --orange-dim: #CC7A00;
+    --navy: #232F3E;
+    --navy-deep: #131A22;
+    --navy-light: #37475A;
+    --navy-mid: #1A242F;
+    --white: #FFFFFF;
+    --off-white: #F3F3F3;
+    --gray-100: #EAEDED;
+    --gray-200: #D5D9D9;
+    --gray-400: #888C8C;
+    --gray-600: #565959;
+    --text-dark: #0F1111;
+    --text-link: #007185;
+    --success: #067D62;
+    --prime-blue: #1B98F4;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Amazon Ember', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --max-width: 1280px;
+    --nav-height: 60px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy-deep);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ==============================
+     SCROLL REVEAL ANIMATIONS
+     ============================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    background: var(--navy-deep);
+    border-bottom: 1px solid rgba(255, 153, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+  }
+
+  nav.scrolled {
+    background: rgba(19, 26, 34, 0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom-color: rgba(255, 153, 0, 0.3);
+  }
+
+  .nav-inner {
+    width: 100%;
+    max-width: var(--max-width);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .nav-logo-text {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+
+  .nav-smile {
+    width: 48px;
+    height: auto;
+    margin-left: -4px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-200);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.2s ease;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--orange);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--orange); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-cta {
+    padding: 8px 20px;
+    background: var(--orange);
+    color: var(--navy-deep) !important;
+    border-radius: var(--radius-sm);
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+    transition: background 0.2s ease, transform 0.2s ease !important;
+  }
+
+  .nav-cta:hover {
+    background: var(--orange-hover) !important;
+    transform: translateY(-1px);
+  }
+
+  .nav-cta::after { display: none !important; }
+
+  .mobile-menu { display: none; cursor: pointer; background: none; border: none; padding: 8px; }
+  .mobile-menu span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    margin: 5px 0;
+    transition: 0.3s;
+  }
+
+  /* ==============================
+     HERO
+     ============================== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 120px 32px 80px;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255, 153, 0, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(27, 152, 244, 0.04) 0%, transparent 50%),
+      var(--navy-deep);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 119px,
+        rgba(255, 153, 0, 0.03) 119px,
+        rgba(255, 153, 0, 0.03) 120px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 119px,
+        rgba(255, 153, 0, 0.03) 119px,
+        rgba(255, 153, 0, 0.03) 120px
+      );
+    pointer-events: none;
+  }
+
+  .hero-content {
+    max-width: var(--max-width);
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: rgba(255, 153, 0, 0.12);
+    border: 1px solid rgba(255, 153, 0, 0.25);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+  }
+
+  .hero-badge .prime-check {
+    width: 16px;
+    height: 16px;
+    background: var(--orange);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-badge .prime-check svg {
+    width: 10px;
+    height: 10px;
+  }
+
+  .hero-kpt {
+    font-size: clamp(80px, 14vw, 180px);
+    font-weight: 900;
+    letter-spacing: 12px;
+    line-height: 1;
+    color: var(--white);
+    margin-bottom: 8px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-smile-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: -10px;
+    margin-bottom: 32px;
+  }
+
+  .hero-smile {
+    width: clamp(200px, 30vw, 380px);
+    height: auto;
+  }
+
+  .hero-tagline {
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 300;
+    color: var(--gray-200);
+    margin-bottom: 16px;
+    letter-spacing: 0.5px;
+  }
+
+  .hero-tagline strong {
+    color: var(--orange);
+    font-weight: 600;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--gray-400);
+    max-width: 600px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    background: linear-gradient(180deg, #FFB340 0%, #FF9900 100%);
+    color: var(--navy-deep);
+    font-size: 15px;
+    font-weight: 700;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(255, 153, 0, 0.3);
+    font-family: var(--font-body);
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(180deg, #FFC060 0%, #FFB340 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(255, 153, 0, 0.4);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid var(--navy-light);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    font-family: var(--font-body);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    background: rgba(255, 153, 0, 0.05);
+  }
+
+  /* Floating delivery badges */
+  .delivery-badge {
+    position: absolute;
+    background: var(--navy);
+    border: 1px solid rgba(255, 153, 0, 0.2);
+    border-radius: var(--radius-md);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: float 6s ease-in-out infinite;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .delivery-badge.badge-1 { top: 20%; left: 5%; animation-delay: 0s; }
+  .delivery-badge.badge-2 { top: 30%; right: 5%; animation-delay: -2s; }
+  .delivery-badge.badge-3 { bottom: 20%; left: 8%; animation-delay: -4s; }
+
+  .delivery-badge .badge-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 153, 0, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--orange);
+  }
+
+  .delivery-badge .badge-text {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray-400);
+  }
+
+  .delivery-badge .badge-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-12px) rotate(0.5deg); }
+    66% { transform: translateY(6px) rotate(-0.5deg); }
+  }
+
+  /* ==============================
+     SECTION COMMON
+     ============================== */
+  section {
+    padding: 100px 32px;
+    position: relative;
+  }
+
+  .section-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 800;
+    color: var(--white);
+    margin-bottom: 16px;
+    line-height: 1.15;
+  }
+
+  .section-desc {
+    font-size: 17px;
+    color: var(--gray-400);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  /* ==============================
+     SERVICES — CARD GRID
+     ============================== */
+  .services {
+    background: var(--navy);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--navy-deep);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md);
+    padding: 32px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .card:hover {
+    border-color: rgba(255, 153, 0, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .card:hover::before { transform: scaleX(1); }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 153, 0, 0.1);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: var(--orange);
+  }
+
+  .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+  }
+
+  .card-desc {
+    font-size: 14px;
+    color: var(--gray-400);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .card-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(255, 153, 0, 0.1);
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* Featured card (spans 2 cols) */
+  .card.featured {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .card.featured .card-visual {
+    background: rgba(255, 153, 0, 0.05);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .visual-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .visual-bar-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray-400);
+    min-width: 60px;
+  }
+
+  .visual-bar-track {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .visual-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--orange), var(--orange-hover));
+    border-radius: 100px;
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 0;
+  }
+
+  .visible .visual-bar-fill { width: var(--bar-width); }
+
+  .visual-bar-val {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--white);
+    min-width: 36px;
+    text-align: right;
+    font-family: var(--font-mono);
+  }
+
+  /* ==============================
+     METRICS / AWS-STYLE DASHBOARD
+     ============================== */
+  .metrics {
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(255, 153, 0, 0.06) 0%, transparent 50%),
+      var(--navy-deep);
+  }
+
+  .metrics-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 48px;
+  }
+
+  .metrics-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--success);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .live-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--success);
+    font-family: var(--font-mono);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  .stat-card {
+    background: var(--navy);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--orange);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .stat-card:hover::after { opacity: 1; }
+
+  .stat-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .stat-value {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--white);
+    font-family: var(--font-mono);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-value .unit {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--gray-400);
+    margin-left: 2px;
+  }
+
+  .stat-change {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .stat-change.positive { color: var(--success); }
+
+  /* Dashboard chart area */
+  .dashboard-panel {
+    background: var(--navy);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md);
+    padding: 32px;
+  }
+
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+
+  .dashboard-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .dashboard-tabs {
+    display: flex;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+    padding: 3px;
+  }
+
+  .dashboard-tab {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray-400);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .dashboard-tab.active {
+    background: var(--orange);
+    color: var(--navy-deep);
+    font-weight: 700;
+  }
+
+  .chart-area {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 180px;
+    padding-top: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .chart-bar {
+    flex: 1;
+    background: linear-gradient(180deg, var(--orange), rgba(255, 153, 0, 0.3));
+    border-radius: 3px 3px 0 0;
+    transition: height 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    height: 0;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .chart-bar:hover {
+    background: linear-gradient(180deg, var(--orange-hover), rgba(255, 179, 64, 0.5));
+  }
+
+  .chart-bar::after {
+    content: attr(data-value);
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--orange);
+    font-family: var(--font-mono);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .chart-bar:hover::after { opacity: 1; }
+
+  .visible .chart-bar { height: var(--bar-h); }
+
+  .chart-labels {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .chart-labels span {
+    flex: 1;
+    text-align: center;
+    font-size: 10px;
+    color: var(--gray-400);
+    font-family: var(--font-mono);
+  }
+
+  /* ==============================
+     PRIME-STYLE SOLUTIONS
+     ============================== */
+  .prime-section {
+    background: var(--navy);
+  }
+
+  .prime-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .prime-card {
+    background: var(--navy-deep);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .prime-card:hover {
+    border-color: rgba(255, 153, 0, 0.2);
+  }
+
+  .prime-badge-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .prime-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: linear-gradient(135deg, var(--prime-blue), #00A8E1);
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .speed-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    background: rgba(6, 125, 98, 0.2);
+    border: 1px solid rgba(6, 125, 98, 0.3);
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--success);
+  }
+
+  .prime-card-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .prime-card-desc {
+    font-size: 15px;
+    color: var(--gray-400);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    flex: 1;
+  }
+
+  .prime-card-metrics {
+    display: flex;
+    gap: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .prime-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .prime-metric-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--orange);
+    font-family: var(--font-mono);
+  }
+
+  .prime-metric-label {
+    font-size: 11px;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ==============================
+     ECOSYSTEM STRIP
+     ============================== */
+  .ecosystem {
+    background: var(--navy-deep);
+    padding: 60px 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .eco-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .eco-label {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray-400);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 32px;
+  }
+
+  .eco-row {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .eco-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--gray-200);
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+
+  .eco-item:hover { opacity: 1; }
+
+  .eco-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 153, 0, 0.1);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--orange);
+  }
+
+  /* ==============================
+     SOCIAL PROOF / REVIEWS
+     ============================== */
+  .social-proof {
+    background:
+      radial-gradient(ellipse 50% 40% at 80% 20%, rgba(255, 153, 0, 0.05) 0%, transparent 50%),
+      var(--navy);
+  }
+
+  .proof-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .proof-card {
+    background: var(--navy-deep);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius-md);
+    padding: 28px;
+    transition: all 0.3s ease;
+  }
+
+  .proof-card:hover { border-color: rgba(255, 153, 0, 0.15); }
+
+  .proof-stars {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 16px;
+  }
+
+  .proof-stars svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--orange);
+  }
+
+  .proof-text {
+    font-size: 14px;
+    color: var(--gray-200);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    font-style: italic;
+  }
+
+  .proof-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .proof-avatar {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--orange), var(--orange-dim));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy-deep);
+    flex-shrink: 0;
+  }
+
+  .proof-author-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .proof-author-role {
+    font-size: 11px;
+    color: var(--gray-400);
+  }
+
+  .proof-verified {
+    font-size: 11px;
+    color: var(--text-link);
+    margin-top: 2px;
+  }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  .cta-section {
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 60%, rgba(255, 153, 0, 0.1) 0%, transparent 60%),
+      var(--navy-deep);
+    text-align: center;
+    padding: 120px 32px;
+  }
+
+  .cta-kpt {
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 900;
+    letter-spacing: 8px;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .cta-smile {
+    width: clamp(160px, 20vw, 260px);
+    margin: 0 auto 32px;
+    display: block;
+  }
+
+  .cta-headline {
+    font-size: clamp(20px, 3vw, 32px);
+    font-weight: 300;
+    color: var(--gray-200);
+    margin-bottom: 12px;
+  }
+
+  .cta-headline strong {
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  .cta-sub {
+    font-size: 16px;
+    color: var(--gray-400);
+    max-width: 480px;
+    margin: 0 auto 40px;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: var(--navy);
+    border-top: 3px solid var(--orange);
+    padding: 60px 32px 32px;
+  }
+
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  .footer-col-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col li { margin-bottom: 8px; }
+
+  .footer-col a {
+    font-size: 13px;
+    color: var(--gray-400);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .footer-col a:hover { color: var(--orange); }
+
+  .footer-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+    margin-bottom: 24px;
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-logo-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .footer-logo-text {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: var(--white);
+  }
+
+  .footer-copyright {
+    font-size: 12px;
+    color: var(--gray-400);
+  }
+
+  .footer-legal {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer-legal a {
+    font-size: 12px;
+    color: var(--gray-400);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .footer-legal a:hover { color: var(--orange); }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 1024px) {
+    .card-grid { grid-template-columns: repeat(2, 1fr); }
+    .card.featured { grid-column: span 2; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .delivery-badge { display: none; }
+  }
+
+  @media (max-width: 768px) {
+    section { padding: 64px 20px; }
+    .nav-links { display: none; }
+    .mobile-menu { display: block; }
+    .hero { padding: 100px 20px 60px; min-height: auto; }
+    .hero-kpt { letter-spacing: 6px; }
+
+    .card-grid { grid-template-columns: 1fr; }
+    .card.featured { grid-column: span 1; grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .prime-grid { grid-template-columns: 1fr; }
+    .proof-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .eco-row { gap: 24px; }
+
+    .metrics-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .stat-value { font-size: 28px; }
+
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .prime-card-metrics { flex-wrap: wrap; }
+    .eco-row { gap: 16px; }
+    .chart-area { height: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-text">KPT</span>
+      <svg class="nav-smile" viewBox="0 0 80 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 8C6 8 20 22 40 22C60 22 74 8 74 8" stroke="#FF9900" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M62 12L74 8L68 20" fill="#FF9900"/>
+      </svg>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#metrics">Metrics</a></li>
+      <li><a href="#prime">Solutions</a></li>
+      <li><a href="#proof">Reviews</a></li>
+      <li><a href="#cta" class="nav-cta">Get Started</a></li>
+    </ul>
+    <button class="mobile-menu" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('show')">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <!-- Floating badges -->
+  <div class="delivery-badge badge-1 reveal reveal-delay-3">
+    <div class="badge-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </div>
+    <div>
+      <div class="badge-text">Deployment Speed</div>
+      <div class="badge-value">&lt; 50ms</div>
+    </div>
+  </div>
+
+  <div class="delivery-badge badge-2 reveal reveal-delay-4">
+    <div class="badge-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+    </div>
+    <div>
+      <div class="badge-text">Global Regions</div>
+      <div class="badge-value">31 Zones</div>
+    </div>
+  </div>
+
+  <div class="delivery-badge badge-3 reveal reveal-delay-5">
+    <div class="badge-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    </div>
+    <div>
+      <div class="badge-text">Uptime SLA</div>
+      <div class="badge-value">99.99%</div>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge reveal">
+      <span class="prime-check">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#131A22" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </span>
+      Everything Tech, Delivered
+    </div>
+
+    <div class="hero-kpt reveal reveal-delay-1">KPT</div>
+
+    <div class="hero-smile-wrapper reveal reveal-delay-2">
+      <svg class="hero-smile" viewBox="0 0 380 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 20C20 20 90 72 190 72C290 72 360 20 360 20" stroke="#FF9900" stroke-width="7" stroke-linecap="round" fill="none"/>
+        <path d="M330 30L360 20L345 48" fill="#FF9900"/>
+      </svg>
+    </div>
+
+    <p class="hero-tagline reveal reveal-delay-2">
+      <strong>Build hard.</strong> Ship fast. <strong>Scale everything.</strong>
+    </p>
+
+    <p class="hero-sub reveal reveal-delay-3">
+      The everything platform for modern teams. From compute to commerce,
+      infrastructure to intelligence &mdash; one ecosystem, zero limits.
+    </p>
+
+    <div class="hero-actions reveal reveal-delay-3">
+      <a href="#cta" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        Start Building Free
+      </a>
+      <a href="#services" class="btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        Explore Services
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SERVICES ===== -->
+<section class="services" id="services">
+  <div class="section-inner">
+    <p class="section-label reveal">Platform</p>
+    <h2 class="section-title reveal reveal-delay-1">Everything you need,<br>nothing you don't.</h2>
+    <p class="section-desc reveal reveal-delay-2">
+      A complete ecosystem of cloud services, development tools, and intelligent infrastructure &mdash; from prototype to planet-scale.
+    </p>
+
+    <div class="card-grid">
+      <!-- Featured card -->
+      <div class="card featured reveal reveal-delay-1 reveal-scale">
+        <div>
+          <div class="card-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="card-title">KPT Compute Engine</div>
+          <div class="card-desc">Elastic compute that scales from a single container to millions of instances. Auto-provisions capacity based on demand with predictive scaling intelligence.</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span class="card-tag">Auto-Scale</span>
+            <span class="card-tag">GPU Ready</span>
+            <span class="card-tag">Spot Pricing</span>
+          </div>
+        </div>
+        <div class="card-visual">
+          <div class="visual-bar">
+            <span class="visual-bar-label">CPU</span>
+            <div class="visual-bar-track"><div class="visual-bar-fill" style="--bar-width: 78%;"></div></div>
+            <span class="visual-bar-val">78%</span>
+          </div>
+          <div class="visual-bar">
+            <span class="visual-bar-label">Memory</span>
+            <div class="visual-bar-track"><div class="visual-bar-fill" style="--bar-width: 62%;"></div></div>
+            <span class="visual-bar-val">62%</span>
+          </div>
+          <div class="visual-bar">
+            <span class="visual-bar-label">Network</span>
+            <div class="visual-bar-track"><div class="visual-bar-fill" style="--bar-width: 45%;"></div></div>
+            <span class="visual-bar-val">45%</span>
+          </div>
+          <div class="visual-bar">
+            <span class="visual-bar-label">Storage</span>
+            <div class="visual-bar-track"><div class="visual-bar-fill" style="--bar-width: 91%;"></div></div>
+            <span class="visual-bar-val">91%</span>
+          </div>
+          <div class="visual-bar">
+            <span class="visual-bar-label">GPU</span>
+            <div class="visual-bar-track"><div class="visual-bar-fill" style="--bar-width: 34%;"></div></div>
+            <span class="visual-bar-val">34%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card reveal reveal-delay-2 reveal-scale">
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </div>
+        <div class="card-title">KPT Storage</div>
+        <div class="card-desc">Object storage with 11 nines durability. Block, file, and archive tiers with intelligent tiering that moves data automatically.</div>
+        <span class="card-tag">99.999999999%</span>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card reveal reveal-delay-1 reveal-scale">
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="card-title">KPT Lambda</div>
+        <div class="card-desc">Serverless functions that execute in under 50ms cold start. Write the logic, we handle the rest &mdash; from zero to a billion requests.</div>
+        <span class="card-tag">Serverless</span>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card reveal reveal-delay-2 reveal-scale">
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="card-title">KPT Neural</div>
+        <div class="card-desc">Managed AI/ML infrastructure with pre-built models, custom training pipelines, and one-click deployment to production endpoints.</div>
+        <span class="card-tag">AI/ML</span>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="card reveal reveal-delay-3 reveal-scale">
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div class="card-title">KPT Kinesis</div>
+        <div class="card-desc">Real-time data streaming at any scale. Ingest, process, and analyze millions of events per second with sub-second latency.</div>
+        <span class="card-tag">Real-Time</span>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="card reveal reveal-delay-3 reveal-scale">
+        <div class="card-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="card-title">KPT Sentinel</div>
+        <div class="card-desc">Zero-trust security from edge to core. Threat detection, automated compliance, and encryption at rest and in transit &mdash; always on.</div>
+        <span class="card-tag">Zero Trust</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== METRICS ===== -->
+<section class="metrics" id="metrics">
+  <div class="section-inner">
+    <div class="metrics-header">
+      <div>
+        <p class="section-label reveal">Performance</p>
+        <h2 class="section-title reveal reveal-delay-1">Infrastructure that<br>speaks for itself.</h2>
+      </div>
+      <div class="metrics-header-right reveal reveal-delay-2">
+        <span class="live-dot"></span>
+        <span class="live-label">LIVE METRICS</span>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card reveal reveal-delay-1">
+        <div class="stat-label">Requests / Second</div>
+        <div class="stat-value"><span class="counting" data-target="2.4" data-decimals="1">0</span><span class="unit">M</span></div>
+        <span class="stat-change positive">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          +18.3% this quarter
+        </span>
+      </div>
+
+      <div class="stat-card reveal reveal-delay-2">
+        <div class="stat-label">Global Latency</div>
+        <div class="stat-value"><span class="counting" data-target="12" data-decimals="0">0</span><span class="unit">ms</span></div>
+        <span class="stat-change positive">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          -34% from baseline
+        </span>
+      </div>
+
+      <div class="stat-card reveal reveal-delay-3">
+        <div class="stat-label">Active Deployments</div>
+        <div class="stat-value"><span class="counting" data-target="847" data-decimals="0">0</span><span class="unit">K</span></div>
+        <span class="stat-change positive">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          +42.1% YoY
+        </span>
+      </div>
+
+      <div class="stat-card reveal reveal-delay-4">
+        <div class="stat-label">Uptime (365d)</div>
+        <div class="stat-value"><span class="counting" data-target="99.99" data-decimals="2">0</span><span class="unit">%</span></div>
+        <span class="stat-change positive">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          Enterprise SLA
+        </span>
+      </div>
+    </div>
+
+    <!-- Dashboard chart -->
+    <div class="dashboard-panel reveal reveal-scale">
+      <div class="dashboard-header">
+        <span class="dashboard-title">Request Volume (24h)</span>
+        <div class="dashboard-tabs">
+          <span class="dashboard-tab">1H</span>
+          <span class="dashboard-tab">6H</span>
+          <span class="dashboard-tab active">24H</span>
+          <span class="dashboard-tab">7D</span>
+        </div>
+      </div>
+      <div class="chart-area" id="chart">
+        <div class="chart-bar" style="--bar-h: 45%;" data-value="1.1M"></div>
+        <div class="chart-bar" style="--bar-h: 52%;" data-value="1.3M"></div>
+        <div class="chart-bar" style="--bar-h: 38%;" data-value="0.9M"></div>
+        <div class="chart-bar" style="--bar-h: 61%;" data-value="1.5M"></div>
+        <div class="chart-bar" style="--bar-h: 73%;" data-value="1.8M"></div>
+        <div class="chart-bar" style="--bar-h: 68%;" data-value="1.7M"></div>
+        <div class="chart-bar" style="--bar-h: 85%;" data-value="2.1M"></div>
+        <div class="chart-bar" style="--bar-h: 79%;" data-value="1.9M"></div>
+        <div class="chart-bar" style="--bar-h: 92%;" data-value="2.3M"></div>
+        <div class="chart-bar" style="--bar-h: 88%;" data-value="2.2M"></div>
+        <div class="chart-bar" style="--bar-h: 95%;" data-value="2.4M"></div>
+        <div class="chart-bar" style="--bar-h: 100%;" data-value="2.5M"></div>
+        <div class="chart-bar" style="--bar-h: 82%;" data-value="2.0M"></div>
+        <div class="chart-bar" style="--bar-h: 70%;" data-value="1.7M"></div>
+        <div class="chart-bar" style="--bar-h: 58%;" data-value="1.4M"></div>
+        <div class="chart-bar" style="--bar-h: 65%;" data-value="1.6M"></div>
+        <div class="chart-bar" style="--bar-h: 78%;" data-value="1.9M"></div>
+        <div class="chart-bar" style="--bar-h: 88%;" data-value="2.2M"></div>
+        <div class="chart-bar" style="--bar-h: 93%;" data-value="2.3M"></div>
+        <div class="chart-bar" style="--bar-h: 97%;" data-value="2.4M"></div>
+        <div class="chart-bar" style="--bar-h: 85%;" data-value="2.1M"></div>
+        <div class="chart-bar" style="--bar-h: 90%;" data-value="2.2M"></div>
+        <div class="chart-bar" style="--bar-h: 76%;" data-value="1.9M"></div>
+        <div class="chart-bar" style="--bar-h: 82%;" data-value="2.0M"></div>
+      </div>
+      <div class="chart-labels">
+        <span>00</span><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span>
+        <span>06</span><span>07</span><span>08</span><span>09</span><span>10</span><span>11</span>
+        <span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span>
+        <span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ECOSYSTEM ===== -->
+<div class="ecosystem">
+  <div class="eco-inner">
+    <p class="eco-label reveal">Powering the ecosystem</p>
+    <div class="eco-row reveal reveal-delay-1">
+      <div class="eco-item">
+        <div class="eco-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/></svg>
+        </div>
+        Kubernetes
+      </div>
+      <div class="eco-item">
+        <div class="eco-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        Terraform
+      </div>
+      <div class="eco-item">
+        <div class="eco-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        GraphQL
+      </div>
+      <div class="eco-item">
+        <div class="eco-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        </div>
+        Docker
+      </div>
+      <div class="eco-item">
+        <div class="eco-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"/></svg>
+        </div>
+        Prometheus
+      </div>
+      <div class="eco-item">
+        <div class="eco-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+        </div>
+        Grafana
+      </div>
+      <div class="eco-item">
+        <div class="eco-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        Vault
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PRIME SOLUTIONS ===== -->
+<section class="prime-section" id="prime">
+  <div class="section-inner">
+    <p class="section-label reveal">Solutions</p>
+    <h2 class="section-title reveal reveal-delay-1">Delivered at the<br>speed of ambition.</h2>
+    <p class="section-desc reveal reveal-delay-2">
+      Enterprise-grade solutions with startup-speed delivery. Every product ships with Prime-tier support and guaranteed SLAs.
+    </p>
+
+    <div class="prime-grid">
+      <div class="prime-card reveal reveal-delay-1 reveal-scale">
+        <div class="prime-badge-row">
+          <span class="prime-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            KPT Prime
+          </span>
+          <span class="speed-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Same-Day Deploy
+          </span>
+        </div>
+        <div class="prime-card-title">Full-Stack Platform</div>
+        <div class="prime-card-desc">
+          Frontend to backend to database to CDN &mdash; the entire stack orchestrated as one. Push code, everything else is handled: builds, deploys, rollbacks, monitoring.
+        </div>
+        <div class="prime-card-metrics">
+          <div class="prime-metric">
+            <span class="prime-metric-value">3s</span>
+            <span class="prime-metric-label">Build Time</span>
+          </div>
+          <div class="prime-metric">
+            <span class="prime-metric-value">200+</span>
+            <span class="prime-metric-label">Edge Locations</span>
+          </div>
+          <div class="prime-metric">
+            <span class="prime-metric-value">0</span>
+            <span class="prime-metric-label">Config Files</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="prime-card reveal reveal-delay-2 reveal-scale">
+        <div class="prime-badge-row">
+          <span class="prime-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            KPT Prime
+          </span>
+          <span class="speed-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Instant Scale
+          </span>
+        </div>
+        <div class="prime-card-title">AI/ML Pipeline</div>
+        <div class="prime-card-desc">
+          Train, tune, and deploy models at scale with managed GPU clusters. From data ingestion to production inference &mdash; fully automated MLOps for every team.
+        </div>
+        <div class="prime-card-metrics">
+          <div class="prime-metric">
+            <span class="prime-metric-value">10K</span>
+            <span class="prime-metric-label">GPU Hours/Day</span>
+          </div>
+          <div class="prime-metric">
+            <span class="prime-metric-value">50ms</span>
+            <span class="prime-metric-label">Inference P99</span>
+          </div>
+          <div class="prime-metric">
+            <span class="prime-metric-value">99.9%</span>
+            <span class="prime-metric-label">Model Uptime</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="prime-card reveal reveal-delay-3 reveal-scale">
+        <div class="prime-badge-row">
+          <span class="prime-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            KPT Prime
+          </span>
+          <span class="speed-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Zero Downtime
+          </span>
+        </div>
+        <div class="prime-card-title">Commerce Engine</div>
+        <div class="prime-card-desc">
+          Headless commerce APIs that power checkout flows handling millions of transactions. Inventory, payments, fulfillment &mdash; one API to run your entire operation.
+        </div>
+        <div class="prime-card-metrics">
+          <div class="prime-metric">
+            <span class="prime-metric-value">$2.1B</span>
+            <span class="prime-metric-label">GMV Processed</span>
+          </div>
+          <div class="prime-metric">
+            <span class="prime-metric-value">140+</span>
+            <span class="prime-metric-label">Currencies</span>
+          </div>
+          <div class="prime-metric">
+            <span class="prime-metric-value">0.1%</span>
+            <span class="prime-metric-label">Fraud Rate</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="prime-card reveal reveal-delay-4 reveal-scale">
+        <div class="prime-badge-row">
+          <span class="prime-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+            KPT Prime
+          </span>
+          <span class="speed-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Always-On
+          </span>
+        </div>
+        <div class="prime-card-title">Data Warehouse</div>
+        <div class="prime-card-desc">
+          Petabyte-scale analytics with serverless query execution. Ingest from any source, query in seconds, and build dashboards that update in real-time.
+        </div>
+        <div class="prime-card-metrics">
+          <div class="prime-metric">
+            <span class="prime-metric-value">18PB</span>
+            <span class="prime-metric-label">Data Managed</span>
+          </div>
+          <div class="prime-metric">
+            <span class="prime-metric-value">&lt;2s</span>
+            <span class="prime-metric-label">Query P95</span>
+          </div>
+          <div class="prime-metric">
+            <span class="prime-metric-value">500+</span>
+            <span class="prime-metric-label">Connectors</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOCIAL PROOF ===== -->
+<section class="social-proof" id="proof">
+  <div class="section-inner">
+    <p class="section-label reveal">Trusted by builders</p>
+    <h2 class="section-title reveal reveal-delay-1">Verified by the teams<br>that rely on us.</h2>
+    <p class="section-desc reveal reveal-delay-2">
+      From startups to Fortune 100 &mdash; teams ship faster, scale further, and spend less with KPT.
+    </p>
+
+    <div class="proof-grid">
+      <div class="proof-card reveal reveal-delay-1">
+        <div class="proof-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="proof-text">"Migrated our entire infra to KPT in under a week. Cold starts dropped 90%. Our engineers actually enjoy deploying now."</p>
+        <div class="proof-author">
+          <div class="proof-avatar">SR</div>
+          <div>
+            <div class="proof-author-name">Sarah Rodriguez</div>
+            <div class="proof-author-role">VP Engineering, Meridian Labs</div>
+            <div class="proof-verified">Verified Purchase</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proof-card reveal reveal-delay-2">
+        <div class="proof-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="proof-text">"KPT Commerce processed $40M through our Black Friday sale without a single hiccup. The auto-scaling is genuinely magic."</p>
+        <div class="proof-author">
+          <div class="proof-avatar">MK</div>
+          <div>
+            <div class="proof-author-name">Marcus Kim</div>
+            <div class="proof-author-role">CTO, Overstock Collective</div>
+            <div class="proof-verified">Verified Purchase</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="proof-card reveal reveal-delay-3">
+        <div class="proof-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <p class="proof-text">"We trained and deployed a custom LLM on KPT Neural in 3 days. The managed GPU clusters and one-click endpoints saved us months."</p>
+        <div class="proof-author">
+          <div class="proof-avatar">AP</div>
+          <div>
+            <div class="proof-author-name">Aisha Patel</div>
+            <div class="proof-author-role">ML Lead, Synthesis AI</div>
+            <div class="proof-verified">Verified Purchase</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta-section" id="cta">
+  <div class="section-inner">
+    <div class="cta-kpt reveal">KPT</div>
+    <svg class="cta-smile reveal reveal-delay-1" viewBox="0 0 260 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 12C10 12 60 52 130 52C200 52 250 12 250 12" stroke="#FF9900" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <path d="M225 18L250 12L240 36" fill="#FF9900"/>
+    </svg>
+    <p class="cta-headline reveal reveal-delay-2">
+      Build hard. Ship fast. <strong>Scale everything.</strong>
+    </p>
+    <p class="cta-sub reveal reveal-delay-3">
+      Join thousands of teams building the future on KPT. Free tier includes 100K compute hours, 50GB storage, and unlimited deployments.
+    </p>
+    <div class="cta-buttons reveal reveal-delay-3">
+      <a href="#" class="btn-primary">
+        Create Free Account
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#" class="btn-secondary">Contact Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-col-title">Compute</div>
+        <ul>
+          <li><a href="#">KPT EC2</a></li>
+          <li><a href="#">KPT Lambda</a></li>
+          <li><a href="#">KPT Fargate</a></li>
+          <li><a href="#">KPT Lightsail</a></li>
+          <li><a href="#">Batch Processing</a></li>
+          <li><a href="#">Edge Functions</a></li>
+          <li><a href="#">GPU Instances</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Storage & DB</div>
+        <ul>
+          <li><a href="#">KPT S3</a></li>
+          <li><a href="#">KPT Aurora</a></li>
+          <li><a href="#">KPT DynamoDB</a></li>
+          <li><a href="#">KPT ElastiCache</a></li>
+          <li><a href="#">KPT Redshift</a></li>
+          <li><a href="#">Block Storage</a></li>
+          <li><a href="#">Archive Vault</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">AI & Analytics</div>
+        <ul>
+          <li><a href="#">KPT Neural</a></li>
+          <li><a href="#">KPT Kinesis</a></li>
+          <li><a href="#">KPT Athena</a></li>
+          <li><a href="#">Model Training</a></li>
+          <li><a href="#">Inference API</a></li>
+          <li><a href="#">Data Pipeline</a></li>
+          <li><a href="#">BI Dashboards</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Company</div>
+        <ul>
+          <li><a href="#">About KPT</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Investor Relations</a></li>
+          <li><a href="#">Sustainability</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Status Page</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <div class="footer-logo-row">
+        <span class="footer-logo-text">KPT</span>
+        <svg width="48" height="16" viewBox="0 0 80 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 8C6 8 20 22 40 22C60 22 74 8 74 8" stroke="#FF9900" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path d="M62 12L74 8L68 20" fill="#FF9900"/>
+        </svg>
+      </div>
+      <span class="footer-copyright">&copy; 2026 KPT, Inc. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+        <a href="#">Security</a>
+        <a href="#">Sitemap</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+  // Scroll reveal with IntersectionObserver
+  const revealElements = document.querySelectorAll('.reveal, .reveal-scale');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -60px 0px'
+  });
+
+  revealElements.forEach(el => revealObserver.observe(el));
+
+  // Nav scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  });
+
+  // Counter animation
+  function animateCounter(el) {
+    const target = parseFloat(el.dataset.target);
+    const decimals = parseInt(el.dataset.decimals) || 0;
+    const duration = 2000;
+    const start = performance.now();
+
+    function update(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = target * eased;
+      el.textContent = current.toFixed(decimals);
+      if (progress < 1) requestAnimationFrame(update);
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  const counters = document.querySelectorAll('.counting');
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach(el => counterObserver.observe(el));
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+</body>
+</html>

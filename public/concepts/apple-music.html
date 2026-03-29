@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Apple Music</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --pink: #FC5C7D;
+    --red: #E4002B;
+    --purple: #A855F7;
+    --black: #000000;
+    --white: #FFFFFF;
+    --off-white: #F5F5F7;
+    --gray: #86868B;
+    --gray-dark: #1D1D1F;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --max-width: 1080px;
+    --nav-height: 52px;
+    --gradient: linear-gradient(135deg, var(--pink), var(--red), var(--purple));
+    --gradient-h: linear-gradient(90deg, var(--pink), var(--red), var(--purple));
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 17px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-inner {
+    width: 100%;
+    max-width: var(--max-width);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-logo-icon svg { width: 16px; height: 16px; fill: white; }
+
+  .nav-logo-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: -0.3px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    align-items: center;
+  }
+
+  .nav-links a {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    transition: color 0.3s;
+    letter-spacing: 0.2px;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-back {
+    font-size: 12px;
+    color: var(--pink);
+    text-decoration: none;
+    transition: opacity 0.3s;
+  }
+
+  .nav-back:hover { opacity: 0.7; }
+
+  /* ==============================
+     SCROLL ANIMATIONS
+     ============================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ==============================
+     HERO SECTION
+     ============================== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: calc(var(--nav-height) + 60px) 24px 80px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  /* Animated gradient blobs */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    pointer-events: none;
+    animation: blobFloat 12s ease-in-out infinite;
+  }
+
+  .blob-1 {
+    width: 500px;
+    height: 500px;
+    background: var(--pink);
+    top: -10%;
+    left: -10%;
+    animation-delay: 0s;
+  }
+
+  .blob-2 {
+    width: 600px;
+    height: 600px;
+    background: var(--purple);
+    bottom: -15%;
+    right: -15%;
+    animation-delay: -4s;
+    animation-duration: 15s;
+  }
+
+  .blob-3 {
+    width: 400px;
+    height: 400px;
+    background: var(--red);
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: -8s;
+    animation-duration: 18s;
+  }
+
+  @keyframes blobFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(30px, -40px) scale(1.1); }
+    50% { transform: translate(-20px, 20px) scale(0.95); }
+    75% { transform: translate(40px, 30px) scale(1.05); }
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--pink);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.5); }
+  }
+
+  .hero-kpt {
+    font-size: clamp(100px, 18vw, 200px);
+    font-weight: 700;
+    letter-spacing: -4px;
+    line-height: 0.9;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 8px;
+  }
+
+  .hero-tagline {
+    font-size: clamp(16px, 3vw, 24px);
+    font-weight: 200;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-description {
+    font-size: 19px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    max-width: 560px;
+    line-height: 1.6;
+    margin-bottom: 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 980px;
+    background: var(--gradient-h);
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    background-size: 200% 100%;
+    animation: gradientShift 4s ease-in-out infinite;
+  }
+
+  .btn-primary:hover {
+    transform: scale(1.04);
+    box-shadow: 0 8px 40px rgba(252, 92, 125, 0.4);
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 980px;
+    background: transparent;
+    color: var(--white);
+    font-family: var(--font);
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  .btn-secondary:hover {
+    border-color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* ==============================
+     LOSSLESS AUDIO BADGE SECTION
+     ============================== */
+  .lossless-section {
+    padding: 100px 24px;
+    text-align: center;
+    position: relative;
+  }
+
+  .lossless-badge-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+
+  .audio-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  .audio-badge-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .badge-lossless .audio-badge-icon {
+    background: linear-gradient(135deg, var(--pink), var(--red));
+  }
+
+  .badge-hires .audio-badge-icon {
+    background: linear-gradient(135deg, var(--red), var(--purple));
+  }
+
+  .badge-spatial .audio-badge-icon {
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+  }
+
+  .audio-badge-text {
+    text-align: left;
+  }
+
+  .audio-badge-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.5px;
+  }
+
+  .audio-badge-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 400;
+  }
+
+  .lossless-title {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .lossless-title span {
+    background: var(--gradient-h);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .lossless-description {
+    font-size: 17px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ==============================
+     SPATIAL AUDIO WAVES
+     ============================== */
+  .spatial-section {
+    padding: 80px 24px 120px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .spatial-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .spatial-text h2 {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 20px;
+  }
+
+  .spatial-text h2 span {
+    background: var(--gradient-h);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .spatial-text p {
+    font-size: 17px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .spatial-features {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .spatial-feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .spatial-feature-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gradient);
+    flex-shrink: 0;
+  }
+
+  /* Waves visualization */
+  .spatial-vis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 400px;
+  }
+
+  .wave-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(252, 92, 125, 0.2);
+    animation: waveExpand 3s ease-out infinite;
+  }
+
+  .wave-ring:nth-child(1) { width: 80px; height: 80px; animation-delay: 0s; }
+  .wave-ring:nth-child(2) { width: 80px; height: 80px; animation-delay: 0.6s; }
+  .wave-ring:nth-child(3) { width: 80px; height: 80px; animation-delay: 1.2s; }
+  .wave-ring:nth-child(4) { width: 80px; height: 80px; animation-delay: 1.8s; }
+  .wave-ring:nth-child(5) { width: 80px; height: 80px; animation-delay: 2.4s; }
+
+  @keyframes waveExpand {
+    0% {
+      width: 80px;
+      height: 80px;
+      opacity: 0.8;
+      border-color: rgba(252, 92, 125, 0.5);
+    }
+    100% {
+      width: 360px;
+      height: 360px;
+      opacity: 0;
+      border-color: rgba(168, 85, 247, 0.1);
+    }
+  }
+
+  .wave-center {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 60px rgba(252, 92, 125, 0.3);
+  }
+
+  .wave-center svg { width: 32px; height: 32px; fill: white; }
+
+  /* ==============================
+     ALBUM GRID
+     ============================== */
+  .album-section {
+    padding: 100px 24px;
+    position: relative;
+  }
+
+  .album-section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .album-section-header h2 {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .album-section-header h2 span {
+    background: var(--gradient-h);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .album-section-header p {
+    font-size: 17px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .album-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .album-card {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.4s;
+  }
+
+  .album-card:hover {
+    transform: scale(1.05);
+    z-index: 2;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+
+  .album-art {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .album-art-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.6;
+  }
+
+  .album-art-label {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .album-art-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+
+  .album-art-artist {
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+
+  /* Album color schemes */
+  .album-1 { background: linear-gradient(135deg, #FC5C7D, #E4002B); }
+  .album-2 { background: linear-gradient(135deg, #A855F7, #6D28D9); }
+  .album-3 { background: linear-gradient(135deg, #E4002B, #831843); }
+  .album-4 { background: linear-gradient(135deg, #1A1A2E, #FC5C7D); }
+  .album-5 { background: linear-gradient(135deg, #A855F7, #FC5C7D); }
+  .album-6 { background: linear-gradient(135deg, #0F172A, #A855F7); }
+  .album-7 { background: linear-gradient(135deg, #E4002B, #A855F7); }
+  .album-8 { background: linear-gradient(135deg, #FC5C7D, #F59E0B); }
+
+  .album-card .play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 3;
+  }
+
+  .album-card:hover .play-icon {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .play-icon svg { width: 20px; height: 20px; fill: white; }
+
+  /* ==============================
+     EQUALIZER BARS
+     ============================== */
+  .eq-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 40px;
+  }
+
+  .eq-bar {
+    width: 4px;
+    border-radius: 2px;
+    background: var(--gradient);
+    animation: eqBounce 1s ease-in-out infinite alternate;
+  }
+
+  .eq-bar:nth-child(1) { height: 40%; animation-delay: 0s; }
+  .eq-bar:nth-child(2) { height: 70%; animation-delay: 0.15s; }
+  .eq-bar:nth-child(3) { height: 50%; animation-delay: 0.3s; }
+  .eq-bar:nth-child(4) { height: 90%; animation-delay: 0.45s; }
+  .eq-bar:nth-child(5) { height: 60%; animation-delay: 0.6s; }
+
+  @keyframes eqBounce {
+    0% { transform: scaleY(0.3); }
+    100% { transform: scaleY(1); }
+  }
+
+  /* ==============================
+     FEATURES SECTION
+     ============================== */
+  .features-section {
+    padding: 100px 24px;
+    position: relative;
+  }
+
+  .features-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(252, 92, 125, 0.3), transparent);
+  }
+
+  .features-header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+
+  .features-header h2 {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+  }
+
+  .features-header p {
+    font-size: 17px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+  }
+
+  .feature-card {
+    padding: 40px 32px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: border-color 0.4s, background 0.4s;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(252, 92, 125, 0.2);
+    background: rgba(255,255,255,0.06);
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 22px;
+  }
+
+  .feature-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: -0.3px;
+  }
+
+  .feature-card p {
+    font-size: 14px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+  }
+
+  /* ==============================
+     STATS SECTION
+     ============================== */
+  .stats-section {
+    padding: 100px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.08), transparent 70%);
+    pointer-events: none;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-item {
+    padding: 32px 16px;
+  }
+
+  .stat-number {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    line-height: 1;
+    background: var(--gradient-h);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.5px;
+  }
+
+  /* ==============================
+     NOW PLAYING BAR
+     ============================== */
+  .now-playing {
+    padding: 60px 24px;
+    position: relative;
+  }
+
+  .now-playing-bar {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 20px 28px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .np-album {
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    background: var(--gradient);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: white;
+  }
+
+  .np-info { flex: 1; min-width: 0; }
+
+  .np-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .np-artist {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .np-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .np-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255,255,255,0.7);
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+  }
+
+  .np-btn:hover { color: var(--white); }
+
+  .np-btn svg { width: 20px; height: 20px; fill: currentColor; }
+
+  .np-btn-play {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--white);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+
+  .np-btn-play:hover { transform: scale(1.08); }
+
+  .np-btn-play svg { width: 16px; height: 16px; fill: var(--black); margin-left: 2px; }
+
+  .np-progress {
+    position: absolute;
+    bottom: 0;
+    left: 28px;
+    right: 28px;
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .np-progress-fill {
+    height: 100%;
+    width: 35%;
+    background: var(--gradient-h);
+    border-radius: 2px;
+    animation: progressSlide 10s linear infinite;
+  }
+
+  @keyframes progressSlide {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+
+  /* ==============================
+     CTA SECTION
+     ============================== */
+  .cta-section {
+    padding: 120px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(252, 92, 125, 0.15), rgba(168, 85, 247, 0.08), transparent 70%);
+    pointer-events: none;
+    border-radius: 50%;
+    filter: blur(40px);
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-content h2 {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    line-height: 1.05;
+    margin-bottom: 24px;
+  }
+
+  .cta-content h2 span {
+    background: var(--gradient-h);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cta-content p {
+    font-size: 19px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    max-width: 480px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .cta-free {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 16px;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    padding: 48px 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .footer-logo {
+    font-size: 18px;
+    font-weight: 700;
+    background: var(--gradient-h);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .footer-links a:hover { color: rgba(255,255,255,0.7); }
+
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+  }
+
+  /* ==============================
+     RESPONSIVE
+     ============================== */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+
+    .hero { padding-top: calc(var(--nav-height) + 40px); min-height: auto; padding-bottom: 60px; }
+
+    .hero-cta-group { flex-direction: column; width: 100%; }
+    .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+
+    .blob-1 { width: 300px; height: 300px; }
+    .blob-2 { width: 350px; height: 350px; }
+    .blob-3 { width: 250px; height: 250px; }
+
+    .lossless-badge-container { flex-direction: column; gap: 12px; }
+
+    .spatial-inner { grid-template-columns: 1fr; gap: 40px; }
+    .spatial-vis { height: 280px; order: -1; }
+
+    .album-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+
+    .features-grid { grid-template-columns: 1fr; }
+
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+    .now-playing-bar { flex-direction: column; text-align: center; }
+    .np-info { width: 100%; }
+
+    .cta-buttons { flex-direction: column; }
+    .cta-buttons .btn-primary, .cta-buttons .btn-secondary { width: 100%; justify-content: center; }
+
+    .footer-inner { flex-direction: column; gap: 20px; text-align: center; }
+    .footer-left { flex-direction: column; gap: 12px; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <a href="/index.html" class="nav-logo">
+        <div class="nav-logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+        </div>
+        <span class="nav-logo-text">KPT Music</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#library">Library</a></li>
+        <li><a href="#spatial">Spatial</a></li>
+        <li><a href="#stats">Stats</a></li>
+        <li><a href="/index.html" class="nav-back">All Concepts</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="hero-badge reveal">
+      <span class="hero-badge-dot"></span>
+      Now Streaming in Lossless
+    </div>
+
+    <h1 class="hero-kpt reveal reveal-delay-1">KPT</h1>
+
+    <p class="hero-tagline reveal reveal-delay-2">Premium Listening</p>
+
+    <p class="hero-description reveal reveal-delay-3">
+      The sound you were meant to hear. Lossless audio, Spatial Audio
+      with Dolby Atmos, and a library of over 100 million songs.
+    </p>
+
+    <div class="hero-cta-group reveal reveal-delay-4">
+      <a href="#" class="btn-primary">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Start Listening
+      </a>
+      <a href="#features" class="btn-secondary">Explore Features</a>
+    </div>
+  </section>
+
+  <!-- Lossless Audio Badges -->
+  <section class="lossless-section">
+    <div class="lossless-badge-container">
+      <div class="audio-badge badge-lossless reveal">
+        <div class="audio-badge-icon">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="white"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+        </div>
+        <div class="audio-badge-text">
+          <div class="audio-badge-label">Lossless</div>
+          <div class="audio-badge-sub">ALAC up to 24-bit/48 kHz</div>
+        </div>
+      </div>
+      <div class="audio-badge badge-hires reveal reveal-delay-1">
+        <div class="audio-badge-icon">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="white"><path d="M7 18h2V6H7v12zm4-8v8h2v-8h-2zm-8 4v4h2v-4H3zm12-6v10h2V8h-2zm4-2v14h2V6h-2z"/></svg>
+        </div>
+        <div class="audio-badge-text">
+          <div class="audio-badge-label">Hi-Res Lossless</div>
+          <div class="audio-badge-sub">ALAC up to 24-bit/192 kHz</div>
+        </div>
+      </div>
+      <div class="audio-badge badge-spatial reveal reveal-delay-2">
+        <div class="audio-badge-icon">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="white"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        </div>
+        <div class="audio-badge-text">
+          <div class="audio-badge-label">Spatial Audio</div>
+          <div class="audio-badge-sub">Dolby Atmos immersive</div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="lossless-title reveal">
+      Sound the way<br><span>artists intended</span>
+    </h2>
+
+    <p class="lossless-description reveal reveal-delay-1">
+      Every note, every breath, every detail. Lossless audio delivers
+      the studio master quality directly to your ears with zero compression artifacts.
+    </p>
+  </section>
+
+  <!-- Spatial Audio Waves -->
+  <section class="spatial-section" id="spatial">
+    <div class="spatial-inner">
+      <div class="spatial-text">
+        <h2 class="reveal">Spatial Audio<br>with <span>Dolby Atmos</span></h2>
+        <p class="reveal reveal-delay-1">
+          Sound comes from all around you. Artists can mix music so that
+          beats come from the side, vocals from the front, and harmonics
+          from behind. It is like being inside the song.
+        </p>
+        <div class="spatial-features">
+          <div class="spatial-feature reveal reveal-delay-2">
+            <div class="spatial-feature-dot"></div>
+            Dynamic Head Tracking with AirPods
+          </div>
+          <div class="spatial-feature reveal reveal-delay-3">
+            <div class="spatial-feature-dot"></div>
+            Personalized Spatial Audio profiles
+          </div>
+          <div class="spatial-feature reveal reveal-delay-4">
+            <div class="spatial-feature-dot"></div>
+            Thousands of Atmos-enabled tracks
+          </div>
+          <div class="spatial-feature reveal reveal-delay-5">
+            <div class="spatial-feature-dot"></div>
+            Compatible with all Apple devices
+          </div>
+        </div>
+      </div>
+      <div class="spatial-vis reveal">
+        <div class="wave-ring"></div>
+        <div class="wave-ring"></div>
+        <div class="wave-ring"></div>
+        <div class="wave-ring"></div>
+        <div class="wave-ring"></div>
+        <div class="wave-center">
+          <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Album Grid -->
+  <section class="album-section" id="library">
+    <div class="album-section-header">
+      <h2 class="reveal">Your <span>Library</span></h2>
+      <p class="reveal reveal-delay-1">100 million songs. Zero ads. Always yours.</p>
+    </div>
+
+    <div class="album-grid">
+      <div class="album-card album-1 reveal">
+        <div class="album-art">
+          <div class="play-icon">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="album-art-label">
+            <div class="album-art-title">Midnight Drive</div>
+            <div class="album-art-artist">Neon Pulse</div>
+          </div>
+        </div>
+      </div>
+      <div class="album-card album-2 reveal reveal-delay-1">
+        <div class="album-art">
+          <div class="play-icon">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="album-art-label">
+            <div class="album-art-title">Ultraviolet</div>
+            <div class="album-art-artist">Echo Chamber</div>
+          </div>
+        </div>
+      </div>
+      <div class="album-card album-3 reveal reveal-delay-2">
+        <div class="album-art">
+          <div class="play-icon">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="album-art-label">
+            <div class="album-art-title">Crimson Waves</div>
+            <div class="album-art-artist">The Signal</div>
+          </div>
+        </div>
+      </div>
+      <div class="album-card album-4 reveal reveal-delay-3">
+        <div class="album-art">
+          <div class="play-icon">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="album-art-label">
+            <div class="album-art-title">Digital Haze</div>
+            <div class="album-art-artist">Axiom</div>
+          </div>
+        </div>
+      </div>
+      <div class="album-card album-5 reveal">
+        <div class="album-art">
+          <div class="play-icon">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="album-art-label">
+            <div class="album-art-title">Spectrum</div>
+            <div class="album-art-artist">Prism Theory</div>
+          </div>
+        </div>
+      </div>
+      <div class="album-card album-6 reveal reveal-delay-1">
+        <div class="album-art">
+          <div class="play-icon">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="album-art-label">
+            <div class="album-art-title">Void Walker</div>
+            <div class="album-art-artist">Nebula</div>
+          </div>
+        </div>
+      </div>
+      <div class="album-card album-7 reveal reveal-delay-2">
+        <div class="album-art">
+          <div class="play-icon">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="album-art-label">
+            <div class="album-art-title">Fuse</div>
+            <div class="album-art-artist">Thermal State</div>
+          </div>
+        </div>
+      </div>
+      <div class="album-card album-8 reveal reveal-delay-3">
+        <div class="album-art">
+          <div class="play-icon">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="album-art-label">
+            <div class="album-art-title">Golden Hour</div>
+            <div class="album-art-artist">Solaris</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features-section" id="features">
+    <div class="features-header">
+      <h2 class="reveal">Every feature, perfected</h2>
+      <p class="reveal reveal-delay-1">Built for audiophiles. Designed for everyone.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+        </div>
+        <h3>Lossless Audio</h3>
+        <p>ALAC codec preserves every detail of the original file. Studio quality, right in your pocket. No subscription tier needed.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+        </div>
+        <h3>Spatial Audio</h3>
+        <p>Dolby Atmos wraps sound around you. Dynamic Head Tracking creates a theater-like experience with AirPods.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM5 15h14v3H5z"/></svg>
+        </div>
+        <h3>Live Lyrics</h3>
+        <p>Follow every word in real-time. Animated lyrics scroll perfectly in sync with every beat and verse.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        </div>
+        <h3>Curated Playlists</h3>
+        <p>Human editors craft playlists for every mood, genre, and moment. Discover new music that feels personal.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
+        </div>
+        <h3>Radio Stations</h3>
+        <p>Live shows from world-class DJs. Apple Music 1, Hits, and Country broadcast 24/7 with no ads.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="white"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+        </div>
+        <h3>SharePlay</h3>
+        <p>Listen together in sync with friends over FaceTime. Share the moment no matter the distance.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats-section" id="stats">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-number">100M+</div>
+        <div class="stat-label">Songs Available</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <div class="stat-number">30K+</div>
+        <div class="stat-label">Curated Playlists</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Live Radio</div>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <div class="stat-number">192</div>
+        <div class="stat-label">kHz Hi-Res Max</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Now Playing Bar -->
+  <section class="now-playing reveal">
+    <div class="now-playing-bar">
+      <div class="np-album">
+        <div class="eq-bars">
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+          <div class="eq-bar"></div>
+        </div>
+      </div>
+      <div class="np-info">
+        <div class="np-title">Midnight Drive (Lossless)</div>
+        <div class="np-artist">Neon Pulse &mdash; Spatial Audio</div>
+      </div>
+      <div class="np-controls">
+        <button class="np-btn" aria-label="Previous">
+          <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+        </button>
+        <button class="np-btn-play" aria-label="Play">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="np-btn" aria-label="Next">
+          <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+        </button>
+      </div>
+      <div class="np-progress">
+        <div class="np-progress-fill"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2 class="reveal">Start listening<br><span>for free</span></h2>
+      <p class="reveal reveal-delay-1">
+        One month free, then $10.99/month. No commitment.
+        Cancel anytime. Your music stays yours.
+      </p>
+      <div class="cta-buttons reveal reveal-delay-2">
+        <a href="#" class="btn-primary">Try It Free</a>
+        <a href="#" class="btn-secondary">Learn More</a>
+      </div>
+      <p class="cta-free reveal reveal-delay-3">No credit card required to start</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <div class="footer-logo">KPT Music</div>
+        <ul class="footer-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#library">Library</a></li>
+          <li><a href="#spatial">Spatial Audio</a></li>
+          <li><a href="#stats">Stats</a></li>
+          <li><a href="/index.html">All Concepts</a></li>
+        </ul>
+      </div>
+      <div class="footer-copy">A KPT Brand Concept</div>
+    </div>
+  </footer>
+
+  <!-- Scroll Animation Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      );
+
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    });
+  </script>
+
+</body>
+</html>

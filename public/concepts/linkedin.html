@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — In It Together</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   RESET & CUSTOM PROPERTIES
+   ================================================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --linkedin-blue: #0A66C2;
+  --linkedin-dark: #004182;
+  --linkedin-deeper: #00264D;
+  --linkedin-light: #378FE9;
+  --linkedin-hover: #0852A0;
+  --white: #FFFFFF;
+  --off-white: #F3F2EF;
+  --surface: #EEF3F8;
+  --warm-gray: #E9E5DF;
+  --gray-100: #F7F7F7;
+  --gray-200: #E8E8E8;
+  --gray-300: #CCCCCC;
+  --gray-400: #999999;
+  --gray-500: #666666;
+  --gray-600: #474747;
+  --gray-700: #313335;
+  --gray-800: #1D2226;
+  --dark: #000000E6;
+  --success: #057642;
+  --success-light: #E7F3EB;
+  --amber: #B24020;
+  --amber-light: #FFF1E5;
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --max-w: 1128px;
+  --shadow-sm: 0 0 0 1px rgba(0,0,0,0.08);
+  --shadow-card: 0 0 0 1px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.16);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-primary);
+  background: var(--off-white);
+  color: var(--gray-800);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+/* ================================================================
+   SCROLL ANIMATIONS
+   ================================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s var(--transition), transform 0.7s var(--transition);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.7s var(--transition), transform 0.7s var(--transition);
+}
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.7s var(--transition), transform 0.7s var(--transition);
+}
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.6s var(--transition), transform 0.6s var(--transition);
+}
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Stagger children */
+.stagger > *:nth-child(1) { transition-delay: 0.05s; }
+.stagger > *:nth-child(2) { transition-delay: 0.12s; }
+.stagger > *:nth-child(3) { transition-delay: 0.19s; }
+.stagger > *:nth-child(4) { transition-delay: 0.26s; }
+.stagger > *:nth-child(5) { transition-delay: 0.33s; }
+.stagger > *:nth-child(6) { transition-delay: 0.40s; }
+
+/* ================================================================
+   KEYFRAMES
+   ================================================================ */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(10,102,194,0.3); }
+  50% { box-shadow: 0 0 0 12px rgba(10,102,194,0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes connectLine {
+  0% { stroke-dashoffset: 200; }
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes networkPulse {
+  0% { r: 3; opacity: 0.8; }
+  50% { r: 6; opacity: 0.3; }
+  100% { r: 3; opacity: 0.8; }
+}
+
+/* ================================================================
+   BACK LINK
+   ================================================================ */
+.back-link {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-600);
+  transition: all var(--transition);
+  box-shadow: var(--shadow-card);
+}
+.back-link:hover {
+  color: var(--linkedin-blue);
+  border-color: var(--linkedin-blue);
+  box-shadow: var(--shadow-md);
+  transform: translateX(-2px);
+}
+.back-link svg {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--transition);
+}
+.back-link:hover svg { transform: translateX(-3px); }
+
+/* ================================================================
+   NAVIGATION
+   ================================================================ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  transition: box-shadow var(--transition);
+}
+.nav.scrolled { box-shadow: var(--shadow-md); }
+.nav-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.nav-logo-icon {
+  width: 34px;
+  height: 34px;
+  background: var(--linkedin-blue);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.5px;
+}
+.nav-logo-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--linkedin-blue);
+  letter-spacing: -0.5px;
+  margin-left: 1px;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 16px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gray-500);
+  border-bottom: 2px solid transparent;
+  transition: all var(--transition);
+  min-width: 64px;
+}
+.nav-link:hover {
+  color: var(--gray-800);
+}
+.nav-link.active {
+  color: var(--gray-800);
+  border-bottom-color: var(--gray-800);
+}
+.nav-link svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+.nav-cta {
+  padding: 6px 16px;
+  border: 1px solid var(--linkedin-blue);
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--linkedin-blue);
+  transition: all var(--transition);
+  margin-left: 8px;
+}
+.nav-cta:hover {
+  background: rgba(10,102,194,0.08);
+}
+
+/* ================================================================
+   HERO
+   ================================================================ */
+.hero {
+  padding: 120px 24px 80px;
+  background: linear-gradient(175deg, var(--white) 0%, var(--surface) 60%, var(--off-white) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(10,102,194,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.hero-content { position: relative; z-index: 2; }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--surface);
+  border: 1px solid rgba(10,102,194,0.15);
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--linkedin-blue);
+  margin-bottom: 24px;
+}
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--success);
+  border-radius: 50%;
+  animation: pulseGlow 2s infinite;
+}
+.hero-title {
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  color: var(--gray-800);
+  margin-bottom: 16px;
+}
+.hero-title span {
+  color: var(--linkedin-blue);
+}
+.hero-subtitle {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--gray-500);
+  margin-bottom: 32px;
+  max-width: 480px;
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: var(--linkedin-blue);
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  transition: all var(--transition);
+  box-shadow: 0 2px 8px rgba(10,102,194,0.3);
+}
+.btn-primary:hover {
+  background: var(--linkedin-dark);
+  box-shadow: 0 4px 16px rgba(10,102,194,0.4);
+  transform: translateY(-1px);
+}
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: transparent;
+  color: var(--linkedin-blue);
+  font-size: 16px;
+  font-weight: 600;
+  border: 2px solid var(--linkedin-blue);
+  border-radius: var(--radius-full);
+  transition: all var(--transition);
+}
+.btn-secondary:hover {
+  background: rgba(10,102,194,0.06);
+  border-color: var(--linkedin-dark);
+}
+.hero-trust {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.hero-avatars {
+  display: flex;
+}
+.hero-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--white);
+  margin-right: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+}
+.hero-avatar:nth-child(1) { background: var(--linkedin-blue); z-index: 5; }
+.hero-avatar:nth-child(2) { background: var(--linkedin-dark); z-index: 4; }
+.hero-avatar:nth-child(3) { background: var(--success); z-index: 3; }
+.hero-avatar:nth-child(4) { background: var(--linkedin-light); z-index: 2; }
+.hero-avatar:nth-child(5) { background: var(--gray-500); z-index: 1; }
+.hero-trust-text {
+  font-size: 13px;
+  color: var(--gray-500);
+  line-height: 1.4;
+}
+.hero-trust-text strong {
+  color: var(--gray-700);
+}
+
+/* Hero Visual — Network Graph */
+.hero-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 420px;
+}
+.network-graph {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+}
+.network-svg {
+  width: 100%;
+  height: auto;
+}
+.network-svg line {
+  stroke: var(--linkedin-blue);
+  stroke-width: 1.5;
+  opacity: 0.2;
+  stroke-dasharray: 200;
+  animation: connectLine 3s ease forwards;
+}
+.network-svg circle.node {
+  fill: var(--linkedin-blue);
+  animation: networkPulse 3s ease-in-out infinite;
+}
+.network-svg circle.node-ring {
+  fill: none;
+  stroke: var(--linkedin-blue);
+  stroke-width: 1;
+  opacity: 0.15;
+}
+
+/* Profile Card Floating */
+.profile-card {
+  position: absolute;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 16px;
+  animation: float 4s ease-in-out infinite;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.profile-card-1 {
+  top: 20px;
+  right: -10px;
+  width: 220px;
+  animation-delay: 0s;
+}
+.profile-card-2 {
+  bottom: 40px;
+  left: -10px;
+  width: 200px;
+  animation-delay: 1.5s;
+}
+.pc-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.pc-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+  flex-shrink: 0;
+}
+.pc-info h4 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gray-800);
+  line-height: 1.2;
+}
+.pc-info p {
+  font-size: 11px;
+  color: var(--gray-500);
+  line-height: 1.3;
+}
+.pc-endorsement {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: var(--linkedin-blue);
+  font-weight: 600;
+}
+.pc-endorsement svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--linkedin-blue);
+}
+.pc-connect-btn {
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  background: var(--linkedin-blue);
+  color: var(--white);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 10px;
+  transition: background var(--transition);
+}
+.pc-connect-btn:hover { background: var(--linkedin-dark); }
+
+/* ================================================================
+   STATS BAR
+   ================================================================ */
+.stats-bar {
+  background: var(--white);
+  border-top: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+  padding: 40px 24px;
+}
+.stats-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  text-align: center;
+}
+.stat-item { position: relative; }
+.stat-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -16px;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: var(--gray-200);
+}
+.stat-number {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--linkedin-blue);
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-suffix {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--linkedin-light);
+}
+.stat-label {
+  font-size: 14px;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+
+/* ================================================================
+   FEATURES — CONNECTION MOTIF
+   ================================================================ */
+.features {
+  padding: 96px 24px;
+  background: var(--off-white);
+}
+.features-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+.section-overline {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--linkedin-blue);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: 40px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--gray-800);
+  margin-bottom: 16px;
+  line-height: 1.15;
+}
+.section-desc {
+  font-size: 18px;
+  color: var(--gray-500);
+  max-width: 580px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.feature-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 32px 28px;
+  border: 1px solid var(--gray-200);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--linkedin-blue), var(--linkedin-light));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--transition);
+}
+.feature-card:hover::before {
+  transform: scaleX(1);
+}
+.feature-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: rgba(10,102,194,0.15);
+}
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  transition: background var(--transition);
+}
+.feature-card:hover .feature-icon {
+  background: rgba(10,102,194,0.1);
+}
+.feature-icon svg {
+  width: 24px;
+  height: 24px;
+  color: var(--linkedin-blue);
+}
+.feature-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin-bottom: 10px;
+}
+.feature-desc {
+  font-size: 14px;
+  color: var(--gray-500);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.feature-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--linkedin-blue);
+  transition: gap var(--transition);
+}
+.feature-link:hover { gap: 8px; }
+.feature-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ================================================================
+   PROFILE SHOWCASE (Networking motif)
+   ================================================================ */
+.showcase {
+  padding: 96px 24px;
+  background: var(--white);
+}
+.showcase-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.showcase-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  position: relative;
+}
+.showcase-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  transition: all var(--transition);
+  text-align: center;
+}
+.showcase-card:hover {
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(10,102,194,0.2);
+  transform: translateY(-2px);
+}
+.showcase-card:nth-child(2) { transform: translateY(20px); }
+.showcase-card:nth-child(2):hover { transform: translateY(16px); }
+.showcase-card:nth-child(3) { transform: translateY(-10px); }
+.showcase-card:nth-child(3):hover { transform: translateY(-14px); }
+.sc-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--white);
+}
+.sc-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin-bottom: 2px;
+}
+.sc-role {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-bottom: 12px;
+}
+.sc-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+.sc-skill {
+  padding: 3px 8px;
+  background: var(--surface);
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--linkedin-blue);
+}
+.sc-endorsement-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--success-light);
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--success);
+  margin-top: 10px;
+}
+.showcase-connection-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: var(--linkedin-blue);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 4px 20px rgba(10,102,194,0.3);
+}
+.showcase-connection-line svg {
+  width: 28px;
+  height: 28px;
+  color: var(--white);
+}
+.showcase-text h2 {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--gray-800);
+  margin-bottom: 16px;
+  line-height: 1.15;
+}
+.showcase-text p {
+  font-size: 16px;
+  color: var(--gray-500);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.showcase-features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.showcase-feat {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.showcase-feat-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.showcase-feat-icon svg {
+  width: 16px;
+  height: 16px;
+  color: var(--linkedin-blue);
+}
+.showcase-feat-text h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin-bottom: 2px;
+}
+.showcase-feat-text p {
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-bottom: 0;
+}
+
+/* ================================================================
+   ENDORSEMENTS SECTION
+   ================================================================ */
+.endorsements {
+  padding: 96px 24px;
+  background: linear-gradient(180deg, var(--off-white) 0%, var(--white) 100%);
+}
+.endorsements-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.endorsement-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.endorsement-card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  transition: all var(--transition);
+  position: relative;
+}
+.endorsement-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
+.endorsement-quote {
+  font-size: 15px;
+  color: var(--gray-600);
+  line-height: 1.7;
+  margin-bottom: 20px;
+  font-style: italic;
+  position: relative;
+  padding-left: 20px;
+}
+.endorsement-quote::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--linkedin-blue);
+  border-radius: 2px;
+}
+.endorsement-author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ea-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+}
+.ea-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-800);
+}
+.ea-title {
+  font-size: 12px;
+  color: var(--gray-500);
+}
+.endorsement-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 28px;
+  height: 28px;
+  background: var(--surface);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.endorsement-badge svg {
+  width: 14px;
+  height: 14px;
+  color: var(--linkedin-blue);
+}
+
+/* ================================================================
+   CTA SECTION
+   ================================================================ */
+.cta-section {
+  padding: 96px 24px;
+  background: var(--linkedin-deeper);
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(10,102,194,0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-section::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  left: -150px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(55,143,233,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+.cta-tagline {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--linkedin-light);
+  margin-bottom: 16px;
+}
+.cta-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.1;
+  letter-spacing: -1px;
+  margin-bottom: 20px;
+}
+.cta-title span {
+  background: linear-gradient(135deg, var(--linkedin-light), #70B5F9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.cta-desc {
+  font-size: 18px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+  margin-bottom: 36px;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cta-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.btn-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 36px;
+  background: var(--linkedin-blue);
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  transition: all var(--transition);
+  box-shadow: 0 4px 20px rgba(10,102,194,0.4);
+}
+.btn-cta-primary:hover {
+  background: var(--linkedin-light);
+  box-shadow: 0 6px 28px rgba(10,102,194,0.5);
+  transform: translateY(-2px);
+}
+.btn-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 36px;
+  background: transparent;
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: var(--radius-full);
+  transition: all var(--transition);
+}
+.btn-cta-secondary:hover {
+  border-color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.05);
+}
+
+/* ================================================================
+   FOOTER
+   ================================================================ */
+.footer {
+  background: var(--gray-800);
+  padding: 64px 24px 32px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.footer-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+.footer-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.footer-brand-icon {
+  width: 30px;
+  height: 30px;
+  background: var(--linkedin-blue);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-weight: 800;
+  font-size: 14px;
+}
+.footer-brand-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--white);
+}
+.footer-desc {
+  font-size: 13px;
+  color: var(--gray-400);
+  line-height: 1.6;
+  max-width: 280px;
+}
+.footer-col h4 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 16px;
+}
+.footer-col a {
+  display: block;
+  font-size: 13px;
+  color: var(--gray-400);
+  padding: 4px 0;
+  transition: color var(--transition);
+}
+.footer-col a:hover { color: var(--linkedin-light); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy {
+  font-size: 12px;
+  color: var(--gray-500);
+}
+.footer-socials {
+  display: flex;
+  gap: 16px;
+}
+.footer-social {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+}
+.footer-social:hover {
+  background: var(--linkedin-blue);
+}
+.footer-social svg {
+  width: 16px;
+  height: 16px;
+  color: var(--gray-400);
+}
+.footer-social:hover svg { color: var(--white); }
+
+/* ================================================================
+   RESPONSIVE — 768px
+   ================================================================ */
+@media (max-width: 768px) {
+  .back-link {
+    top: 12px;
+    left: 12px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  .nav-links { display: none; }
+  .nav-cta { display: none; }
+  .hero {
+    padding: 100px 20px 60px;
+  }
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .hero-title {
+    font-size: 36px;
+    letter-spacing: -0.5px;
+  }
+  .hero-subtitle { font-size: 16px; }
+  .hero-visual {
+    min-height: 300px;
+    order: -1;
+  }
+  .profile-card-1 {
+    right: 0;
+    width: 180px;
+  }
+  .profile-card-2 {
+    left: 0;
+    width: 170px;
+  }
+  .stats-inner {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .stat-item:not(:last-child)::after { display: none; }
+  .stat-number { font-size: 32px; }
+  .section-title { font-size: 28px; }
+  .section-desc { font-size: 16px; }
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .showcase-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .showcase-cards { order: -1; }
+  .endorsement-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .cta-title { font-size: 32px; }
+  .cta-desc { font-size: 16px; }
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .footer-top > div:first-child {
+    grid-column: 1 / -1;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<!-- BACK LINK -->
+<a href="/index.html" class="back-link">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+  All Concepts
+</a>
+
+<!-- NAVIGATION -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon">in</div>
+      <span class="nav-logo-text">KPT</span>
+    </a>
+    <div class="nav-links">
+      <a href="#features" class="nav-link active">
+        <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
+        Home
+      </a>
+      <a href="#showcase" class="nav-link">
+        <svg viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        Network
+      </a>
+      <a href="#endorsements" class="nav-link">
+        <svg viewBox="0 0 24 24"><path d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Careers
+      </a>
+      <a href="#stats" class="nav-link">
+        <svg viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        Messaging
+      </a>
+    </div>
+    <a href="#cta" class="nav-cta">Join Now</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge reveal">
+        <span class="hero-badge-dot"></span>
+        Professional Network
+      </div>
+      <h1 class="hero-title reveal">
+        Welcome to your<br><span>professional</span><br>community
+      </h1>
+      <p class="hero-subtitle reveal">
+        KPT connects professionals to opportunity. Build your network, grow your career, and find the tools you need to succeed.
+      </p>
+      <div class="hero-actions reveal">
+        <a href="#cta" class="btn-primary">
+          Get Started
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#features" class="btn-secondary">Explore Features</a>
+      </div>
+      <div class="hero-trust reveal">
+        <div class="hero-avatars">
+          <div class="hero-avatar">K</div>
+          <div class="hero-avatar">P</div>
+          <div class="hero-avatar">T</div>
+          <div class="hero-avatar">J</div>
+          <div class="hero-avatar">+</div>
+        </div>
+        <div class="hero-trust-text">
+          <strong>1B+ professionals</strong><br>on KPT worldwide
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <!-- Network Graph SVG -->
+      <div class="network-graph">
+        <svg class="network-svg" viewBox="0 0 400 380" fill="none">
+          <!-- Connection lines -->
+          <line x1="200" y1="100" x2="100" y2="200" />
+          <line x1="200" y1="100" x2="300" y2="180" />
+          <line x1="200" y1="100" x2="200" y2="240" />
+          <line x1="100" y1="200" x2="60" y2="300" />
+          <line x1="100" y1="200" x2="160" y2="300" />
+          <line x1="300" y1="180" x2="340" y2="280" />
+          <line x1="300" y1="180" x2="260" y2="300" />
+          <line x1="200" y1="240" x2="160" y2="300" />
+          <line x1="200" y1="240" x2="260" y2="300" />
+          <line x1="100" y1="200" x2="200" y2="240" />
+          <line x1="300" y1="180" x2="200" y2="240" />
+          <!-- Node rings (outer glow) -->
+          <circle class="node-ring" cx="200" cy="100" r="18" />
+          <circle class="node-ring" cx="100" cy="200" r="14" />
+          <circle class="node-ring" cx="300" cy="180" r="14" />
+          <circle class="node-ring" cx="200" cy="240" r="12" />
+          <circle class="node-ring" cx="60" cy="300" r="10" />
+          <circle class="node-ring" cx="160" cy="300" r="10" />
+          <circle class="node-ring" cx="260" cy="300" r="10" />
+          <circle class="node-ring" cx="340" cy="280" r="10" />
+          <!-- Nodes -->
+          <circle class="node" cx="200" cy="100" r="8" />
+          <circle class="node" cx="100" cy="200" r="6" style="animation-delay: 0.5s" />
+          <circle class="node" cx="300" cy="180" r="6" style="animation-delay: 1s" />
+          <circle class="node" cx="200" cy="240" r="5" style="animation-delay: 1.5s" />
+          <circle class="node" cx="60" cy="300" r="4" style="animation-delay: 2s" />
+          <circle class="node" cx="160" cy="300" r="4" style="animation-delay: 0.3s" />
+          <circle class="node" cx="260" cy="300" r="4" style="animation-delay: 0.8s" />
+          <circle class="node" cx="340" cy="280" r="4" style="animation-delay: 1.3s" />
+          <!-- Center KPT label -->
+          <text x="200" y="55" text-anchor="middle" fill="#0A66C2" font-family="Inter, sans-serif" font-weight="900" font-size="36" letter-spacing="4">KPT</text>
+        </svg>
+      </div>
+      <!-- Floating Profile Card 1 -->
+      <div class="profile-card profile-card-1">
+        <div class="pc-header">
+          <div class="pc-avatar" style="background: var(--linkedin-blue);">S</div>
+          <div class="pc-info">
+            <h4>Sarah Chen</h4>
+            <p>Product Lead at KPT</p>
+          </div>
+        </div>
+        <div class="pc-endorsement">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Top Strategy Voice
+        </div>
+        <button class="pc-connect-btn">+ Connect</button>
+      </div>
+      <!-- Floating Profile Card 2 -->
+      <div class="profile-card profile-card-2">
+        <div class="pc-header">
+          <div class="pc-avatar" style="background: var(--linkedin-dark);">M</div>
+          <div class="pc-info">
+            <h4>Marcus Rivera</h4>
+            <p>Engineering Director</p>
+          </div>
+        </div>
+        <div class="pc-endorsement">
+          <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+          500+ connections
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<section class="stats-bar" id="stats">
+  <div class="stats-inner stagger">
+    <div class="stat-item reveal">
+      <div class="stat-number">1<span class="stat-suffix">B+</span></div>
+      <div class="stat-label">Members Worldwide</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number">67<span class="stat-suffix">M</span></div>
+      <div class="stat-label">Companies Listed</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number">200<span class="stat-suffix">+</span></div>
+      <div class="stat-label">Countries & Territories</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number">15<span class="stat-suffix">B</span></div>
+      <div class="stat-label">Connections Made</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="section-header">
+      <div class="section-overline reveal">Why KPT</div>
+      <h2 class="section-title reveal">Grow your career.<br>Build real connections.</h2>
+      <p class="section-desc reveal">Everything you need to navigate your professional journey, all in one place.</p>
+    </div>
+    <div class="features-grid stagger">
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3 class="feature-title">Professional Network</h3>
+        <p class="feature-desc">Build meaningful connections with professionals across industries. Your next opportunity is one connection away.</p>
+        <a href="#" class="feature-link">
+          Grow your network
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        </div>
+        <h3 class="feature-title">Job Discovery</h3>
+        <p class="feature-desc">Find roles that match your skills and aspirations. Get recommended positions tailored to your experience.</p>
+        <a href="#" class="feature-link">
+          Find your next role
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h3 class="feature-title">Skill Endorsements</h3>
+        <p class="feature-desc">Showcase your expertise and get endorsed by colleagues. Let your skills speak through trusted validation.</p>
+        <a href="#" class="feature-link">
+          Build credibility
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <h3 class="feature-title">Learning & Growth</h3>
+        <p class="feature-desc">Access courses taught by industry experts. Develop new skills and earn certificates that employers value.</p>
+        <a href="#" class="feature-link">
+          Start learning
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3 class="feature-title">Industry Insights</h3>
+        <p class="feature-desc">Stay informed with curated content from thought leaders. Join conversations that shape your industry.</p>
+        <a href="#" class="feature-link">
+          Join the conversation
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="feature-title">Trusted Platform</h3>
+        <p class="feature-desc">Your data security and privacy are our priority. Enterprise-grade protection for your professional identity.</p>
+        <a href="#" class="feature-link">
+          Learn about trust
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILE SHOWCASE -->
+<section class="showcase" id="showcase">
+  <div class="showcase-inner">
+    <div class="showcase-cards reveal-left">
+      <div class="showcase-card">
+        <div class="sc-avatar" style="background: var(--linkedin-blue);">A</div>
+        <div class="sc-name">Alex Kim</div>
+        <div class="sc-role">Senior Designer</div>
+        <div class="sc-skills">
+          <span class="sc-skill">UX Design</span>
+          <span class="sc-skill">Figma</span>
+          <span class="sc-skill">Research</span>
+        </div>
+        <div class="sc-endorsement-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          42 endorsements
+        </div>
+      </div>
+      <div class="showcase-card">
+        <div class="sc-avatar" style="background: var(--linkedin-dark);">J</div>
+        <div class="sc-name">Jamie Okafor</div>
+        <div class="sc-role">Data Scientist</div>
+        <div class="sc-skills">
+          <span class="sc-skill">Python</span>
+          <span class="sc-skill">ML</span>
+          <span class="sc-skill">SQL</span>
+        </div>
+        <div class="sc-endorsement-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          67 endorsements
+        </div>
+      </div>
+      <div class="showcase-card">
+        <div class="sc-avatar" style="background: var(--success);">L</div>
+        <div class="sc-name">Lena Patel</div>
+        <div class="sc-role">VP of Marketing</div>
+        <div class="sc-skills">
+          <span class="sc-skill">Strategy</span>
+          <span class="sc-skill">Growth</span>
+          <span class="sc-skill">Brand</span>
+        </div>
+        <div class="sc-endorsement-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          99+ endorsements
+        </div>
+      </div>
+      <div class="showcase-card">
+        <div class="sc-avatar" style="background: var(--linkedin-light);">T</div>
+        <div class="sc-name">Tom Nguyen</div>
+        <div class="sc-role">Software Engineer</div>
+        <div class="sc-skills">
+          <span class="sc-skill">React</span>
+          <span class="sc-skill">Node.js</span>
+          <span class="sc-skill">AWS</span>
+        </div>
+        <div class="sc-endorsement-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          53 endorsements
+        </div>
+      </div>
+      <!-- Connection Hub -->
+      <div class="showcase-connection-line">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+      </div>
+    </div>
+    <div class="showcase-text reveal-right">
+      <h2>Your network is<br>your net worth</h2>
+      <p>Every connection opens doors. KPT helps you build genuine professional relationships that drive career growth, collaboration, and shared success.</p>
+      <div class="showcase-features">
+        <div class="showcase-feat">
+          <div class="showcase-feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="showcase-feat-text">
+            <h4>Smart Recommendations</h4>
+            <p>AI-powered suggestions for people, jobs, and content aligned to your goals.</p>
+          </div>
+        </div>
+        <div class="showcase-feat">
+          <div class="showcase-feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div class="showcase-feat-text">
+            <h4>Global Reach</h4>
+            <p>Connect with professionals across 200+ countries and territories.</p>
+          </div>
+        </div>
+        <div class="showcase-feat">
+          <div class="showcase-feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="showcase-feat-text">
+            <h4>Verified Profiles</h4>
+            <p>Trust badges and endorsements ensure authentic professional identities.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENDORSEMENTS -->
+<section class="endorsements" id="endorsements">
+  <div class="endorsements-inner">
+    <div class="section-header">
+      <div class="section-overline reveal">Endorsements</div>
+      <h2 class="section-title reveal">Professionals trust KPT<br>to grow their careers</h2>
+      <p class="section-desc reveal">Real stories from professionals who found their next opportunity through KPT.</p>
+    </div>
+    <div class="endorsement-grid stagger">
+      <div class="endorsement-card reveal">
+        <div class="endorsement-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+        </div>
+        <p class="endorsement-quote">KPT transformed my job search. Within three weeks of optimizing my profile, I had interviews at three Fortune 500 companies. The networking tools are unmatched.</p>
+        <div class="endorsement-author">
+          <div class="ea-avatar" style="background: var(--linkedin-blue);">R</div>
+          <div>
+            <div class="ea-name">Rachel Torres</div>
+            <div class="ea-title">VP Engineering, Stripe</div>
+          </div>
+        </div>
+      </div>
+      <div class="endorsement-card reveal">
+        <div class="endorsement-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+        </div>
+        <p class="endorsement-quote">The skill endorsements gave me credibility I couldn't build elsewhere. Recruiters started reaching out to me instead of the other way around. Game changer.</p>
+        <div class="endorsement-author">
+          <div class="ea-avatar" style="background: var(--linkedin-dark);">D</div>
+          <div>
+            <div class="ea-name">David Okonkwo</div>
+            <div class="ea-title">Product Manager, Notion</div>
+          </div>
+        </div>
+      </div>
+      <div class="endorsement-card reveal">
+        <div class="endorsement-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+        </div>
+        <p class="endorsement-quote">We've hired our last twelve team members through KPT. The quality of candidates and the culture fit has been remarkable. It's our primary recruiting channel now.</p>
+        <div class="endorsement-author">
+          <div class="ea-avatar" style="background: var(--success);">M</div>
+          <div>
+            <div class="ea-name">Maya Johansson</div>
+            <div class="ea-title">Head of Talent, Figma</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-inner">
+    <div class="cta-tagline reveal">In It Together</div>
+    <h2 class="cta-title reveal">
+      Your career starts<br>with <span>one connection</span>
+    </h2>
+    <p class="cta-desc reveal">Join a billion professionals on KPT. Build your profile, grow your network, and unlock opportunities you never knew existed.</p>
+    <div class="cta-actions reveal">
+      <a href="#" class="btn-cta-primary">
+        Join KPT Free
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#features" class="btn-cta-secondary">Learn More</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-logo">
+          <div class="footer-brand-icon">in</div>
+          <span class="footer-brand-text">KPT</span>
+        </div>
+        <p class="footer-desc">KPT connects the world's professionals to make them more productive and successful. In it together.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <a href="#">Find Jobs</a>
+        <a href="#">Companies</a>
+        <a href="#">Salary Insights</a>
+        <a href="#">Learning</a>
+      </div>
+      <div class="footer-col">
+        <h4>Network</h4>
+        <a href="#">Connections</a>
+        <a href="#">Groups</a>
+        <a href="#">Events</a>
+        <a href="#">Newsletters</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="#">Help Center</a>
+        <a href="#">Blog</a>
+        <a href="#">Developers</a>
+        <a href="#">Careers</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About</a>
+        <a href="#">Press</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">KPT Corporation &copy; 2026. All rights reserved.</div>
+      <div class="footer-socials">
+        <a href="#" class="footer-social" aria-label="Twitter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+        </a>
+        <a href="#" class="footer-social" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        </a>
+        <a href="#" class="footer-social" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script>
+/* ================================================================
+   NAV SCROLL EFFECT
+   ================================================================ */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 10);
+});
+
+/* ================================================================
+   INTERSECTION OBSERVER — SCROLL ANIMATIONS
+   ================================================================ */
+const observerOptions = {
+  threshold: 0.12,
+  rootMargin: '0px 0px -40px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+  observer.observe(el);
+});
+
+/* ================================================================
+   SMOOTH SCROLL FOR NAV LINKS
+   ================================================================ */
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+/* ================================================================
+   ACTIVE NAV LINK ON SCROLL
+   ================================================================ */
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link');
+
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+sections.forEach(section => sectionObserver.observe(section));
+</script>
+</body>
+</html>

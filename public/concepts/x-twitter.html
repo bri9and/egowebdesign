@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — What is happening?!</title>
+<meta name="description" content="KPT powers AI voice agents and premium web experiences. Real-time. Always on. What is happening?!">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --x-black: #000000;
+    --x-white: #FFFFFF;
+    --x-blue: #1D9BF0;
+    --x-blue-hover: #1A8CD8;
+    --x-blue-dim: rgba(29, 155, 240, 0.12);
+    --x-blue-glow: rgba(29, 155, 240, 0.25);
+    --x-dark-gray: #16181C;
+    --x-gray: #71767B;
+    --x-light-gray: #2F3336;
+    --x-border: #2F3336;
+    --x-surface: #16181C;
+    --x-hover: rgba(255, 255, 255, 0.03);
+    --x-text: #E7E9EA;
+    --x-text-secondary: #71767B;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--x-black);
+    color: var(--x-text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+
+  /* ── Layout ───────────────────────────────────────────────── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .section {
+    padding: 100px 0;
+  }
+
+  /* ── Back Link ────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--x-gray);
+    letter-spacing: 0.2px;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--x-border);
+    transition: all 0.2s ease;
+  }
+  .back-link:hover {
+    color: var(--x-blue);
+    border-color: rgba(29, 155, 240, 0.3);
+    background: rgba(29, 155, 240, 0.08);
+  }
+
+  /* ── Nav ──────────────────────────────────────────────────── */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--x-border);
+  }
+
+  .nav-inner {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-x {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--x-white);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--x-gray);
+    padding: 8px 16px;
+    border-radius: 9999px;
+    transition: all 0.2s ease;
+  }
+  .nav-links a:hover {
+    color: var(--x-text);
+    background: var(--x-hover);
+  }
+
+  .nav-cta {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--x-white);
+    background: var(--x-blue);
+    padding: 8px 20px;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-block;
+  }
+  .nav-cta:hover {
+    background: var(--x-blue-hover);
+  }
+
+  .nav-mobile-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .nav-mobile-toggle span {
+    width: 20px;
+    height: 2px;
+    background: var(--x-text);
+    border-radius: 1px;
+    transition: all 0.2s ease;
+  }
+
+  /* ── Hero ─────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(29, 155, 240, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+  }
+
+  .hero-x-logo {
+    font-size: clamp(100px, 18vw, 180px);
+    font-weight: 900;
+    color: var(--x-white);
+    letter-spacing: -8px;
+    line-height: 1;
+    margin-bottom: 8px;
+    display: inline-block;
+    animation: logoReveal 0.8s ease-out;
+  }
+
+  @keyframes logoReveal {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .hero-kpt {
+    font-size: clamp(16px, 2.5vw, 22px);
+    font-weight: 400;
+    color: var(--x-gray);
+    letter-spacing: 12px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    color: var(--x-text);
+  }
+  .hero h1 .blue { color: var(--x-blue); }
+
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 19px);
+    color: var(--x-gray);
+    max-width: 540px;
+    margin: 0 auto 48px;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--x-white);
+    background: var(--x-blue);
+    padding: 14px 32px;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-primary:hover {
+    background: var(--x-blue-hover);
+    transform: translateY(-1px);
+  }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--x-text);
+    background: transparent;
+    padding: 14px 32px;
+    border-radius: 9999px;
+    border: 1px solid var(--x-border);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-outline:hover {
+    border-color: var(--x-gray);
+    background: var(--x-hover);
+    transform: translateY(-1px);
+  }
+
+  /* ── Timeline / Feed Section ───────────────────────────────── */
+  .timeline-section {
+    padding: 80px 0 100px;
+    border-top: 1px solid var(--x-border);
+  }
+
+  .section-label {
+    font-size: 13px;
+    color: var(--x-blue);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .section-title {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+    color: var(--x-text);
+  }
+
+  .section-subtitle {
+    font-size: 16px;
+    color: var(--x-gray);
+    text-align: center;
+    max-width: 520px;
+    margin: 0 auto 56px;
+    line-height: 1.6;
+  }
+
+  .feed {
+    max-width: 620px;
+    margin: 0 auto;
+    border: 1px solid var(--x-border);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--x-black);
+  }
+
+  .feed-header {
+    display: flex;
+    border-bottom: 1px solid var(--x-border);
+  }
+
+  .feed-tab {
+    flex: 1;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--x-gray);
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s ease;
+  }
+  .feed-tab:hover { background: var(--x-hover); }
+  .feed-tab.active {
+    color: var(--x-text);
+    font-weight: 700;
+  }
+  .feed-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 56px;
+    height: 4px;
+    background: var(--x-blue);
+    border-radius: 2px;
+  }
+
+  /* ── Compose Box ───────────────────────────────────────────── */
+  .compose {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid var(--x-border);
+  }
+
+  .compose-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--x-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--x-white);
+    flex-shrink: 0;
+  }
+
+  .compose-body {
+    flex: 1;
+  }
+
+  .compose-input {
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--x-gray);
+    padding: 8px 0 16px;
+    line-height: 1.4;
+  }
+
+  .compose-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--x-border);
+    padding-top: 12px;
+  }
+
+  .compose-icons {
+    display: flex;
+    gap: 4px;
+  }
+
+  .compose-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--x-blue);
+    transition: background 0.2s ease;
+    cursor: pointer;
+  }
+  .compose-icon:hover { background: var(--x-blue-dim); }
+
+  .compose-post-btn {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--x-white);
+    background: var(--x-blue);
+    padding: 8px 20px;
+    border-radius: 9999px;
+    border: none;
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  /* ── Post / Tweet Cards ────────────────────────────────────── */
+  .post {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    border-bottom: 1px solid var(--x-border);
+    transition: background 0.15s ease;
+    cursor: pointer;
+  }
+  .post:hover { background: var(--x-hover); }
+  .post:last-child { border-bottom: none; }
+
+  .post-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--x-white);
+  }
+
+  .post-body { flex: 1; min-width: 0; }
+
+  .post-header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 2px;
+    flex-wrap: wrap;
+  }
+
+  .post-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--x-text);
+  }
+
+  .post-verified {
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .post-handle, .post-time {
+    font-size: 15px;
+    color: var(--x-gray);
+    font-weight: 400;
+  }
+
+  .post-dot {
+    font-size: 15px;
+    color: var(--x-gray);
+    padding: 0 2px;
+  }
+
+  .post-text {
+    font-size: 15px;
+    color: var(--x-text);
+    line-height: 1.5;
+    margin-bottom: 12px;
+    word-wrap: break-word;
+  }
+  .post-text .hashtag { color: var(--x-blue); }
+  .post-text .mention { color: var(--x-blue); }
+
+  .post-metrics {
+    display: flex;
+    gap: 0;
+    justify-content: space-between;
+    max-width: 400px;
+  }
+
+  .post-metric {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--x-gray);
+    font-size: 13px;
+    padding: 4px 8px;
+    border-radius: 9999px;
+    transition: all 0.15s ease;
+    cursor: pointer;
+  }
+  .post-metric:hover { color: var(--x-blue); background: var(--x-blue-dim); }
+  .post-metric.like:hover { color: #F91880; background: rgba(249, 24, 128, 0.1); }
+  .post-metric.repost:hover { color: #00BA7C; background: rgba(0, 186, 124, 0.1); }
+  .post-metric.views:hover { color: var(--x-blue); background: var(--x-blue-dim); }
+
+  .post-metric svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* ── Features Grid ─────────────────────────────────────────── */
+  .features-section {
+    padding: 100px 0;
+    border-top: 1px solid var(--x-border);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--x-border);
+    border: 1px solid var(--x-border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .feature-card {
+    background: var(--x-black);
+    padding: 40px 32px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  .feature-card:hover {
+    background: var(--x-surface);
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--x-blue-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: var(--x-blue);
+  }
+
+  .feature-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--x-text);
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
+  }
+
+  .feature-card p {
+    font-size: 14px;
+    color: var(--x-gray);
+    line-height: 1.6;
+  }
+
+  /* ── Stats ────────────────────────────────────────────────── */
+  .stats {
+    padding: 80px 0;
+    border-top: 1px solid var(--x-border);
+    border-bottom: 1px solid var(--x-border);
+    background: var(--x-surface);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+  }
+
+  .stat-item { padding: 20px; }
+
+  .stat-number {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 900;
+    color: var(--x-text);
+    letter-spacing: -2px;
+    margin-bottom: 4px;
+    line-height: 1.1;
+  }
+  .stat-number .blue { color: var(--x-blue); }
+
+  .stat-label {
+    font-size: 14px;
+    color: var(--x-gray);
+    font-weight: 400;
+  }
+
+  /* ── Trending Section ──────────────────────────────────────── */
+  .trending-section {
+    padding: 100px 0;
+    border-bottom: 1px solid var(--x-border);
+  }
+
+  .trending-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .trending-card {
+    border: 1px solid var(--x-border);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    background: var(--x-black);
+  }
+  .trending-card:hover {
+    background: var(--x-surface);
+    border-color: var(--x-gray);
+  }
+
+  .trending-meta {
+    font-size: 13px;
+    color: var(--x-gray);
+    margin-bottom: 6px;
+    font-weight: 400;
+  }
+
+  .trending-topic {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--x-text);
+    margin-bottom: 6px;
+  }
+
+  .trending-posts {
+    font-size: 13px;
+    color: var(--x-gray);
+    font-weight: 400;
+  }
+
+  /* ── CTA Section ───────────────────────────────────────────── */
+  .cta-section {
+    padding: 120px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(29, 155, 240, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta-x {
+    font-size: 72px;
+    font-weight: 900;
+    color: var(--x-white);
+    margin-bottom: 24px;
+    letter-spacing: -4px;
+    line-height: 1;
+  }
+
+  .cta-section h2 {
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 800;
+    color: var(--x-text);
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .cta-section p {
+    font-size: 17px;
+    color: var(--x-gray);
+    max-width: 480px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+
+  /* ── Footer ──────────────────────────────────────────────── */
+  .footer {
+    padding: 48px 0;
+    border-top: 1px solid var(--x-border);
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-x {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--x-text);
+  }
+
+  .footer-copy {
+    font-size: 13px;
+    color: var(--x-gray);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    color: var(--x-gray);
+    transition: color 0.2s ease;
+  }
+  .footer-links a:hover { color: var(--x-text); }
+
+  /* ── Animations ──────────────────────────────────────────── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .fade-in-delay-1 { transition-delay: 0.1s; }
+  .fade-in-delay-2 { transition-delay: 0.2s; }
+  .fade-in-delay-3 { transition-delay: 0.3s; }
+  .fade-in-delay-4 { transition-delay: 0.4s; }
+  .fade-in-delay-5 { transition-delay: 0.5s; }
+
+  .slide-in-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .slide-in-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* ── Cursor blink for compose ──────────────────────────────── */
+  .cursor-blink::after {
+    content: '|';
+    animation: cursorBlink 1s step-end infinite;
+    color: var(--x-blue);
+    font-weight: 300;
+  }
+  @keyframes cursorBlink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* ── Responsive ──────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+    .trending-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-mobile-toggle { display: flex; }
+    .nav-cta { display: none; }
+
+    .nav.mobile-open .nav-links {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 56px;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 16px 24px;
+      gap: 4px;
+      border-bottom: 1px solid var(--x-border);
+    }
+
+    .nav.mobile-open .nav-links a {
+      display: block;
+      padding: 12px 16px;
+    }
+
+    .back-link {
+      position: relative;
+      top: auto;
+      left: auto;
+      display: inline-block;
+      margin: 72px 24px 0;
+    }
+
+    .hero { min-height: auto; padding: 40px 24px 80px; }
+    .hero-x-logo { letter-spacing: -4px; }
+    .section { padding: 64px 0; }
+
+    .features-grid { grid-template-columns: 1fr; }
+    .feature-card { padding: 28px 24px; }
+
+    .compose-input { font-size: 17px; }
+    .post-metrics { max-width: 100%; }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .hero-ctas { flex-direction: column; align-items: center; }
+    .btn-primary, .btn-outline { width: 100%; justify-content: center; }
+    .trending-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back to concepts -->
+<a href="index.html" class="back-link">&larr; Back to concepts</a>
+
+<!-- ── Nav ─────────────────────────────────────────────────── -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" aria-label="KPT Home">
+      <span class="nav-x">&#120143;</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#feed">Feed</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#trending">Trending</a></li>
+      <li><a href="#stats">Stats</a></li>
+    </ul>
+
+    <a href="#cta" class="nav-cta">Get Started</a>
+
+    <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── Hero ────────────────────────────────────────────────── -->
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <div class="hero-x-logo fade-in">&#120143;</div>
+    <div class="hero-kpt fade-in fade-in-delay-1">K P T</div>
+    <h1 class="fade-in fade-in-delay-2">What is <span class="blue">happening</span>?!</h1>
+    <p class="hero-sub fade-in fade-in-delay-3">Real-time AI voice agents and premium web experiences. Always on. Always listening. Your business, amplified.</p>
+    <div class="hero-ctas fade-in fade-in-delay-4">
+      <a href="#feed" class="btn-primary">See the Feed</a>
+      <a href="#features" class="btn-outline">Explore Features</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Timeline / Feed ────────────────────────────────────── -->
+<section class="timeline-section" id="feed">
+  <div class="container">
+    <p class="section-label fade-in">Live Feed</p>
+    <h2 class="section-title fade-in fade-in-delay-1">Your timeline, reimagined.</h2>
+    <p class="section-subtitle fade-in fade-in-delay-2">Every interaction, every conversion, every insight &mdash; streamed in real time.</p>
+
+    <div class="feed fade-in fade-in-delay-3">
+      <!-- Feed tabs -->
+      <div class="feed-header">
+        <div class="feed-tab active">For you</div>
+        <div class="feed-tab">Following</div>
+        <div class="feed-tab">Agents</div>
+      </div>
+
+      <!-- Compose box -->
+      <div class="compose">
+        <div class="compose-avatar">K</div>
+        <div class="compose-body">
+          <div class="compose-input cursor-blink">What is happening?!</div>
+          <div class="compose-actions">
+            <div class="compose-icons">
+              <div class="compose-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M3 5.5C3 4.119 4.119 3 5.5 3h13C19.881 3 21 4.119 21 5.5v13c0 1.381-1.119 2.5-2.5 2.5h-13C4.119 21 3 19.881 3 18.5v-13zM5.5 5c-.276 0-.5.224-.5.5v9.086l3.293-3.293c.39-.39 1.024-.39 1.414 0L13 14.586l3.293-3.293c.39-.39 1.024-.39 1.414 0L20 13.586V5.5c0-.276-.224-.5-.5-.5h-13z"/></svg>
+              </div>
+              <div class="compose-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M8 9.5C8 8.119 8.672 7 9.5 7S11 8.119 11 9.5 10.328 12 9.5 12 8 10.881 8 9.5zm6.5 2.5c.828 0 1.5-1.119 1.5-2.5S15.328 7 14.5 7 13 8.119 13 9.5s.672 2.5 1.5 2.5zM12 16c-2.224 0-3.021-2.227-3.051-2.316l-1.897.633C7.088 14.44 8.224 18 12 18c3.776 0 4.912-3.56 4.948-3.683l-1.897-.633C15.021 13.773 14.224 16 12 16zM12 3c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9zm0 16c-3.859 0-7-3.141-7-7s3.141-7 7-7 7 3.141 7 7-3.141 7-7 7z"/></svg>
+              </div>
+              <div class="compose-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M6 5c-1.1 0-2 .895-2 2s.9 2 2 2 2-.895 2-2-.9-2-2-2zM2 7c0-2.209 1.79-4 4-4s4 1.791 4 4-1.79 4-4 4-4-1.791-4-4zm20 1H12V6h10v2zM6 15c-1.1 0-2 .895-2 2s.9 2 2 2 2-.895 2-2-.9-2-2-2zm-4 2c0-2.209 1.79-4 4-4s4 1.791 4 4-1.79 4-4 4-4-1.791-4-4zm20 1H12v-2h10v2z"/></svg>
+              </div>
+            </div>
+            <button class="compose-post-btn">Post</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Posts -->
+      <div class="post slide-in-left">
+        <div class="post-avatar" style="background: var(--x-blue);">K</div>
+        <div class="post-body">
+          <div class="post-header">
+            <span class="post-name">KPT Agents</span>
+            <span class="post-verified">
+              <svg viewBox="0 0 22 22" width="18" height="18"><path fill="#1D9BF0" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.855-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.69-.13.635-.08 1.293.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.604-.274 1.26-.144 1.896.13.636.433 1.221.878 1.69.47.446 1.055.752 1.69.883.635.13 1.294.083 1.902-.143.271.586.702 1.084 1.24 1.438.54.354 1.167.551 1.813.568.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.225 1.261.273 1.894.143.636-.13 1.22-.434 1.69-.88.445-.47.75-1.055.88-1.69.131-.634.084-1.292-.139-1.896.587-.273 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg>
+            </span>
+            <span class="post-handle">@kptagents</span>
+            <span class="post-dot">&middot;</span>
+            <span class="post-time">2m</span>
+          </div>
+          <div class="post-text">Just deployed a new voice agent for <span class="mention">@PittsburghNorthGC</span>. 47 calls handled in the first hour. Zero dropped. <span class="hashtag">#AlwaysOn</span> <span class="hashtag">#KPT</span></div>
+          <div class="post-metrics">
+            <div class="post-metric">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.751 10c.118-.405.306-.787.553-1.126L11.002 1l8.697 7.874c.248.34.436.721.554 1.126H1.751zM13 11v10H11V11h2zm3 0v6h-2v-6h2zm-6 0v8H8v-8h2zm-4 0v4H4v-4h2zm12 0v8h-2v-8h2z"/></svg>
+              <span>2.4K</span>
+            </div>
+            <div class="post-metric repost">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 3.88l4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.791-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.791 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z"/></svg>
+              <span>891</span>
+            </div>
+            <div class="post-metric like">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.807 1.1-.807-1.1c-1.211-1.65-2.668-2.22-3.89-2.16C5.78 5.57 4.5 6.93 4.5 8.757c0 1.34.578 2.523 1.45 3.692.872 1.17 2.056 2.353 3.375 3.556 1.02.93 2.14 1.89 3.175 2.903 1.034-1.013 2.154-1.973 3.175-2.903 1.319-1.203 2.503-2.387 3.375-3.556.872-1.17 1.45-2.352 1.45-3.692 0-1.827-1.28-3.187-2.803-3.257z"/></svg>
+              <span>12.8K</span>
+            </div>
+            <div class="post-metric views">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8.75 21V3h2v18h-2zM18.75 21V8.5h2V21h-2zM13.75 21v-9h2v9h-2zM3.75 21v-4h2v4h-2z"/></svg>
+              <span>284K</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="post slide-in-left fade-in-delay-1">
+        <div class="post-avatar" style="background: #333;">D</div>
+        <div class="post-body">
+          <div class="post-header">
+            <span class="post-name">KPT Designs</span>
+            <span class="post-verified">
+              <svg viewBox="0 0 22 22" width="18" height="18"><path fill="#1D9BF0" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.855-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.69-.13.635-.08 1.293.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.604-.274 1.26-.144 1.896.13.636.433 1.221.878 1.69.47.446 1.055.752 1.69.883.635.13 1.294.083 1.902-.143.271.586.702 1.084 1.24 1.438.54.354 1.167.551 1.813.568.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.225 1.261.273 1.894.143.636-.13 1.22-.434 1.69-.88.445-.47.75-1.055.88-1.69.131-.634.084-1.292-.139-1.896.587-.273 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg>
+            </span>
+            <span class="post-handle">@kptdesigns</span>
+            <span class="post-dot">&middot;</span>
+            <span class="post-time">18m</span>
+          </div>
+          <div class="post-text">Shipped a Next.js 15 site for a local restaurant. 98 Lighthouse score. 3.2s faster load time than their old WordPress. Conversions up 40% in week one. <span class="hashtag">#WebDesign</span> <span class="hashtag">#Performance</span></div>
+          <div class="post-metrics">
+            <div class="post-metric">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.751 10c.118-.405.306-.787.553-1.126L11.002 1l8.697 7.874c.248.34.436.721.554 1.126H1.751zM13 11v10H11V11h2zm3 0v6h-2v-6h2zm-6 0v8H8v-8h2zm-4 0v4H4v-4h2zm12 0v8h-2v-8h2z"/></svg>
+              <span>1.1K</span>
+            </div>
+            <div class="post-metric repost">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 3.88l4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.791-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.791 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z"/></svg>
+              <span>324</span>
+            </div>
+            <div class="post-metric like">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.807 1.1-.807-1.1c-1.211-1.65-2.668-2.22-3.89-2.16C5.78 5.57 4.5 6.93 4.5 8.757c0 1.34.578 2.523 1.45 3.692.872 1.17 2.056 2.353 3.375 3.556 1.02.93 2.14 1.89 3.175 2.903 1.034-1.013 2.154-1.973 3.175-2.903 1.319-1.203 2.503-2.387 3.375-3.556.872-1.17 1.45-2.352 1.45-3.692 0-1.827-1.28-3.187-2.803-3.257z"/></svg>
+              <span>5.6K</span>
+            </div>
+            <div class="post-metric views">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8.75 21V3h2v18h-2zM18.75 21V8.5h2V21h-2zM13.75 21v-9h2v9h-2zM3.75 21v-4h2v4h-2z"/></svg>
+              <span>156K</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="post slide-in-left fade-in-delay-2">
+        <div class="post-avatar" style="background: var(--x-blue);">K</div>
+        <div class="post-body">
+          <div class="post-header">
+            <span class="post-name">KPT</span>
+            <span class="post-verified">
+              <svg viewBox="0 0 22 22" width="18" height="18"><path fill="#E7B811" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.855-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.69-.13.635-.08 1.293.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.604-.274 1.26-.144 1.896.13.636.433 1.221.878 1.69.47.446 1.055.752 1.69.883.635.13 1.294.083 1.902-.143.271.586.702 1.084 1.24 1.438.54.354 1.167.551 1.813.568.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.225 1.261.273 1.894.143.636-.13 1.22-.434 1.69-.88.445-.47.75-1.055.88-1.69.131-.634.084-1.292-.139-1.896.587-.273 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg>
+            </span>
+            <span class="post-handle">@kpt</span>
+            <span class="post-dot">&middot;</span>
+            <span class="post-time">1h</span>
+          </div>
+          <div class="post-text">Two products. One platform. Everything your business needs to dominate digital. Voice agents that never sleep. Websites that convert on contact. This is <span class="hashtag">#KPT</span>.</div>
+          <div class="post-metrics">
+            <div class="post-metric">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.751 10c.118-.405.306-.787.553-1.126L11.002 1l8.697 7.874c.248.34.436.721.554 1.126H1.751zM13 11v10H11V11h2zm3 0v6h-2v-6h2zm-6 0v8H8v-8h2zm-4 0v4H4v-4h2zm12 0v8h-2v-8h2z"/></svg>
+              <span>8.7K</span>
+            </div>
+            <div class="post-metric repost">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4.5 3.88l4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.791-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.791 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z"/></svg>
+              <span>3.2K</span>
+            </div>
+            <div class="post-metric like">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.807 1.1-.807-1.1c-1.211-1.65-2.668-2.22-3.89-2.16C5.78 5.57 4.5 6.93 4.5 8.757c0 1.34.578 2.523 1.45 3.692.872 1.17 2.056 2.353 3.375 3.556 1.02.93 2.14 1.89 3.175 2.903 1.034-1.013 2.154-1.973 3.175-2.903 1.319-1.203 2.503-2.387 3.375-3.556.872-1.17 1.45-2.352 1.45-3.692 0-1.827-1.28-3.187-2.803-3.257z"/></svg>
+              <span>42.1K</span>
+            </div>
+            <div class="post-metric views">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8.75 21V3h2v18h-2zM18.75 21V8.5h2V21h-2zM13.75 21v-9h2v9h-2zM3.75 21v-4h2v4h-2z"/></svg>
+              <span>1.2M</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Features ───────────────────────────────────────────── -->
+<section class="features-section" id="features">
+  <div class="container">
+    <p class="section-label fade-in">Features</p>
+    <h2 class="section-title fade-in fade-in-delay-1">Built for real-time.</h2>
+    <p class="section-subtitle fade-in fade-in-delay-2">Everything streams. Nothing waits.</p>
+
+    <div class="features-grid">
+      <div class="feature-card fade-in">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2.546 20.2A1.884 1.884 0 003.8 21.454l3.032-.892A9.96 9.96 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 2c4.418 0 8 3.582 8 8s-3.582 8-8 8a7.96 7.96 0 01-4.15-1.16l-.34-.207-2.8.823.823-2.8-.207-.34A7.96 7.96 0 014 12c0-4.418 3.582-8 8-8z"/></svg>
+        </div>
+        <h3>Voice Agents</h3>
+        <p>AI-powered call handling that sounds human. Books appointments and closes deals 24/7.</p>
+      </div>
+
+      <div class="feature-card fade-in fade-in-delay-1">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M13.18 4l.24 1.2.16.8H19v7h-5.18l-.24-1.2-.16-.8H6V4h7.18M14 2H4v20h2v-8h4.6l.4 2h7V4h-5.6L14 2z"/></svg>
+        </div>
+        <h3>Real-Time Analytics</h3>
+        <p>Live dashboards streaming every call, click, and conversion as it happens.</p>
+      </div>
+
+      <div class="feature-card fade-in fade-in-delay-2">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Premium Web</h3>
+        <p>Handcrafted Next.js sites. 98+ Lighthouse scores. Conversion-optimized from pixel one.</p>
+      </div>
+
+      <div class="feature-card fade-in fade-in-delay-3">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+        </div>
+        <h3>Enterprise Security</h3>
+        <p>End-to-end encryption. SOC 2 ready. Your data stays yours.</p>
+      </div>
+
+      <div class="feature-card fade-in fade-in-delay-4">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M3.34 17a10.018 10.018 0 01-.978-2.326 3.006 3.006 0 000-5.348A10.018 10.018 0 013.34 7 10.024 10.024 0 005 5a10.024 10.024 0 002.326.978 3.006 3.006 0 005.348 0A10.024 10.024 0 0015 5a10.018 10.018 0 001.66 2 10.018 10.018 0 01.978 2.326 3.006 3.006 0 000 5.348A10.024 10.024 0 0016.66 17 10.024 10.024 0 0015 19a10.024 10.024 0 00-2.326-.978 3.006 3.006 0 00-5.348 0A10.024 10.024 0 005 19a10.024 10.024 0 00-1.66-2zM12 15a3 3 0 110-6 3 3 0 010 6z"/></svg>
+        </div>
+        <h3>Custom Integration</h3>
+        <p>CRM, calendar, payment systems. Plugs into your existing stack seamlessly.</p>
+      </div>
+
+      <div class="feature-card fade-in fade-in-delay-5">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M11.96 1.5c1.795 0 3.46.502 4.886 1.372l-.852 1.678A8.39 8.39 0 0011.96 3.5C7.287 3.5 3.5 7.287 3.5 11.96c0 4.672 3.787 8.46 8.46 8.46 4.672 0 8.46-3.788 8.46-8.46 0-1.512-.398-2.93-1.093-4.155l1.665-.876A10.43 10.43 0 0122.42 11.96c0 5.777-4.683 10.46-10.46 10.46S1.5 17.737 1.5 11.96 6.183 1.5 11.96 1.5z"/><path d="M19.167 3.833l1 1L12.5 12.5l-2-2 7.667-6.667z"/></svg>
+        </div>
+        <h3>99.9% Uptime</h3>
+        <p>Always on. Your voice agents never take a break and your site never goes down.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats ───────────────────────────────────────────────── -->
+<section class="stats" id="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item fade-in">
+        <div class="stat-number"><span class="blue">50K</span>+</div>
+        <div class="stat-label">Calls Handled</div>
+      </div>
+      <div class="stat-item fade-in fade-in-delay-1">
+        <div class="stat-number"><span class="blue">200</span>+</div>
+        <div class="stat-label">Sites Launched</div>
+      </div>
+      <div class="stat-item fade-in fade-in-delay-2">
+        <div class="stat-number"><span class="blue">99.9</span>%</div>
+        <div class="stat-label">Uptime</div>
+      </div>
+      <div class="stat-item fade-in fade-in-delay-3">
+        <div class="stat-number"><span class="blue">24/7</span></div>
+        <div class="stat-label">AI Coverage</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Trending ───────────────────────────────────────────── -->
+<section class="trending-section" id="trending">
+  <div class="container">
+    <p class="section-label fade-in">Trending</p>
+    <h2 class="section-title fade-in fade-in-delay-1">What people are saying.</h2>
+    <p class="section-subtitle fade-in fade-in-delay-2">The conversation around KPT is growing.</p>
+
+    <div class="trending-grid">
+      <div class="trending-card fade-in">
+        <div class="trending-meta">Trending in Technology</div>
+        <div class="trending-topic">#AIVoiceAgents</div>
+        <div class="trending-posts">24.8K posts</div>
+      </div>
+      <div class="trending-card fade-in fade-in-delay-1">
+        <div class="trending-meta">Trending in Business</div>
+        <div class="trending-topic">#AlwaysOn</div>
+        <div class="trending-posts">18.3K posts</div>
+      </div>
+      <div class="trending-card fade-in fade-in-delay-2">
+        <div class="trending-meta">Trending in Design</div>
+        <div class="trending-topic">#NextJS15</div>
+        <div class="trending-posts">12.1K posts</div>
+      </div>
+      <div class="trending-card fade-in fade-in-delay-3">
+        <div class="trending-meta">Trending in KPT</div>
+        <div class="trending-topic">#KPTDesigns</div>
+        <div class="trending-posts">9.4K posts</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ─────────────────────────────────────────────────── -->
+<section class="cta-section section" id="cta">
+  <div class="container">
+    <div class="cta-content">
+      <div class="cta-x fade-in">&#120143;</div>
+      <h2 class="fade-in fade-in-delay-1">Join the conversation.</h2>
+      <p class="fade-in fade-in-delay-2">Your business deserves to be heard. Start with KPT today.</p>
+      <div class="hero-ctas fade-in fade-in-delay-3">
+        <a href="#" class="btn-primary">Get Started</a>
+        <a href="#" class="btn-outline">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────── -->
+<footer class="footer" id="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span class="footer-x">&#120143;</span>
+        <span class="footer-copy">&copy; 2026 KPT. All rights reserved.</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#">Agents</a></li>
+        <li><a href="#">Designs</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Privacy</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<!-- ── Scripts ─────────────────────────────────────────────── -->
+<script>
+  // Intersection Observer for scroll animations
+  (function() {
+    var els = document.querySelectorAll('.fade-in, .slide-in-left');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function(el) { el.classList.add('visible'); });
+      return;
+    }
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    els.forEach(function(el) { observer.observe(el); });
+  })();
+
+  // Mobile menu toggle
+  (function() {
+    var toggle = document.getElementById('mobileToggle');
+    var nav = document.getElementById('nav');
+    if (toggle && nav) {
+      toggle.addEventListener('click', function() {
+        nav.classList.toggle('mobile-open');
+      });
+    }
+  })();
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById('nav').classList.remove('mobile-open');
+      }
+    });
+  });
+
+  // Feed tab switching
+  document.querySelectorAll('.feed-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.feed-tab').forEach(function(t) { t.classList.remove('active'); });
+      this.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — Where Amazing Happens.</title>
+<meta name="description" content="KPT. AI voice agents and premium web design. Where Amazing Happens.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & Base ─────────────────────────────────────────── */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --nba-red: #C8102E;
+    --nba-blue: #1D428A;
+    --nba-white: #FFFFFF;
+    --nba-red-dark: #9B0C23;
+    --nba-blue-dark: #142E63;
+    --nba-blue-deeper: #0F2050;
+    --court-wood: #C8985A;
+    --court-wood-dark: #A37A42;
+    --court-line: rgba(255, 255, 255, 0.15);
+    --gray-100: #F0F2F5;
+    --gray-300: #B0B8C4;
+    --gray-500: #6B7280;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --scoreboard-bg: #0A0E1A;
+    --scoreboard-glow: rgba(200, 16, 46, 0.4);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--gray-900);
+    color: var(--nba-white);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  .font-display { font-family: 'Barlow Condensed', 'Oswald', 'Impact', sans-serif; }
+
+  /* ── Back Link ─────────────────────────────────────────────── */
+  .back-link {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    z-index: 1000;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .back-link:hover { color: var(--nba-red); }
+  .back-link svg { width: 14px; height: 14px; }
+
+  /* ── Scroll Animations ───────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* ── Court Pattern Background ────────────────────────────── */
+  .court-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .court-bg::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: 500px;
+    border: 3px solid var(--court-line);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .court-bg::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 3px;
+    height: 100%;
+    background: var(--court-line);
+    transform: translateX(-50%);
+  }
+  .court-line-h {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--court-line);
+    transform: translateY(-50%);
+  }
+  .court-three-left,
+  .court-three-right {
+    position: absolute;
+    top: 50%;
+    width: 180px;
+    height: 360px;
+    border: 3px solid var(--court-line);
+    border-radius: 0 180px 180px 0;
+    transform: translateY(-50%);
+  }
+  .court-three-left { left: -3px; }
+  .court-three-right {
+    right: -3px;
+    border-radius: 180px 0 0 180px;
+  }
+
+  /* ── Navigation ──────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background: rgba(17, 24, 39, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 3px solid var(--nba-red);
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--nba-white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--nba-red); }
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-300);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--nba-white); }
+
+  /* ── Hero ─────────────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, var(--nba-blue-deeper) 0%, var(--gray-900) 50%, var(--nba-red-dark) 100%);
+    overflow: hidden;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+    z-index: 1;
+  }
+
+  /* Player Silhouettes */
+  .silhouette {
+    position: absolute;
+    z-index: 0;
+    opacity: 0.06;
+  }
+  .silhouette-left {
+    left: 5%;
+    bottom: 0;
+    width: 320px;
+    height: 520px;
+  }
+  .silhouette-right {
+    right: 5%;
+    bottom: 0;
+    width: 280px;
+    height: 480px;
+  }
+
+  /* Basketball SVG element */
+  .basketball-float {
+    position: absolute;
+    z-index: 0;
+    opacity: 0.08;
+    animation: floatBall 6s ease-in-out infinite;
+  }
+  .basketball-1 { top: 15%; right: 12%; width: 120px; animation-delay: 0s; }
+  .basketball-2 { bottom: 20%; left: 8%; width: 80px; animation-delay: -2s; }
+  .basketball-3 { top: 35%; left: 18%; width: 60px; animation-delay: -4s; }
+
+  @keyframes floatBall {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(15deg); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    padding: 0 24px;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(200, 16, 46, 0.15);
+    border: 1px solid rgba(200, 16, 46, 0.3);
+    border-radius: 40px;
+    padding: 8px 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--nba-red);
+    margin-bottom: 32px;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--nba-red);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(80px, 14vw, 180px);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    background: linear-gradient(180deg, var(--nba-white) 0%, rgba(255, 255, 255, 0.7) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-tagline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(24px, 4vw, 48px);
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--nba-red);
+    margin-bottom: 24px;
+    text-shadow: 0 0 40px var(--scoreboard-glow);
+  }
+  .hero-sub {
+    font-size: 18px;
+    color: var(--gray-300);
+    max-width: 560px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+  .hero-cta-group {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Buttons ─────────────────────────────────────────────── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 40px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--nba-red);
+    color: var(--nba-white);
+    box-shadow: 0 4px 20px rgba(200, 16, 46, 0.4);
+  }
+  .btn-primary:hover {
+    background: #E01535;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(200, 16, 46, 0.5);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--nba-white);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+  .btn-secondary:hover {
+    border-color: var(--nba-white);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+  }
+
+  /* ── Section Shared ──────────────────────────────────────── */
+  section { padding: 120px 24px; position: relative; }
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--nba-red);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before {
+    content: '';
+    width: 40px;
+    height: 2px;
+    background: var(--nba-red);
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: -1px;
+    margin-bottom: 24px;
+  }
+  .section-subtitle {
+    font-size: 18px;
+    color: var(--gray-300);
+    max-width: 600px;
+    line-height: 1.7;
+  }
+
+  /* ── Scoreboard Stats ────────────────────────────────────── */
+  .stats-section {
+    background: var(--scoreboard-bg);
+    border-top: 4px solid var(--nba-red);
+    border-bottom: 4px solid var(--nba-blue);
+    position: relative;
+    overflow: hidden;
+  }
+  .stats-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 255, 255, 0.02) 2px,
+        rgba(255, 255, 255, 0.02) 4px
+      );
+    pointer-events: none;
+  }
+  .stats-header {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+  .stats-header .section-label { justify-content: center; }
+  .stats-header .section-label::before { display: none; }
+  .scoreboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    max-width: 1000px;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(200, 16, 46, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  .scoreboard::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--nba-red), transparent);
+  }
+  .stat-cell {
+    padding: 48px 24px;
+    text-align: center;
+    position: relative;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .stat-cell:last-child { border-right: none; }
+  .stat-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(48px, 7vw, 80px);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--nba-white);
+    text-shadow: 0 0 30px var(--scoreboard-glow);
+    margin-bottom: 8px;
+  }
+  .stat-number .stat-suffix {
+    font-size: 0.5em;
+    color: var(--nba-red);
+  }
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+  .stat-dot {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 6px;
+    height: 6px;
+    background: var(--nba-red);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  .stat-cell:nth-child(2) .stat-dot { animation-delay: 0.5s; }
+  .stat-cell:nth-child(3) .stat-dot { animation-delay: 1s; }
+  .stat-cell:nth-child(4) .stat-dot { animation-delay: 1.5s; }
+
+  /* ── Features ────────────────────────────────────────────── */
+  .features-section {
+    background: var(--gray-900);
+    position: relative;
+    overflow: hidden;
+  }
+  .features-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    border: 2px solid rgba(29, 66, 138, 0.08);
+    border-radius: 50%;
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    max-width: 1200px;
+    margin: 64px auto 0;
+  }
+  .feature-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 8px;
+    padding: 40px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+  .feature-card:hover {
+    border-color: rgba(200, 16, 46, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--nba-red), var(--nba-blue));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .feature-card:hover::before { opacity: 1; }
+  .feature-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 64px;
+    font-weight: 900;
+    color: rgba(200, 16, 46, 0.1);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(200, 16, 46, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .feature-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke: var(--nba-red);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .feature-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    color: var(--nba-white);
+  }
+  .feature-desc {
+    font-size: 15px;
+    color: var(--gray-300);
+    line-height: 1.7;
+  }
+
+  /* ── Action Section ──────────────────────────────────────── */
+  .action-section {
+    position: relative;
+    overflow: hidden;
+  }
+  .action-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .action-visual {
+    position: relative;
+    height: 500px;
+    background: linear-gradient(135deg, var(--nba-blue-dark), var(--nba-blue-deeper));
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .action-visual::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 30% 70%, rgba(200, 16, 46, 0.2), transparent 60%),
+      radial-gradient(circle at 70% 30%, rgba(29, 66, 138, 0.3), transparent 60%);
+  }
+  .action-court-lines {
+    position: absolute;
+    inset: 0;
+  }
+  .action-court-lines::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .action-court-lines::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .action-big-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 200px;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.05);
+    position: relative;
+    z-index: 1;
+    line-height: 1;
+  }
+  .action-text .section-subtitle { margin-bottom: 32px; }
+  .action-list {
+    list-style: none;
+    margin-bottom: 40px;
+  }
+  .action-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 16px;
+    color: var(--gray-300);
+  }
+  .action-list li:last-child { border-bottom: none; }
+  .action-list .check {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    background: rgba(200, 16, 46, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .action-list .check svg {
+    width: 12px;
+    height: 12px;
+    stroke: var(--nba-red);
+    fill: none;
+    stroke-width: 3;
+  }
+
+  /* ── CTA Section ─────────────────────────────────────────── */
+  .cta-section {
+    background: linear-gradient(135deg, var(--nba-blue-dark) 0%, var(--nba-red-dark) 100%);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(200, 16, 46, 0.2), transparent 50%),
+      radial-gradient(circle at 80% 50%, rgba(29, 66, 138, 0.3), transparent 50%);
+  }
+  .cta-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .cta-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.95;
+    margin-bottom: 24px;
+    letter-spacing: -1px;
+  }
+  .cta-title .highlight { color: var(--nba-red); }
+  .cta-sub {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 40px;
+    line-height: 1.7;
+  }
+
+  /* ── Footer ──────────────────────────────────────────────── */
+  footer {
+    background: var(--scoreboard-bg);
+    border-top: 3px solid var(--nba-red);
+    padding: 64px 24px;
+  }
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .footer-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+  .footer-logo span { color: var(--nba-red); }
+  .footer-tagline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+  .footer-links {
+    display: flex;
+    gap: 32px;
+  }
+  .footer-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  .footer-links a:hover { color: var(--nba-red); }
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-copy {
+    font-size: 13px;
+    color: var(--gray-500);
+  }
+  .footer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 6px 12px;
+    border-radius: 4px;
+  }
+  .footer-badge .dot {
+    width: 6px;
+    height: 6px;
+    background: var(--nba-red);
+    border-radius: 50%;
+  }
+
+  /* ── Responsive ──────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    section { padding: 80px 20px; }
+
+    .hero { min-height: 90vh; }
+    .hero-sub { font-size: 16px; }
+    .hero-cta-group { flex-direction: column; align-items: center; }
+    .btn { width: 100%; max-width: 300px; justify-content: center; }
+
+    .silhouette-left,
+    .silhouette-right { display: none; }
+    .basketball-float { display: none; }
+
+    .scoreboard {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .stat-cell {
+      padding: 32px 16px;
+    }
+    .stat-cell:nth-child(2) { border-right: none; }
+    .stat-cell:nth-child(1),
+    .stat-cell:nth-child(2) { border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .feature-card { padding: 32px 24px; }
+
+    .action-inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .action-visual { height: 300px; }
+
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Back Link -->
+<a href="/index.html" class="back-link">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  All Concepts
+</a>
+
+<!-- Navigation -->
+<nav>
+  <a href="#" class="nav-logo">K<span>P</span>T</a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#stats">Stats</a>
+    <a href="#gameplan">Game Plan</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="court-bg">
+    <div class="court-line-h"></div>
+    <div class="court-three-left"></div>
+    <div class="court-three-right"></div>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <!-- Player Silhouettes -->
+  <svg class="silhouette silhouette-left" viewBox="0 0 320 520" fill="white">
+    <path d="M160 40c-22 0-40 18-40 40s18 40 40 40 40-18 40-40-18-40-40-40zm-60 140l-40 120 30 10 35-90 15 70-80 220 35 12 65-180 65 180 35-12-80-220 15-70 35 90 30-10-40-120c-10-30-35-50-60-50h-20c-25 0-50 20-60 50z"/>
+  </svg>
+  <svg class="silhouette silhouette-right" viewBox="0 0 280 480" fill="white">
+    <path d="M140 35c-20 0-36 16-36 36s16 36 36 36 36-16 36-36-16-36-36-36zm80 130l-30-20c-10-7-22-10-34-10h-32c-12 0-24 3-34 10l-30 20c-15 10-22 28-18 45l25 100 30-8-20-80 33 50v188h35V310l10-20 10 20v152h35V272l33-50-20 80 30 8 25-100c4-17-3-35-18-45z"/>
+  </svg>
+
+  <!-- Floating Basketballs -->
+  <svg class="basketball-float basketball-1" viewBox="0 0 100 100" fill="none" stroke="white" stroke-width="2">
+    <circle cx="50" cy="50" r="45"/>
+    <path d="M50 5v90M5 50h90"/>
+    <path d="M14 14c20 15 20 57 0 72"/>
+    <path d="M86 14c-20 15-20 57 0 72"/>
+  </svg>
+  <svg class="basketball-float basketball-2" viewBox="0 0 100 100" fill="none" stroke="white" stroke-width="2">
+    <circle cx="50" cy="50" r="45"/>
+    <path d="M50 5v90M5 50h90"/>
+    <path d="M14 14c20 15 20 57 0 72"/>
+    <path d="M86 14c-20 15-20 57 0 72"/>
+  </svg>
+  <svg class="basketball-float basketball-3" viewBox="0 0 100 100" fill="none" stroke="white" stroke-width="2">
+    <circle cx="50" cy="50" r="45"/>
+    <path d="M50 5v90M5 50h90"/>
+    <path d="M14 14c20 15 20 57 0 72"/>
+    <path d="M86 14c-20 15-20 57 0 72"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="reveal">
+      <div class="hero-badge">Game Time</div>
+    </div>
+    <h1 class="hero-title reveal reveal-delay-1">KPT</h1>
+    <p class="hero-tagline reveal reveal-delay-2">Where Amazing Happens.</p>
+    <p class="hero-sub reveal reveal-delay-3">Built for speed. Designed for impact. AI-powered agents and premium web design that deliver championship results.</p>
+    <div class="hero-cta-group reveal reveal-delay-4">
+      <a href="#contact" class="btn btn-primary">Get in the Game</a>
+      <a href="#features" class="btn btn-secondary">See the Playbook</a>
+    </div>
+  </div>
+</section>
+
+<!-- Scoreboard Stats -->
+<section class="stats-section" id="stats">
+  <div class="stats-header">
+    <div class="section-label reveal">Live Stats</div>
+    <h2 class="section-title reveal reveal-delay-1">The Scoreboard</h2>
+  </div>
+  <div class="scoreboard reveal reveal-delay-2">
+    <div class="stat-cell">
+      <div class="stat-dot"></div>
+      <div class="stat-number" data-target="99" data-suffix="%">0<span class="stat-suffix">%</span></div>
+      <div class="stat-label">Uptime</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-dot"></div>
+      <div class="stat-number" data-target="48" data-suffix="hr">0<span class="stat-suffix">hr</span></div>
+      <div class="stat-label">Avg Delivery</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-dot"></div>
+      <div class="stat-number" data-target="24" data-suffix="/7">0<span class="stat-suffix">/7</span></div>
+      <div class="stat-label">AI Agents</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-dot"></div>
+      <div class="stat-number" data-target="10" data-suffix="x">0<span class="stat-suffix">x</span></div>
+      <div class="stat-label">Faster</div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="features-section" id="features">
+  <div class="reveal">
+    <div class="section-label">Starting Lineup</div>
+    <h2 class="section-title">The Playbook</h2>
+    <p class="section-subtitle">Every championship team needs the right plays. Here are ours.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card reveal reveal-delay-1">
+      <div class="feature-number">01</div>
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <h3 class="feature-title">Fast Break AI</h3>
+      <p class="feature-desc">AI voice agents that move at game speed. Automated conversations, lead capture, and customer support that never calls a timeout.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <div class="feature-number">02</div>
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <h3 class="feature-title">All-Star Design</h3>
+      <p class="feature-desc">Premium web design that commands the court. Responsive, fast, and built to convert visitors into loyal fans.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-3">
+      <div class="feature-number">03</div>
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3 class="feature-title">Full Court Press</h3>
+      <p class="feature-desc">End-to-end security hardening. DDoS protection, encrypted data, and compliance that locks down the paint.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-1">
+      <div class="feature-number">04</div>
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <h3 class="feature-title">Shot Clock</h3>
+      <p class="feature-desc">48-hour delivery on most builds. We work on the clock because in this game, every second counts.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-2">
+      <div class="feature-number">05</div>
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <h3 class="feature-title">Team Play</h3>
+      <p class="feature-desc">Orchestrated AI agents working together like a championship roster. Planners, builders, reviewers — everyone knows their role.</p>
+    </div>
+    <div class="feature-card reveal reveal-delay-3">
+      <div class="feature-number">06</div>
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <h3 class="feature-title">Analytics</h3>
+      <p class="feature-desc">Real-time dashboards and performance tracking. Know your numbers like a coach knows the stat sheet.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Game Plan / Action -->
+<section class="action-section" id="gameplan">
+  <div class="action-inner">
+    <div class="action-visual reveal">
+      <div class="action-court-lines"></div>
+      <div class="action-big-number">MVP</div>
+    </div>
+    <div class="action-text">
+      <div class="reveal">
+        <div class="section-label">Game Plan</div>
+        <h2 class="section-title">Built to Win</h2>
+        <p class="section-subtitle">We don't play for participation trophies. Every project is built for the championship.</p>
+      </div>
+      <ul class="action-list reveal reveal-delay-1">
+        <li>
+          <span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          AI voice agents that handle calls, qualify leads, and book appointments
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Custom websites designed to convert — not just look pretty
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Full-stack deployment with SSL, CDN, and edge optimization
+        </li>
+        <li>
+          <span class="check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+          Ongoing support — we stay in the game with you
+        </li>
+      </ul>
+      <div class="reveal reveal-delay-2">
+        <a href="#contact" class="btn btn-primary">Draft Your Team</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-content">
+    <div class="reveal">
+      <div class="section-label" style="justify-content:center;">
+        <span style="display:none;"></span>
+        Tip Off
+      </div>
+      <h2 class="cta-title reveal reveal-delay-1">Ready to<br><span class="highlight">Make Your Move?</span></h2>
+      <p class="cta-sub reveal reveal-delay-2">The clock is running. Get AI-powered voice agents and premium web design that puts you on the scoreboard.</p>
+      <div class="reveal reveal-delay-3">
+        <a href="mailto:hello@kpt.com" class="btn btn-primary" style="font-size:18px; padding:20px 48px;">Let's Go</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">K<span>P</span>T</div>
+      <div class="footer-tagline" style="margin-top:8px;">Where Amazing Happens.</div>
+    </div>
+    <div class="footer-links">
+      <a href="#features">Features</a>
+      <a href="#stats">Stats</a>
+      <a href="#gameplan">Game Plan</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2026 KPT. All rights reserved.</div>
+    <div class="footer-badge">
+      <span class="dot"></span>
+      All Systems Go
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── IntersectionObserver Scroll Animations ──────────────────
+  document.addEventListener('DOMContentLoaded', () => {
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px'
+    });
+    reveals.forEach(el => observer.observe(el));
+
+    // ── Scoreboard Counter Animation ──────────────────────────
+    const statNumbers = document.querySelectorAll('.stat-number[data-target]');
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseInt(el.getAttribute('data-target'));
+          const suffix = el.getAttribute('data-suffix') || '';
+          let current = 0;
+          const duration = 1500;
+          const step = Math.max(1, Math.floor(target / (duration / 30)));
+          const interval = setInterval(() => {
+            current += step;
+            if (current >= target) {
+              current = target;
+              clearInterval(interval);
+            }
+            el.innerHTML = current + '<span class="stat-suffix">' + suffix + '</span>';
+          }, 30);
+          counterObserver.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    statNumbers.forEach(el => counterObserver.observe(el));
+
+    // ── Nav background on scroll ──────────────────────────────
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        nav.style.background = 'rgba(10, 14, 26, 0.98)';
+      } else {
+        nav.style.background = 'rgba(17, 24, 39, 0.95)';
+      }
+    });
+  });
+</script>
+</body>
+</html>

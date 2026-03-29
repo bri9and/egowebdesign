@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPT — How Builders Get More Done</title>
+<meta name="description" content="KPT. AI voice agents and premium web design. Built tough. Built right. How builders get more done.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ==============================
+     RESET & CUSTOM PROPERTIES
+     ============================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --depot-orange: #F96302;
+    --depot-orange-light: #FF7F2A;
+    --depot-orange-dark: #D45200;
+    --depot-orange-dim: rgba(249, 99, 2, 0.12);
+    --depot-orange-glow: rgba(249, 99, 2, 0.4);
+    --black: #0A0A0A;
+    --black-warm: #111111;
+    --white: #FFFFFF;
+    --off-white: #F5F0EB;
+    --concrete: #2A2A2A;
+    --steel: #3A3A3A;
+    --galvanized: #555555;
+    --dust: #888888;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B0A89E;
+    --text-muted: #706860;
+    --border: rgba(255, 255, 255, 0.06);
+    --border-orange: rgba(249, 99, 2, 0.25);
+    --surface: #161616;
+    --surface-raised: #1C1C1C;
+    --font-impact: 'Bebas Neue', Impact, sans-serif;
+    --font-heading: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --nav-height: 64px;
+  }
+
+  html { scroll-behavior: smooth; overflow-x: hidden; }
+
+  body {
+    background: var(--black);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  /* ==============================
+     BLUEPRINT BACKGROUND PATTERN
+     ============================== */
+  .blueprint-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image:
+      linear-gradient(var(--depot-orange) 1px, transparent 1px),
+      linear-gradient(90deg, var(--depot-orange) 1px, transparent 1px),
+      linear-gradient(var(--depot-orange) 0.5px, transparent 0.5px),
+      linear-gradient(90deg, var(--depot-orange) 0.5px, transparent 0.5px);
+    background-size:
+      100px 100px,
+      100px 100px,
+      20px 20px,
+      20px 20px;
+  }
+
+  /* ==============================
+     NAVIGATION
+     ============================== */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    background: transparent;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease, border-color 0.4s ease;
+    border-bottom: 2px solid transparent;
+  }
+
+  nav.scrolled {
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom-color: var(--depot-orange);
+  }
+
+  .nav-logo {
+    font-family: var(--font-impact);
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--depot-orange);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-logo .logo-box {
+    background: var(--depot-orange);
+    color: var(--black);
+    padding: 2px 8px;
+    font-size: 22px;
+    letter-spacing: 4px;
+    line-height: 1.1;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--depot-orange);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--depot-orange); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .back-link {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+  }
+
+  .back-link:hover { color: var(--depot-orange); }
+
+  /* ==============================
+     HERO SECTION
+     ============================== */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .hero-caution-tape {
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    width: 200%;
+    height: 28px;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--depot-orange),
+      var(--depot-orange) 20px,
+      var(--black) 20px,
+      var(--black) 40px
+    );
+    opacity: 0.6;
+    animation: cautionScroll 10s linear infinite;
+  }
+
+  @keyframes cautionScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--depot-orange-dim);
+    border: 1px solid var(--border-orange);
+    padding: 8px 20px;
+    border-radius: 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--depot-orange);
+    margin-bottom: 40px;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--depot-orange);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+
+  .hero-kpt {
+    font-family: var(--font-impact);
+    font-size: clamp(120px, 20vw, 280px);
+    line-height: 0.85;
+    letter-spacing: 12px;
+    color: var(--depot-orange);
+    position: relative;
+    margin-bottom: 24px;
+    text-shadow:
+      0 0 60px var(--depot-orange-glow),
+      0 0 120px rgba(249, 99, 2, 0.15);
+  }
+
+  .hero-kpt .stencil-outline {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--concrete);
+    z-index: -1;
+  }
+
+  .hero-tagline {
+    font-family: var(--font-heading);
+    font-size: clamp(24px, 4vw, 52px);
+    font-weight: 700;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .hero-tagline .accent { color: var(--depot-orange); }
+
+  .hero-sub {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    max-width: 580px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--depot-orange);
+    color: var(--black);
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .btn-primary:hover::before { left: 100%; }
+  .btn-primary:hover {
+    background: var(--depot-orange-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px var(--depot-orange-glow);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: var(--white);
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 14px 38px;
+    border: 2px solid var(--galvanized);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--depot-orange);
+    color: var(--depot-orange);
+    background: var(--depot-orange-dim);
+  }
+
+  /* Animated ruler line */
+  .hero-ruler {
+    width: 100%;
+    max-width: 800px;
+    height: 32px;
+    margin-top: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-ruler svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ruler-line {
+    stroke: var(--depot-orange);
+    stroke-width: 1;
+    opacity: 0.3;
+  }
+
+  .ruler-tick {
+    stroke: var(--depot-orange);
+    stroke-width: 1;
+    opacity: 0.4;
+  }
+
+  /* ==============================
+     SECTION COMMONS
+     ============================== */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 48px;
+  }
+
+  .section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--depot-orange);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    background: var(--depot-orange);
+  }
+
+  .section-title {
+    font-family: var(--font-impact);
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1;
+    letter-spacing: 3px;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .section-desc {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    max-width: 600px;
+    line-height: 1.7;
+    margin-bottom: 56px;
+  }
+
+  /* ==============================
+     DIVIDER — HAZARD STRIPE
+     ============================== */
+  .hazard-divider {
+    width: 100%;
+    height: 4px;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--depot-orange),
+      var(--depot-orange) 8px,
+      transparent 8px,
+      transparent 16px
+    );
+    opacity: 0.4;
+  }
+
+  /* ==============================
+     TOOL WALL GRID — SERVICES
+     ============================== */
+  .tool-wall {
+    background: var(--surface);
+    border-top: 3px solid var(--depot-orange);
+  }
+
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--concrete);
+  }
+
+  .tool-card {
+    background: var(--black-warm);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    cursor: default;
+  }
+
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--depot-orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .tool-card:hover::before { transform: scaleX(1); }
+  .tool-card:hover { background: var(--surface-raised); }
+
+  .tool-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--depot-orange-dim);
+    border: 1px solid var(--border-orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    font-size: 26px;
+    transition: all 0.3s ease;
+  }
+
+  .tool-card:hover .tool-icon {
+    background: var(--depot-orange);
+    border-color: var(--depot-orange);
+  }
+
+  .tool-card:hover .tool-icon svg { stroke: var(--black); }
+
+  .tool-icon svg {
+    width: 28px;
+    height: 28px;
+    stroke: var(--depot-orange);
+    stroke-width: 1.5;
+    fill: none;
+  }
+
+  .tool-number {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-family: var(--font-impact);
+    font-size: 48px;
+    color: var(--white);
+    opacity: 0.04;
+    letter-spacing: 2px;
+  }
+
+  .tool-name {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .tool-desc {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .tool-tag {
+    display: inline-block;
+    margin-top: 16px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--depot-orange);
+    padding: 4px 10px;
+    border: 1px solid var(--border-orange);
+  }
+
+  /* ==============================
+     BLUEPRINT SPECS — PROCESS
+     ============================== */
+  .blueprint {
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .blueprint::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(rgba(249, 99, 2, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(249, 99, 2, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .process-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .process-grid::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    width: 90%;
+    height: 2px;
+    background: var(--concrete);
+    z-index: 0;
+  }
+
+  .process-step {
+    text-align: center;
+    padding: 40px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .process-number {
+    width: 64px;
+    height: 64px;
+    background: var(--black);
+    border: 2px solid var(--depot-orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-family: var(--font-impact);
+    font-size: 28px;
+    color: var(--depot-orange);
+    letter-spacing: 2px;
+    position: relative;
+    transition: all 0.4s ease;
+  }
+
+  .process-step:hover .process-number {
+    background: var(--depot-orange);
+    color: var(--black);
+    transform: rotate(-5deg) scale(1.1);
+  }
+
+  .process-label {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .process-detail {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ==============================
+     STATS — SCOREBOARD
+     ============================== */
+  .stats {
+    background: var(--depot-orange);
+    padding: 80px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stats::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 199px,
+      rgba(0,0,0,0.05) 199px,
+      rgba(0,0,0,0.05) 200px
+    );
+    pointer-events: none;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .stat-item {
+    position: relative;
+  }
+
+  .stat-value {
+    font-family: var(--font-impact);
+    font-size: clamp(48px, 7vw, 80px);
+    letter-spacing: 3px;
+    color: var(--black);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.6);
+  }
+
+  .stat-unit {
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--black);
+    opacity: 0.4;
+    letter-spacing: 2px;
+    vertical-align: super;
+  }
+
+  /* ==============================
+     WORKBENCH — SHOWCASE
+     ============================== */
+  .workbench {
+    background: var(--surface);
+    border-top: 3px solid var(--concrete);
+  }
+
+  .bench-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: var(--concrete);
+  }
+
+  .bench-panel {
+    background: var(--black-warm);
+    padding: 56px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bench-panel.full { grid-column: 1 / -1; text-align: center; }
+
+  .bench-panel.highlight {
+    background: var(--depot-orange);
+  }
+
+  .bench-panel.highlight .bench-title,
+  .bench-panel.highlight .bench-desc {
+    color: var(--black);
+  }
+
+  .bench-panel.highlight .bench-desc { opacity: 0.7; }
+
+  .bench-panel::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    border-right: 2px solid var(--border-orange);
+    border-bottom: 2px solid var(--border-orange);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .bench-panel:hover::after { opacity: 1; }
+
+  .bench-icon {
+    font-size: 40px;
+    margin-bottom: 24px;
+    line-height: 1;
+  }
+
+  .bench-title {
+    font-family: var(--font-heading);
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .bench-desc {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 480px;
+  }
+
+  .bench-panel.full .bench-desc {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* ==============================
+     PEGBOARD — TECH SPECS
+     ============================== */
+  .pegboard {
+    background: var(--black);
+    position: relative;
+  }
+
+  .peg-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .peg-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .peg-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 0;
+    background: var(--depot-orange);
+    transition: height 0.4s ease;
+  }
+
+  .peg-item:hover { border-color: var(--border-orange); }
+  .peg-item:hover::before { height: 100%; }
+
+  .peg-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--depot-orange);
+    margin-bottom: 8px;
+  }
+
+  .peg-value {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+
+  .peg-detail {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* ==============================
+     LOADING DOCK — CTA
+     ============================== */
+  .loading-dock {
+    background: var(--black-warm);
+    text-align: center;
+    padding: 120px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .loading-dock::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--depot-orange-glow) 0%, transparent 70%);
+    opacity: 0.15;
+    pointer-events: none;
+  }
+
+  .dock-kpt {
+    font-family: var(--font-impact);
+    font-size: clamp(60px, 10vw, 140px);
+    letter-spacing: 8px;
+    color: var(--depot-orange);
+    line-height: 1;
+    margin-bottom: 20px;
+    text-shadow: 0 0 80px var(--depot-orange-glow);
+  }
+
+  .dock-tagline {
+    font-family: var(--font-heading);
+    font-size: clamp(20px, 3vw, 36px);
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  .dock-desc {
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  .dock-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ==============================
+     FOOTER
+     ============================== */
+  footer {
+    background: var(--black);
+    border-top: 3px solid var(--depot-orange);
+    padding: 48px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-logo {
+    font-family: var(--font-impact);
+    font-size: 24px;
+    letter-spacing: 3px;
+    background: var(--depot-orange);
+    color: var(--black);
+    padding: 4px 12px;
+  }
+
+  .footer-copy {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-family: var(--font-heading);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+  }
+
+  .footer-links a:hover { color: var(--depot-orange); }
+
+  .footer-safety {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    opacity: 0.5;
+    margin-top: 24px;
+    text-align: center;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ==============================
+     SCROLL ANIMATIONS
+     ============================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal-scale.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Staggered children */
+  .stagger > * {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .stagger.visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: translateY(0); }
+  .stagger.visible > *:nth-child(2) { transition-delay: 0.15s; opacity: 1; transform: translateY(0); }
+  .stagger.visible > *:nth-child(3) { transition-delay: 0.25s; opacity: 1; transform: translateY(0); }
+  .stagger.visible > *:nth-child(4) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
+  .stagger.visible > *:nth-child(5) { transition-delay: 0.45s; opacity: 1; transform: translateY(0); }
+  .stagger.visible > *:nth-child(6) { transition-delay: 0.55s; opacity: 1; transform: translateY(0); }
+
+  /* ==============================
+     RESPONSIVE — 768px
+     ============================== */
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+
+    section { padding: 60px 20px; }
+
+    .hero { padding: 100px 20px 60px; }
+    .hero-caution-tape { height: 16px; }
+
+    .tool-grid { grid-template-columns: 1fr; }
+    .tool-card { padding: 36px 24px; }
+
+    .process-grid { grid-template-columns: repeat(2, 1fr); }
+    .process-grid::before { display: none; }
+
+    .stats { padding: 60px 20px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+
+    .bench-grid { grid-template-columns: 1fr; }
+    .bench-panel { padding: 40px 24px; }
+
+    .peg-grid { grid-template-columns: 1fr; }
+
+    .loading-dock { padding: 80px 20px; }
+
+    footer { padding: 32px 20px; }
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+
+    .hero-actions,
+    .dock-actions { flex-direction: column; align-items: center; }
+
+    .btn-primary,
+    .btn-secondary { width: 100%; max-width: 320px; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Blueprint grid background -->
+<div class="blueprint-bg" aria-hidden="true"></div>
+
+<!-- ==============================
+     NAVIGATION
+     ============================== -->
+<nav>
+  <a href="/index.html" class="back-link">&larr; Gallery</a>
+  <div class="nav-logo">
+    <span class="logo-box">KPT</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#specs">Specs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ==============================
+     HERO
+     ============================== -->
+<section class="hero">
+  <div class="hero-caution-tape" aria-hidden="true"></div>
+
+  <div class="hero-badge reveal">Power Tools for the Digital Age</div>
+
+  <div class="hero-kpt reveal" style="transition-delay: 0.1s;">
+    KPT
+    <span class="stencil-outline" aria-hidden="true">KPT</span>
+  </div>
+
+  <h1 class="hero-tagline reveal" style="transition-delay: 0.2s;">
+    How <span class="accent">Builders</span> Get More Done
+  </h1>
+
+  <p class="hero-sub reveal" style="transition-delay: 0.3s;">
+    AI voice agents and premium web design. Engineered tough, built to spec.
+    No shortcuts. No half-measures. Just results.
+  </p>
+
+  <div class="hero-actions reveal" style="transition-delay: 0.4s;">
+    <a href="#contact" class="btn-primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      Start Building
+    </a>
+    <a href="#services" class="btn-secondary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      View Services
+    </a>
+  </div>
+
+  <!-- Ruler decoration -->
+  <div class="hero-ruler reveal" style="transition-delay: 0.5s;" aria-hidden="true">
+    <svg viewBox="0 0 800 32" preserveAspectRatio="none">
+      <line x1="0" y1="16" x2="800" y2="16" class="ruler-line"/>
+      <line x1="0" y1="8" x2="0" y2="24" class="ruler-tick"/>
+      <line x1="100" y1="8" x2="100" y2="24" class="ruler-tick"/>
+      <line x1="200" y1="8" x2="200" y2="24" class="ruler-tick"/>
+      <line x1="300" y1="8" x2="300" y2="24" class="ruler-tick"/>
+      <line x1="400" y1="8" x2="400" y2="24" class="ruler-tick"/>
+      <line x1="500" y1="8" x2="500" y2="24" class="ruler-tick"/>
+      <line x1="600" y1="8" x2="600" y2="24" class="ruler-tick"/>
+      <line x1="700" y1="8" x2="700" y2="24" class="ruler-tick"/>
+      <line x1="800" y1="8" x2="800" y2="24" class="ruler-tick"/>
+      <line x1="50" y1="12" x2="50" y2="20" class="ruler-tick" style="opacity:0.2"/>
+      <line x1="150" y1="12" x2="150" y2="20" class="ruler-tick" style="opacity:0.2"/>
+      <line x1="250" y1="12" x2="250" y2="20" class="ruler-tick" style="opacity:0.2"/>
+      <line x1="350" y1="12" x2="350" y2="20" class="ruler-tick" style="opacity:0.2"/>
+      <line x1="450" y1="12" x2="450" y2="20" class="ruler-tick" style="opacity:0.2"/>
+      <line x1="550" y1="12" x2="550" y2="20" class="ruler-tick" style="opacity:0.2"/>
+      <line x1="650" y1="12" x2="650" y2="20" class="ruler-tick" style="opacity:0.2"/>
+      <line x1="750" y1="12" x2="750" y2="20" class="ruler-tick" style="opacity:0.2"/>
+    </svg>
+  </div>
+</section>
+
+<div class="hazard-divider"></div>
+
+<!-- ==============================
+     TOOL WALL — SERVICES
+     ============================== -->
+<section class="tool-wall" id="services">
+  <div class="section-container">
+    <div class="section-label reveal">Aisle 01 // Services</div>
+    <h2 class="section-title reveal" style="transition-delay: 0.1s;">YOUR WORKSHOP</h2>
+    <p class="section-desc reveal" style="transition-delay: 0.2s;">
+      Every tool you need to build something real. Professional-grade digital solutions
+      engineered for performance, reliability, and scale.
+    </p>
+
+    <div class="tool-grid stagger">
+      <!-- Card 1 -->
+      <div class="tool-card">
+        <span class="tool-number">01</span>
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <h3 class="tool-name">AI Voice Agents</h3>
+        <p class="tool-desc">24/7 intelligent phone systems that answer, qualify, and route calls. Never miss a lead. Never drop a customer. Built industrial-strength.</p>
+        <span class="tool-tag">Always On</span>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="tool-card">
+        <span class="tool-number">02</span>
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+        </div>
+        <h3 class="tool-name">Web Design</h3>
+        <p class="tool-desc">Premium sites built to spec. Fast, responsive, conversion-optimized. Like a well-built house — solid foundation, clean lines, built to last.</p>
+        <span class="tool-tag">Full-Stack</span>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="tool-card">
+        <span class="tool-number">03</span>
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+        </div>
+        <h3 class="tool-name">Analytics Engine</h3>
+        <p class="tool-desc">Real-time dashboards that measure what matters. Know your numbers, track your builds, optimize every square foot of your digital property.</p>
+        <span class="tool-tag">Real-Time</span>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="tool-card">
+        <span class="tool-number">04</span>
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3 class="tool-name">Security Suite</h3>
+        <p class="tool-desc">Enterprise-grade protection. DDoS shielding, rate limiting, encrypted sessions. Your digital property locked down tighter than a job site after hours.</p>
+        <span class="tool-tag">Hardened</span>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="tool-card">
+        <span class="tool-number">05</span>
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+        </div>
+        <h3 class="tool-name">Speed Optimization</h3>
+        <p class="tool-desc">Sub-second load times. Edge caching, image optimization, code splitting. Performance isn't an afterthought — it's the foundation.</p>
+        <span class="tool-tag">Lightning</span>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="tool-card">
+        <span class="tool-number">06</span>
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        </div>
+        <h3 class="tool-name">Ongoing Support</h3>
+        <p class="tool-desc">We don't just build it and walk away. Continuous maintenance, updates, and optimization. Like a contractor warranty — but better.</p>
+        <span class="tool-tag">24/7</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hazard-divider"></div>
+
+<!-- ==============================
+     BLUEPRINT — PROCESS
+     ============================== -->
+<section class="blueprint" id="process">
+  <div class="section-container">
+    <div class="section-label reveal">Aisle 02 // Process</div>
+    <h2 class="section-title reveal" style="transition-delay: 0.1s;">THE BUILD PLAN</h2>
+    <p class="section-desc reveal" style="transition-delay: 0.2s;">
+      Measure twice, cut once. Our process is engineered for precision
+      and zero waste. Every project follows the blueprint.
+    </p>
+
+    <div class="process-grid stagger">
+      <div class="process-step">
+        <div class="process-number">01</div>
+        <h3 class="process-label">Survey</h3>
+        <p class="process-detail">Assess the site. Map requirements. Identify load-bearing objectives.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-number">02</div>
+        <h3 class="process-label">Blueprint</h3>
+        <p class="process-detail">Draft the plan. Define architecture. Set every specification to code.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-number">03</div>
+        <h3 class="process-label">Build</h3>
+        <p class="process-detail">Execute the plan. No shortcuts. Every component inspected and tested.</p>
+      </div>
+      <div class="process-step">
+        <div class="process-number">04</div>
+        <h3 class="process-label">Inspect</h3>
+        <p class="process-detail">Final walkthrough. Performance audit. Punch list cleared. Keys handed over.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     STATS — SCOREBOARD
+     ============================== -->
+<section class="stats">
+  <div class="stats-grid stagger">
+    <div class="stat-item">
+      <div class="stat-value">99.9<span class="stat-unit">%</span></div>
+      <div class="stat-label">Uptime Guaranteed</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">&lt;200<span class="stat-unit">MS</span></div>
+      <div class="stat-label">Response Time</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">50K<span class="stat-unit">+</span></div>
+      <div class="stat-label">Calls Handled</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">100<span class="stat-unit">%</span></div>
+      <div class="stat-label">Code Ownership</div>
+    </div>
+  </div>
+</section>
+
+<div class="hazard-divider"></div>
+
+<!-- ==============================
+     WORKBENCH — SHOWCASE
+     ============================== -->
+<section class="workbench">
+  <div class="section-container">
+    <div class="section-label reveal">Aisle 03 // Capabilities</div>
+    <h2 class="section-title reveal" style="transition-delay: 0.1s;">THE WORKBENCH</h2>
+    <p class="section-desc reveal" style="transition-delay: 0.2s;">
+      Professional-grade tools. Contractor-level execution.
+      Everything you need under one roof.
+    </p>
+
+    <div class="bench-grid stagger">
+      <div class="bench-panel">
+        <div class="bench-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--depot-orange)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </div>
+        <h3 class="bench-title">Next.js Architecture</h3>
+        <p class="bench-desc">Server-side rendering, static generation, edge functions. The structural framework that supports everything above it.</p>
+      </div>
+      <div class="bench-panel highlight">
+        <div class="bench-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--black)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+        </div>
+        <h3 class="bench-title">AI Voice Engine</h3>
+        <p class="bench-desc">Natural language processing that actually understands context. Your tireless front-desk worker that never calls in sick.</p>
+      </div>
+      <div class="bench-panel highlight">
+        <div class="bench-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--black)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <h3 class="bench-title">Conversion Pipeline</h3>
+        <p class="bench-desc">Lead capture, qualification, scheduling. An automated assembly line that turns browsers into buyers.</p>
+      </div>
+      <div class="bench-panel">
+        <div class="bench-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--depot-orange)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        </div>
+        <h3 class="bench-title">Payment Systems</h3>
+        <p class="bench-desc">Stripe-integrated checkout. Subscription management. Revenue tracking. The cash register that never makes mistakes.</p>
+      </div>
+      <div class="bench-panel full">
+        <div class="bench-icon" style="margin-left: auto; margin-right: auto;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--depot-orange)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <h3 class="bench-title">You Own Everything</h3>
+        <p class="bench-desc">Full source code delivered. No vendor lock-in. No monthly hostage fees. Like buying a house — the deed is in your name.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hazard-divider"></div>
+
+<!-- ==============================
+     PEGBOARD — TECH SPECS
+     ============================== -->
+<section class="pegboard" id="specs">
+  <div class="section-container">
+    <div class="section-label reveal">Aisle 04 // Tech Specs</div>
+    <h2 class="section-title reveal" style="transition-delay: 0.1s;">MATERIAL LIST</h2>
+    <p class="section-desc reveal" style="transition-delay: 0.2s;">
+      Premium materials. No cheap substitutes.
+      Every component selected for durability and performance.
+    </p>
+
+    <div class="peg-grid stagger">
+      <div class="peg-item">
+        <div class="peg-label">Framework</div>
+        <div class="peg-value">Next.js 15 + React 19</div>
+        <div class="peg-detail">Server components, streaming, edge runtime</div>
+      </div>
+      <div class="peg-item">
+        <div class="peg-label">Styling</div>
+        <div class="peg-value">Tailwind CSS 4</div>
+        <div class="peg-detail">Utility-first, zero runtime cost, design tokens</div>
+      </div>
+      <div class="peg-item">
+        <div class="peg-label">AI Engine</div>
+        <div class="peg-value">Claude + GPT + Gemini</div>
+        <div class="peg-detail">Multi-model orchestration for resilience</div>
+      </div>
+      <div class="peg-item">
+        <div class="peg-label">Voice</div>
+        <div class="peg-value">Twilio + ElevenLabs</div>
+        <div class="peg-detail">Real-time telephony with natural speech</div>
+      </div>
+      <div class="peg-item">
+        <div class="peg-label">Hosting</div>
+        <div class="peg-value">Vercel Edge Network</div>
+        <div class="peg-detail">Global CDN, auto-scaling, zero-config deploys</div>
+      </div>
+      <div class="peg-item">
+        <div class="peg-label">Database</div>
+        <div class="peg-value">Supabase (PostgreSQL)</div>
+        <div class="peg-detail">Row-level security, real-time subscriptions</div>
+      </div>
+      <div class="peg-item">
+        <div class="peg-label">Auth</div>
+        <div class="peg-value">Clerk / Supabase Auth</div>
+        <div class="peg-detail">JWT sessions, MFA, OAuth providers</div>
+      </div>
+      <div class="peg-item">
+        <div class="peg-label">Monitoring</div>
+        <div class="peg-value">Sentry + Vercel Analytics</div>
+        <div class="peg-detail">Error tracking, performance insights, alerting</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hazard-divider"></div>
+
+<!-- ==============================
+     LOADING DOCK — CTA
+     ============================== -->
+<section class="loading-dock" id="contact">
+  <div class="dock-kpt reveal">KPT</div>
+  <h2 class="dock-tagline reveal" style="transition-delay: 0.1s;">Ready to Build?</h2>
+  <p class="dock-desc reveal" style="transition-delay: 0.2s;">
+    Stop browsing the aisles. Grab the tools. Let's get to work.
+    Your project deserves contractor-grade execution.
+  </p>
+  <div class="dock-actions reveal" style="transition-delay: 0.3s;">
+    <a href="#contact" class="btn-primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      Get a Quote
+    </a>
+    <a href="#services" class="btn-secondary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      Explore Services
+    </a>
+  </div>
+</section>
+
+<!-- ==============================
+     FOOTER
+     ============================== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">KPT</span>
+      <span class="footer-copy">&copy; 2026 KPT. Built tough.</span>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#specs">Specs</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="/index.html">Gallery</a></li>
+    </ul>
+  </div>
+  <div class="footer-safety">
+    SAFETY FIRST: All projects built to code. No exceptions. No shortcuts. Inspect what you expect.
+  </div>
+</footer>
+
+<!-- ==============================
+     JAVASCRIPT
+     ============================== -->
+<script>
+(function() {
+  'use strict';
+
+  // ── Nav scroll behavior ──────────────────────────────
+  const nav = document.querySelector('nav');
+  let lastScroll = 0;
+
+  function handleNavScroll() {
+    const scrollY = window.scrollY;
+    if (scrollY > 80) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+    lastScroll = scrollY;
+  }
+
+  window.addEventListener('scroll', handleNavScroll, { passive: true });
+
+  // ── IntersectionObserver — scroll reveals ────────────
+  const revealClasses = ['reveal', 'reveal-left', 'reveal-right', 'reveal-scale', 'stagger'];
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  revealClasses.forEach(function(cls) {
+    document.querySelectorAll('.' + cls).forEach(function(el) {
+      observer.observe(el);
+    });
+  });
+
+  // ── Smooth scroll for anchor links ──────────────────
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ── Stat counter animation ──────────────────────────
+  function animateCounters() {
+    var statValues = document.querySelectorAll('.stat-value');
+    statValues.forEach(function(el) {
+      var text = el.textContent;
+      // Store original HTML to restore after animation
+      var originalHTML = el.innerHTML;
+      var numMatch = text.match(/[\d.]+/);
+      if (!numMatch) return;
+
+      var target = parseFloat(numMatch[0]);
+      var prefix = text.substring(0, text.indexOf(numMatch[0]));
+      var suffix = el.querySelector('.stat-unit');
+      var suffixHTML = suffix ? suffix.outerHTML : '';
+
+      var duration = 1500;
+      var start = null;
+      var hasDecimal = numMatch[0].includes('.');
+      var decimalPlaces = hasDecimal ? numMatch[0].split('.')[1].length : 0;
+
+      function step(timestamp) {
+        if (!start) start = timestamp;
+        var progress = Math.min((timestamp - start) / duration, 1);
+        // Ease out cubic
+        var eased = 1 - Math.pow(1 - progress, 3);
+        var current = target * eased;
+
+        if (hasDecimal) {
+          el.innerHTML = prefix + current.toFixed(decimalPlaces) + suffixHTML;
+        } else {
+          el.innerHTML = prefix + Math.floor(current).toLocaleString() + suffixHTML;
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          el.innerHTML = originalHTML;
+        }
+      }
+
+      requestAnimationFrame(step);
+    });
+  }
+
+  var statsSection = document.querySelector('.stats');
+  var statsObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        animateCounters();
+        statsObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  if (statsSection) {
+    statsObserver.observe(statsSection);
+  }
+})();
+</script>
+
+</body>
+</html>
